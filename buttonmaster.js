@@ -16,36 +16,17 @@ function getFriendlyDate() {
   });
 }
 
-// Initialize LocalStorage for user state
-function initializeUserState() {
-  let userState = localStorage.getItem('thisUserState');
-  if (!userState) {
-    const initialState = {
-      status: 'logged out',
-      lastUpdate: getFriendlyDate(),
-    };
-    localStorage.setItem('thisUserState', JSON.stringify(initialState));
-  }
-}
+// Global variable for isAuthenticated state
+let isAuthenticated = false;
 
 // Check if the user is logged in by validating multiple indicators
 function isUserAuthenticated() {
-  // 1. Check if the cookie 'fx_customer_sso' exists
   const cookieExists = document.cookie.includes('fx_customer_sso');
-
-  // 2. Check if the 'fx_customerId' cookie exists
   const cookieCustomerIdExists = document.cookie.includes('fx_customerId');
-
-  // 3. Check if the 'fx_customer_jwt' cookie exists
   const cookieJwtExists = document.cookie.includes('fx_customer_jwt');
-
-  // 4. Check if the 'window.fx_customerId' variable exists and is truthy
   const windowVarExists = typeof window.fx_customerId !== 'undefined' && window.fx_customerId;
 
-  // 5. Check if the 'thisUserSession' key exists in localStorage
   const localStorageSession = localStorage.getItem('thisUserSession');
-
-  // 6. Check if the 'thisUserState' key exists in localStorage and if the status is 'logged in'
   const localStorageState = JSON.parse(localStorage.getItem('thisUserState'));
 
   // Initialize an indicator count
@@ -63,8 +44,25 @@ function isUserAuthenticated() {
   return indicators >= 2;
 }
 
-// Global variable for isAuthenticated state
-let isAuthenticated = false;
+// Expose isUserAuthenticated globally
+window.isUserAuthenticated = isUserAuthenticated;
+
+// Initialize LocalStorage for user state
+function initializeUserState() {
+  // Retrieve the existing thisUserState from localStorage
+  let userState = JSON.parse(localStorage.getItem('thisUserState'));
+
+  // If there's no existing userState, initialize it
+  if (!userState || Object.keys(userState).length === 0) {
+    const initialState = {
+      status: 'logged out',
+      lastUpdate: getFriendlyDate(),
+    };
+
+    // Set initial state to localStorage
+    localStorage.setItem('thisUserState', JSON.stringify(initialState));
+  }
+}
 
 // Function to manage button display and update status in LocalStorage
 function buttonMaster(status, caller) {
@@ -126,15 +124,20 @@ function handleLogin() {
   const statusDiv = document.getElementById('status-div');
   statusDiv.textContent = `logged in at ${friendlyDate} by handleLogin`;
   statusDiv.style.display = 'block';
+
+  // Sync the authentication state after login
+  checkAndSyncAuthState();
 }
 
-// Function to be called externally to initialize and update the UI
-function initializeAndRun(Auth = null) {
-  // Initialize user state
-  initializeUserState();
-
+// Function to check and synchronize the authentication state
+function checkAndSyncAuthState() {
   // Check if user is authenticated based on the indicators
-  isAuthenticated = isUserAuthenticated();
+  if (typeof isUserAuthenticated === 'function') {
+    isAuthenticated = isUserAuthenticated();
+  } else {
+    console.error('isUserAuthenticated function is not defined');
+    isAuthenticated = false;
+  }
 
   // Store isAuthenticated in localStorage with a timestamp
   const friendlyDate = getFriendlyDate();
@@ -143,13 +146,25 @@ function initializeAndRun(Auth = null) {
     timestamp: friendlyDate,
   }));
 
-  // If Auth is provided and is true, or if isAuthenticated is true, handle the authenticated state
-  if (Auth === 'authenticated' || isAuthenticated) {
-    buttonMaster('logged in', 'initializeAndRun');
+  // Update button state based on authentication status
+  if (isAuthenticated) {
+    buttonMaster('logged in', 'checkAndSyncAuthState');
   } else {
-    // Otherwise, update the UI based on the stored state
-    const userState = JSON.parse(localStorage.getItem('thisUserState'));
-    buttonMaster(userState.status, 'initializeAndRun');
+    buttonMaster('logged out', 'checkAndSyncAuthState');
+  }
+}
+
+// Function to be called externally to initialize and update the UI
+function initializeAndRun(Auth = null) {
+  // Initialize user state
+  initializeUserState();
+
+  // Run authentication check and sync state
+  checkAndSyncAuthState();
+
+  // If Auth is provided and is true, handle the authenticated state
+  if (Auth === 'authenticated') {
+    buttonMaster('logged in', 'initializeAndRun');
   }
 }
 
@@ -157,7 +172,15 @@ function initializeAndRun(Auth = null) {
 window.initializeAndRun = initializeAndRun;
 
 // Set up login button click listener to simulate login (you might have a proper login event elsewhere)
-document.getElementById('login-button').addEventListener('click', () => {
-  handleLogin();
+document.addEventListener('DOMContentLoaded', () => {
+  const loginButton = document.getElementById('login-button');
+  if (loginButton) {
+    loginButton.addEventListener('click', () => {
+      handleLogin();
+    });
+  }
+
+  // Run the check and sync function on load to ensure the buttons reflect the current auth state
+  checkAndSyncAuthState();
 });
 
