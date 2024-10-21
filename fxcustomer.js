@@ -9,7 +9,7 @@ export function manualRefreshFoxy() {
     console.log('Manual refresh triggered for FoxyCart data.');
     retryCountFoxy = 0;
     pollingCountFoxy = 0;
-    checkAndPollFoxyCustomer();
+    poll(); // Directly call poll to bypass delay
 }
 
 // Function to check and poll FoxyCart customer data
@@ -81,7 +81,6 @@ export async function checkAndPollFoxyCustomer() {
     setTimeout(poll, 45000);
 }
 
-
 // Fetch function for FoxyCart customer data
 export async function fetchFxCustomer(customerId) {
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}`;
@@ -152,8 +151,6 @@ function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString(); // Adjust this to your preferred format
 }
-
-
 
 // Automatically call `checkAndPollFoxyCustomer` after an initial delay
 setTimeout(() => {

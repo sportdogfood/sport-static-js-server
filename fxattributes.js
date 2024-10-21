@@ -8,7 +8,12 @@ async function userAttributes() {
 
   // Get attributes from LocalStorage
   let thisUserZoom = JSON.parse(localStorage.getItem('thisUserZoom'));
-  let thisUserSession = JSON.parse(localStorage.getItem('thisUserSession')) || { crm: [], points: [], level: [] };
+  let thisUserSession = JSON.parse(localStorage.getItem('thisUserSession')) || {};
+
+  // Ensure specific user attributes are initialized as objects
+  if (typeof thisUserSession.userCRM !== 'object') thisUserSession.userCRM = {};
+  if (typeof thisUserSession.userPoints !== 'object') thisUserSession.userPoints = {};
+  if (typeof thisUserSession.userLevel !== 'object') thisUserSession.userLevel = {};
 
   // Check if both thisUserZoom and thisUserSession are available
   if (!thisUserZoom) {
@@ -32,35 +37,45 @@ async function userAttributes() {
         lastupdate: new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
       };
 
-      // Push attribute data into respective arrays in thisUserSession
+      // Assign attribute data explicitly to user attributes in thisUserSession
       if (name === "Zoho_CRM_ID") {
-        thisUserSession.crm.push(attributeData);
+        thisUserSession.userCRM = attributeData;
       } else if (name === "Loyalty_Points") {
-        thisUserSession.points.push(attributeData);
+        thisUserSession.userPoints = attributeData;
       } else if (name === "Loyalty_Level") {
-        thisUserSession.level.push(attributeData);
+        thisUserSession.userLevel = attributeData;
+      } else {
+        // Handle additional attributes dynamically
+        thisUserSession[`userAttribute_${i + 4}`] = attributeData;
       }
     }
 
     // If values were not found, assign default empty objects
-    if (thisUserSession.crm.length === 0) {
-      thisUserSession.crm.push({ attributeName: "Zoho_CRM_ID", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() });
+    if (!thisUserSession.userCRM.fxAtt) {
+      thisUserSession.userCRM = { attributeName: "Zoho_CRM_ID", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() };
     }
-    if (thisUserSession.points.length === 0) {
-      thisUserSession.points.push({ attributeName: "Loyalty_Points", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() });
+    if (!thisUserSession.userPoints.fxAtt) {
+      thisUserSession.userPoints = { attributeName: "Loyalty_Points", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() };
     }
-    if (thisUserSession.level.length === 0) {
-      thisUserSession.level.push({ attributeName: "Loyalty_Level", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() });
+    if (!thisUserSession.userLevel.fxAtt) {
+      thisUserSession.userLevel = { attributeName: "Loyalty_Level", attributeValue: null, fxAtt: null, lastupdate: getFriendlyDateTime() };
     }
 
-    // Update session data with the structured arrays
+    // Update session data with the structured objects
     thisUserSession.lastupdate = getFriendlyDateTime();
     updateThisUserSession(thisUserSession);
 
     // Send each object to SessionManager to update session
-    thisUserSession.crm.forEach(attr => SessionManager.updateSession(attr));
-    thisUserSession.points.forEach(attr => SessionManager.updateSession(attr));
-    thisUserSession.level.forEach(attr => SessionManager.updateSession(attr));
+    SessionManager.updateSession(thisUserSession.userCRM);
+    SessionManager.updateSession(thisUserSession.userPoints);
+    SessionManager.updateSession(thisUserSession.userLevel);
+
+    // Update additional dynamic attributes
+    Object.keys(thisUserSession).forEach(key => {
+      if (key.startsWith('userAttribute_')) {
+        SessionManager.updateSession(thisUserSession[key]);
+      }
+    });
   }
 }
 
