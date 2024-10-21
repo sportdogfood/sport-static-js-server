@@ -1,121 +1,123 @@
+// Counter to track retries for CRM fetch
+let retryCountCRM = 0;
+const maxRetries = 4; // Maximum number of retries
+let pollingCount = 0;
+const maxPollingAttempts = 4; // Maximum number of polling attempts
 
-    async function checkAndPollUserContactAndZoom() {
-        let pollingCount = 0;
-        const maxPollingAttempts = 4; // Maximum number of polling attempts
-        let retryLimit = 4;
-        let retryCount = 0;
+// Function to manually refresh and restart the fetching process
+export function manualRefreshCRM() {
+    console.log('Manual refresh triggered for CRM data.');
+    retryCountCRM = 0;
+    pollingCount = 0;
+    checkAndPollCRMContact();
+}
 
-        // Load existing contact and Zoom data from localStorage, safely
-        let thisUserContactString = localStorage.getItem("thisUserContact");
-        let thisUserContact = null;
-        try {
-            thisUserContact = thisUserContactString ? JSON.parse(thisUserContactString) : null;
-        } catch (e) {
-            console.error("Failed to parse thisUserContact from localStorage", e);
+// Function to check and poll Zoho CRM contact data
+export async function checkAndPollCRMContact() {
+    // Helper function to get the desired value from the variable chain
+    const getCRMValueFromChain = () => {
+        const localContactId = localStorage.getItem('crm_contactId');
+        const thisUserContact = localStorage.getItem('thisUserContact');
+        const thisUser = localStorage.getItem('thisUser');
+
+        if (localContactId) return localContactId;
+        if (thisUserContact && JSON.parse(thisUserContact).Contact_ID) return JSON.parse(thisUserContact).Contact_ID;
+        if (thisUser && JSON.parse(thisUser).crm_contactId) return JSON.parse(thisUser).crm_contactId;
+
+        return null; // Return null if no ID is found
+    };
+
+    // Poll for CRM data with retry mechanism
+    async function poll() {
+        if (retryCountCRM >= maxRetries) {
+            console.log("Retry limit reached for CRM contact, aborting.");
+            return;
         }
 
-        let thisUserZoomString = localStorage.getItem("thisUserZoom");
-        let thisUserZoom = null;
-        try {
-            thisUserZoom = thisUserZoomString ? JSON.parse(thisUserZoomString) : null;
-        } catch (e) {
-            console.error("Failed to parse thisUserZoom from localStorage", e);
+        let crmContactId = getCRMValueFromChain();
+
+        if (!crmContactId && retryCountCRM < maxRetries) {
+            retryCountCRM++;
+            console.log(`CRM contact ID not found, retrying in 5 seconds (Attempt ${retryCountCRM}/${maxRetries})`);
+            setTimeout(poll, 5000); // Retry after 5 seconds if not found
+            return;
         }
 
-        function getCustomerIdFromCookies() {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                const [name, value] = cookie.split('=');
-                if (name.trim() === 'fx_customerId') {
-                    return decodeURIComponent(value);
-                }
-            }
-            return null;
-        }
+        if (crmContactId && pollingCount < maxPollingAttempts) {
+            pollingCount++;
+            console.log(`Polling start - Cycle #${pollingCount} for CRM contact data.`);
 
-        async function poll() {
-            if (retryCount >= retryLimit) {
-                console.log("Retry limit reached for customer ID, aborting.");
-                return;
-            }
-
-            const fx_customerId = window.fx_customerId_global || getCustomerIdFromCookies();
-
-            if ((!thisUserContact || !thisUserZoom) && pollingCount < maxPollingAttempts) {
-                pollingCount++;
-                console.log(`Polling start - Cycle #${pollingCount}`);
-
-                if (fx_customerId) {
-                    if (!window.fx_customerId_global) {
-                        window.fx_customerId_global = fx_customerId;
-                        console.log('fx_customerId_global is set:', window.fx_customerId_global);
-                    }
-
-                    try {
-                        if (!thisUserContact) {
-                            await fetchZohoContact(fx_customerId);
-                            thisUserContactString = localStorage.getItem("thisUserContact");
-                            thisUserContact = thisUserContactString ? JSON.parse(thisUserContactString) : null;
-                        }
-
-                        if (!thisUserZoom && typeof fetchCustomerData === 'function') {
-                            await fetchCustomerData(fx_customerId);
-                            thisUserZoomString = localStorage.getItem("thisUserZoom");
-                            thisUserZoom = thisUserZoomString ? JSON.parse(thisUserZoomString) : null;
-                        }
-                    } catch (error) {
-                        console.error(`Error during fetch operation on attempt ${pollingCount}:`, error);
-                    }
-                }
-
-                if (!thisUserContact || !thisUserZoom) {
-                    console.log(`Polling end - Cycle #${pollingCount}`);
-                    if (pollingCount < maxPollingAttempts) {
-                        setTimeout(poll, 5000);
-                    } else {
-                        console.log('Max polling attempts reached without finding user contact or zoom data');
+            try {
+                const existingData = localStorage.getItem('thisUserContact');
+                if (!existingData) {
+                    // Fetch Zoho Contact Data and store it in localStorage
+                    const responseData = await fetchZohoContact(crmContactId);
+                    if (responseData) {
+                        localStorage.setItem("thisUserContact", JSON.stringify(responseData));
+                        console.log("Zoho contact data stored in localStorage under 'thisUserContact'.");
                     }
                 } else {
-                    console.log('User contact and Zoom data found:', { thisUserContact, thisUserZoom });
-                    if (typeof updateSessionFromThisUserContact === 'function') {
-                        updateSessionFromThisUserContact(thisUserContact);
-                    }
-                    if (typeof userStateEmitter !== 'undefined' && typeof userStateEmitter.setState === 'function') {
-                        userStateEmitter.setState({ status: "active" });
-                    }
+                    console.log('CRM contact data already exists in localStorage.');
                 }
-            } else if (!fx_customerId) {
-                retryCount++;
-                console.log(`Customer ID not found, retrying in 5 seconds (Attempt ${retryCount}/${retryLimit})`);
-                setTimeout(poll, 5000);
+
+                // If data is still not found, retry
+                if (!existingData && pollingCount < maxPollingAttempts) {
+                    setTimeout(poll, 5000); // Retry after 5 seconds
+                }
+
+            } catch (error) {
+                console.error(`Error during CRM polling attempt ${pollingCount}:`, error);
+                if (pollingCount < maxPollingAttempts) {
+                    setTimeout(poll, 5000); // Retry after 5 seconds if an error occurs
+                }
             }
-        }
-
-        setTimeout(poll, 45000);
-    }
-
-    async function fetchZohoContact(fx_customerId) {
-        const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=(Foxy_ID:equals:${fx_customerId})`;
-        console.log("Zoho URL:", zohoUrl);
-
-        try {
-            const zohoResponse = await fetch(zohoUrl);
-            if (!zohoResponse.ok) {
-                throw new Error(`Failed to fetch Zoho data: ${zohoResponse.status} ${zohoResponse.statusText}`);
-            }
-
-            const details = await zohoResponse.json();
-            if (details.data && details.data.length > 0) {
-                const thisUserContact = details.data[0];
-                localStorage.setItem("thisUserContact", JSON.stringify(thisUserContact));
-                console.log("Zoho contact data stored in localStorage under 'thisUserContact'");
-            } else {
-                console.log(`No matching record found for Foxy_ID: ${fx_customerId} in Contacts`);
-            }
-        } catch (error) {
-            console.error("Error fetching data from Zoho API:", error);
+        } else if (pollingCount >= maxPollingAttempts) {
+            console.log('Maximum polling attempts reached for CRM data.');
         }
     }
 
-    checkAndPollUserContactAndZoom();
+    // Start the polling process after an initial delay of 45 seconds
+    setTimeout(poll, 45000);
+}
 
+// Function for fetching Zoho contact data
+async function fetchZohoContact(fx_customerId) {
+    const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=(Foxy_ID:equals:${fx_customerId})`;
+    console.log("Zoho URL:", zohoUrl);
+
+    try {
+        const zohoResponse = await fetch(zohoUrl);
+        if (!zohoResponse.ok) {
+            throw new Error(`Failed to fetch Zoho data: ${zohoResponse.status} ${zohoResponse.statusText}`);
+        }
+
+        const details = await zohoResponse.json();
+        if (details.data && details.data.length > 0) {
+            const thisUserContact = details.data[0];
+            console.log("Zoho contact data retrieved successfully.");
+            return thisUserContact; // Return the fetched contact details
+        } else {
+            console.log(`No matching record found for Foxy_ID: ${fx_customerId} in Contacts`);
+            return null; // No data found
+        }
+    } catch (error) {
+        console.error("Error fetching data from Zoho API:", error);
+        return null; // Return null in case of error
+    }
+}
+
+// Automatically call `checkAndPollCRMContact` after an initial delay
+setTimeout(() => {
+    checkAndPollCRMContact();
+}, 20000); // Delay of 20 seconds
+
+// Add a manual refresh button to the page if needed
+export function addManualRefreshButton() {
+    const refreshButtonCRM = document.createElement('button');
+    refreshButtonCRM.innerText = 'Refresh CRM Data';
+    refreshButtonCRM.onclick = manualRefreshCRM;
+    document.body.appendChild(refreshButtonCRM);
+}
+
+// Call to add the refresh button
+addManualRefreshButton();
