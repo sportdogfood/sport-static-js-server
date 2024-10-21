@@ -83,7 +83,7 @@ export async function checkAndPollFoxyCustomer() {
 
 // Fetch function for FoxyCart customer data
 export async function fetchFxCustomer(customerId) {
-    const zoomParams = 'attributes,default_billing_address,default_shipping_address,default_payment_method';
+    const zoomParams = '';
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}?zoom=${encodeURIComponent(zoomParams)}`;
     console.log("Fetching FxCustomer URL:", apiUrl);
 
@@ -93,18 +93,21 @@ export async function fetchFxCustomer(customerId) {
             throw new Error(`Failed to fetch FxCustomer data: ${fxResponse.status} ${fxResponse.statusText}`);
         }
 
+        // Parse response JSON
         const details = await fxResponse.json();
-        if (details._embedded && details._embedded['fx:customer']) {
-            const thisUserCustomer = details._embedded['fx:customer'];
-            localStorage.setItem("thisUserCustomer", JSON.stringify(thisUserCustomer));
-            console.log("FxCustomer data stored in localStorage under 'thisUserCustomer'");
-        } else {
-            console.log(`No matching record found for customerId: ${customerId} in FxCustomer`);
-        }
+
+        // Create a filtered version of the details object without _embedded and _links
+        const { _embedded, _links, ...filteredDetails } = details;
+
+        // Store the filtered response in localStorage
+        localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
+        console.log("Filtered FxCustomer data stored in localStorage under 'thisUserCustomer'");
+
     } catch (error) {
         console.error("Error fetching data from FxCustomer API:", error);
     }
 }
+
 
 // Automatically call `checkAndPollFoxyCustomer` after an initial delay
 setTimeout(() => {
