@@ -102,7 +102,7 @@ export async function fetchFxCustomer(customerId) {
             return;
         }
 
-        // Create a filtered version of the details object without _embedded and _links
+        // Remove _embedded and _links from the details object
         const { _embedded, _links, ...filteredDetails } = details;
 
         // If the filteredDetails object is empty, log the error and stop further actions
@@ -115,19 +115,23 @@ export async function fetchFxCustomer(customerId) {
         localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
         console.log("Filtered FxCustomer data stored in localStorage under 'thisUserCustomer'");
 
-        // Example: Update session state with the customer data
-        const fxName = filteredDetails?.first_name || 'Unknown';
-        updateThisUserSession({ first_name: f_first_name, lastupdate: getFriendlyDateTime() });
+        // Extract the necessary fields from filteredDetails
+        const { first_name, last_name, email } = filteredDetails;
+        console.log("Customer name being used to update session:", first_name); // Add a log here
+        
+        // Update session state with the customer data
+        updateThisUserSession({ first_name, last_name, email, lastupdate: getFriendlyDateTime() });
 
     } catch (error) {
         console.error("Error fetching data from FxCustomer API:", error);
     }
 }
 
-
 // Function to update the session state with provided data
 function updateThisUserSession(data) {
     try {
+        console.log("Data passed to updateThisUserSession:", data); // Log the incoming data
+
         // Retrieve existing session or initialize it if it doesn't exist
         const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
 
@@ -137,7 +141,7 @@ function updateThisUserSession(data) {
         // Store the updated session in localStorage
         localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
         
-        console.log('Updated session state:', updatedSession);
+        console.log('Updated session state:', updatedSession); // Log the updated session
     } catch (error) {
         console.error('Error updating session state:', error);
     }
@@ -148,6 +152,7 @@ function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString(); // Adjust this to your preferred format
 }
+
 
 
 // Automatically call `checkAndPollFoxyCustomer` after an initial delay

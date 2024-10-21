@@ -123,6 +123,7 @@ function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString(); // Adjust this to your preferred format
 }
+
 // Function for fetching Zoho contact data
 async function fetchZohoContact(fx_customerId) {
     const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=(Foxy_ID:equals:${fx_customerId})`;
@@ -138,17 +139,18 @@ async function fetchZohoContact(fx_customerId) {
         console.log("Zoho API response details:", details);
 
         if (details.data && details.data.length > 0) {
+            console.log(`Found ${details.data.length} record(s) in Zoho CRM response.`);
+            
             const thisUserContact = details.data[0];
             console.log("Zoho contact data retrieved successfully:", thisUserContact);
             
             // Extract first_name and Foxy_ID from the response data
-            //const first_name = thisUserContact?.First_Name || 'Unknown';
+            const first_name = thisUserContact?.First_Name || 'Unknown';
             const zFoxyID = thisUserContact?.Foxy_ID || 'Unknown';
 
             // Update session state with customer data
-            updateThisUserSession({ zFoxyID, lastupdate: getFriendlyDateTime() });
+            updateThisUserSession({ first_name, zFoxyID, lastupdate: getFriendlyDateTime() });
 
-            
             return thisUserContact; // Return the fetched contact details
         } else {
             console.log(`No matching record found for Foxy_ID: ${fx_customerId} in Contacts`);
@@ -159,6 +161,7 @@ async function fetchZohoContact(fx_customerId) {
         return null; // Return null in case of error
     }
 }
+
 
 // Automatically call `checkAndPollCRMContact` after an initial delay
 setTimeout(() => {
