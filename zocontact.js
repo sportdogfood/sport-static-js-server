@@ -4,6 +4,32 @@ const maxRetries = 4; // Maximum number of retries for fetching CRM data
 let pollingCount = 0;
 const maxPollingAttempts = 4; // Maximum number of polling attempts for CRM data
 
+// Helper function to get the desired value from the variable chain
+const getCRMValueFromChain = () => {
+    try {
+        const localContactId = localStorage.getItem('fx_customerId');
+        const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
+        const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
+
+        if (localContactId) {
+            console.log("Retrieved CRM ID from fx_customerId:", localContactId);
+            return localContactId;
+        }
+        if (thisUserContact && thisUserContact.id) {
+            console.log("Retrieved CRM ID from thisUserContact.id:", thisUserContact.id);
+            return thisUserContact.id;
+        }
+        if (thisUser && thisUser.fx_customerId) {
+            console.log("Retrieved CRM ID from thisUser.fx_customerId:", thisUser.fx_customerId);
+            return thisUser.fx_customerId;
+        }
+    } catch (error) {
+        console.error("Error while getting CRM value from chain:", error);
+    }
+
+    return null; // Return null if no ID is found
+};
+
 // Function to manually refresh and restart the fetching process
 export function manualRefreshCRM() {
     console.log('Manual refresh triggered for CRM data.');
@@ -14,32 +40,6 @@ export function manualRefreshCRM() {
 
 // Function to check and poll Zoho CRM contact data
 export async function checkAndPollCRMContact() {
-    // Helper function to get the desired value from the variable chain
-    const getCRMValueFromChain = () => {
-        try {
-            const localContactId = localStorage.getItem('fx_customerId');
-            const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
-            const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
-
-            if (localContactId) {
-                console.log("Retrieved CRM ID from fx_customerId:", localContactId);
-                return localContactId;
-            }
-            if (thisUserContact && thisUserContact.id) {
-                console.log("Retrieved CRM ID from thisUserContact.id:", thisUserContact.id);
-                return thisUserContact.id;
-            }
-            if (thisUser && thisUser.fx_customerId) {
-                console.log("Retrieved CRM ID from thisUser.fx_customerId:", thisUser.fx_customerId);
-                return thisUser.fx_customerId;
-            }
-        } catch (error) {
-            console.error("Error while getting CRM value from chain:", error);
-        }
-
-        return null; // Return null if no ID is found
-    };
-
     // Start the polling process
     poll();
 }
@@ -100,7 +100,29 @@ async function poll() {
         console.log('Maximum polling attempts reached for CRM data.');
     }
 }
+// Function to update the session state with provided data
+function updateThisUserSession(data) {
+    try {
+        // Retrieve existing session or initialize it if it doesn't exist
+        const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
 
+        // Merge new data with the existing session state
+        const updatedSession = { ...thisUserSession, ...data };
+
+        // Store the updated session in localStorage
+        localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
+        
+        console.log('Updated session state:', updatedSession);
+    } catch (error) {
+        console.error('Error updating session state:', error);
+    }
+}
+
+// Utility function to get the current date and time in a friendly format
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString(); // Adjust this to your preferred format
+}
 // Function for fetching Zoho contact data
 async function fetchZohoContact(fx_customerId) {
     const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=(Foxy_ID:equals:${fx_customerId})`;
@@ -118,6 +140,15 @@ async function fetchZohoContact(fx_customerId) {
         if (details.data && details.data.length > 0) {
             const thisUserContact = details.data[0];
             console.log("Zoho contact data retrieved successfully:", thisUserContact);
+            
+            // Extract first_name and Foxy_ID from the response data
+            //const first_name = thisUserContact?.First_Name || 'Unknown';
+            const zFoxyID = thisUserContact?.Foxy_ID || 'Unknown';
+
+            // Update session state with customer data
+            updateThisUserSession({ zFoxyID, lastupdate: getFriendlyDateTime() });
+
+            
             return thisUserContact; // Return the fetched contact details
         } else {
             console.log(`No matching record found for Foxy_ID: ${fx_customerId} in Contacts`);

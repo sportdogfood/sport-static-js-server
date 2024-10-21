@@ -115,11 +115,39 @@ export async function fetchFxCustomer(customerId) {
         localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
         console.log("Filtered FxCustomer data stored in localStorage under 'thisUserCustomer'");
 
+        // Example: Update session state with the customer data
+        const fxName = filteredDetails?.first_name || 'Unknown';
+        updateThisUserSession({ first_name: f_first_name, lastupdate: getFriendlyDateTime() });
+
     } catch (error) {
         console.error("Error fetching data from FxCustomer API:", error);
     }
 }
 
+
+// Function to update the session state with provided data
+function updateThisUserSession(data) {
+    try {
+        // Retrieve existing session or initialize it if it doesn't exist
+        const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
+
+        // Merge new data with the existing session state
+        const updatedSession = { ...thisUserSession, ...data };
+
+        // Store the updated session in localStorage
+        localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
+        
+        console.log('Updated session state:', updatedSession);
+    } catch (error) {
+        console.error('Error updating session state:', error);
+    }
+}
+
+// Utility function to get the current date and time in a friendly format
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString(); // Adjust this to your preferred format
+}
 
 
 // Automatically call `checkAndPollFoxyCustomer` after an initial delay
