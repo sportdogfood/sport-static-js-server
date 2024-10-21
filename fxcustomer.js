@@ -81,10 +81,10 @@ export async function checkAndPollFoxyCustomer() {
     setTimeout(poll, 45000);
 }
 
+
 // Fetch function for FoxyCart customer data
 export async function fetchFxCustomer(customerId) {
-    const zoomParams = '';
-    const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}?zoom=${encodeURIComponent(zoomParams)}`;
+    const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}`;
     console.log("Fetching FxCustomer URL:", apiUrl);
 
     try {
@@ -93,11 +93,23 @@ export async function fetchFxCustomer(customerId) {
             throw new Error(`Failed to fetch FxCustomer data: ${fxResponse.status} ${fxResponse.statusText}`);
         }
 
-        // Parse response JSON
         const details = await fxResponse.json();
+        console.log("Raw response data:", details);
+
+        // If no details are found, log and return
+        if (!details) {
+            console.error("Details are empty or undefined");
+            return;
+        }
 
         // Create a filtered version of the details object without _embedded and _links
         const { _embedded, _links, ...filteredDetails } = details;
+
+        // If the filteredDetails object is empty, log the error and stop further actions
+        if (Object.keys(filteredDetails).length === 0) {
+            console.error("Filtered details object is empty after removing _embedded and _links. Aborting save.");
+            return;
+        }
 
         // Store the filtered response in localStorage
         localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
@@ -107,6 +119,7 @@ export async function fetchFxCustomer(customerId) {
         console.error("Error fetching data from FxCustomer API:", error);
     }
 }
+
 
 
 // Automatically call `checkAndPollFoxyCustomer` after an initial delay
