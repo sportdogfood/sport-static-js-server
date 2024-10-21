@@ -1,5 +1,5 @@
-// Function to fetch FxCustomer data
-async function fetchFxCustomerData() {
+// Function to fetch FxCustomer data 
+export async function fetchFxCustomerData() {
     // Helper function to get the desired value from the variable chain
     const getValueFromChain = () => {
       try {
@@ -37,7 +37,7 @@ async function fetchFxCustomerData() {
   }
   
   // Fetch function for FxCustomer
-  async function fetchFxCustomer(customerId) {
+  export async function fetchFxCustomer(customerId) {
     const zoomParams = 'attributes,default_billing_address,default_shipping_address,default_payment_method';
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}?zoom=${encodeURIComponent(zoomParams)}`;
     console.log("Fetching FxCustomer URL:", apiUrl);
@@ -60,4 +60,5 @@ async function fetchFxCustomerData() {
       console.error("Error fetching data from FxCustomer API:", error);
     }
   }
+  
   
