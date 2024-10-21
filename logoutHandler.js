@@ -49,6 +49,8 @@ function handleLogout() {
         localStorage.removeItem('thisUserSession');
         localStorage.removeItem('fx_customerEmail');
         localStorage.removeItem('fx_customerId');
+        //fx_customerEmail,thisUserState,thisUserZoom, thisUserContact, thisUserCustomer, isAuthenticated, debug_update_fx:subscriptions,debug_update_fx:transactions 
+
       })
       .catch((error) => {
         console.error('There was an error during the logout process:', error);
