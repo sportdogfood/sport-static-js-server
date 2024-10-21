@@ -16,13 +16,18 @@ export function manualRefreshCRM() {
 export async function checkAndPollCRMContact() {
     // Helper function to get the desired value from the variable chain
     const getCRMValueFromChain = () => {
-        const localContactId = localStorage.getItem('crm_contactId');
-        const thisUserContact = localStorage.getItem('thisUserContact');
-        const thisUser = localStorage.getItem('thisUser');
+        try {
+            const localContactId = localStorage.getItem('fx_customerId');
+            const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
+            const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
 
-        if (localContactId) return localContactId;
-        if (thisUserContact && JSON.parse(thisUserContact).Contact_ID) return JSON.parse(thisUserContact).Contact_ID;
-        if (thisUser && JSON.parse(thisUser).crm_contactId) return JSON.parse(thisUser).crm_contactId;
+            if (localContactId) return localContactId;
+            if (thisUserContact && thisUserContact.id) return thisUserContact.id;
+            if (thisUser && thisUser.fx_customerId) return thisUser.fx_customerId;
+
+        } catch (error) {
+            console.error("Error while getting CRM value from chain:", error);
+        }
 
         return null; // Return null if no ID is found
     };
