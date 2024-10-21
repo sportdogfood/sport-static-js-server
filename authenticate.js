@@ -1,10 +1,17 @@
 
 window.thisUser = {};
 
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString(); // You can modify this format as needed
+}
 // Helper function to update thisUser session
 function updateThisUserSession(updateObject) {
     // Check if thisUser exists in localStorage, otherwise initialize it
     let currentSession = JSON.parse(localStorage.getItem("thisUserSession")) || {};
+    
+    // Log to check current session before updating
+    console.log("Current thisUserSession before update:", currentSession);
     
     // Iterate through updateObject and update the session
     for (const key in updateObject) {
@@ -13,6 +20,9 @@ function updateThisUserSession(updateObject) {
         }
     }
 
+    // Log the object that is about to be updated
+    console.log("Updating thisUserSession with:", updateObject);
+    
     // Save updated session back to localStorage
     localStorage.setItem("thisUserSession", JSON.stringify(currentSession));
 
@@ -22,7 +32,54 @@ function updateThisUserSession(updateObject) {
         ...updateObject
     };
     
+    // Log to check the final state after the update
     console.log("Updated thisUserSession:", currentSession);
+    console.log("Updated window.thisUser:", window.thisUser);
+}
+
+// Updates a specific part of thisUserState in localStorage
+function updateUserState(key, value) {
+    // Retrieve the existing thisUserState or initialize a new empty object
+    let thisUserState = JSON.parse(localStorage.getItem("thisUserState")) || {};
+    
+    // Log to verify what the current state looks like before update
+    console.log("Current thisUserState before update:", thisUserState);
+
+    // Update the specific key with the given value
+    thisUserState[key] = value;
+
+    // Save the updated state back to localStorage
+    localStorage.setItem("thisUserState", JSON.stringify(thisUserState));
+
+    // Also update window.thisUser object for consistent in-memory state
+    window.thisUser = {
+        ...window.thisUser,
+        [key]: value
+    };
+
+    // Log to verify the updated state
+    console.log("Updated thisUserState:", thisUserState);
+    console.log("Updated window.thisUser:", window.thisUser);
+}
+
+// Example function to simulate your main flow (initializeAndRun)
+function initializeAndRun(calledBy) {
+    const updateObject = {
+        status: 'logged in',
+        lastUpdate: new Date().toLocaleString(),
+        calledBy: calledBy
+    };
+
+    // Log to show the values before updating
+    console.log("Initializing and running. About to update with:", updateObject);
+
+    // Update both the state and session
+    updateUserState("status", updateObject.status);
+    updateUserState("lastUpdate", updateObject.lastUpdate);
+    updateUserState("calledBy", updateObject.calledBy);
+
+    // Optional: You can also update the session here if needed
+    updateThisUserSession(updateObject);
 }
 
 // Main function to parse query params and populate the form
@@ -96,12 +153,11 @@ async function authenticateCustomer() {
             localStorage.setItem("fx_customerEmail", email);
             localStorage.setItem("fx_customerId", responseData.fc_customer_id);
 
-            // Also update in thisUserState
-            updateUserState("fx_customerEmail", email);
-            updateUserState("fx_customerId", responseData.fc_customer_id);
+            // Update user state and session
+            initializeAndRun('authenticateCustomer');
 
             // Fetch additional customer data
-            await fetchCustomerData(responseData.fc_customer_id);           
+            await fetchCustomerData(responseData.fc_customer_id);
 
             // Call initializeAndRun after successful authentication
             window.initializeAndRun('authenticated');
@@ -162,8 +218,19 @@ async function fetchCustomerData(customerId) {
             updateThisUserSession({ first_name: first_name, lastupdate: getFriendlyDateTime() });
 
             // Initialize geolocation info with the customer ID
-            initializeGeoInfo(customerId);  // Corrected to pass the correct customer ID
-            
+            initializeGeoInfo(customerId);  // Pass the correct customer ID
+
+            // Load external scripts for geo information
+            const geoJsScript = document.createElement('script');
+            geoJsScript.src = 'https://get.geojs.io/v1/ip/geo.js';
+            geoJsScript.async = true;
+            document.head.appendChild(geoJsScript);
+
+            const geoInfoScript = document.createElement('script');
+            geoInfoScript.src = 'https://sportdogfood.github.io/sport-static-js-server/geoInfo.js';
+            geoInfoScript.async = true;
+            document.head.appendChild(geoInfoScript);
+
             // Check if fx:attributes exists in responseData._embedded
             if (responseData?._embedded?.['fx:attributes']) {
                 console.log('fx:attributes found, calling userAttributes function');
@@ -179,6 +246,7 @@ async function fetchCustomerData(customerId) {
         throw error; // Ensure the error is caught and retry logic can be applied
     }
 }
+
 
 // Helper function to update _embedded in localStorage
 function updateEmbeddedData(key, data) {
@@ -197,7 +265,6 @@ function updateEmbeddedData(key, data) {
     // Set a new localStorage item to confirm the update (for debugging purposes)
     localStorage.setItem(`debug_update_${key}`, JSON.stringify(data));
     console.log(`Set debug_update_${key} in localStorage:`, data);
-
 }
 
 // Cleanup function to remove legacy keys from localStorage
@@ -317,25 +384,6 @@ async function fetchFoxyCartSubscriptions(customerId) {
     }
 }
 
-// Updates a specific part of thisUserState in localStorage
-function updateUserState(key, value) {
-    // Retrieve the existing thisUserState or initialize a new empty object
-    let thisUserState = JSON.parse(localStorage.getItem("thisUserState")) || {};
-    
-    // Log to verify what the current state looks like before update
-    console.log("Current thisUserState before update:", thisUserState);
-
-    // Update the specific key with the given value
-    thisUserState[key] = value;
-
-    // Save the updated state back to localStorage
-    localStorage.setItem("thisUserState", JSON.stringify(thisUserState));
-
-    // Log to verify the updated state
-    console.log("Updated thisUserState:", thisUserState);
-}
-
-
 // Lazy load timer function
 let lazyLoadTimeout;
 function startLazyLoadTimer() {
@@ -351,3 +399,6 @@ function startLazyLoadTimer() {
         }
     }, 10000); // Set to 10 seconds for demonstration; adjust as needed
 }
+
+// Call initializeAndRun to test
+initializeAndRun('initializeAndRun');

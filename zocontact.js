@@ -1,4 +1,4 @@
-// Counter to track retries for CRM fetch
+// Counter to track retries for CRM fetch 
 let retryCountCRM = 0;
 const maxRetries = 4; // Maximum number of retries for fetching CRM data
 let pollingCount = 0;
@@ -35,13 +35,13 @@ export function manualRefreshCRM() {
     console.log('Manual refresh triggered for CRM data.');
     retryCountCRM = 0;
     pollingCount = 0;
-    checkAndPollCRMContact();
+    poll(); // Start polling immediately on manual refresh
 }
 
 // Function to check and poll Zoho CRM contact data
 export async function checkAndPollCRMContact() {
-    // Start the polling process
-    poll();
+    // Start the polling process after a delay of 45 seconds
+    setTimeout(poll, 45000);
 }
 
 // Poll for CRM data with retry mechanism
@@ -52,18 +52,15 @@ async function poll() {
     }
 
     let crmContactId = getCRMValueFromChain();
-    if (!crmContactId && retryCountCRM < maxRetries) {
+    if (!crmContactId) {
         retryCountCRM++;
-        console.log(`CRM contact ID not found, retrying in 5 seconds (Attempt ${retryCountCRM}/${maxRetries})`);
-        setTimeout(poll, 5000); // Retry after 5 seconds if not found
+        if (retryCountCRM < maxRetries) {
+            console.log(`CRM contact ID not found, retrying in 5 seconds (Attempt ${retryCountCRM}/${maxRetries})`);
+            setTimeout(poll, 5000); // Retry after 5 seconds if not found
+        } else {
+            console.error("CRM Contact ID still missing after retries. Aborting.");
+        }
         return;
-    }
-
-    if (crmContactId) {
-        console.log("CRM Contact ID found:", crmContactId);
-    } else {
-        console.error("CRM Contact ID still missing after retries.");
-        return; // Exit if no CRM Contact ID is found after retries
     }
 
     if (pollingCount < maxPollingAttempts) {
@@ -100,6 +97,7 @@ async function poll() {
         console.log('Maximum polling attempts reached for CRM data.');
     }
 }
+
 // Function to update the session state with provided data
 function updateThisUserSession(data) {
     try {
@@ -118,7 +116,22 @@ function updateThisUserSession(data) {
     }
 }
 
-// Utility function to get the current date and time in a friendly format
+// Utility function to get the current date and time in a friendly US/EDT format
+function formatFriendlyDateUS(dateString) {
+    const options = { 
+        timeZone: 'America/New_York', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric' 
+    };
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+}
+
+// Utility function to get the current date and time in a friendly format for last update
 function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString(); // Adjust this to your preferred format
@@ -140,16 +153,45 @@ async function fetchZohoContact(fx_customerId) {
 
         if (details.data && details.data.length > 0) {
             console.log(`Found ${details.data.length} record(s) in Zoho CRM response.`);
-            
+
             const thisUserContact = details.data[0];
             console.log("Zoho contact data retrieved successfully:", thisUserContact);
-            
-            // Extract first_name and Foxy_ID from the response data
-            const first_name = thisUserContact?.First_Name || 'Unknown';
-            const zFoxyID = thisUserContact?.Foxy_ID || 'Unknown';
 
-            // Update session state with customer data
-            updateThisUserSession({ first_name, zFoxyID, lastupdate: getFriendlyDateTime() });
+            // Map all required fields with the 'crm_' prefix
+            const sessionData = {
+                crm_Approved_Military: thisUserContact?.Approved_Military,
+                crm_Breed_1_name: thisUserContact?.['Breed_1.name'],
+                crm_Dashboard_Id_id: thisUserContact?.['Dashboard_Id.id'],
+                crm_Email: thisUserContact?.Email,
+                crm_Desk_ID: thisUserContact?.Desk_ID,
+                crm_First_Name: thisUserContact?.First_Name || 'Unknown',
+                crm_Foxy_ID: thisUserContact?.Foxy_ID || 'Unknown',
+                crm_Full_Name: thisUserContact?.Full_Name,
+                crm_Last_Name: thisUserContact?.Last_Name,
+                
+                // Convert Last_Visited_Time and Last_Activity_Time to a friendly format
+                crm_Last_Visited_Time: formatFriendlyDateUS(thisUserContact?.Last_Visited_Time),
+                crm_Last_Activity_Time: formatFriendlyDateUS(thisUserContact?.Last_Activity_Time),
+                
+                crm_Lifetime_Spend: thisUserContact?.Lifetime_Spend,
+                crm_Loyalty_Coupon: thisUserContact?.Loyalty_Coupon,
+                crm_Loyalty_Level: thisUserContact?.Loyalty_Level,
+                crm_Loyalty_Points: thisUserContact?.Loyalty_Points,
+                crm_Mailing_State: thisUserContact?.Mailing_State,
+                crm_Mailing_Zip: thisUserContact?.Mailing_Zip,
+                crm_Member_Since: formatFriendlyDateUS(thisUserContact?.Member_Since), // Convert Member_Since to friendly date
+                crm_Saved_Shipping_id: thisUserContact?.['Saved_Shipping.id'],
+                crm_Shipping_State: thisUserContact?.Shipping_State,
+                crm_State_is: thisUserContact?.State_is,
+                crm_Thrive_id: thisUserContact?.['Thrive.id'],
+                crm_UGC_id: thisUserContact?.['UGC.id'],
+                crm_desk_cf_foxy_id: thisUserContact?.desk_cf_foxy_id,
+                crm_id: thisUserContact?.id,
+                lastupdate: getFriendlyDateTime() // Current date and time
+            };
+
+            // Update session state with the customer data
+            updateThisUserSession(sessionData);
 
             return thisUserContact; // Return the fetched contact details
         } else {
@@ -161,7 +203,6 @@ async function fetchZohoContact(fx_customerId) {
         return null; // Return null in case of error
     }
 }
-
 
 // Automatically call `checkAndPollCRMContact` after an initial delay
 setTimeout(() => {

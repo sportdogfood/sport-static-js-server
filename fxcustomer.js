@@ -41,14 +41,14 @@ export async function checkAndPollFoxyCustomer() {
 
         let fxCustomerId = getValueFromChain();
 
-        if (!fxCustomerId && retryCountFoxy < maxRetries) {
+        if (!fxCustomerId) {
             retryCountFoxy++;
             console.log(`FoxyCart customer ID not found, retrying in 5 seconds (Attempt ${retryCountFoxy}/${maxRetries})`);
             setTimeout(poll, 5000); // Retry after 5 seconds if not found
             return;
         }
 
-        if (fxCustomerId && pollingCountFoxy < maxPollingAttemptsFoxy) {
+        if (pollingCountFoxy < maxPollingAttemptsFoxy) {
             pollingCountFoxy++;
             console.log(`Polling start - Cycle #${pollingCountFoxy} for FoxyCart customer data.`);
 
@@ -72,13 +72,28 @@ export async function checkAndPollFoxyCustomer() {
                     setTimeout(poll, 5000); // Retry after 5 seconds if an error occurs
                 }
             }
-        } else if (pollingCountFoxy >= maxPollingAttemptsFoxy) {
+        } else {
             console.log('Maximum polling attempts reached for FoxyCart data.');
         }
     }
 
     // Start the polling process after an initial delay of 45 seconds
     setTimeout(poll, 45000);
+}
+
+// Function to format date to a friendly US/EDT format
+function formatFriendlyDateUS(dateString) {
+    const options = { 
+        timeZone: 'America/New_York', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric' 
+    };
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
 // Fetch function for FoxyCart customer data
@@ -114,12 +129,19 @@ export async function fetchFxCustomer(customerId) {
         localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
         console.log("Filtered FxCustomer data stored in localStorage under 'thisUserCustomer'");
 
-        // Extract the necessary fields from filteredDetails
-        const { first_name, last_name, email } = filteredDetails;
-        console.log("Customer name being used to update session:", first_name); // Add a log here
+        // Extract and rename the necessary fields from filteredDetails
+        const { first_name, last_name, email, id, last_login_date } = filteredDetails;
+        console.log("Customer name being used to update session:", first_name); 
         
-        // Update session state with the customer data
-        updateThisUserSession({ first_name, last_name, email, lastupdate: getFriendlyDateTime() });
+        // Rename fields as per requirements
+        const fx_first_name = first_name;
+        const fx_last_name = last_name;
+        const fx_email = email;
+        const fx_id = id;
+        const fx_last_login_date = formatFriendlyDateUS(last_login_date); // Format date to friendly US/EDT
+        
+        // Update session state with the renamed fields and formatted date
+        updateThisUserSession({ fx_first_name, fx_last_name, fx_email, fx_id, fx_last_login_date, lastupdate: getFriendlyDateTime() });
 
     } catch (error) {
         console.error("Error fetching data from FxCustomer API:", error);
@@ -129,7 +151,7 @@ export async function fetchFxCustomer(customerId) {
 // Function to update the session state with provided data
 function updateThisUserSession(data) {
     try {
-        console.log("Data passed to updateThisUserSession:", data); // Log the incoming data
+        console.log("Data passed to updateThisUserSession:", data); 
 
         // Retrieve existing session or initialize it if it doesn't exist
         const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
@@ -140,7 +162,7 @@ function updateThisUserSession(data) {
         // Store the updated session in localStorage
         localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
         
-        console.log('Updated session state:', updatedSession); // Log the updated session
+        console.log('Updated session state:', updatedSession); 
     } catch (error) {
         console.error('Error updating session state:', error);
     }
