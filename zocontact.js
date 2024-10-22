@@ -138,12 +138,22 @@ function getFriendlyDateTime() {
 }
 
 // Function for fetching Zoho contact data
+// client.js or wherever the function is implemented
 async function fetchZohoContact(fx_customerId) {
-    const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=(Foxy_ID:equals:${fx_customerId})`;
+    // Encode the criteria parameter to handle special characters
+    const criteria = `(Foxy_ID:equals:${fx_customerId})`;
+    const encodedCriteria = encodeURIComponent(criteria);
+    const zohoUrl = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/Contacts/search?criteria=${encodedCriteria}`;
     console.log("Zoho URL:", zohoUrl);
 
     try {
-        const zohoResponse = await fetch(zohoUrl);
+        const zohoResponse = await fetch(zohoUrl, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                // Include any necessary headers, e.g., Authorization if required
+            }
+        });
         if (!zohoResponse.ok) {
             throw new Error(`Failed to fetch Zoho data: ${zohoResponse.status} ${zohoResponse.statusText}`);
         }

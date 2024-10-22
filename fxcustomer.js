@@ -32,53 +32,53 @@ export async function checkAndPollFoxyCustomer() {
         return null; // Return null if none of the values are found
     };
 
-    // Poll for FoxyCart data with retry mechanism
-    async function poll() {
-        if (retryCountFoxy >= maxRetries) {
-            console.log("Retry limit reached for FoxyCart customer, aborting.");
-            return;
-        }
-
-        let fxCustomerId = getValueFromChain();
-
-        if (!fxCustomerId) {
-            retryCountFoxy++;
-            console.log(`FoxyCart customer ID not found, retrying in 5 seconds (Attempt ${retryCountFoxy}/${maxRetries})`);
-            setTimeout(poll, 5000); // Retry after 5 seconds if not found
-            return;
-        }
-
-        if (pollingCountFoxy < maxPollingAttemptsFoxy) {
-            pollingCountFoxy++;
-            console.log(`Polling start - Cycle #${pollingCountFoxy} for FoxyCart customer data.`);
-
-            try {
-                const existingData = localStorage.getItem('thisUserCustomer');
-                if (!existingData) {
-                    // Fetch FoxyCart Customer Data and store it in localStorage
-                    await fetchFxCustomer(fxCustomerId);
-                } else {
-                    console.log('FoxyCart customer data already exists in localStorage.');
-                }
-
-                // If data is still not found, retry
-                if (!existingData && pollingCountFoxy < maxPollingAttemptsFoxy) {
-                    setTimeout(poll, 5000); // Retry after 5 seconds
-                }
-
-            } catch (error) {
-                console.error(`Error during FoxyCart polling attempt ${pollingCountFoxy}:`, error);
-                if (pollingCountFoxy < maxPollingAttemptsFoxy) {
-                    setTimeout(poll, 5000); // Retry after 5 seconds if an error occurs
-                }
-            }
-        } else {
-            console.log('Maximum polling attempts reached for FoxyCart data.');
-        }
-    }
-
     // Start the polling process after an initial delay of 45 seconds
     setTimeout(poll, 45000);
+}
+
+// Poll for FoxyCart data with retry mechanism
+async function poll() {
+    if (retryCountFoxy >= maxRetries) {
+        console.log("Retry limit reached for FoxyCart customer, aborting.");
+        return;
+    }
+
+    let fxCustomerId = getValueFromChain();
+
+    if (!fxCustomerId) {
+        retryCountFoxy++;
+        console.log(`FoxyCart customer ID not found, retrying in 5 seconds (Attempt ${retryCountFoxy}/${maxRetries})`);
+        setTimeout(poll, 5000); // Retry after 5 seconds if not found
+        return;
+    }
+
+    if (pollingCountFoxy < maxPollingAttemptsFoxy) {
+        pollingCountFoxy++;
+        console.log(`Polling start - Cycle #${pollingCountFoxy} for FoxyCart customer data.`);
+
+        try {
+            const existingData = localStorage.getItem('thisUserCustomer');
+            if (!existingData) {
+                // Fetch FoxyCart Customer Data and store it in localStorage
+                await fetchFxCustomer(fxCustomerId);
+            } else {
+                console.log('FoxyCart customer data already exists in localStorage.');
+            }
+
+            // If data is still not found, retry
+            if (!existingData && pollingCountFoxy < maxPollingAttemptsFoxy) {
+                setTimeout(poll, 5000); // Retry after 5 seconds
+            }
+
+        } catch (error) {
+            console.error(`Error during FoxyCart polling attempt ${pollingCountFoxy}:`, error);
+            if (pollingCountFoxy < maxPollingAttemptsFoxy) {
+                setTimeout(poll, 5000); // Retry after 5 seconds if an error occurs
+            }
+        }
+    } else {
+        console.log('Maximum polling attempts reached for FoxyCart data.');
+    }
 }
 
 // Function to format date to a friendly US/EDT format
