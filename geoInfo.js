@@ -1,56 +1,75 @@
-// Define the geoip function
-function geoip(json) {
-    // Store the fetched data in the window object so that it can be used later when initializeGeoInfo is called.
+// Load GeoJS script
+function loadGeoJS(callback) {
+  const script = document.createElement('script');
+  script.src = 'https://get.geojs.io/v1/ip/geo.js';
+  script.onload = callback; // Trigger callback when script loads
+  document.head.appendChild(script);
+}
+
+// Call geoip after script loads, and then initialize geo info
+loadGeoJS(() => {
+  console.log("GeoJS script loaded successfully.");
+
+  // Call geoip to get geolocation data
+  geoip(function (json) {
     window.geoipData = json;
+    console.log("Geo information fetched:", json);
+
+    // Example of using the fetched geo info
+    initializeGeoInfo(2712345); // Replace with actual customer ID
+  });
+});
+
+// Define the initializeGeoInfo function
+function initializeGeoInfo(fx_customerID = null) {
+  if (typeof window.geoipData === 'undefined') {
+    console.error("GeoJS data is not available. Please ensure the script loaded correctly.");
+    return;
   }
-  
-  // Define a function to be called explicitly to initialize the geo information
-  function initializeGeoInfo(fx_customerID = null) {
-    if (typeof geoip !== "function") {
-      console.error("GeoJS library did not load properly, 'geoip' is not available.");
-      return;
-    }
-  
-    if (typeof window.geoipData === 'undefined') {
-      console.error("GeoJS data is not available. Please ensure the script loaded correctly.");
-      return;
-    }
-  
-    if (!fx_customerID) {
-      console.error("Customer ID is not provided.");
-      return;
-    }
-  
-    // Create user data object from geo information.
-    var userDataGeo = {
-      userip: window.geoipData.ip,
-      countrycode: window.geoipData.country_code,
-      timezone: window.geoipData.timezone,
-      country: window.geoipData.country,
-      city: window.geoipData.city,
-      latitude: window.geoipData.latitude,
-      longitude: window.geoipData.longitude,
-      customerID: fx_customerID // Associate geo data with a customer ID
-    };
-  
-    // Update the session using updateThisUserSession function.
-    updateThisUserSession({
-      userip: userDataGeo.userip,
-      countrycode: userDataGeo.countrycode,
-      timezone: userDataGeo.timezone,
-      country: userDataGeo.country,
-      city: userDataGeo.city,
-      latitude: userDataGeo.latitude,
-      longitude: userDataGeo.longitude,
-      fx_customerID: userDataGeo.customerID,
-      geoDataFetched: true,
-      lastupdate: getFriendlyDateTime() // Timestamp for tracking updates
-    });
-  
-    // Log the update for visibility.
-    console.log("Updated thisUserSession with geo information:", userDataGeo);
+
+  if (!fx_customerID) {
+    console.error("Customer ID is not provided.");
+    return;
   }
-  
-  // The initializeGeoInfo(fx_customerID) function must be called by another script to use the geo data.
-  // Example: initializeGeoInfo(2712345);
-  
+
+  // Create geo data object from geo information.
+  var geoData = {
+    geoip: window.geoipData.ip,
+    geocountrycode: window.geoipData.country_code,
+    geotimezone: window.geoipData.timezone,
+    geocountry: window.geoipData.country,
+    geocity: window.geoipData.city,
+    geolatitude: window.geoipData.latitude,
+    geolongitude: window.geoipData.longitude,
+    customerID: fx_customerID // Associate geo data with a customer ID
+  };
+
+  // Update the session using updateThisGeoSession function.
+  updateThisGeoSession({
+    geoip: geoData.geoip,
+    geocountrycode: geoData.geocountrycode,
+    geotimezone: geoData.geotimezone,
+    geocountry: geoData.geocountry,
+    geocity: geoData.geocity,
+    geolatitude: geoData.geolatitude,
+    geolongitude: geoData.geolongitude,
+    fx_customerID: geoData.customerID,
+    geoDataFetched: true,
+    lastupdate: getFriendlyDateTime() // Timestamp for tracking updates
+  });
+
+  // Log the update for visibility.
+  console.log("Updated thisGeoSession with geo information:", geoData);
+}
+
+// Define the function to update session data
+function updateThisGeoSession(sessionData) {
+  // This is a placeholder function, implement as needed for your application
+  console.log("Session updated with data:", sessionData);
+}
+
+// Define the function to get a friendly formatted date/time
+function getFriendlyDateTime() {
+  const date = new Date();
+  return date.toLocaleString(); // You can customize this format as per your requirements
+}
