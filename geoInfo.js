@@ -1,23 +1,22 @@
-// Function to load the GeoJS script dynamically with async attribute
-function loadGeoJS(callback) {
-  const script = document.createElement('script');
-  script.src = 'https://get.geojs.io/v1/ip/geo.js';
-  script.async = true; // Set async attribute to load the script asynchronously
-  script.onload = function() {
-    if (typeof geoip !== 'undefined') {
-      console.log("GeoJS script loaded successfully.");
-      callback(); // Execute callback once script is loaded and `geoip` is available
-    } else {
-      console.error("GeoJS script loaded, but `geoip` is not defined.");
-    }
-  };
-  script.onerror = function() {
-    console.error("Failed to load GeoJS script. Ensure the URL is correct and accessible.");
-  };
-  document.head.appendChild(script);
+// geoInfo.js
+
+// Function that runs once geo.js is loaded and customerId is passed dynamically
+function runGeoInfo(customerId) {
+  if (typeof geoip === 'function') {
+    geoip(function (json) {
+      // Save geo information to window for future reference
+      window.geoipData = json;
+      console.log("Geo information fetched:", json);
+
+      // Initialize geo information with the given customerId
+      initializeGeoInfo(customerId);
+    });
+  } else {
+    console.error("GeoJS library loaded, but geoip function is not defined.");
+  }
 }
 
-// Function to initialize the geo information once the GeoJS script is ready
+// Function to initialize the geo information
 function initializeGeoInfo(fx_customerID = null) {
   if (typeof window.geoipData === 'undefined') {
     console.error("GeoJS data is not available. Please ensure the script loaded correctly.");
@@ -30,7 +29,7 @@ function initializeGeoInfo(fx_customerID = null) {
   }
 
   // Create geo data object from geo information.
-  var geoData = {
+  const geoData = {
     geoip: window.geoipData.ip,
     geocountrycode: window.geoipData.country_code,
     geotimezone: window.geoipData.timezone,
@@ -41,8 +40,8 @@ function initializeGeoInfo(fx_customerID = null) {
     customerID: fx_customerID // Associate geo data with a customer ID
   };
 
-  // Update the session using updateThisGeoSession function.
-  updateThisGeoSession({
+  // Update the session using updateThisUserSession function.
+  updateThisUserSession({
     geoip: geoData.geoip,
     geocountrycode: geoData.geocountrycode,
     geotimezone: geoData.geotimezone,
@@ -56,11 +55,11 @@ function initializeGeoInfo(fx_customerID = null) {
   });
 
   // Log the update for visibility.
-  console.log("Updated thisGeoSession with geo information:", geoData);
+  console.log("Updated thisUserSession with geo information:", geoData);
 }
 
 // Function to update session data
-function updateThisGeoSession(sessionData) {
+function updateThisUserSession(sessionData) {
   // Placeholder function to demonstrate updating session data
   console.log("Session updated with data:", sessionData);
 }
@@ -70,20 +69,3 @@ function getFriendlyDateTime() {
   const date = new Date();
   return date.toLocaleString(); // You can customize this format as per your requirements
 }
-
-// Load GeoJS script and then run the callback to initialize geo info
-loadGeoJS(() => {
-  // Ensure geoip is defined before calling it
-  if (typeof geoip === 'function') {
-    // Call geoip to get geolocation data
-    geoip(function(json) {
-      window.geoipData = json;
-      console.log("Geo information fetched:", json);
-
-      // Example of using the fetched geo info
-      initializeGeoInfo(2712345); // Replace with the actual customer ID
-    });
-  } else {
-    console.error("GeoJS library loaded, but 'geoip' is not defined or not a function.");
-  }
-});
