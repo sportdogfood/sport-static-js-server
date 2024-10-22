@@ -1,23 +1,31 @@
-// Load GeoJS script
+// Load GeoJS script dynamically
 function loadGeoJS(callback) {
   const script = document.createElement('script');
   script.src = 'https://get.geojs.io/v1/ip/geo.js';
   script.onload = callback; // Trigger callback when script loads
+  script.onerror = function() {
+    console.error("Failed to load GeoJS script. Ensure the URL is correct and accessible.");
+  };
   document.head.appendChild(script);
 }
 
-// Call geoip after script loads, and then initialize geo info
+// Define the callback to execute after GeoJS script has loaded
 loadGeoJS(() => {
   console.log("GeoJS script loaded successfully.");
 
-  // Call geoip to get geolocation data
-  geoip(function (json) {
-    window.geoipData = json;
-    console.log("Geo information fetched:", json);
+  // Ensure geoip is defined
+  if (typeof geoip === 'function') {
+    // Call geoip to get geolocation data
+    geoip(function (json) {
+      window.geoipData = json;
+      console.log("Geo information fetched:", json);
 
-    // Example of using the fetched geo info
-    initializeGeoInfo(2712345); // Replace with actual customer ID
-  });
+      // Example of using the fetched geo info
+      initializeGeoInfo(2712345); // Replace with actual customer ID
+    });
+  } else {
+    console.error("GeoJS library loaded, but 'geoip' is not defined.");
+  }
 });
 
 // Define the initializeGeoInfo function
@@ -64,7 +72,7 @@ function initializeGeoInfo(fx_customerID = null) {
 
 // Define the function to update session data
 function updateThisGeoSession(sessionData) {
-  // This is a placeholder function, implement as needed for your application
+  // Placeholder function, implement as needed
   console.log("Session updated with data:", sessionData);
 }
 
