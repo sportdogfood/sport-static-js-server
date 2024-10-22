@@ -12,28 +12,22 @@ export function manualRefreshFoxy() {
     poll(); // Directly call poll to bypass delay
 }
 
-// Function to check and poll FoxyCart customer data
-export async function checkAndPollFoxyCustomer() {
-    // Helper function to get the desired value from the variable chain
-    const getValueFromChain = () => {
-        try {
-            const localFxCustomerId = localStorage.getItem('fx_customerId');
-            const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
-            const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
+// Helper function to get the desired value from the variable chain
+function getValueFromChain() {
+    try {
+        const localFxCustomerId = localStorage.getItem('fx_customerId');
+        const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
+        const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
 
-            if (localFxCustomerId) return localFxCustomerId;
-            if (thisUser && thisUser.fx_customerId) return thisUser.fx_customerId;
-            if (thisUserContact && thisUserContact.Foxy_ID) return thisUserContact.Foxy_ID;
+        if (localFxCustomerId) return localFxCustomerId;
+        if (thisUser && thisUser.fx_customerId) return thisUser.fx_customerId;
+        if (thisUserContact && thisUserContact.Foxy_ID) return thisUserContact.Foxy_ID;
 
-        } catch (error) {
-            console.error("Error while getting value from chain:", error);
-        }
+    } catch (error) {
+        console.error("Error while getting value from chain:", error);
+    }
 
-        return null; // Return null if none of the values are found
-    };
-
-    // Start the polling process after an initial delay of 45 seconds
-    setTimeout(poll, 45000);
+    return null; // Return null if none of the values are found
 }
 
 // Poll for FoxyCart data with retry mechanism
@@ -79,6 +73,12 @@ async function poll() {
     } else {
         console.log('Maximum polling attempts reached for FoxyCart data.');
     }
+}
+
+// Function to check and poll FoxyCart customer data
+export async function checkAndPollFoxyCustomer() {
+    // Start the polling process after an initial delay of 45 seconds
+    setTimeout(poll, 45000);
 }
 
 // Function to format date to a friendly US/EDT format
