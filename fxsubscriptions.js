@@ -36,12 +36,20 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Properly update fx:subscriptions in _embedded
-        updateEmbeddedData('fx:subscriptions', subscriptions);
+        // Properly update fx:subscriptions in _embedded using the global function
+        if (typeof window.updateEmbeddedData === 'function') {
+            window.updateEmbeddedData('fx:subscriptions', subscriptions);
+        } else {
+            console.error("updateEmbeddedData function not found in global scope.");
+        }
 
-        // Update session state
-        updateThisUserSession({ subscriptionsFetched: true, lastupdate: getFriendlyDateTime() });
-        updateThisUserSession({ subscriptions_totalItems: totalItems, lastupdate: getFriendlyDateTime() });
+        // Update session state using the global function
+        if (typeof window.updateThisUserSession === 'function') {
+            window.updateThisUserSession({ subscriptionsFetched: true, lastupdate: getFriendlyDateTime() });
+            window.updateThisUserSession({ subscriptions_totalItems: totalItems, lastupdate: getFriendlyDateTime() });
+        } else {
+            console.error("updateThisUserSession function not found in global scope.");
+        }
 
         return { total_items: totalItems, subscriptions: subscriptions };
 
