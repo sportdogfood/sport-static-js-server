@@ -1,6 +1,4 @@
-console.log('fxsubscriptions.js is executing properly.');
-
-// Define the function to fetch FoxyCart subscriptions
+// Fetch FoxyCart Subscriptions function
 async function fetchFoxyCartSubscriptions(customerId) {
     if (!customerId) {
         console.error("Customer ID is missing or invalid.");
@@ -50,28 +48,3 @@ async function fetchFoxyCartSubscriptions(customerId) {
         return { total_items: 0, subscriptions: [] };
     }
 }
-
-// Define the main initialization function for subscriptions
-function subscriptionsInit() {
-    console.log('fxsubscriptions.js initialization function is called.');
-
-    // Ensure that the customer ID is available before proceeding
-    const customerId = window.fx_customerId;
-    if (!customerId) {
-        console.error('No customer ID found. Cannot initialize subscriptions fetching.');
-        return;
-    }
-
-    // Fetch subscriptions for the customer
-    fetchFoxyCartSubscriptions(customerId)
-      .then(() => {
-        console.log('Subscriptions successfully fetched and processed.');
-      })
-      .catch((error) => {
-        console.error('Error during subscriptions fetching initialization:', error);
-      });
-}
-
-// Attach the function to the global window object for external access
-window.fetchFoxyCartSubscriptions = fetchFoxyCartSubscriptions;
-window.subscriptionsInit = subscriptionsInit;

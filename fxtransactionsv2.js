@@ -1,6 +1,4 @@
-console.log('fxtransactions.js is executing properly.');
-
-// Define the function to fetch FoxyCart transactions
+// Fetch FoxyCart Transactions function
 async function fetchFoxyCartTransactions(customerId) {
     if (!customerId) {
         console.error("Customer ID is missing or invalid.");
@@ -50,28 +48,3 @@ async function fetchFoxyCartTransactions(customerId) {
         return { total_items: 0, transactions: [] };
     }
 }
-
-// Define the main initialization function for transactions
-function transactionsInit() {
-    console.log('fxtransactions.js initialization function is called.');
-
-    // Ensure that the customer ID is available before proceeding
-    const customerId = window.fx_customerId;
-    if (!customerId) {
-        console.error('No customer ID found. Cannot initialize transactions fetching.');
-        return;
-    }
-
-    // Fetch transactions for the customer
-    fetchFoxyCartTransactions(customerId)
-      .then(() => {
-        console.log('Transactions successfully fetched and processed.');
-      })
-      .catch((error) => {
-        console.error('Error during transactions fetching initialization:', error);
-      });
-}
-
-// Attach the function to the global window object for external access
-window.fetchFoxyCartTransactions = fetchFoxyCartTransactions;
-window.transactionsInit = transactionsInit;

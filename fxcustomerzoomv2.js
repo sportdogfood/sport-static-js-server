@@ -1,6 +1,4 @@
-console.log('fxcustomerzoom.js is executing properly.');
-
-// Define the fetchCustomerData function
+// Fetch customer data function 
 async function fetchCustomerData(customerId) {
     const zoomParams = 'attributes,default_billing_address,default_shipping_address,default_payment_method'; 
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}?zoom=${encodeURIComponent(zoomParams)}`;
@@ -36,12 +34,14 @@ async function fetchCustomerData(customerId) {
             updateThisUserSession({ first_name: first_name, lastupdate: getFriendlyDateTime() });
 
             // Check if fx:attributes exists in responseData._embedded
+
+
             if (responseData?._embedded?.['fx:attributes']) {
                 console.log('fx:attributes found, calling userAttributes function');
-                await userAttributes();
+              await userAttributes();
 
                 // Call pushPagesense with customerId
-                pushPagesense('login', customerId);
+                pushPagesense(customerId);
             } else {
                 console.log('fx:attributes not found in response data');
             }
@@ -53,27 +53,3 @@ async function fetchCustomerData(customerId) {
         throw error; // Ensure the error is caught and retry logic can be applied
     }
 }
-
-// Define the main initialization function for customer zoom
-function customerZoomInit() {
-    console.log('fxcustomerzoom.js initialization function is called.');
-
-    // Ensure that the customer ID is available before proceeding
-    const customerId = window.fx_customerId;
-    if (!customerId) {
-        console.error('No customer ID found. Cannot initialize customer zoom.');
-        return;
-    }
-
-    // Fetch customer data using the defined function
-    fetchCustomerData(customerId)
-      .then(() => {
-        console.log('Customer data successfully fetched and processed.');
-      })
-      .catch((error) => {
-        console.error('Error during customer data initialization:', error);
-      });
-}
-
-// Attach the initialization function to the global window object
-window.customerZoomInit = customerZoomInit;
