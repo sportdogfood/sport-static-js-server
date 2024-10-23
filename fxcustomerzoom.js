@@ -35,16 +35,9 @@ async function fetchCustomerData(customerId) {
             // Update session state with customer data
             updateThisUserSession({ first_name: first_name, lastupdate: getFriendlyDateTime() });
 
-            // Check if fx:attributes exists in responseData._embedded
-            if (responseData?._embedded?.['fx:attributes']) {
-                console.log('fx:attributes found, calling userAttributes function');
-                await userAttributes();
-
-                // Call pushPagesense with customerId
-                pushPagesense('login', customerId);
-            } else {
-                console.log('fx:attributes not found in response data');
-            }
+             // Call pushPagesense with customerId
+             pushPagesense(customerId);
+             
         } else {
             console.error('No customer data received');
         }
@@ -53,6 +46,7 @@ async function fetchCustomerData(customerId) {
         throw error; // Ensure the error is caught and retry logic can be applied
     }
 }
+
 
 // Define the main initialization function for customer zoom
 function customerZoomInit() {
