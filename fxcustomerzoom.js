@@ -44,12 +44,7 @@ async function fetchCustomerData(customerId) {
                 console.error('updateThisUserSession function not found in global scope.');
             }
 
-            // Call pushPagesense with customerId
-            if (typeof window.pushPagesense === 'function') {
-                window.pushPagesense('login', customerId);
-            } else {
-                console.error('pushPagesense function not found in global scope.');
-            }
+            
 
         } else {
             console.error('No customer data received');
