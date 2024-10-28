@@ -96,33 +96,41 @@ SessionManager.initializeUserCart = function() {
 };
 
 SessionManager.initializeUserDesk = function(customerId) {
-    console.log("Initializing user desk details...");
-    
-    // Load the userdesk.js script dynamically if it's not already loaded
-    if (typeof UserDesk === 'undefined') {
+    // Ensure fx_customerId is valid and userSession.userDesk.deskID is not present
+    if (window.fx_customerId && userSession?.userDesk?.deskID == null) {
+      console.log("Initializing user desk details...");
+      
+      // Load the userdesk.js script dynamically if it's not already loaded
+      if (typeof UserDesk === 'undefined') {
         var script = document.createElement('script');
         script.src = 'https://sportdogfood.github.io/sport-static-js-server/userdesk.js'; // Update the path as needed
+        
         script.onload = function() {
-            console.log("userdesk.js loaded successfully");
-            if (typeof UserDesk.initialize === 'function') {
-                UserDesk.initialize(customerId);
-            } else {
-                console.error("UserDesk.initialize function not found in userdesk.js");
-            }
+          console.log("userdesk.js loaded successfully");
+          if (typeof UserDesk.initialize === 'function') {
+            UserDesk.initialize(customerId);
+          } else {
+            console.error("UserDesk.initialize function not found in userdesk.js");
+          }
         };
+        
         script.onerror = function() {
-            console.error("Failed to load userdesk.js");
+          console.error("Failed to load userdesk.js");
         };
+        
         document.head.appendChild(script);
-    } else {
+      } else {
         // UserDesk is already loaded, directly call initialize
         if (typeof UserDesk.initialize === 'function') {
-            UserDesk.initialize(customerId);
+          UserDesk.initialize(customerId);
         } else {
-            console.error("UserDesk.initialize function not found");
+          console.error("UserDesk.initialize function not found");
         }
+      }
+    } else {
+      console.log("Skipping user desk initialization: either fx_customerId is invalid or deskID is already present.");
     }
-};
+  };
 
 
 // Initialize userCustomer

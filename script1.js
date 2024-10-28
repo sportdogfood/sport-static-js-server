@@ -160,6 +160,21 @@ function handleSuccessfulAuthentication(responseData, email) {
 
     fetchCustomerData(responseData.fc_customer_id);
     debouncedPushPagesense('login-success', responseData.fc_customer_id);
+
+    // Load PageSense script dynamically after successful authentication
+    loadPageSenseScript();
+}
+
+// Function to load PageSense script dynamically
+function loadPageSenseScript() {
+    if (!document.getElementById('pagesense-script')) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://cdn.pagesense.io/js/sportdogfood141/683c76dd5be1480e9ff129b5be0042a9.js";
+        scriptElement.id = 'pagesense-script';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+        console.log("PageSense script loaded dynamically.");
+    }
 }
 
 // Define buttonMaster to manage button states
