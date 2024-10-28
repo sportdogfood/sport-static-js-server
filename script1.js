@@ -1,53 +1,16 @@
-
 // Ensure that PageSense does not cause or execute unnecessarily leading to stack overflow errors
 
-// Modified pushPagesense function with safeguards to prevent infinite recursion
-function pushPagesense(actionType, customerId) {
-    // Check if actionType is a valid non-empty string
-    if (!actionType || typeof actionType !== 'string') {
-        console.error('Invalid action type provided to Pagesense:', actionType);
-        return;
-    }
-
-    // Ensure customerId is defined if required for specific actions
-    if (!customerId && ['login-click', 'logout-click', 'session-restored'].includes(actionType)) {
-        console.warn('Customer ID is required for action:', actionType);
-        return;
-    }
-
-    // Set a flag to avoid repeated PageSense push in a short interval
-    const lastAction = localStorage.getItem('lastPagesenseAction');
-    if (lastAction === actionType && Date.now() - parseInt(localStorage.getItem('lastPagesenseTime') || '0', 10) < 5000) {
-        console.warn('Skipping Pagesense action to prevent repetitive execution:', actionType);
-        return;
-    }
-
-    // Prevent recursive calls by using a lock mechanism
-    if (window.pushPagesenseLock) {
-        console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
-        return;
-    }
-
-    window.pushPagesenseLock = true;
-
-    // Push action to PageSense
-    try {
-        if (typeof window.pushPagesense === 'function') {
-            window.pushPagesense(actionType, customerId);
-            console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
-
-            // Store the last action and timestamp
-            localStorage.setItem('lastPagesenseAction', actionType);
-            localStorage.setItem('lastPagesenseTime', Date.now().toString());
-        } else {
-            console.error('Pagesense function is not defined on the window object.');
-        }
-    } catch (error) {
-        console.error('Error while pushing Pagesense action:', error);
-    } finally {
-        window.pushPagesenseLock = false;
-    }
+// Debounce function to limit the frequency of pushPagesense calls
+function debounce(func, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
 }
+
+// Debounced version of pushPagesense
+const debouncedPushPagesense = debounce(pushPagesense, 2000);
 
 // Script 1: User Interaction Management and Event Handling
 
@@ -92,39 +55,37 @@ if (!window.domContentLoadedListenerAdded) {
         SessionManager.initializeSession();
         populateFormFromParams(); // Populate the form on page load
 
-        const loginButton = document.getElementById('login-button');
-        if (loginButton && !loginButton.listenerAdded) {
-            loginButton.addEventListener('click', () => {
+        // Add event listeners for buttons
+        const buttons = [
+            { id: 'login-button', handler: () => {
                 SessionManager.handleLogin();
-                pushPagesense('login-click', localStorage.getItem('fx_customerId'));
-            });
-            loginButton.listenerAdded = true;
-        }
-
-        const logoutButton = document.getElementById('logout-button');
-        if (logoutButton && !logoutButton.listenerAdded) {
-            logoutButton.addEventListener('click', () => {
+                debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
+            }},
+            { id: 'logout-button', handler: () => {
                 SessionManager.handleLogout();
-                pushPagesense('logout-click', localStorage.getItem('fx_customerId'));
-            });
-            logoutButton.listenerAdded = true;
-        }
-
-        const authButton = document.getElementById('auth-button');
-        if (authButton && !authButton.listenerAdded) {
-            authButton.addEventListener('click', () => {
+                debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+            }},
+            { id: 'auth-button', handler: () => {
                 authenticateCustomer();
-                pushPagesense('auth-click', null);
-            });
-            authButton.listenerAdded = true;
-        }
+                debouncedPushPagesense('auth-click', null);
+            }}
+        ];
 
+        buttons.forEach(({ id, handler }) => {
+            const button = document.getElementById(id);
+            if (button && !button.listenerAdded) {
+                button.addEventListener('click', handler);
+                button.listenerAdded = true;
+            }
+        });
+
+        // Handle session state on load
         if (SessionManager.isUserAuthenticated()) {
             buttonMaster('logged in', 'DOMContentLoaded');
-            pushPagesense('session-restored', localStorage.getItem('fx_customerId'));
+            debouncedPushPagesense('session-restored', localStorage.getItem('fx_customerId'));
         } else {
             buttonMaster('logged out', 'DOMContentLoaded');
-            pushPagesense('session-initiated', null);
+            debouncedPushPagesense('session-initiated', null);
         }
     });
 }
@@ -135,11 +96,7 @@ async function authenticateCustomer() {
     const password = document.getElementById('passwordInput')?.value;
 
     if (!email || !password) {
-        const resultElement = document.getElementById('authResult');
-        if (resultElement) {
-            resultElement.textContent = "Please provide both email and password.";
-            resultElement.style.display = 'block';
-        }
+        displayAuthResult("Please provide both email and password.");
         return;
     }
 
@@ -160,52 +117,49 @@ async function authenticateCustomer() {
         const responseData = await response.json();
 
         if (responseData.session_token && responseData.fc_customer_id) {
-            document.dispatchEvent(new Event('authenticated'));
-            window.fx_customerId = responseData.fc_customer_id;
-
-            window.userCustomerData = responseData;
-            window.userCustomerEmail = email;
-
-            const resultElement = document.getElementById('authResult');
-            if (resultElement) {
-                resultElement.textContent = "Authentication successful! Welcome.";
-                resultElement.style.display = 'block';
-            }
-
-            localStorage.setItem("fx_customerEmail", email);
-            localStorage.setItem("fx_customerId", responseData.fc_customer_id);
-
-            document.cookie = `fx_customer=${responseData.fc_auth_token}; path=/; Secure; SameSite=Strict`;
-            document.cookie = `fx_customerId=${responseData.fc_customer_id}; path=/; Secure; SameSite=Strict`;
-            document.cookie = `fx_customer_em=${encodeURIComponent(email)}; path=/; Secure; SameSite=Strict`;
-            document.cookie = `fx_customer_jwt=${responseData.jwt}; path=/; Secure; SameSite=Strict`;
-            document.cookie = `fx_customer_sso=${responseData.sso}; path=/; Secure; SameSite=Strict`;
-
-            const sportpin = Math.floor(1000 + Math.random() * 9000);
-            const timestamp = Date.now();
-            const sporturl = `https://www.sportdogfood.com/login&em=${encodeURIComponent(email)}&cid=${responseData.fc_customer_id}&pn=${sportpin}&ts=${timestamp}`;
-            document.cookie = `sporturl=${encodeURIComponent(sporturl)}; path=/; max-age=${60 * 60 * 24 * 180}; Secure; SameSite=Strict`;
-
-            await fetchCustomerData(responseData.fc_customer_id);
-            
-            // Push a successful login event to Pagesense
-            pushPagesense('login-success', responseData.fc_customer_id);
-
+            handleSuccessfulAuthentication(responseData, email);
         } else {
-            const resultElement = document.getElementById('authResult');
-            if (resultElement) {
-                resultElement.textContent = "Authentication failed: Missing session_token or customer ID.";
-                resultElement.style.display = 'block';
-            }
+            displayAuthResult("Authentication failed: Missing session_token or customer ID.");
         }
     } catch (error) {
         console.error('Error during customer authentication:', error);
-        const resultElement = document.getElementById('authResult');
-        if (resultElement) {
-            resultElement.textContent = `Error: ${error.message}`;
-            resultElement.style.display = 'block';
-        }
+        displayAuthResult(`Error: ${error.message}`);
     }
+}
+
+function displayAuthResult(message) {
+    const resultElement = document.getElementById('authResult');
+    if (resultElement) {
+        resultElement.textContent = message;
+        resultElement.style.display = 'block';
+    }
+}
+
+function handleSuccessfulAuthentication(responseData, email) {
+    document.dispatchEvent(new Event('authenticated'));
+    window.fx_customerId = responseData.fc_customer_id;
+
+    window.userCustomerData = responseData;
+    window.userCustomerEmail = email;
+
+    displayAuthResult("Authentication successful! Welcome.");
+
+    localStorage.setItem("fx_customerEmail", email);
+    localStorage.setItem("fx_customerId", responseData.fc_customer_id);
+
+    document.cookie = `fx_customer=${responseData.fc_auth_token}; path=/; Secure; SameSite=Strict`;
+    document.cookie = `fx_customerId=${responseData.fc_customer_id}; path=/; Secure; SameSite=Strict`;
+    document.cookie = `fx_customer_em=${encodeURIComponent(email)}; path=/; Secure; SameSite=Strict`;
+    document.cookie = `fx_customer_jwt=${responseData.jwt}; path=/; Secure; SameSite=Strict`;
+    document.cookie = `fx_customer_sso=${responseData.sso}; path=/; Secure; SameSite=Strict`;
+
+    const sportpin = Math.floor(1000 + Math.random() * 9000);
+    const timestamp = Date.now();
+    const sporturl = `https://www.sportdogfood.com/login&em=${encodeURIComponent(email)}&cid=${responseData.fc_customer_id}&pn=${sportpin}&ts=${timestamp}`;
+    document.cookie = `sporturl=${encodeURIComponent(sporturl)}; path=/; max-age=${60 * 60 * 24 * 180}; Secure; SameSite=Strict`;
+
+    fetchCustomerData(responseData.fc_customer_id);
+    debouncedPushPagesense('login-success', responseData.fc_customer_id);
 }
 
 // Define buttonMaster to manage button states
@@ -255,9 +209,14 @@ function pushPagesense(actionType, customerId) {
         return;
     }
 
+    // Ensure that PageSense is loaded before pushing events
+    if (typeof window.pagesense === 'undefined') {
+        console.warn('PageSense is not yet loaded. Skipping action:', actionType);
+        return;
+    }
+
     window.pushPagesenseLock = true;
 
-    // Push action to PageSense using the modified version to prevent unnecessary recursion
     try {
         if (typeof window.pushPagesense === 'function') {
             window.pushPagesense(actionType, customerId);
@@ -282,13 +241,8 @@ function updateEmbeddedData(key, data) {
 
     userZoom._embedded[key] = data;
 
-    // Log the update for visibility
     console.log(`Updating _embedded with key: ${key}, data:`, data);
-
-    // Update the localStorage
     localStorage.setItem('userZoom', JSON.stringify(userZoom));
-
-    // Set a new localStorage item to confirm the update (for debugging purposes)
     localStorage.setItem(`debug_update_${key}`, JSON.stringify(data));
     console.log(`Set debug_update_${key} in localStorage:`, data);
 }
@@ -296,6 +250,7 @@ function updateEmbeddedData(key, data) {
 // Attach updateEmbeddedData to window to make it globally accessible
 window.updateEmbeddedData = updateEmbeddedData;
 
+// Load scripts upon authentication
 document.addEventListener('authenticated', () => {
     const scriptsToLoad = [
         { src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomerzoom.js', id: 'fxcustomerzoom', initFunction: 'customerzoomInit' },
@@ -314,7 +269,7 @@ document.addEventListener('authenticated', () => {
                 console.log(`${scriptInfo.id}.js loaded successfully`);
                 if (typeof window[scriptInfo.initFunction] === 'function') {
                     console.log(`Executing ${scriptInfo.initFunction} function.`);
-                    window[scriptInfo.initFunction](); // Call the initialization function defined in each script
+                    window[scriptInfo.initFunction]();
                 } else {
                     console.error(`${scriptInfo.initFunction} function not found in ${scriptInfo.id}.js.`);
                 }
@@ -324,16 +279,12 @@ document.addEventListener('authenticated', () => {
                 console.error(`Failed to load ${scriptInfo.id}.js`);
             };
 
-            if (document.body) {
-                document.body.appendChild(scriptElement);
-            } else {
-                console.error("document.body is null, unable to append script element.");
-            }
+            document.body?.appendChild(scriptElement);
         } else {
             console.log(`${scriptInfo.id}.js is already loaded`);
             if (typeof window[scriptInfo.initFunction] === 'function') {
                 console.log(`Re-executing ${scriptInfo.initFunction} since ${scriptInfo.id}.js is already loaded.`);
-                window[scriptInfo.initFunction](); // Call the initialization function in case the script was loaded but not initialized
+                window[scriptInfo.initFunction]();
             } else {
                 console.warn(`${scriptInfo.initFunction} function not found even though the script is loaded. Ensure it was correctly attached to the window.`);
             }

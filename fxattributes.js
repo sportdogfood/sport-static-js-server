@@ -1,15 +1,29 @@
 // fxattributes.js
 
-// Function to handle user attributes
-function fxattributesInit() {
+// Function to handle user attributes with retry and prevention of redundant executions
+function fxattributesInit(retryCount = 0) {
   try {
       const userZoom = JSON.parse(localStorage.getItem('userZoom'));
-      if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
-          throw new Error('User attributes not available');
-      }
-      const attributes = userZoom._embedded['fx:attributes'];
 
+      // Check if userZoom and attributes are available
+      if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
+          if (retryCount < 5) { // Retry up to 5 times
+              console.warn('User attributes not available, retrying...');
+              setTimeout(() => fxattributesInit(retryCount + 1), 1000); // Retry after 1 second
+          } else {
+              console.error('User attributes not available after multiple retries.');
+          }
+          return;
+      }
+
+      // Check if attributes have already been processed to avoid re-execution
       let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
+      if (userSession['attributesProcessed']) {
+          console.info('Attributes have already been processed. Skipping re-execution.');
+          return;
+      }
+
+      const attributes = userZoom._embedded['fx:attributes'];
 
       attributes.forEach((attribute) => {
           const name = attribute?.name || '';
@@ -23,6 +37,9 @@ function fxattributesInit() {
 
           userSession[`userAttribute_${name}`] = attributeData;
       });
+
+      // Mark as processed to prevent re-execution
+      userSession['attributesProcessed'] = true;
 
       // Update session
       localStorage.setItem('userSession', JSON.stringify(userSession));
