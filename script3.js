@@ -1,75 +1,165 @@
-// Script 3: Embedded Data Management, Initialization, and Loading Scripts
+// Script 3: User Login, Logout, and Additional Initializations
 
-// Helper function to update _embedded data in localStorage
-function updateEmbeddedData(key, data) {
-    let userZoom = JSON.parse(localStorage.getItem('userZoom')) || {};
+// Manage user login
+SessionManager.handleLogin = function() {
+    this.updateSession({ status: 'logged in', calledBy: 'handleLogin' });
+    buttonMaster('logged in', 'handleLogin');
+    pushPagesense('login', this.session.fx_customerId);
 
-    if (!userZoom._embedded) {
-        userZoom._embedded = {};
+    // If the customer is authenticated, initialize userZoom
+    if (window.fx_customerId) {
+        console.log("Authenticated user found, initializing userZoom...");
+        this.initializeUserZoom();
+        this.initializeUserCart();
+        this.initializeUserDesk();
+        this.initializeUserCustomer();
+        this.initializeUserThrive();
+    }
+};
+
+// Manage user logout
+SessionManager.handleLogout = function() {
+    // Custom logout process
+    const userSession = localStorage.getItem('userSession');
+    if (!userSession) {
+        console.error('No user session found in localStorage.');
+        return;
     }
 
-    userZoom._embedded[key] = data;
+    // Parse the session object
+    const sessionObject = JSON.parse(userSession);
 
-    // Log the update for visibility
-    console.log(`Updating _embedded with key: ${key}, data:`, data);
+    // Retrieve fx_customerEmail and fx_customerId from localStorage
+    const fx_customerEmail = localStorage.getItem('fx_customerEmail');
+    const fx_customerId = localStorage.getItem('fx_customerId');
 
-    // Update the localStorage
-    localStorage.setItem('userZoom', JSON.stringify(userZoom));
+    // Get the current logout date in ISO US time format
+    const logoutDate = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
 
-    // Set a new localStorage item to confirm the update (for debugging purposes)
-    localStorage.setItem(`debug_update_${key}`, JSON.stringify(data));
-    console.log(`Set debug_update_${key} in localStorage:`, data);
-}
+    // Construct payload
+    const payload = {
+        ...sessionObject,
+        logoutDate,
+        fx_customerEmail,
+        fx_customerId,
+    };
 
-// Attach `updateEmbeddedData` to `window` to make it globally accessible
-window.updateEmbeddedData = updateEmbeddedData;
+    // Proxy endpoint URL
+    const proxyUrl = 'https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/session';
 
-// Event listener for 'authenticated' event
-// Load additional scripts to further enhance user session after authentication
-
-document.addEventListener('authenticated', () => {
-    const scriptsToLoad = [
-        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomerzoom.js', id: 'fxcustomerzoom', initFunction: 'customerZoomInit' },
-        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxsubscriptions.js', id: 'fxsubscriptions', initFunction: 'subscriptionsInit' },
-        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxtransactions.js', id: 'fxtransactions', initFunction: 'transactionsInit' }
-    ];
-
-    scriptsToLoad.forEach(scriptInfo => {
-        if (!document.getElementById(scriptInfo.id)) {
-            const scriptElement = document.createElement('script');
-            scriptElement.src = scriptInfo.src;
-            scriptElement.id = scriptInfo.id;
-
-            scriptElement.onload = () => {
-                console.log(`${scriptInfo.id}.js loaded successfully`);
-                if (typeof window[scriptInfo.initFunction] === 'function') {
-                    console.log(`Executing ${scriptInfo.initFunction} function.`);
-                    window[scriptInfo.initFunction](); // Call the initialization function defined in each script
-                } else {
-                    console.error(`${scriptInfo.initFunction} function not found in ${scriptInfo.id}.js.`);
-                }
-            };
-
-            scriptElement.onerror = () => {
-                console.error(`Failed to load ${scriptInfo.id}.js`);
-            };
-
-            if (document.body) {
-                document.body.appendChild(scriptElement);
-            } else {
-                console.error("document.body is null, unable to append script element.");
+    // Send the payload to the proxy server
+    fetch(proxyUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`Network response was not ok (${response.status})`);
             }
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Logout successfully sent:', data);
+            // Additional cleanup after successful logout
+            localStorage.removeItem('userSession');
+            localStorage.removeItem('fx_customerEmail');
+            localStorage.removeItem('fx_customerId');
+            localStorage.removeItem('userState');
+            localStorage.removeItem('userZoom');
+            localStorage.removeItem('userContact');
+            localStorage.removeItem('userCustomer');
+            localStorage.removeItem('isAuthenticated');
+            localStorage.removeItem('debug_update_fx:subscriptions');
+            localStorage.removeItem('debug_update_fx:transactions');
+
+            buttonMaster('logged out', 'handleLogout');
+            pushPagesense('logout', fx_customerId);
+        })
+        .catch((error) => {
+            console.error('There was an error during the logout process:', error);
+        });
+};
+
+// Initialize userZoom (Placeholder function; define as needed)
+SessionManager.initializeUserZoom = function() {
+    console.log("Initializing userZoom...");
+    // Implement initialization logic here
+};
+
+// Initialize userCart
+SessionManager.initializeUserCart = function() {
+    console.log("Initializing user cart...");
+    // Placeholder function to initialize user cart details if needed.
+};
+
+SessionManager.initializeUserDesk = function(customerId) {
+    console.log("Initializing user desk details...");
+    
+    // Load the userdesk.js script dynamically if it's not already loaded
+    if (typeof UserDesk === 'undefined') {
+        var script = document.createElement('script');
+        script.src = '/path/to/userdesk.js'; // Update the path as needed
+        script.onload = function() {
+            console.log("userdesk.js loaded successfully");
+            if (typeof UserDesk.initialize === 'function') {
+                UserDesk.initialize(customerId);
+            } else {
+                console.error("UserDesk.initialize function not found in userdesk.js");
+            }
+        };
+        script.onerror = function() {
+            console.error("Failed to load userdesk.js");
+        };
+        document.head.appendChild(script);
+    } else {
+        // UserDesk is already loaded, directly call initialize
+        if (typeof UserDesk.initialize === 'function') {
+            UserDesk.initialize(customerId);
         } else {
-            console.log(`${scriptInfo.id}.js is already loaded`);
-            if (typeof window[scriptInfo.initFunction] === 'function') {
-                console.log(`Re-executing ${scriptInfo.initFunction} since ${scriptInfo.id}.js is already loaded.`);
-                window[scriptInfo.initFunction](); // Call the initialization function in case the script was loaded but not initialized
-            } else {
-                console.warn(`${scriptInfo.initFunction} function not found even though the script is loaded. Ensure it was correctly attached to the window.`);
-            }
+            console.error("UserDesk.initialize function not found");
         }
-    });
-});
+    }
+};
+
+
+// Initialize userCustomer
+SessionManager.initializeUserCustomer = function() {
+    console.log("Initializing user customer details...");
+    // Placeholder function to initialize user customer details if needed.
+};
+
+// Initialize userThrive
+SessionManager.initializeUserThrive = function() {
+    console.log("Initializing user thrive details...");
+    // Placeholder function to initialize user thrive details if needed.
+};
+
+// Initialize userAuto
+SessionManager.initializeUserAuto = function() {
+    console.log("Initializing user auto details...");
+    // Placeholder function to initialize user auto details if needed.
+};
+
+// Initialize userTrack
+SessionManager.initializeUserTrack = function() {
+    console.log("Initializing user tracking details...");
+    // Placeholder function to initialize user tracking details if needed.
+};
+
+// Initialize userTrans
+SessionManager.initializeUserTrans = function() {
+    console.log("Initializing user transaction details...");
+    // Placeholder function to initialize user transaction details if needed.
+};
+
+// Initialize userGetAgain
+SessionManager.initializeUserGetAgain = function() {
+    console.log("Initializing user 'get again' details...");
+    // Placeholder function to initialize user 'get again' details if needed.
+};
 
 // Ensure that fetchCustomerData is defined. Placeholder function:
 async function fetchCustomerData(customerId) {
@@ -89,3 +179,6 @@ function findCustomer(jwtToken) {
     console.log(`Finding customer with JWT token: ${jwtToken}`);
     // Implement the actual find customer logic here
 }
+
+// Attach the SessionManager to window to make it globally accessible
+window.SessionManager = SessionManager;

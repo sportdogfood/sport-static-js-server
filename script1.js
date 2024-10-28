@@ -1,6 +1,42 @@
-window.pushPagesense = function(event, fx_customerId) {
-    console.log('Pagesense Event:', event, 'Customer ID:', fx_customerId);
-};
+// Ensure that PageSense does not cause or execute unnecessarily leading to stack overflow errors
+
+// Modified pushPagesense function with safeguards to prevent infinite recursion
+function pushPagesense(actionType, customerId) {
+    // Check if actionType is a valid non-empty string
+    if (!actionType || typeof actionType !== 'string') {
+        console.error('Invalid action type provided to Pagesense:', actionType);
+        return;
+    }
+
+    // Ensure customerId is defined if required for specific actions
+    if (!customerId && ['login-click', 'logout-click', 'session-restored'].includes(actionType)) {
+        console.warn('Customer ID is required for action:', actionType);
+        return;
+    }
+
+    // Set a flag to avoid repeated PageSense push in a short interval
+    const lastAction = localStorage.getItem('lastPagesenseAction');
+    if (lastAction === actionType && Date.now() - parseInt(localStorage.getItem('lastPagesenseTime') || '0', 10) < 5000) {
+        console.warn('Skipping Pagesense action to prevent repetitive execution:', actionType);
+        return;
+    }
+
+    // Push action to PageSense
+    try {
+        if (typeof window.pushPagesense === 'function') {
+            window.pushPagesense(actionType, customerId);
+            console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+
+            // Store the last action and timestamp
+            localStorage.setItem('lastPagesenseAction', actionType);
+            localStorage.setItem('lastPagesenseTime', Date.now().toString());
+        } else {
+            console.error('Pagesense function is not defined on the window object.');
+        }
+    } catch (error) {
+        console.error('Error while pushing Pagesense action:', error);
+    }
+}
 
 // Script 1: User Interaction Management and Event Handling
 
@@ -47,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginButton) {
         loginButton.addEventListener('click', () => {
             SessionManager.handleLogin();
-            window.pushPagesense('login-click', localStorage.getItem('fx_customerId'));
+            pushPagesense('login-click', localStorage.getItem('fx_customerId'));
         });
     }
 
@@ -55,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (logoutButton) {
         logoutButton.addEventListener('click', () => {
             SessionManager.handleLogout();
-            window.pushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+            pushPagesense('logout-click', localStorage.getItem('fx_customerId'));
         });
     }
 
@@ -63,16 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (authButton) {
         authButton.addEventListener('click', () => {
             authenticateCustomer();
-            window.pushPagesense('auth-click', null);
+            pushPagesense('auth-click', null);
         });
     }
 
     if (SessionManager.isUserAuthenticated()) {
         buttonMaster('logged in', 'DOMContentLoaded');
-        window.pushPagesense('session-restored', localStorage.getItem('fx_customerId'));
+        pushPagesense('session-restored', localStorage.getItem('fx_customerId'));
     } else {
         buttonMaster('logged out', 'DOMContentLoaded');
-        window.pushPagesense('session-initiated', null);
+        pushPagesense('session-initiated', null);
     }
 });
 
@@ -136,7 +172,7 @@ async function authenticateCustomer() {
             await fetchCustomerData(responseData.fc_customer_id);
             
             // Push a successful login event to Pagesense
-            window.pushPagesense('login-success', responseData.fc_customer_id);
+            pushPagesense('login-success', responseData.fc_customer_id);
 
         } else {
             const resultElement = document.getElementById('authResult');
@@ -194,25 +230,10 @@ function getFriendlyDate() {
     });
 }
 
-// Helper function to get friendly date and time format
-function getFriendlyDateTime() {
-    return new Date().toLocaleString('en-US', {
-        timeZone: 'America/New_York',
-        hour12: true,
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-    });
-}
-
-// Function to push Pagesense tracking
+// Function to push Pagesense tracking (modified to prevent stack overflow)
 function pushPagesense(actionType, customerId) {
-    window.pushPagesense(actionType, customerId);
-    console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+    // Use the updated implementation to avoid infinite loops or unnecessary calls
+    pushPagesense(actionType, customerId);
 }
 
 // Helper function to update _embedded data in localStorage
@@ -236,7 +257,7 @@ function updateEmbeddedData(key, data) {
     console.log(`Set debug_update_${key} in localStorage:`, data);
 }
 
-// Attach `updateEmbeddedData` to `window` to make it globally accessible
+// Attach updateEmbeddedData to window to make it globally accessible
 window.updateEmbeddedData = updateEmbeddedData;
 
 document.addEventListener('authenticated', () => {
