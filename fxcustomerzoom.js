@@ -49,7 +49,7 @@ async function fetchCustomerData(customerId) {
 }
 
 // Define the main initialization function for customer zoom
-function fxcustomerzoomInit() {
+function customerzoomInit() {
     console.log('fxcustomerzoom.js initialization function is called.');
 
     // Ensure that the customer ID is available before proceeding
@@ -70,7 +70,7 @@ function fxcustomerzoomInit() {
 }
 
 // Attach the initialization function to the global window object
-window.fxcustomerzoomInit = fxcustomerzoomInit;
+window.customerzoomInit = customerzoomInit;
 
 // Attach other relevant functions to the window for external access
 window.fetchCustomerData = fetchCustomerData;
@@ -111,10 +111,10 @@ if (typeof window.updateUserSession !== 'function') {
 
 // Ensure the initialization function is called when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Attempting to call fxcustomerzoomInit after DOM content is loaded.');
+    console.log('Attempting to call customerzoomInit after DOM content is loaded.');
     if (typeof window.fxcustomerzoomInit === 'function') {
-        window.fxcustomerzoomInit();
+        window.customerzoomInit();
     } else {
-        console.error('fxcustomerzoomInit function not found during DOMContentLoaded.');
+        console.error('customerzoomInit function not found during DOMContentLoaded.');
     }
 });
