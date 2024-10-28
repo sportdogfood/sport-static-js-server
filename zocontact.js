@@ -26,7 +26,7 @@ const getCRMValueFromChain = () => {
 };
 
 // Function to manually refresh and restart the fetching process
-export function manualRefreshCRM() {
+function manualRefreshCRM() {
     console.log('Manual refresh triggered for CRM data.');
     retryCountCRM = 0;
     pollingCount = 0;
@@ -34,7 +34,7 @@ export function manualRefreshCRM() {
 }
 
 // Function to check and poll Zoho CRM contact data
-export async function checkAndPollCRMContact() {
+function checkAndPollCRMContact() {
     // Start the polling process after a delay of 45 seconds
     setTimeout(poll, 45000);
 }
@@ -133,7 +133,6 @@ function getFriendlyDateTime() {
 }
 
 // Function for fetching Zoho contact data
-// client.js or wherever the function is implemented
 async function fetchZohoContact(fx_customerId) {
     // Encode the criteria parameter to handle special characters
     const criteria = `(Foxy_ID:equals:${fx_customerId})`;
@@ -215,7 +214,7 @@ setTimeout(() => {
 }, 20000); // Delay of 20 seconds
 
 // Add a manual refresh button to the page if needed
-export function addManualRefreshButton() {
+function addManualRefreshButton() {
     const refreshButtonCRM = document.createElement('button');
     refreshButtonCRM.innerText = 'Refresh CRM Data';
     refreshButtonCRM.onclick = manualRefreshCRM;

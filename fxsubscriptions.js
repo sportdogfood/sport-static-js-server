@@ -44,11 +44,11 @@ async function fetchFoxyCartSubscriptions(customerId) {
         }
 
         // Update session state using the global function
-        if (typeof window.updateThisUserSession === 'function') {
-            window.updateThisUserSession({ subscriptionsFetched: true, lastupdate: getFriendlyDateTime() });
-            window.updateThisUserSession({ subscriptions_totalItems: totalItems, lastupdate: getFriendlyDateTime() });
+        if (typeof window.updateUserSession === 'function') {
+            window.updateUserSession({ subscriptionsFetched: true, lastupdate: getFriendlyDateTime() });
+            window.updateUserSession({ subscriptions_totalItems: totalItems, lastupdate: getFriendlyDateTime() });
         } else {
-            console.error("updateThisUserSession function not found in global scope.");
+            console.error("updateUserSession function not found in global scope.");
         }
 
         return { total_items: totalItems, subscriptions: subscriptions };

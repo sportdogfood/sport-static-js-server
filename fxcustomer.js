@@ -5,7 +5,7 @@ let pollingCountFoxy = 0;
 const maxPollingAttemptsFoxy = 4; // Maximum number of polling attempts
 
 // Function to manually refresh and restart the fetching process
-export function manualRefreshFoxy() {
+function manualRefreshFoxy() {
     console.log('Manual refresh triggered for FoxyCart data.');
     retryCountFoxy = 0;
     pollingCountFoxy = 0;
@@ -69,7 +69,7 @@ async function poll() {
 }
 
 // Function to check and poll FoxyCart customer data
-export async function checkAndPollFoxyCustomer() {
+async function checkAndPollFoxyCustomer() {
     // Start the polling process after an initial delay of 45 seconds
     setTimeout(poll, 45000);
 }
@@ -90,7 +90,7 @@ function formatFriendlyDateUS(dateString) {
 }
 
 // Fetch function for FoxyCart customer data
-export async function fetchFxCustomer(customerId) {
+async function fetchFxCustomer(customerId) {
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}`;
     console.log("Fetching FxCustomer URL:", apiUrl);
 
@@ -173,7 +173,7 @@ setTimeout(() => {
 }, 20000); // Delay of 20 seconds
 
 // Add a manual refresh button to the page if needed
-export function addManualRefreshButton() {
+function addManualRefreshButton() {
     const refreshButtonFoxy = document.createElement('button');
     refreshButtonFoxy.innerText = 'Refresh FoxyCart Data';
     refreshButtonFoxy.onclick = manualRefreshFoxy;
