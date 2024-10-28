@@ -39,6 +39,13 @@ async function fetchCustomerData(customerId) {
                 console.error('updateUserSession function not found in global scope.');
             }
 
+            // Call attributesInit() after successful data retrieval
+            if (typeof window.attributesInit === 'function') {
+                window.attributesInit(); // Ensures attributesInit runs only when data is ready
+            } else {
+                console.error('attributesInit function not found in global scope.');
+            }
+
         } else {
             console.error('No customer data received');
         }
@@ -78,7 +85,6 @@ window.fetchCustomerData = fetchCustomerData;
 // Make sure updateUserSession is globally available
 if (typeof window.updateUserSession !== 'function') {
     window.updateUserSession = function(updateObject) {
-        // Check if userSession exists in localStorage, otherwise initialize it
         let currentSession = JSON.parse(localStorage.getItem("userSession")) || {};
         
         // Log to check current session before updating
@@ -91,9 +97,6 @@ if (typeof window.updateUserSession !== 'function') {
             }
         }
 
-        // Log the object that is about to be updated
-        console.log("Updating userSession with:", updateObject);
-        
         // Save updated session back to localStorage
         localStorage.setItem("userSession", JSON.stringify(currentSession));
 
@@ -112,7 +115,7 @@ if (typeof window.updateUserSession !== 'function') {
 // Ensure the initialization function is called when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Attempting to call customerzoomInit after DOM content is loaded.');
-    if (typeof window.fxcustomerzoomInit === 'function') {
+    if (typeof window.customerzoomInit === 'function') {
         window.customerzoomInit();
     } else {
         console.error('customerzoomInit function not found during DOMContentLoaded.');

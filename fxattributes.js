@@ -1,18 +1,11 @@
-// fxattributes.js
-
-// Function to handle user attributes with retry and prevention of redundant executions
-function attributesInit(retryCount = 0) {
+// Function to handle user attributes with a single controlled execution
+function attributesInit() {
   try {
       const userZoom = JSON.parse(localStorage.getItem('userZoom'));
 
       // Check if userZoom and attributes are available
       if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
-          if (retryCount < 5) { // Retry up to 5 times
-              console.warn('User attributes not available, retrying...');
-              setTimeout(() => attributesInit(retryCount + 1), 1000); // Retry after 1 second
-          } else {
-              console.error('User attributes not available after multiple retries.');
-          }
+          console.error('User attributes are not available. Initialization aborted.');
           return;
       }
 
@@ -43,6 +36,7 @@ function attributesInit(retryCount = 0) {
 
       // Update session
       localStorage.setItem('userSession', JSON.stringify(userSession));
+      console.log("Attributes have been successfully processed and stored.");
   } catch (error) {
       console.error('An error occurred in attributesInit:', error);
   }
