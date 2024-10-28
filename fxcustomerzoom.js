@@ -21,7 +21,7 @@ async function fetchCustomerData(customerId) {
             console.log('Customer data:', responseData);
 
             // Store customer data in localStorage
-            localStorage.setItem("thisUserZoom", JSON.stringify(responseData));
+            localStorage.setItem("userZoom", JSON.stringify(responseData));
             
             if (typeof window.updateUserState === 'function') {
                 window.updateUserState('Zoom', 'available');
@@ -38,13 +38,11 @@ async function fetchCustomerData(customerId) {
             const first_name = responseData?.first_name || 'Unknown';
 
             // Update session state with customer data
-            if (typeof window.updateThisUserSession === 'function') {
-                window.updateThisUserSession({ first_name: first_name, lastupdate: getFriendlyDateTime() });
+            if (typeof window.updateUserSession === 'function') {
+                window.updateUserSession({ first_name: first_name, lastupdate: getFriendlyDateTime() });
             } else {
-                console.error('updateThisUserSession function not found in global scope.');
+                console.error('updateUserSession function not found in global scope.');
             }
-
-            
 
         } else {
             console.error('No customer data received');
@@ -82,14 +80,14 @@ window.customerZoomInit = customerZoomInit;
 // Attach other relevant functions to the window for external access
 window.fetchCustomerData = fetchCustomerData;
 
-// Make sure updateThisUserSession is globally available
-if (typeof window.updateThisUserSession !== 'function') {
-    window.updateThisUserSession = function(updateObject) {
-        // Check if thisUser exists in localStorage, otherwise initialize it
-        let currentSession = JSON.parse(localStorage.getItem("thisUserSession")) || {};
+// Make sure updateUserSession is globally available
+if (typeof window.updateUserSession !== 'function') {
+    window.updateUserSession = function(updateObject) {
+        // Check if userSession exists in localStorage, otherwise initialize it
+        let currentSession = JSON.parse(localStorage.getItem("userSession")) || {};
         
         // Log to check current session before updating
-        console.log("Current thisUserSession before update:", currentSession);
+        console.log("Current userSession before update:", currentSession);
         
         // Iterate through updateObject and update the session
         for (const key in updateObject) {
@@ -99,10 +97,10 @@ if (typeof window.updateThisUserSession !== 'function') {
         }
 
         // Log the object that is about to be updated
-        console.log("Updating thisUserSession with:", updateObject);
+        console.log("Updating userSession with:", updateObject);
         
         // Save updated session back to localStorage
-        localStorage.setItem("thisUserSession", JSON.stringify(currentSession));
+        localStorage.setItem("userSession", JSON.stringify(currentSession));
 
         // Also update window.thisUser object
         window.thisUser = {
@@ -111,7 +109,7 @@ if (typeof window.updateThisUserSession !== 'function') {
         };
         
         // Log to check the final state after the update
-        console.log("Updated thisUserSession:", currentSession);
+        console.log("Updated userSession:", currentSession);
         console.log("Updated window.thisUser:", window.thisUser);
     };
 }

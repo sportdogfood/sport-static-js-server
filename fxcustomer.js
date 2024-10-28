@@ -1,4 +1,4 @@
-// Counter to track retries for FoxyCart fetch
+// Counter to track retries for FoxyCart fetch 
 let retryCountFoxy = 0;
 const maxRetries = 4; // Maximum number of retries for fetching data
 let pollingCountFoxy = 0;
@@ -12,22 +12,15 @@ export function manualRefreshFoxy() {
     poll(); // Directly call poll to bypass delay
 }
 
-// Helper function to get the desired value from the variable chain
+// Helper function to get the FoxyCart customer ID from local storage
 function getValueFromChain() {
     try {
         const localFxCustomerId = localStorage.getItem('fx_customerId');
-        const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
-        const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
-
         if (localFxCustomerId) return localFxCustomerId;
-        if (thisUser && thisUser.fx_customerId) return thisUser.fx_customerId;
-        if (thisUserContact && thisUserContact.Foxy_ID) return thisUserContact.Foxy_ID;
-
     } catch (error) {
         console.error("Error while getting value from chain:", error);
     }
-
-    return null; // Return null if none of the values are found
+    return null; // Return null if the value is not found
 }
 
 // Poll for FoxyCart data with retry mechanism
@@ -51,7 +44,7 @@ async function poll() {
         console.log(`Polling start - Cycle #${pollingCountFoxy} for FoxyCart customer data.`);
 
         try {
-            const existingData = localStorage.getItem('thisUserCustomer');
+            const existingData = localStorage.getItem('userCustomer');
             if (!existingData) {
                 // Fetch FoxyCart Customer Data and store it in localStorage
                 await fetchFxCustomer(fxCustomerId);
@@ -126,8 +119,8 @@ export async function fetchFxCustomer(customerId) {
         }
 
         // Store the filtered response in localStorage
-        localStorage.setItem("thisUserCustomer", JSON.stringify(filteredDetails));
-        console.log("Filtered FxCustomer data stored in localStorage under 'thisUserCustomer'");
+        localStorage.setItem("userCustomer", JSON.stringify(filteredDetails));
+        console.log("Filtered FxCustomer data stored in localStorage under 'userCustomer'");
 
         // Extract and rename the necessary fields from filteredDetails
         const { first_name, last_name, email, id, last_login_date } = filteredDetails;
@@ -141,7 +134,7 @@ export async function fetchFxCustomer(customerId) {
         const fx_last_login_date = formatFriendlyDateUS(last_login_date); // Format date to friendly US/EDT
         
         // Update session state with the renamed fields and formatted date
-        updateThisUserSession({ fx_first_name, fx_last_name, fx_email, fx_id, fx_last_login_date, lastupdate: getFriendlyDateTime() });
+        updateUserSession({ fx_first_name, fx_last_name, fx_email, fx_id, fx_last_login_date, lastupdate: getFriendlyDateTime() });
 
     } catch (error) {
         console.error("Error fetching data from FxCustomer API:", error);
@@ -149,18 +142,18 @@ export async function fetchFxCustomer(customerId) {
 }
 
 // Function to update the session state with provided data
-function updateThisUserSession(data) {
+function updateUserSession(data) {
     try {
-        console.log("Data passed to updateThisUserSession:", data); 
+        console.log("Data passed to updateUserSession:", data); 
 
         // Retrieve existing session or initialize it if it doesn't exist
-        const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
+        const userSession = JSON.parse(localStorage.getItem('userSession') || '{}');
 
         // Merge new data with the existing session state
-        const updatedSession = { ...thisUserSession, ...data };
+        const updatedSession = { ...userSession, ...data };
 
         // Store the updated session in localStorage
-        localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
+        localStorage.setItem('userSession', JSON.stringify(updatedSession));
         
         console.log('Updated session state:', updatedSession); 
     } catch (error) {

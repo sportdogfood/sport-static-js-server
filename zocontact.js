@@ -8,20 +8,15 @@ const maxPollingAttempts = 4; // Maximum number of polling attempts for CRM data
 const getCRMValueFromChain = () => {
     try {
         const localContactId = localStorage.getItem('fx_customerId');
-        const thisUserContact = JSON.parse(localStorage.getItem('thisUserContact') || 'null');
-        const thisUser = JSON.parse(localStorage.getItem('thisUser') || 'null');
+        const userContact = JSON.parse(localStorage.getItem('userContact') || 'null');
 
         if (localContactId) {
             console.log("Retrieved CRM ID from fx_customerId:", localContactId);
             return localContactId;
         }
-        if (thisUserContact && thisUserContact.id) {
-            console.log("Retrieved CRM ID from thisUserContact.id:", thisUserContact.id);
-            return thisUserContact.id;
-        }
-        if (thisUser && thisUser.fx_customerId) {
-            console.log("Retrieved CRM ID from thisUser.fx_customerId:", thisUser.fx_customerId);
-            return thisUser.fx_customerId;
+        if (userContact && userContact.id) {
+            console.log("Retrieved CRM ID from userContact.id:", userContact.id);
+            return userContact.id;
         }
     } catch (error) {
         console.error("Error while getting CRM value from chain:", error);
@@ -68,13 +63,13 @@ async function poll() {
         console.log(`Polling start - Cycle #${pollingCount} for CRM contact data.`);
 
         try {
-            const existingData = localStorage.getItem('thisUserContact');
+            const existingData = localStorage.getItem('userContact');
             if (!existingData) {
                 // Fetch Zoho Contact Data and store it in localStorage
                 const responseData = await fetchZohoContact(crmContactId);
                 if (responseData) {
-                    localStorage.setItem("thisUserContact", JSON.stringify(responseData));
-                    console.log("Zoho contact data stored in localStorage under 'thisUserContact'.");
+                    localStorage.setItem("userContact", JSON.stringify(responseData));
+                    console.log("Zoho contact data stored in localStorage under 'userContact'.");
                 } else {
                     console.log("Failed to store Zoho contact data.");
                 }
@@ -99,16 +94,16 @@ async function poll() {
 }
 
 // Function to update the session state with provided data
-function updateThisUserSession(data) {
+function updateUserSession(data) {
     try {
         // Retrieve existing session or initialize it if it doesn't exist
-        const thisUserSession = JSON.parse(localStorage.getItem('thisUserSession') || '{}');
+        const userSession = JSON.parse(localStorage.getItem('userSession') || '{}');
 
         // Merge new data with the existing session state
-        const updatedSession = { ...thisUserSession, ...data };
+        const updatedSession = { ...userSession, ...data };
 
         // Store the updated session in localStorage
-        localStorage.setItem('thisUserSession', JSON.stringify(updatedSession));
+        localStorage.setItem('userSession', JSON.stringify(updatedSession));
         
         console.log('Updated session state:', updatedSession);
     } catch (error) {
@@ -164,46 +159,46 @@ async function fetchZohoContact(fx_customerId) {
         if (details.data && details.data.length > 0) {
             console.log(`Found ${details.data.length} record(s) in Zoho CRM response.`);
 
-            const thisUserContact = details.data[0];
-            console.log("Zoho contact data retrieved successfully:", thisUserContact);
+            const userContact = details.data[0];
+            console.log("Zoho contact data retrieved successfully:", userContact);
 
             // Map all required fields with the 'crm_' prefix
             const sessionData = {
-                crm_Approved_Military: thisUserContact?.Approved_Military,
-                crm_Breed_1_name: thisUserContact?.['Breed_1.name'],
-                crm_Dashboard_Id_id: thisUserContact?.['Dashboard_Id.id'],
-                crm_Email: thisUserContact?.Email,
-                crm_Desk_ID: thisUserContact?.Desk_ID,
-                crm_First_Name: thisUserContact?.First_Name || 'Unknown',
-                crm_Foxy_ID: thisUserContact?.Foxy_ID || 'Unknown',
-                crm_Full_Name: thisUserContact?.Full_Name,
-                crm_Last_Name: thisUserContact?.Last_Name,
+                crm_Approved_Military: userContact?.Approved_Military,
+                crm_Breed_1_name: userContact?.['Breed_1.name'],
+                crm_Dashboard_Id_id: userContact?.['Dashboard_Id.id'],
+                crm_Email: userContact?.Email,
+                crm_Desk_ID: userContact?.Desk_ID,
+                crm_First_Name: userContact?.First_Name || 'Unknown',
+                crm_Foxy_ID: userContact?.Foxy_ID || 'Unknown',
+                crm_Full_Name: userContact?.Full_Name,
+                crm_Last_Name: userContact?.Last_Name,
                 
                 // Convert Last_Visited_Time and Last_Activity_Time to a friendly format
-                crm_Last_Visited_Time: formatFriendlyDateUS(thisUserContact?.Last_Visited_Time),
-                crm_Last_Activity_Time: formatFriendlyDateUS(thisUserContact?.Last_Activity_Time),
+                crm_Last_Visited_Time: formatFriendlyDateUS(userContact?.Last_Visited_Time),
+                crm_Last_Activity_Time: formatFriendlyDateUS(userContact?.Last_Activity_Time),
                 
-                crm_Lifetime_Spend: thisUserContact?.Lifetime_Spend,
-                crm_Loyalty_Coupon: thisUserContact?.Loyalty_Coupon,
-                crm_Loyalty_Level: thisUserContact?.Loyalty_Level,
-                crm_Loyalty_Points: thisUserContact?.Loyalty_Points,
-                crm_Mailing_State: thisUserContact?.Mailing_State,
-                crm_Mailing_Zip: thisUserContact?.Mailing_Zip,
-                crm_Member_Since: formatFriendlyDateUS(thisUserContact?.Member_Since), // Convert Member_Since to friendly date
-                crm_Saved_Shipping_id: thisUserContact?.['Saved_Shipping.id'],
-                crm_Shipping_State: thisUserContact?.Shipping_State,
-                crm_State_is: thisUserContact?.State_is,
-                crm_Thrive_id: thisUserContact?.['Thrive.id'],
-                crm_UGC_id: thisUserContact?.['UGC.id'],
-                crm_desk_cf_foxy_id: thisUserContact?.desk_cf_foxy_id,
-                crm_id: thisUserContact?.id,
+                crm_Lifetime_Spend: userContact?.Lifetime_Spend,
+                crm_Loyalty_Coupon: userContact?.Loyalty_Coupon,
+                crm_Loyalty_Level: userContact?.Loyalty_Level,
+                crm_Loyalty_Points: userContact?.Loyalty_Points,
+                crm_Mailing_State: userContact?.Mailing_State,
+                crm_Mailing_Zip: userContact?.Mailing_Zip,
+                crm_Member_Since: formatFriendlyDateUS(userContact?.Member_Since), // Convert Member_Since to friendly date
+                crm_Saved_Shipping_id: userContact?.['Saved_Shipping.id'],
+                crm_Shipping_State: userContact?.Shipping_State,
+                crm_State_is: userContact?.State_is,
+                crm_Thrive_id: userContact?.['Thrive.id'],
+                crm_UGC_id: userContact?.['UGC.id'],
+                crm_desk_cf_foxy_id: userContact?.desk_cf_foxy_id,
+                crm_id: userContact?.id,
                 lastupdate: getFriendlyDateTime() // Current date and time
             };
 
             // Update session state with the customer data
-            updateThisUserSession(sessionData);
+            updateUserSession(sessionData);
 
-            return thisUserContact; // Return the fetched contact details
+            return userContact; // Return the fetched contact details
         } else {
             console.log(`No matching record found for Foxy_ID: ${fx_customerId} in Contacts`);
             return null; // No data found

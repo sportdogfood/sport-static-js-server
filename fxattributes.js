@@ -1,57 +1,41 @@
-// User Attributes Function to update user attributes
-async function userAttributes() {
-  try {
-    const thisUserZoom = JSON.parse(localStorage.getItem('thisUserZoom'));
+// fxAttributes.js
 
-    if (!thisUserZoom || !thisUserZoom._embedded?.['fx:attributes']) {
-      throw new Error('thisUserZoom or fx:attributes not available');
+// Function to handle user attributes
+function fxAttributesInit() {
+    try {
+        const userZoom = JSON.parse(localStorage.getItem('userZoom'));
+        if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
+            throw new Error('User attributes not available');
+        }
+        const attributes = userZoom._embedded['fx:attributes'];
+
+        let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
+
+        attributes.forEach((attribute) => {
+            const name = attribute?.name || '';
+            const value = attribute?.value ?? null;
+
+            const attributeData = {
+                attributeName: name,
+                attributeValue: value,
+                lastupdate: getFriendlyDateTime(),
+            };
+
+            userSession[`userAttribute_${name}`] = attributeData;
+        });
+
+        // Update session
+        localStorage.setItem('userSession', JSON.stringify(userSession));
+    } catch (error) {
+        console.error('An error occurred in fxAttributesInit:', error);
     }
-
-    const attributes = thisUserZoom._embedded['fx:attributes'];
-
-    if (!Array.isArray(attributes)) {
-      throw new Error('fx:attributes is not an array as expected');
-    }
-
-    let thisUserSession = JSON.parse(localStorage.getItem('thisUserSession')) || {};
-
-    attributes.forEach((attribute, index) => {
-      const name = attribute?.name || '';
-      let value = attribute?.value ?? null;
-
-      const href = attribute?._links?.self?.href;
-      const fxAtt = extractIdFromHref(href);
-      const lastupdate = getFriendlyDate();
-
-      if (typeof value !== 'string' && typeof value !== 'number') {
-        value = String(value);
-      }
-
-      const attributeData = {
-        attributeName: name,
-        attributeValue: value,
-        fxAtt,
-        lastupdate,
-      };
-
-      switch (name.toLowerCase()) {
-        case 'zoho_crm_id':
-          thisUserSession.zoho_crm_id = attributeData;
-          break;
-        case 'loyalty_points':
-          thisUserSession.loyalty_points = attributeData;
-          break;
-        case 'loyalty_level':
-          thisUserSession.loyalty_level = attributeData;
-          break;
-        default:
-          thisUserSession[`userAttribute_${index}`] = attributeData;
-          break;
-      }
-    });
-
-    SessionManager.updateSession(thisUserSession);
-  } catch (error) {
-    console.error('An error occurred in userAttributes:', error);
-  }
 }
+
+// Helper function to get friendly date and time
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString();
+}
+
+// Make sure the init function is available globally if needed
+window.fxAttributesInit = fxAttributesInit;

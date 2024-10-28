@@ -1,0 +1,54 @@
+https://secure.sportdogfood.com/checkout?
+fc_customer_id=27271215&
+fc_auth_token=d05e3cb3ee1bed719f1887c6f3b5123b9cf269d2&
+timestamp=1676572641&
+customer_email=john.doe@example.com&
+billing_first_name=John&
+billing_last_name=Doe&
+billing_address1=123+Main+St&
+billing_city=Orlando&
+billing_postal_code=32801&
+shipping_first_name=John&
+shipping_last_name=Doe&
+shipping_address1=123+Main+St&
+shipping_city=Orlando&
+shipping_postal_code=32801
+
+
+<a href="https://secure.sportdogfood.com/cart?name=Dog+Food+Premium&price=29.99&quantity=2&color=Blue">Add to Cart</a>
+
+
+function createAddToCartURL(productDetails) {
+    const baseUrl = "https://secure.sportdogfood.com/cart?";
+    const params = new URLSearchParams();
+
+    params.set('name', productDetails.name);
+    params.set('price', productDetails.price);
+    params.set('quantity', productDetails.quantity);
+    // Add any other attributes you may want to pass, such as custom fields
+    if (productDetails.color) {
+        params.set('color', productDetails.color);
+    }
+
+    return baseUrl + params.toString();
+}
+
+// Example usage
+const productDetails = {
+    name: "Dog Food Premium",
+    price: "29.99",
+    quantity: "2",
+    color: "Blue"
+};
+
+const addToCartURL = createAddToCartURL(productDetails);
+console.log(addToCartURL);
+
+
+<form action="https://secure.sportdogfood.com/cart" method="post">
+    <input type="hidden" name="name" value="Dog Food Premium" />
+    <input type="hidden" name="price" value="29.99" />
+    <input type="hidden" name="quantity" value="2" />
+    <input type="hidden" name="color" value="Blue" />
+    <input type="submit" value="Add to Cart" />
+</form>
