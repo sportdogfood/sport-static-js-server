@@ -1,16 +1,30 @@
 // Function to push PageSense data globally with custom variables
 window.pushPagesense = function(event, fx_customerId) {
   try {
+    // Throttling mechanism to avoid repeated rapid calls
+    if (!window.pushPagesenseThrottle) {
+      window.pushPagesenseThrottle = {};
+    }
+
+    if (window.pushPagesenseThrottle[event]) {
+      console.warn(`Throttling Pagesense action: ${event}`);
+      return;
+    }
+
+    window.pushPagesenseThrottle[event] = true;
+    setTimeout(() => {
+      window.pushPagesenseThrottle[event] = false;
+    }, 5000);
+
     // Retrieve customer data from localStorage
     let customerData = localStorage.getItem('userSession');
 
-    // Check if customer data is available
     if (!customerData) {
       console.warn('No customer data found in localStorage under userSession');
       return;
     }
 
-    // Parse the customer data
+    // Parse customer data once and use throughout
     let customer = JSON.parse(customerData);
 
     // Extract required fields from parsed customer data
@@ -22,38 +36,36 @@ window.pushPagesense = function(event, fx_customerId) {
 
     // Ensure that firstName, lastName, and email exist
     if (firstName && lastName && email) {
-      // Integrate with PageSense
       window.pagesense = window.pagesense || [];
-
-      // Track event with custom attributes (including event name itself)
       window.pagesense.push([event, {
-        customerId: fx_customerId, // Track customerId with the event
+        customerId: fx_customerId,
         email: email,
         geoIP: geoIP,
         geoCity: geoCity,
-        eventName: event // Adding event name as a custom variable
+        eventName: event
       }]);
 
-      // Update SalesIQ visitor information if available
       if (window.$zoho && window.$zoho.salesiq) {
         window.$zoho.salesiq.visitor.name(`${firstName} ${lastName}`);
         window.$zoho.salesiq.visitor.email(email);
       }
 
-      // Log the event in userEvents
+      // Avoid logging duplicate events in userEvents
       customer.userEvents = customer.userEvents || [];
-      customer.userEvents.push({
-        eventName: event,
-        timestamp: new Date().toISOString(),
-        customerId: fx_customerId,
-        email: email,
-        geoIP: geoIP,
-        geoCity: geoCity
-      });
+      const lastEvent = customer.userEvents.slice(-1)[0];
+      if (!lastEvent || lastEvent.eventName !== event || Date.now() - new Date(lastEvent.timestamp).getTime() >= 5000) {
+        customer.userEvents.push({
+          eventName: event,
+          timestamp: new Date().toISOString(),
+          customerId: fx_customerId,
+          email: email,
+          geoIP: geoIP,
+          geoCity: geoCity
+        });
 
-      // Save updated customer data back to localStorage
-      localStorage.setItem('userSession', JSON.stringify(customer));
-      
+        // Save updated customer data back to localStorage only once at the end
+        localStorage.setItem('userSession', JSON.stringify(customer));
+      }
     } else {
       console.warn('Required customer details are missing (first name, last name, email).');
     }

@@ -101,7 +101,7 @@ SessionManager.initializeUserDesk = function(customerId) {
     // Load the userdesk.js script dynamically if it's not already loaded
     if (typeof UserDesk === 'undefined') {
         var script = document.createElement('script');
-        script.src = '/path/to/userdesk.js'; // Update the path as needed
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/userdesk.js'; // Update the path as needed
         script.onload = function() {
             console.log("userdesk.js loaded successfully");
             if (typeof UserDesk.initialize === 'function') {

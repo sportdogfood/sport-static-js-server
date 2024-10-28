@@ -21,7 +21,7 @@ async function fetchCustomerData(customerId) {
             console.log('Customer data:', responseData);
 
             // Store customer data in localStorage
-            localStorage.setItem("userZoom", JSON.stringify(responseData));
+            localStorage.setItem("fxcustomerzoom", JSON.stringify(responseData));
 
             // Safely call initializeAndUpdate if it exists
             if (typeof window.initializeAndUpdate === 'function') {
@@ -48,7 +48,7 @@ async function fetchCustomerData(customerId) {
 }
 
 // Define the main initialization function for customer zoom
-function customerZoomInit() {
+function fxcustomerzoomInit() {
     console.log('fxcustomerzoom.js initialization function is called.');
 
     // Ensure that the customer ID is available before proceeding
@@ -69,7 +69,7 @@ function customerZoomInit() {
 }
 
 // Attach the initialization function to the global window object
-window.customerZoomInit = customerZoomInit;
+window.fxcustomerzoomInit = fxcustomerzoomInit;
 
 // Attach other relevant functions to the window for external access
 window.fetchCustomerData = fetchCustomerData;

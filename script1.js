@@ -1,3 +1,4 @@
+
 // Ensure that PageSense does not cause or execute unnecessarily leading to stack overflow errors
 
 // Modified pushPagesense function with safeguards to prevent infinite recursion
@@ -21,6 +22,14 @@ function pushPagesense(actionType, customerId) {
         return;
     }
 
+    // Prevent recursive calls by using a lock mechanism
+    if (window.pushPagesenseLock) {
+        console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
+        return;
+    }
+
+    window.pushPagesenseLock = true;
+
     // Push action to PageSense
     try {
         if (typeof window.pushPagesense === 'function') {
@@ -35,6 +44,8 @@ function pushPagesense(actionType, customerId) {
         }
     } catch (error) {
         console.error('Error while pushing Pagesense action:', error);
+    } finally {
+        window.pushPagesenseLock = false;
     }
 }
 
@@ -75,42 +86,48 @@ function populateFormFromParams() {
 }
 
 // Event listeners for DOM content loaded
-document.addEventListener('DOMContentLoaded', () => {
-    SessionManager.initializeSession();
-    populateFormFromParams(); // Populate the form on page load
+if (!window.domContentLoadedListenerAdded) {
+    window.domContentLoadedListenerAdded = true;
+    document.addEventListener('DOMContentLoaded', () => {
+        SessionManager.initializeSession();
+        populateFormFromParams(); // Populate the form on page load
 
-    const loginButton = document.getElementById('login-button');
-    if (loginButton) {
-        loginButton.addEventListener('click', () => {
-            SessionManager.handleLogin();
-            pushPagesense('login-click', localStorage.getItem('fx_customerId'));
-        });
-    }
+        const loginButton = document.getElementById('login-button');
+        if (loginButton && !loginButton.listenerAdded) {
+            loginButton.addEventListener('click', () => {
+                SessionManager.handleLogin();
+                pushPagesense('login-click', localStorage.getItem('fx_customerId'));
+            });
+            loginButton.listenerAdded = true;
+        }
 
-    const logoutButton = document.getElementById('logout-button');
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            SessionManager.handleLogout();
-            pushPagesense('logout-click', localStorage.getItem('fx_customerId'));
-        });
-    }
+        const logoutButton = document.getElementById('logout-button');
+        if (logoutButton && !logoutButton.listenerAdded) {
+            logoutButton.addEventListener('click', () => {
+                SessionManager.handleLogout();
+                pushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+            });
+            logoutButton.listenerAdded = true;
+        }
 
-    const authButton = document.getElementById('auth-button');
-    if (authButton) {
-        authButton.addEventListener('click', () => {
-            authenticateCustomer();
-            pushPagesense('auth-click', null);
-        });
-    }
+        const authButton = document.getElementById('auth-button');
+        if (authButton && !authButton.listenerAdded) {
+            authButton.addEventListener('click', () => {
+                authenticateCustomer();
+                pushPagesense('auth-click', null);
+            });
+            authButton.listenerAdded = true;
+        }
 
-    if (SessionManager.isUserAuthenticated()) {
-        buttonMaster('logged in', 'DOMContentLoaded');
-        pushPagesense('session-restored', localStorage.getItem('fx_customerId'));
-    } else {
-        buttonMaster('logged out', 'DOMContentLoaded');
-        pushPagesense('session-initiated', null);
-    }
-});
+        if (SessionManager.isUserAuthenticated()) {
+            buttonMaster('logged in', 'DOMContentLoaded');
+            pushPagesense('session-restored', localStorage.getItem('fx_customerId'));
+        } else {
+            buttonMaster('logged out', 'DOMContentLoaded');
+            pushPagesense('session-initiated', null);
+        }
+    });
+}
 
 // Authentication and session management
 async function authenticateCustomer() {
@@ -230,10 +247,29 @@ function getFriendlyDate() {
     });
 }
 
-// Function to push Pagesense tracking (modified to prevent stack overflow)
+// Function to push Pagesense tracking (corrected to avoid infinite recursion)
 function pushPagesense(actionType, customerId) {
-    // Use the updated implementation to avoid infinite loops or unnecessary calls
-    pushPagesense(actionType, customerId);
+    // Prevent recursive calls by using a lock mechanism
+    if (window.pushPagesenseLock) {
+        console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
+        return;
+    }
+
+    window.pushPagesenseLock = true;
+
+    // Push action to PageSense using the modified version to prevent unnecessary recursion
+    try {
+        if (typeof window.pushPagesense === 'function') {
+            window.pushPagesense(actionType, customerId);
+            console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+        } else {
+            console.error('Pagesense function is not defined on the window object.');
+        }
+    } catch (error) {
+        console.error('Error while pushing Pagesense action:', error);
+    } finally {
+        window.pushPagesenseLock = false;
+    }
 }
 
 // Helper function to update _embedded data in localStorage
@@ -262,10 +298,10 @@ window.updateEmbeddedData = updateEmbeddedData;
 
 document.addEventListener('authenticated', () => {
     const scriptsToLoad = [
-        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomerzoom.js', id: 'fxcustomerzoom', initFunction: 'customerZoomInit' },
+        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomerzoom.js', id: 'fxcustomerzoom', initFunction: 'customerzoomInit' },
         { src: 'https://sportdogfood.github.io/sport-static-js-server/fxsubscriptions.js', id: 'fxsubscriptions', initFunction: 'subscriptionsInit' },
         { src: 'https://sportdogfood.github.io/sport-static-js-server/fxtransactions.js', id: 'fxtransactions', initFunction: 'transactionsInit' },
-        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxAttributes.js', id: 'fxattributes', initFunction: 'fxAttributesInit' }
+        { src: 'https://sportdogfood.github.io/sport-static-js-server/fxattributes.js', id: 'fxattributes', initFunction: 'fxattributesInit' }
     ];
 
     scriptsToLoad.forEach(scriptInfo => {
