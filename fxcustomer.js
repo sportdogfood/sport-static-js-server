@@ -1,6 +1,6 @@
 // Counter to track retries for FoxyCart fetch 
 let retryCountFoxy = 0;
-const maxRetries = 4; // Maximum number of retries for fetching data
+const maxRetriesFoxy = 4; // Maximum number of retries for fetching data
 let pollingCountFoxy = 0;
 const maxPollingAttemptsFoxy = 4; // Maximum number of polling attempts
 
@@ -25,7 +25,7 @@ function getValueFromChain() {
 
 // Poll for FoxyCart data with retry mechanism
 async function poll() {
-    if (retryCountFoxy >= maxRetries) {
+    if (retryCountFoxy >= maxRetriesFoxy) {
         console.log("Retry limit reached for FoxyCart customer, aborting.");
         return;
     }
@@ -34,7 +34,7 @@ async function poll() {
 
     if (!fxCustomerId) {
         retryCountFoxy++;
-        console.log(`FoxyCart customer ID not found, retrying in 5 seconds (Attempt ${retryCountFoxy}/${maxRetries})`);
+        console.log(`FoxyCart customer ID not found, retrying in 5 seconds (Attempt ${retryCountFoxy}/${maxRetriesFoxy})`);
         setTimeout(poll, 5000); // Retry after 5 seconds if not found
         return;
     }

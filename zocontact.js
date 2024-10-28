@@ -1,6 +1,6 @@
 // Counter to track retries for CRM fetch 
 let retryCountCRM = 0;
-const maxRetries = 4; // Maximum number of retries for fetching CRM data
+const maxRetriesCRM = 4; // Maximum number of retries for fetching CRM data
 let pollingCount = 0;
 const maxPollingAttempts = 4; // Maximum number of polling attempts for CRM data
 
@@ -41,7 +41,7 @@ function checkAndPollCRMContact() {
 
 // Poll for CRM data with retry mechanism
 async function poll() {
-    if (retryCountCRM >= maxRetries) {
+    if (retryCountCRM >= maxRetriesCRM) {
         console.log("Retry limit reached for CRM contact, aborting.");
         return;
     }
@@ -49,8 +49,8 @@ async function poll() {
     let crmContactId = getCRMValueFromChain();
     if (!crmContactId) {
         retryCountCRM++;
-        if (retryCountCRM < maxRetries) {
-            console.log(`CRM contact ID not found, retrying in 5 seconds (Attempt ${retryCountCRM}/${maxRetries})`);
+        if (retryCountCRM < maxRetriesCRM) {
+            console.log(`CRM contact ID not found, retrying in 5 seconds (Attempt ${retryCountCRM}/${maxRetriesCRM})`);
             setTimeout(poll, 5000); // Retry after 5 seconds if not found
         } else {
             console.error("CRM Contact ID still missing after retries. Aborting.");
