@@ -1,7 +1,7 @@
 // fxattributes.js
 
 // Function to handle user attributes with retry and prevention of redundant executions
-function fxattributesInit(retryCount = 0) {
+function attributesInit(retryCount = 0) {
   try {
       const userZoom = JSON.parse(localStorage.getItem('userZoom'));
 
@@ -9,7 +9,7 @@ function fxattributesInit(retryCount = 0) {
       if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
           if (retryCount < 5) { // Retry up to 5 times
               console.warn('User attributes not available, retrying...');
-              setTimeout(() => fxattributesInit(retryCount + 1), 1000); // Retry after 1 second
+              setTimeout(() => attributesInit(retryCount + 1), 1000); // Retry after 1 second
           } else {
               console.error('User attributes not available after multiple retries.');
           }
@@ -44,7 +44,7 @@ function fxattributesInit(retryCount = 0) {
       // Update session
       localStorage.setItem('userSession', JSON.stringify(userSession));
   } catch (error) {
-      console.error('An error occurred in fxattributesInit:', error);
+      console.error('An error occurred in attributesInit:', error);
   }
 }
 
@@ -55,4 +55,4 @@ function getFriendlyDateTime() {
 }
 
 // Make sure the init function is available globally if needed
-window.fxattributesInit = fxattributesInit;
+window.attributesInit = attributesInit;
