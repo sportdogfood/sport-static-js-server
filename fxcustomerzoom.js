@@ -21,7 +21,16 @@ async function fetchCustomerData(customerId) {
         if (responseData) {
             console.log('Customer data:', responseData);
 
-            // Store customer data in localStorage
+            // Retrieve existing userZoom from localStorage
+            let existingUserZoom = JSON.parse(localStorage.getItem("userZoom")) || {};
+
+            // Check if attributesProcessed already exists in userZoom
+            if (existingUserZoom._embedded?.['fx:attributesProcessed']) {
+                console.info('Attributes have already been processed in userZoom. Keeping existing attributes.');
+                responseData._embedded['fx:attributesProcessed'] = existingUserZoom._embedded['fx:attributesProcessed'];
+            }
+
+            // Store updated customer data in localStorage
             localStorage.setItem("userZoom", JSON.stringify(responseData));
 
             // Safely call initializeAndUpdate if it exists
@@ -39,9 +48,11 @@ async function fetchCustomerData(customerId) {
                 console.error('updateUserSession function not found in global scope.');
             }
 
-            // Call attributesInit() after successful data retrieval
-            if (typeof window.attributesInit === 'function') {
-                window.attributesInit(); // Ensures attributesInit runs only when data is ready
+            // Call attributesInit() after successful data retrieval, only if attributesProcessed is not set
+            if (typeof window.attributesInit === 'function' && !responseData._embedded?.['fx:attributesProcessed']) {
+                window.attributesInit(); // Ensures attributesInit runs only when data is ready and not yet processed
+            } else if (responseData._embedded?.['fx:attributesProcessed']) {
+                console.info('Attributes have already been processed. Skipping attributesInit.');
             } else {
                 console.error('attributesInit function not found in global scope.');
             }
