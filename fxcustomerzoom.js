@@ -22,12 +22,6 @@ async function fetchCustomerData(customerId) {
 
             // Store customer data in localStorage
             localStorage.setItem("userZoom", JSON.stringify(responseData));
-            
-            if (typeof window.updateUserState === 'function') {
-                window.updateUserState('Zoom', 'available');
-            } else {
-                console.error('updateUserState function not found in global scope.');
-            }
 
             // Safely call initializeAndUpdate if it exists
             if (typeof window.initializeAndUpdate === 'function') {
