@@ -1,3 +1,4 @@
+// Log to confirm script execution
 console.log('fxcustomerzoom.js is executing properly.');
 
 // Define the fetchCustomerData function
@@ -107,3 +108,13 @@ if (typeof window.updateUserSession !== 'function') {
         console.log("Updated window.thisUser:", window.thisUser);
     };
 }
+
+// Ensure the initialization function is called when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Attempting to call fxcustomerzoomInit after DOM content is loaded.');
+    if (typeof window.fxcustomerzoomInit === 'function') {
+        window.fxcustomerzoomInit();
+    } else {
+        console.error('fxcustomerzoomInit function not found during DOMContentLoaded.');
+    }
+});
