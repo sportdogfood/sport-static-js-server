@@ -22,7 +22,7 @@ async function fetchCustomerData(customerId) {
             console.log('Customer data:', responseData);
 
             // Store customer data in localStorage
-            localStorage.setItem("fxcustomerzoom", JSON.stringify(responseData));
+            localStorage.setItem("userZoom", JSON.stringify(responseData));
 
             // Safely call initializeAndUpdate if it exists
             if (typeof window.initializeAndUpdate === 'function') {
