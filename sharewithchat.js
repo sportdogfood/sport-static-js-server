@@ -264,7 +264,8 @@ function pollUserSession() {
         userZoom,
         userContact,
         userCustomer,
-        userGeo
+        userGeo,
+        userDesk,
     } = SessionManager.session;
 
     // Track current page (thisPage) and last visited page (lastPage)
@@ -284,8 +285,8 @@ function pollUserSession() {
     const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
     const currentUserState = {
         status: status || 'unknown',
-        lastScriptRun: lastScriptRun || 'unknown',
-        lastUpdate: lastUpdate || 'unknown',
+        lastScriptRun: lastScriptRun || currentTime, // If not available, set to currentTime
+        lastUpdate: lastUpdate || currentTime,
         fx_customer_sso: fx_customer_sso || 'unknown',
         fx_customer_jwt: fx_customer_jwt || 'unknown',
         fx_customerId: window.fx_customerId || 'unknown',
@@ -294,6 +295,7 @@ function pollUserSession() {
         userContact: userContact || 'unknown',
         userCustomer: userCustomer || 'unknown',
         userGeo: userGeo || 'unknown',
+        userDesk: userDesk || 'unknown',
         thisPage,
         lastPage,
         loginButtonState,
@@ -305,15 +307,41 @@ function pollUserSession() {
     localStorage.setItem('userState', JSON.stringify(currentUserState));
     console.log("User state updated:", currentUserState);
 
+    // Update SessionManager's session data
+    SessionManager.updateSession({
+        userMeta: {
+            lastScriptRun: currentTime,
+            lastUpdate: currentTime
+        }
+    });
+
     // Auto logout check
     if (Date.now() > pollingEndTime) {
         console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
         SessionManager.handleLogout();
+        return;
     }
 
-    // Initialization conditions
-    if (window.fx_customerId && (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID)) {
-        SessionManager.initializeUserDesk(window.fx_customerId);
+    // Initialization conditions based on the updated Section 13.2
+    if (window.fx_customerId) {
+        if (!SessionManager.session.userCustomer) {
+            console.log("User customer data not found. Initializing user customer...");
+            SessionManager.initializeUserCustomer();
+        }
+        if (!SessionManager.session.userContact) {
+            console.log("User contact data not found. Initializing user contact...");
+            SessionManager.initializeUserContact();
+        }
+        if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
+            console.log("User desk data not found. Initializing user desk...");
+            SessionManager.initializeUserDesk(window.fx_customerId);
+        }
+        if (!SessionManager.session.userZoom) {
+            console.log("User zoom data not found. Initializing user zoom...");
+            SessionManager.initializeUserZoom();
+        }
+    } else {
+        console.warn("No valid customer ID found during polling. Skipping initialization tasks.");
     }
 }
 
@@ -337,6 +365,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========== end_3.3_session_state_polling =========== */
+
+
 
 
 
@@ -988,7 +1018,7 @@ SessionManager.handleLogout = function() {
   
 /* =========== start_13.2_user_initialization =========== */
 
-// Initialize userZoom
+// Initialize userZoom 
 SessionManager.initializeUserZoom = function() {
     console.log("Initializing userZoom...");
 };
@@ -1038,9 +1068,62 @@ SessionManager.initializeUserDesk = function(customerId) {
 
 // Initialize userCustomer
 SessionManager.initializeUserCustomer = function() {
-    console.log("Initializing user customer details...");
-    // Placeholder
+    if (!localStorage.getItem('userCustomer')) {
+        console.log("Initializing user customer details...");
+        const scriptInfo = {
+            src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js',
+            id: 'fxcustomer',
+            initFunction: 'fxCustomerInit'
+        };
+
+        loadAndExecuteScript(scriptInfo);
+    }
 };
+
+// Initialize userContact
+SessionManager.initializeUserContact = function() {
+    if (!localStorage.getItem('userContact')) {
+        console.log("Initializing user contact details...");
+        const scriptInfo = {
+            src: 'https://sportdogfood.github.io/sport-static-js-server/zocontact.js',
+            id: 'zocontact',
+            initFunction: 'zoContactInit'
+        };
+
+        loadAndExecuteScript(scriptInfo);
+    }
+};
+
+// Helper to load scripts and execute initialization functions
+function loadAndExecuteScript({ src, id, initFunction }) {
+    if (!document.getElementById(id)) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = src;
+        scriptElement.id = id;
+
+        scriptElement.onload = () => {
+            console.log(`${id}.js loaded successfully`);
+            if (typeof window[initFunction] === 'function') {
+                window[initFunction]();
+            } else {
+                console.error(`${initFunction} function not found in ${id}.js`);
+            }
+        };
+
+        scriptElement.onerror = () => {
+            console.error(`Failed to load ${id}.js`);
+        };
+
+        document.head.appendChild(scriptElement);
+    } else {
+        console.log(`${id}.js is already loaded.`);
+        if (typeof window[initFunction] === 'function') {
+            window[initFunction]();
+        } else {
+            console.error(`${initFunction} function not found`);
+        }
+    }
+}
 
 // Initialize userThrive
 SessionManager.initializeUserThrive = function() {
@@ -1065,11 +1148,9 @@ SessionManager.initializeUserTrans = function() {
 // Initialize userGetAgain
 SessionManager.initializeUserGetAgain = function() {
     console.log("Initializing user 'get again' details...");
-    // Placeholder
 };
 
 /* =========== end_13.2_user_initialization =========== */
-
 
 /* =========== start_14_authandfxatt =========== */
 document.addEventListener('authenticated', () => {

@@ -19,7 +19,8 @@ function pollUserSession() {
         userZoom,
         userContact,
         userCustomer,
-        userGeo
+        userGeo,
+        userDesk,
     } = SessionManager.session;
 
     // Track current page (thisPage) and last visited page (lastPage)
@@ -39,8 +40,8 @@ function pollUserSession() {
     const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
     const currentUserState = {
         status: status || 'unknown',
-        lastScriptRun: lastScriptRun || 'unknown',
-        lastUpdate: lastUpdate || 'unknown',
+        lastScriptRun: lastScriptRun || currentTime, // If not available, set to currentTime
+        lastUpdate: lastUpdate || currentTime,
         fx_customer_sso: fx_customer_sso || 'unknown',
         fx_customer_jwt: fx_customer_jwt || 'unknown',
         fx_customerId: window.fx_customerId || 'unknown',
@@ -49,6 +50,7 @@ function pollUserSession() {
         userContact: userContact || 'unknown',
         userCustomer: userCustomer || 'unknown',
         userGeo: userGeo || 'unknown',
+        userDesk: userDesk || 'unknown',
         thisPage,
         lastPage,
         loginButtonState,
@@ -59,6 +61,14 @@ function pollUserSession() {
     // Update `userState` in local storage
     localStorage.setItem('userState', JSON.stringify(currentUserState));
     console.log("User state updated:", currentUserState);
+
+    // Update SessionManager's session data
+    SessionManager.updateSession({
+        userMeta: {
+            lastScriptRun: currentTime,
+            lastUpdate: currentTime
+        }
+    });
 
     // Auto logout check
     if (Date.now() > pollingEndTime) {
@@ -80,6 +90,10 @@ function pollUserSession() {
         if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
             console.log("User desk data not found. Initializing user desk...");
             SessionManager.initializeUserDesk(window.fx_customerId);
+        }
+        if (!SessionManager.session.userZoom) {
+            console.log("User zoom data not found. Initializing user zoom...");
+            SessionManager.initializeUserZoom();
         }
     } else {
         console.warn("No valid customer ID found during polling. Skipping initialization tasks.");
