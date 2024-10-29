@@ -1,5 +1,5 @@
 
-fxattributesjs
+//fxattributesjs
 // Function to handle user attributes with a single controlled execution
 function attributesInit(retryCount = 0) {
     try {

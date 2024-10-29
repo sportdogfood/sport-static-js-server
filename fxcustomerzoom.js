@@ -1,4 +1,4 @@
-fxcustomerzoomjs
+//fxcustomerzoomjs
 // Log to confirm script execution 
 console.log('fxcustomerzoom.js is executing properly.');
 
