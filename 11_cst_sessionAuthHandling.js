@@ -1,4 +1,5 @@
 /* =========== start_11_sessionAuthHandle =========== */
+
 // Function to authenticate customer
 async function authenticateCustomer() {
     const email = document.getElementById('em')?.value;
@@ -35,4 +36,16 @@ async function authenticateCustomer() {
         displayAuthResult(`Error: ${error.message}`);
     }
 }
+
+// Function to display authentication result
+function displayAuthResult(message) {
+    const resultElement = document.getElementById('authResult');
+    if (resultElement) {
+        resultElement.textContent = message;
+        resultElement.style.display = 'block';
+    } else {
+        console.error('Authentication result element not found in the DOM.');
+    }
+}
+
 /* =========== end_11_sessionAuthHandle =========== */
