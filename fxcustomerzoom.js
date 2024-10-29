@@ -1,4 +1,5 @@
-// Log to confirm script execution
+fxcustomerzoomjs
+// Log to confirm script execution 
 console.log('fxcustomerzoom.js is executing properly.');
 
 // Define the fetchCustomerData function
@@ -132,3 +133,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('customerzoomInit function not found during DOMContentLoaded.');
     }
 });
+
+
+
