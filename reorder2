@@ -1,0 +1,159 @@
+// Reorder2: User Interaction Management & Event Handling
+
+// Main function to parse query params and populate the form
+function populateFormFromParams() {
+    const params = new URLSearchParams(window.location.search);
+    const loginForm = document.getElementById('loginForm');
+
+    if (!loginForm) {
+        console.error("Login form not found");
+        return;
+    }
+
+    // Populate form fields based on params
+    const emailField = loginForm.querySelector('#em');
+    const passwordField = loginForm.querySelector('#passwordInput');
+    const customerIdField = loginForm.querySelector('#cid');
+
+    if (params.has('em') && emailField) emailField.value = params.get('em');
+    if (params.has('pw') && passwordField) passwordField.value = params.get('pw');
+    if (params.has('cid') && customerIdField) customerIdField.value = params.get('cid');
+
+    // Specific checks for admin
+    if (params.get('admin') === '1527') {
+        const secField = loginForm.querySelector('#sec');
+        const stnField = loginForm.querySelector('#stn');
+
+        if (params.has('sec') && secField) {
+            secField.value = params.get('sec');
+        }
+
+        if (params.has('stn') && stnField) {
+            stnField.value = params.get('stn');
+        }
+    }
+}
+
+// Event listeners for DOM content loaded
+if (!window.domContentLoadedListenerAdded) {
+    window.domContentLoadedListenerAdded = true;
+    document.addEventListener('DOMContentLoaded', () => {
+        SessionManager.initializeSession();
+        populateFormFromParams(); // Populate the form on page load
+
+        // Add event listeners for buttons
+        const buttons = [
+            { id: 'login-button', handler: () => {
+                SessionManager.handleLogin();
+                debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
+            }},
+            { id: 'logout-button', handler: () => {
+                SessionManager.handleLogout();
+                debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+            }},
+            { id: 'auth-button', handler: () => {
+                authenticateCustomer();
+                debouncedPushPagesense('auth-click', null);
+            }}
+        ];
+
+        buttons.forEach(({ id, handler }) => {
+            const button = document.getElementById(id);
+            if (button && !button.listenerAdded) {
+                button.addEventListener('click', handler);
+                button.listenerAdded = true;
+            }
+        });
+
+        // Handle session state on load
+        if (SessionManager.isUserAuthenticated()) {
+            buttonMaster('logged in', 'DOMContentLoaded');
+            debouncedPushPagesense('session-restored', localStorage.getItem('fx_customerId'));
+        } else {
+            buttonMaster('logged out', 'DOMContentLoaded');
+            debouncedPushPagesense('session-initiated', null);
+        }
+    });
+}
+
+// Define buttonMaster to manage button states
+function defineButtonMaster() {
+    window.buttonMaster = function(status, caller) {
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const statusDiv = document.getElementById('status-div');
+
+        const friendlyDate = getFriendlyDate();
+        if (statusDiv) {
+            statusDiv.textContent = `${status} at ${friendlyDate} by ${caller}`;
+            statusDiv.style.display = 'block';
+        }
+
+        if (status === 'logged in') {
+            if (loginButton) loginButton.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'inline';
+        } else {
+            if (loginButton) loginButton.style.display = 'inline';
+            if (logoutButton) logoutButton.style.display = 'none';
+        }
+    };
+}
+
+defineButtonMaster();
+
+// Debounce function to limit the frequency of pushPagesense calls
+function debounce(func, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+// Debounced version of pushPagesense
+const debouncedPushPagesense = debounce(pushPagesense, 2000);
+
+// Function to push Pagesense tracking (corrected to avoid infinite recursion)
+function pushPagesense(actionType, customerId) {
+    // Prevent recursive calls by using a lock mechanism
+    if (window.pushPagesenseLock) {
+        console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
+        return;
+    }
+
+    // Ensure that PageSense is loaded before pushing events
+    if (typeof window.pagesense === 'undefined') {
+        console.warn('PageSense is not yet loaded. Skipping action:', actionType);
+        return;
+    }
+
+    window.pushPagesenseLock = true;
+
+    try {
+        if (typeof window.pushPagesense === 'function') {
+            window.pushPagesense(actionType, customerId);
+            console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+        } else {
+            console.error('Pagesense function is not defined on the window object.');
+        }
+    } catch (error) {
+        console.error('Error while pushing Pagesense action:', error);
+    } finally {
+        window.pushPagesenseLock = false;
+    }
+}
+
+// Helper function to get friendly date format
+function getFriendlyDate() {
+    return new Date().toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+        hour12: true,
+        weekday: 'short',
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}

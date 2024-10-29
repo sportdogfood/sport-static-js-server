@@ -97,7 +97,7 @@ SessionManager.initializeUserCart = function() {
 
 SessionManager.initializeUserDesk = function(customerId) {
     // Ensure fx_customerId is valid and userSession.userDesk.deskID is not present
-    if (window.fx_customerId && userSession?.userDesk?.deskID == null) {
+    if (window.fx_customerId && userSession?.userDesk?.ID == null) {
       console.log("Initializing user desk details...");
       
       // Load the userdesk.js script dynamically if it's not already loaded

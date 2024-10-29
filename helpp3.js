@@ -1,4 +1,3 @@
-
 type="module"
 
 // Helper function to get friendly date format
@@ -197,6 +196,7 @@ const SessionManager = {
 };
 
 // Global user object
+// Global user object
 window.thisUser = {};
 
 // Helper function to get the current date and time in a friendly format
@@ -315,6 +315,9 @@ function initializeAndRun(calledBy) {
     // Set window.isAuthenticated to true or false
     window.isAuthenticated = updateObject.status === 'logged in';
 }
+
+// Attach `initializeAndRun` to `window` to make it globally accessible
+window.initializeAndRun = initializeAndRun;
 
 
 // Main function to parse query params and populate the form
@@ -569,7 +572,11 @@ document.addEventListener('authenticated', () => {
         console.error(`Failed to load ${scriptInfo.id}.js`);
       };
 
-      document.body.appendChild(scriptElement);
+      if (document.body) {
+        document.body.appendChild(scriptElement);
+      } else {
+        console.error("document.body is null, unable to append script element.");
+      }
     } else {
       console.log(`${scriptInfo.id}.js is already loaded`);
       if (typeof window[scriptInfo.initFunction] === 'function') {

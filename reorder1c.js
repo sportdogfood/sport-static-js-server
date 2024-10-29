@@ -319,6 +319,7 @@ if (!window.domContentLoadedListenerAdded) {
         }
     });
 }
+
 // Define buttonMaster to manage button states
 function defineButtonMaster() {
     window.buttonMaster = function(status, caller) {
@@ -342,5 +343,4 @@ function defineButtonMaster() {
     };
 }
 
-// Initialize buttonMaster to make it globally accessible
 defineButtonMaster();

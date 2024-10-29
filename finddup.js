@@ -57,6 +57,27 @@ function debounce(func, delay) {
 // Debounced version of pushPagesense
 const debouncedPushPagesense = debounce(pushPagesense, 2000);
 
+// Function to update _embedded data in localStorage
+// Helper function to update _embedded data in localStorage
+function updateEmbeddedData(key, data) {
+    let userZoom = JSON.parse(localStorage.getItem('userZoom')) || {};
+
+    if (!userZoom._embedded) {
+        userZoom._embedded = {};
+    }
+
+    userZoom._embedded[key] = data;
+
+    console.log(`Updating _embedded with key: ${key}, data:`, data);
+    localStorage.setItem('userZoom', JSON.stringify(userZoom));
+    localStorage.setItem(`debug_update_${key}`, JSON.stringify(data));
+    console.log(`Set debug_update_${key} in localStorage:`, data);
+}
+
+// Attach updateEmbeddedData to window to make it globally accessible
+window.updateEmbeddedData = updateEmbeddedData;
+
+
 // Reorder1: Session Initialization & Management
 
 // Define the SessionManager to handle all session-related tasks
@@ -239,7 +260,7 @@ const SessionManager = {
             console.log("Triggering findCustomer with JWT token.");
             // Ensure that findCustomer is defined elsewhere in your codebase
             if (typeof findCustomer === 'function') {
-                findCustomer(jwtToken);
+             //   findCustomer(jwtToken);
             } else {
                 console.error("findCustomer function is not defined.");
             }
@@ -302,6 +323,129 @@ const SessionManager = {
 
 // Attach the SessionManager to window to make it globally accessible
 window.SessionManager = SessionManager;
+
+// Main function to parse query params and populate the form
+function populateFormFromParams() {
+    const params = new URLSearchParams(window.location.search);
+    const loginForm = document.getElementById('loginForm');
+
+    if (!loginForm) {
+        console.error("Login form not found");
+        return;
+    }
+
+    // Populate form fields based on params
+    const emailField = loginForm.querySelector('#em');
+    const passwordField = loginForm.querySelector('#passwordInput');
+    const customerIdField = loginForm.querySelector('#cid');
+
+    if (params.has('em') && emailField) emailField.value = params.get('em');
+    if (params.has('pw') && passwordField) passwordField.value = params.get('pw');
+    if (params.has('cid') && customerIdField) customerIdField.value = params.get('cid');
+
+    // Specific checks for admin
+    if (params.get('admin') === '1527') {
+        const secField = loginForm.querySelector('#sec');
+        const stnField = loginForm.querySelector('#stn');
+
+        if (params.has('sec') && secField) {
+            secField.value = params.get('sec');
+        }
+
+        if (params.has('stn') && stnField) {
+            stnField.value = params.get('stn');
+        }
+    }
+}
+
+// Event listeners for DOM content loaded
+if (!window.domContentLoadedListenerAdded) {
+    window.domContentLoadedListenerAdded = true;
+    document.addEventListener('DOMContentLoaded', () => {
+        SessionManager.initializeSession();
+        populateFormFromParams(); // Populate the form on page load
+
+        // Function to attach event listeners to login, logout, and auth buttons
+        function attachButtonEventListeners() {
+            const buttons = [
+                { id: 'login-button', handler: () => {
+                    SessionManager.handleLogin();
+                    debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
+                }},
+                { id: 'logout-button', handler: () => {
+                    SessionManager.handleLogout();
+                    debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+                }},
+                { id: 'auth-button', handler: () => {
+                    authenticateCustomer();
+                    debouncedPushPagesense('auth-click', null);
+                }}
+            ];
+
+            buttons.forEach(({ id, handler }) => {
+                const button = document.getElementById(id);
+                if (button && !button.listenerAdded) {
+                    button.addEventListener('click', handler);
+                    button.listenerAdded = true;
+                }
+            });
+        }
+
+        // Attach event listeners if buttons are present on initial load
+        attachButtonEventListeners();
+
+        // Use MutationObserver to ensure event listeners are attached if buttons load asynchronously
+        const observer = new MutationObserver(() => {
+            const loginButton = document.getElementById('login-button');
+            const logoutButton = document.getElementById('logout-button');
+            if (loginButton && logoutButton) {
+                observer.disconnect(); // Stop observing once buttons are found
+                attachButtonEventListeners(); // Attach event listeners to buttons
+                buttonMaster(SessionManager.isUserAuthenticated() ? 'logged in' : 'logged out', 'observer');
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Handle session state on load to initialize button states
+        if (SessionManager && typeof SessionManager.isUserAuthenticated === 'function' ? SessionManager.isUserAuthenticated() : false) {
+            buttonMaster('logged in', 'DOMContentLoaded');
+            debouncedPushPagesense('session-restored', localStorage.getItem('fx_customerId'));
+        } else {
+            buttonMaster('logged out', 'DOMContentLoaded');
+            debouncedPushPagesense('session-initiated', null);
+        }
+    });
+}
+
+// Define buttonMaster to manage button states
+function defineButtonMaster() {
+    window.buttonMaster = function(status, caller) {
+        const loginButton = document.getElementById('login-button');
+        const logoutButton = document.getElementById('logout-button');
+        const statusDiv = document.getElementById('status-div');
+
+        const friendlyDate = getFriendlyDate();
+        if (statusDiv) {
+            statusDiv.textContent = `${status} at ${friendlyDate} by ${caller}`;
+            statusDiv.style.display = 'block';
+        }
+
+        console.log(`Setting button state to ${status} by ${caller}`);
+        
+        if (status === 'logged in') {
+            if (loginButton) loginButton.style.display = 'none';
+            if (logoutButton) logoutButton.style.display = 'inline';
+        } else {
+            if (loginButton) loginButton.style.display = 'inline';
+            if (logoutButton) logoutButton.style.display = 'none';
+        }
+    };
+}
+
+defineButtonMaster();
+
+
 
 // Reorder2: User Interaction Management & Event Handling
 
@@ -381,30 +525,68 @@ if (!window.domContentLoadedListenerAdded) {
     });
 }
 
-// Define buttonMaster to manage button states
-function defineButtonMaster() {
-    window.buttonMaster = function(status, caller) {
-        const loginButton = document.getElementById('login-button');
-        const logoutButton = document.getElementById('logout-button');
-        const statusDiv = document.getElementById('status-div');
 
-        const friendlyDate = getFriendlyDate();
-        if (statusDiv) {
-            statusDiv.textContent = `${status} at ${friendlyDate} by ${caller}`;
-            statusDiv.style.display = 'block';
+
+// Event listeners for DOM content loaded
+if (!window.domContentLoadedListenerAdded) {
+    window.domContentLoadedListenerAdded = true;
+    document.addEventListener('DOMContentLoaded', () => {
+        SessionManager.initializeSession();
+        populateFormFromParams(); // Populate the form on page load
+
+        // Function to attach event listeners to login, logout, and auth buttons
+        function attachButtonEventListeners() {
+            const buttons = [
+                { id: 'login-button', handler: () => {
+                    SessionManager.handleLogin();
+                    debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
+                }},
+                { id: 'logout-button', handler: () => {
+                    SessionManager.handleLogout();
+                    debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+                }},
+                { id: 'auth-button', handler: () => {
+                    authenticateCustomer();
+                    debouncedPushPagesense('auth-click', null);
+                }}
+            ];
+
+            buttons.forEach(({ id, handler }) => {
+                const button = document.getElementById(id);
+                if (button && !button.listenerAdded) {
+                    button.addEventListener('click', handler);
+                    button.listenerAdded = true;
+                }
+            });
         }
 
-        if (status === 'logged in') {
-            if (loginButton) loginButton.style.display = 'none';
-            if (logoutButton) logoutButton.style.display = 'inline';
+        // Attach event listeners if buttons are present on initial load
+        attachButtonEventListeners();
+
+        // Use MutationObserver to ensure event listeners are attached if buttons load asynchronously
+        const observer = new MutationObserver(() => {
+            const loginButton = document.getElementById('login-button');
+            const logoutButton = document.getElementById('logout-button');
+            if (loginButton && logoutButton) {
+                observer.disconnect(); // Stop observing once buttons are found
+                attachButtonEventListeners(); // Attach event listeners to buttons
+                buttonMaster(SessionManager.isUserAuthenticated() ? 'logged in' : 'logged out', 'observer');
+            }
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Handle session state on load to initialize button states
+        if (SessionManager && typeof SessionManager.isUserAuthenticated === 'function' ? SessionManager.isUserAuthenticated() : false) {
+            buttonMaster('logged in', 'DOMContentLoaded');
+            debouncedPushPagesense('session-restored', localStorage.getItem('fx_customerId'));
         } else {
-            if (loginButton) loginButton.style.display = 'inline';
-            if (logoutButton) logoutButton.style.display = 'none';
+            buttonMaster('logged out', 'DOMContentLoaded');
+            debouncedPushPagesense('session-initiated', null);
         }
-    };
+    });
 }
 
-defineButtonMaster();
 
 // Debounce function to limit the frequency of pushPagesense calls
 function debounce(func, delay) {
