@@ -1,4 +1,3 @@
-
 // Function to handle user attributes with a single controlled execution
 function attributesInit(retryCount = 0) {
     try {
@@ -83,3 +82,14 @@ function getFriendlyDateTime() {
 
 // Make sure the init function is available globally if needed
 window.attributesInit = attributesInit;
+
+// Ensure attributesInit runs only if userZoom data is guaranteed to be available
+document.addEventListener('DOMContentLoaded', () => {
+    const userZoomRaw = localStorage.getItem('userZoom');
+    if (userZoomRaw) {
+        console.log('UserZoom data is available. Attempting to initialize attributes.');
+        window.attributesInit();
+    } else {
+        console.warn('UserZoom data is not available at DOMContentLoaded. attributesInit will not run automatically.');
+    }
+});
