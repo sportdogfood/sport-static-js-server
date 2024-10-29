@@ -1,0 +1,96 @@
+/* =========== start_13.2_user_initialization =========== */
+
+// Initialize userZoom
+SessionManager.initializeUserZoom = function() {
+    if (window.fx_customerId && !this.session.userZoom) {
+        console.log("Initializing userZoom...");
+    }
+};
+
+// Initialize userCart
+SessionManager.initializeUserCart = function() {
+    if (window.fx_customerId && !this.session.userCart) {
+        console.log("Initializing user cart...");
+    }
+};
+
+// Initialize userDesk
+SessionManager.initializeUserDesk = function(customerId) {
+    if (window.fx_customerId && !this.session.userDesk) {
+        console.log("Attempting to initialize user desk details...");
+
+        // Check if UserDesk library is already loaded
+        if (typeof UserDesk === 'undefined') {
+            const script = document.createElement('script');
+            script.src = 'https://sportdogfood.github.io/sport-static-js-server/userdesk.js'; // Update the path as needed
+
+            script.onload = function() {
+                console.log("userdesk.js loaded successfully");
+                if (typeof UserDesk.initialize === 'function') {
+                    UserDesk.initialize(customerId);
+                } else {
+                    console.error("UserDesk.initialize function not found in userdesk.js");
+                }
+            };
+
+            script.onerror = function() {
+                console.error("Failed to load userdesk.js");
+            };
+
+            document.head.appendChild(script);
+        } else {
+            // UserDesk is already loaded, directly call initialize
+            if (typeof UserDesk.initialize === 'function') {
+                UserDesk.initialize(customerId);
+            } else {
+                console.error("UserDesk.initialize function not found");
+            }
+        }
+    }
+};
+
+// Initialize userCustomer
+SessionManager.initializeUserCustomer = function() {
+    if (window.fx_customerId && !this.session.userCustomer) {
+        console.log("Initializing user customer details...");
+        // Placeholder
+    }
+};
+
+// Initialize userThrive
+SessionManager.initializeUserThrive = function() {
+    if (window.fx_customerId && !this.session.userThrive) {
+        console.log("Initializing user thrive details...");
+    }
+};
+
+// Initialize userAuto
+SessionManager.initializeUserAuto = function() {
+    if (window.fx_customerId && !this.session.userAuto) {
+        console.log("Initializing user auto details...");
+    }
+};
+
+// Initialize userTrack
+SessionManager.initializeUserTrack = function() {
+    if (window.fx_customerId && !this.session.userTrack) {
+        console.log("Initializing user tracking details...");
+    }
+};
+
+// Initialize userTrans
+SessionManager.initializeUserTrans = function() {
+    if (window.fx_customerId && !this.session.userTrans) {
+        console.log("Initializing user transaction details...");
+    }
+};
+
+// Initialize userGetAgain
+SessionManager.initializeUserGetAgain = function() {
+    if (window.fx_customerId && !this.session.userGetAgain) {
+        console.log("Initializing user 'get again' details...");
+        // Placeholder
+    }
+};
+
+/* =========== end_13.2_user_initialization =========== */

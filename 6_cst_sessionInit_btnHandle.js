@@ -1,4 +1,3 @@
-
 /* =========== start_6_sessioninitial_buttonhandle =========== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,8 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('SessionManager.initializeSession is not a function or is undefined');
     }
-    
-    populateFormFromParams(); // Populate the form on page load
+
+    const currentPath = window.location.pathname;
+
+    // Only populate the form if the current path is '/login'
+    if (currentPath === '/login') {
+        populateFormFromParams();
+    }
 
     // Function to attach button event listeners
     function attachButtonEventListeners() {
@@ -58,6 +62,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (button && !button.listenerAdded) {
                 button.addEventListener('click', handler);
                 button.listenerAdded = true;
+            } else if (!button) {
+                console.log(`[EventListener] Button with ID: ${id} not found on the current page. Skipping.`);
             }
         });
     }
@@ -69,8 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginButton = document.getElementById('login-button');
         const logoutButton = document.getElementById('logout-button');
         const statusDiv = document.getElementById('status-div');
-    
-        if (loginButton && logoutButton) {
+
+        if (loginButton && logoutButton && statusDiv) {
             observer.disconnect(); // Stop observing once buttons are found
             attachButtonEventListeners(); // Attach event listeners to buttons
             buttonMaster(SessionManager && typeof SessionManager.isUserAuthenticated === 'function' && SessionManager.isUserAuthenticated() ? 'logged in' : 'logged out', 'observer');

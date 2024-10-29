@@ -42,13 +42,19 @@ function attachButtonEventListeners() {
 
     buttons.forEach(({ id, handler }) => {
         const button = document.getElementById(id);
-        if (button && !button.listenerAdded) {
-            console.log(`[EventListener] Adding click event listener to button: ${id}`);
-            button.addEventListener('click', handler);
-            button.listenerAdded = true;
-        } else if (!button) {
-            console.error(`[EventListener] Button with ID: ${id} not found in the DOM.`);
+        if (button) {
+            if (!button.listenerAdded) {
+                console.log(`[EventListener] Adding click event listener to button: ${id}`);
+                button.addEventListener('click', handler);
+                button.listenerAdded = true;
+            } else {
+                console.log(`[EventListener] Button with ID: ${id} already has an event listener.`);
+            }
+        } else {
+            // Log at debug level rather than an error to avoid noise on non-login/logout pages.
+            console.debug(`[EventListener] Button with ID: ${id} not found on the current page. Skipping.`);
         }
     });
 }
+
 /* =========== end_10_eventsAuth =========== */

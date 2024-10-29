@@ -1,4 +1,4 @@
-/* =========== start_session_init =========== */
+/* =========== start_3.1_session_init =========== */
 
 const SessionManager = {
     session: null, // Placeholder for session data
@@ -6,9 +6,10 @@ const SessionManager = {
     initializeSession() {
         console.log("Initializing session...");
         if (!localStorage.getItem("userSession")) {
+            // Start a new session with default data
             this.startSession({
                 status: 'logged out', // Default state
-                fx_customerId: window.fx_customerId || null,
+                fx_customerId: window.fx_customerId ?? null,
                 userMeta: {
                     lastUpdate: getFriendlyDate(),
                     lastScriptRun: getFriendlyDate(),
@@ -26,7 +27,6 @@ const SessionManager = {
             this.getSession();
             console.log("Existing session loaded.", this.session);
         }
-        this.updateLocalStorage();
     },
 
     // Retrieve the session
@@ -53,16 +53,11 @@ const SessionManager = {
         this.session = {
             ...userData,
             userMeta: {
+                ...userData.userMeta,
                 lastUpdate: getFriendlyDate(),
                 lastScriptRun: getFriendlyDate(),
-                sessionTime: 0 // Initialize sessionTime in seconds
-            },
-            userCookies: this.getCookies(), // Initialize
-            userGeo: {}, // Initialize
-            userPersona: {}, // Initialize
-            userCalc: {}, // Initialize
-            userCompare: {}, // Initialize
-            userEvents: [] // Initialize
+                sessionTime: userData.userMeta?.sessionTime ?? 0 // Initialize sessionTime in seconds
+            }
         };
         this.updateLocalStorage();
         console.log("Session started:", this.session);
@@ -96,4 +91,5 @@ const SessionManager = {
         return cookieObj;
     }
 };
-/* =========== end_session_init =========== */
+
+/* =========== end_3.1_session_init =========== */
