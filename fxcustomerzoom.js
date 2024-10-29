@@ -1,4 +1,3 @@
-//fxcustomerzoomjs
 // Log to confirm script execution 
 console.log('fxcustomerzoom.js is executing properly.');
 
@@ -51,7 +50,7 @@ async function fetchCustomerData(customerId) {
 
             // Call attributesInit() after successful data retrieval, only if attributesProcessed is not set
             if (typeof window.attributesInit === 'function' && !responseData._embedded?.['fx:attributesProcessed']) {
-                window.attributesInit(); // Ensures attributesInit runs only when data is ready and not yet processed
+                setTimeout(() => window.attributesInit(), 10000); // Ensures attributesInit runs after a delay if data is ready and not yet processed
             } else if (responseData._embedded?.['fx:attributesProcessed']) {
                 console.info('Attributes have already been processed. Skipping attributesInit.');
             } else {
@@ -133,6 +132,3 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('customerzoomInit function not found during DOMContentLoaded.');
     }
 });
-
-
-
