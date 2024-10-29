@@ -1,5 +1,5 @@
 
-/* =========== 1_cst_start =========== */
+/* =========== start_1_cst_start =========== */
 function getFriendlyDate() {
     return new Date().toLocaleString('en-US', {
         timeZone: 'America/New_York',
