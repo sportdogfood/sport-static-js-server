@@ -1,6 +1,6 @@
 /* =========== start_13.2_user_initialization =========== */
 
-// Initialize userZoom
+// Initialize userZoom 
 SessionManager.initializeUserZoom = function() {
     console.log("Initializing userZoom...");
 };
@@ -48,10 +48,58 @@ SessionManager.initializeUserDesk = function(customerId) {
     }
 };
 
-// Initialize userCustomer
+// Initialize userCustomer if not present in local storage
 SessionManager.initializeUserCustomer = function() {
-    console.log("Initializing user customer details...");
-    // Placeholder
+    if (!localStorage.getItem('userCustomer')) {
+        console.log("Initializing user customer details...");
+        const script = document.createElement('script');
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js';
+        script.id = 'fxcustomer';
+
+        script.onload = function() {
+            console.log("fxcustomer.js loaded successfully");
+            if (typeof fxCustomerInit === 'function') {
+                fxCustomerInit();
+            } else {
+                console.error("fxCustomerInit function not found in fxcustomer.js");
+            }
+        };
+
+        script.onerror = function() {
+            console.error("Failed to load fxcustomer.js");
+        };
+
+        document.head.appendChild(script);
+    } else {
+        console.log("User customer data already exists in local storage.");
+    }
+};
+
+// Initialize userContact if not present in local storage
+SessionManager.initializeUserContact = function() {
+    if (!localStorage.getItem('userContact')) {
+        console.log("Initializing user contact details...");
+        const script = document.createElement('script');
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/zocontact.js';
+        script.id = 'zocontact';
+
+        script.onload = function() {
+            console.log("zocontact.js loaded successfully");
+            if (typeof zoContactInit === 'function') {
+                zoContactInit();
+            } else {
+                console.error("zoContactInit function not found in zocontact.js");
+            }
+        };
+
+        script.onerror = function() {
+            console.error("Failed to load zocontact.js");
+        };
+
+        document.head.appendChild(script);
+    } else {
+        console.log("User contact data already exists in local storage.");
+    }
 };
 
 // Initialize userThrive

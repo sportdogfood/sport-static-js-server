@@ -247,6 +247,7 @@ SessionManager.initializeUserCartPlaceholder = function () {
 
 // Define the polling interval in milliseconds (45 seconds)
 const POLLING_INTERVAL = 45000;
+let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
 
 // Function to poll user session data
 function pollUserSession() {
@@ -263,8 +264,7 @@ function pollUserSession() {
         userZoom,
         userContact,
         userCustomer,
-        userGeo,
-        userDesk,
+        userGeo
     } = SessionManager.session;
 
     // Track current page (thisPage) and last visited page (lastPage)
@@ -280,6 +280,8 @@ function pollUserSession() {
     const loginButtonState = loginButton ? (loginButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
     const logoutButtonState = logoutButton ? (logoutButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
 
+    // Update polling time
+    const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
     const currentUserState = {
         status: status || 'unknown',
         lastScriptRun: lastScriptRun || 'unknown',
@@ -292,20 +294,25 @@ function pollUserSession() {
         userContact: userContact || 'unknown',
         userCustomer: userCustomer || 'unknown',
         userGeo: userGeo || 'unknown',
-        userDesk: userDesk || 'unknown',
         thisPage,
         lastPage,
         loginButtonState,
         logoutButtonState,
+        lastPollTime: currentTime
     };
 
     // Update `userState` in local storage
     localStorage.setItem('userState', JSON.stringify(currentUserState));
     console.log("User state updated:", currentUserState);
 
-    // Logic for loading userDesk.js if needed
-    if (window.fx_customerId && (!userDesk || !userDesk.ID)) {
-        console.log("Condition met for loading userDesk.js");
+    // Auto logout check
+    if (Date.now() > pollingEndTime) {
+        console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
+        SessionManager.handleLogout();
+    }
+
+    // Initialization conditions
+    if (window.fx_customerId && (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID)) {
         SessionManager.initializeUserDesk(window.fx_customerId);
     }
 }
@@ -330,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========== end_3.3_session_state_polling =========== */
+
 
 
 /* =========== start_4_sessionformPopulation =========== */
@@ -457,82 +465,17 @@ if (!window.domContentLoadedListenerAdded) {
         }
 
         // Populate the form only if the current path is '/login'
-        if (window.location.pathname === "/login") {
+        const currentPath = window.location.pathname;
+        if (currentPath === "/login") {
             populateFormFromParams(); // Populate the form on page load
         }
 
-        // Function to attach button event listeners
-        function attachButtonEventListeners() {
-            const buttons = [
-                {
-                    id: 'login-button',
-                    handler: () => {
-                        console.log('[EventListener] Login button clicked.');
-                        if (SessionManager && typeof SessionManager.handleLogin === 'function') {
-                            SessionManager.handleLogin();
-                            debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
-                        } else {
-                            console.error('[EventListener] SessionManager.handleLogin is not a function or is undefined.');
-                        }
-                    }
-                },
-                {
-                    id: 'logout-button',
-                    handler: () => {
-                        console.log('[EventListener] Logout button clicked.');
-                        if (SessionManager && typeof SessionManager.handleLogout === 'function') {
-                            SessionManager.handleLogout();
-                            debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
-                        } else {
-                            console.error('[EventListener] SessionManager.handleLogout is not a function or is undefined.');
-                        }
-                    }
-                },
-                {
-                    id: 'auth-button',
-                    handler: () => {
-                        console.log('[EventListener] Auth button clicked.');
-                        if (typeof authenticateCustomer === 'function') {
-                            authenticateCustomer().then(() => {
-                                debouncedPushPagesense('auth-click', null);
-                            }).catch((error) => {
-                                console.error('[EventListener] Error during authenticateCustomer:', error);
-                            });
-                        } else {
-                            console.error('[EventListener] authenticateCustomer is not a function or is undefined.');
-                        }
-                    }
-                }
-            ];
-
-            buttons.forEach(({ id, handler }) => {
-                const button = document.getElementById(id);
-                if (button && !button.listenerAdded) {
-                    console.log(`[EventListener] Adding click event listener to button: ${id}`);
-                    button.addEventListener('click', handler);
-                    button.listenerAdded = true;
-                } else if (!button) {
-                    console.warn(`[EventListener] Button with ID: ${id} not found in the DOM.`);
-                }
-            });
-        }
-
+        // Attach button event listeners
         attachButtonEventListeners();
 
         // MutationObserver to attach button event listeners if buttons are dynamically added
         const observer = new MutationObserver(() => {
-            const loginButton = document.getElementById('login-button');
-            const logoutButton = document.getElementById('logout-button');
-            const statusDiv = document.getElementById('status-div');
-
-            console.log(`[MutationObserver] Observing changes. loginButton found: ${!!loginButton}, logoutButton found: ${!!logoutButton}, statusDiv found: ${!!statusDiv}`);
-            
-            if (loginButton && logoutButton && statusDiv) {
-                observer.disconnect(); // Stop observing once buttons are found
-                console.log('[MutationObserver] Buttons found. Stopped observing and invoking buttonMaster.');
-                attachButtonEventListeners(); // Attach event listeners
-                buttonMaster('logged out', 'observer'); // Set initial state to logged out
-            }
+            attachButtonEventListeners();
         });
 
         observer.observe(document.body, { childList: true, subtree: true });
@@ -544,7 +487,64 @@ if (!window.domContentLoadedListenerAdded) {
     });
 }
 
+// Function to attach button event listeners
+function attachButtonEventListeners() {
+    const buttons = [
+        {
+            id: 'login-button',
+            handler: () => {
+                console.log('[EventListener] Login button clicked.');
+                if (SessionManager && typeof SessionManager.handleLogin === 'function') {
+                    SessionManager.handleLogin();
+                    debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
+                } else {
+                    console.error('[EventListener] SessionManager.handleLogin is not a function or is undefined.');
+                }
+            }
+        },
+        {
+            id: 'logout-button',
+            handler: () => {
+                console.log('[EventListener] Logout button clicked.');
+                if (SessionManager && typeof SessionManager.handleLogout === 'function') {
+                    SessionManager.handleLogout();
+                    debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
+                } else {
+                    console.error('[EventListener] SessionManager.handleLogout is not a function or is undefined.');
+                }
+            }
+        },
+        {
+            id: 'auth-button',
+            handler: () => {
+                console.log('[EventListener] Auth button clicked.');
+                if (typeof authenticateCustomer === 'function') {
+                    authenticateCustomer().then(() => {
+                        debouncedPushPagesense('auth-click', null);
+                    }).catch((error) => {
+                        console.error('[EventListener] Error during authenticateCustomer:', error);
+                    });
+                } else {
+                    console.error('[EventListener] authenticateCustomer is not a function or is undefined.');
+                }
+            }
+        }
+    ];
+
+    buttons.forEach(({ id, handler }) => {
+        const button = document.getElementById(id);
+        if (button && !button.listenerAdded) {
+            console.log(`[EventListener] Adding click event listener to button: ${id}`);
+            button.addEventListener('click', handler);
+            button.listenerAdded = true;
+        } else if (!button) {
+            console.warn(`[EventListener] Button with ID: ${id} not found in the DOM.`);
+        }
+    });
+}
+
 /* =========== end_5_initialDom =========== */
+
 
 
 
@@ -990,98 +990,86 @@ SessionManager.handleLogout = function() {
 
 // Initialize userZoom
 SessionManager.initializeUserZoom = function() {
-    if (window.fx_customerId && !this.session.userZoom) {
-        console.log("Initializing userZoom...");
-    }
+    console.log("Initializing userZoom...");
 };
 
 // Initialize userCart
 SessionManager.initializeUserCart = function() {
-    if (window.fx_customerId && !this.session.userCart) {
-        console.log("Initializing user cart...");
-    }
+    console.log("Initializing user cart...");
 };
 
 // Initialize userDesk
 SessionManager.initializeUserDesk = function(customerId) {
-    if (window.fx_customerId && !this.session.userDesk) {
-        console.log("Attempting to initialize user desk details...");
+    console.log("Attempting to initialize user desk details...");
 
-        // Check if UserDesk library is already loaded
-        if (typeof UserDesk === 'undefined') {
-            const script = document.createElement('script');
-            script.src = 'https://sportdogfood.github.io/sport-static-js-server/userdesk.js'; // Update the path as needed
+    if (!window.fx_customerId) {
+        console.error("No valid customer ID found. Initialization aborted.");
+        return;
+    }
 
-            script.onload = function() {
-                console.log("userdesk.js loaded successfully");
-                if (typeof UserDesk.initialize === 'function') {
-                    UserDesk.initialize(customerId);
-                } else {
-                    console.error("UserDesk.initialize function not found in userdesk.js");
-                }
-            };
+    // Check if UserDesk library is already loaded
+    if (typeof UserDesk === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/userdesk.js'; // Update the path as needed
 
-            script.onerror = function() {
-                console.error("Failed to load userdesk.js");
-            };
-
-            document.head.appendChild(script);
-        } else {
-            // UserDesk is already loaded, directly call initialize
+        script.onload = function() {
+            console.log("userdesk.js loaded successfully");
             if (typeof UserDesk.initialize === 'function') {
                 UserDesk.initialize(customerId);
             } else {
-                console.error("UserDesk.initialize function not found");
+                console.error("UserDesk.initialize function not found in userdesk.js");
             }
+        };
+
+        script.onerror = function() {
+            console.error("Failed to load userdesk.js");
+        };
+
+        document.head.appendChild(script);
+    } else {
+        // UserDesk is already loaded, directly call initialize
+        if (typeof UserDesk.initialize === 'function') {
+            UserDesk.initialize(customerId);
+        } else {
+            console.error("UserDesk.initialize function not found");
         }
     }
 };
 
 // Initialize userCustomer
 SessionManager.initializeUserCustomer = function() {
-    if (window.fx_customerId && !this.session.userCustomer) {
-        console.log("Initializing user customer details...");
-        // Placeholder
-    }
+    console.log("Initializing user customer details...");
+    // Placeholder
 };
 
 // Initialize userThrive
 SessionManager.initializeUserThrive = function() {
-    if (window.fx_customerId && !this.session.userThrive) {
-        console.log("Initializing user thrive details...");
-    }
+    console.log("Initializing user thrive details...");
 };
 
 // Initialize userAuto
 SessionManager.initializeUserAuto = function() {
-    if (window.fx_customerId && !this.session.userAuto) {
-        console.log("Initializing user auto details...");
-    }
+    console.log("Initializing user auto details...");
 };
 
 // Initialize userTrack
 SessionManager.initializeUserTrack = function() {
-    if (window.fx_customerId && !this.session.userTrack) {
-        console.log("Initializing user tracking details...");
-    }
+    console.log("Initializing user tracking details...");
 };
 
 // Initialize userTrans
 SessionManager.initializeUserTrans = function() {
-    if (window.fx_customerId && !this.session.userTrans) {
-        console.log("Initializing user transaction details...");
-    }
+    console.log("Initializing user transaction details...");
 };
 
 // Initialize userGetAgain
 SessionManager.initializeUserGetAgain = function() {
-    if (window.fx_customerId && !this.session.userGetAgain) {
-        console.log("Initializing user 'get again' details...");
-        // Placeholder
-    }
+    console.log("Initializing user 'get again' details...");
+    // Placeholder
 };
 
 /* =========== end_13.2_user_initialization =========== */
+
 
 /* =========== start_14_authandfxatt =========== */
 document.addEventListener('authenticated', () => {

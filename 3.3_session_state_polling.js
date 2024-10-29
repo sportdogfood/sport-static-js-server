@@ -2,6 +2,7 @@
 
 // Define the polling interval in milliseconds (45 seconds)
 const POLLING_INTERVAL = 45000;
+let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
 
 // Function to poll user session data
 function pollUserSession() {
@@ -18,8 +19,7 @@ function pollUserSession() {
         userZoom,
         userContact,
         userCustomer,
-        userGeo,
-        userDesk,
+        userGeo
     } = SessionManager.session;
 
     // Track current page (thisPage) and last visited page (lastPage)
@@ -35,6 +35,8 @@ function pollUserSession() {
     const loginButtonState = loginButton ? (loginButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
     const logoutButtonState = logoutButton ? (logoutButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
 
+    // Update polling time
+    const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
     const currentUserState = {
         status: status || 'unknown',
         lastScriptRun: lastScriptRun || 'unknown',
@@ -47,21 +49,40 @@ function pollUserSession() {
         userContact: userContact || 'unknown',
         userCustomer: userCustomer || 'unknown',
         userGeo: userGeo || 'unknown',
-        userDesk: userDesk || 'unknown',
         thisPage,
         lastPage,
         loginButtonState,
         logoutButtonState,
+        lastPollTime: currentTime
     };
 
     // Update `userState` in local storage
     localStorage.setItem('userState', JSON.stringify(currentUserState));
     console.log("User state updated:", currentUserState);
 
-    // Logic for loading userDesk.js if needed
-    if (window.fx_customerId && (!userDesk || !userDesk.ID)) {
-        console.log("Condition met for loading userDesk.js");
-        SessionManager.initializeUserDesk(window.fx_customerId);
+    // Auto logout check
+    if (Date.now() > pollingEndTime) {
+        console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
+        SessionManager.handleLogout();
+        return;
+    }
+
+    // Initialization conditions based on the updated Section 13.2
+    if (window.fx_customerId) {
+        if (!SessionManager.session.userCustomer) {
+            console.log("User customer data not found. Initializing user customer...");
+            SessionManager.initializeUserCustomer();
+        }
+        if (!SessionManager.session.userContact) {
+            console.log("User contact data not found. Initializing user contact...");
+            SessionManager.initializeUserContact();
+        }
+        if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
+            console.log("User desk data not found. Initializing user desk...");
+            SessionManager.initializeUserDesk(window.fx_customerId);
+        }
+    } else {
+        console.warn("No valid customer ID found during polling. Skipping initialization tasks.");
     }
 }
 
