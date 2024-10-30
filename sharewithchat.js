@@ -249,6 +249,9 @@ SessionManager.initializeUserCartPlaceholder = function () {
 const POLLING_INTERVAL = 45000;
 let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
 
+// Add 15-second delay before start polling
+setTimeout(() => startSessionPolling(), 15000);
+
 // Function to poll user session data
 function pollUserSession() {
     if (!SessionManager.session) {
@@ -259,7 +262,8 @@ function pollUserSession() {
     console.log("Polling user session data...");
 
     const cookies = SessionManager.getCookies();
-    // Check if fx_customer_sso exists
+    
+    // Check if fx_customer_sso exists and update customer ID and authentication status accordingly
     if (cookies['fx_customer_sso']) {
         const ssoToken = cookies['fx_customer_sso'];
         console.log("SSO token found. Processing fx_customer_sso...");
@@ -269,15 +273,13 @@ function pollUserSession() {
         const fcAuthToken = urlParams.get('fc_auth_token');
 
         if (fcCustomerId) {
+            window.fx_customerId = fcCustomerId; // Update fx_customerId globally
             document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
-            window.fx_customerId = fcCustomerId; // Update fx_customerId in the session
-        }
-        if (fcAuthToken) {
-            SessionManager.updateSession({ status: 'isUserAuthenticated' });
+            SessionManager.updateSession({ userCookies: { fx_customer_id: fcCustomerId } });
         }
 
-        if (!cookies['fx_customer_id'] && fcCustomerId) {
-            document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
+        if (fcAuthToken) {
+            SessionManager.updateSession({ status: 'isUserAuthenticated' });
         }
     }
 
@@ -347,11 +349,14 @@ function pollUserSession() {
     }
 
     // Initialization conditions based on the updated Section 13.2
-
     if (window.fx_customerId) {
         if (!SessionManager.session.userCustomer) {
             console.log("User customer data not found. Initializing user customer...");
-            SessionManager.initializeUserCustomer();
+            if (typeof fxCustomerInit === 'function') {
+                fxCustomerInit(window.fx_customerId);
+            } else {
+                console.error("fxCustomerInit function not found in fxcustomer.js");
+            }
         }
         if (!SessionManager.session.userContact) {
             console.log("User contact data not found. Initializing user contact...");
@@ -360,7 +365,6 @@ function pollUserSession() {
             } else {
                 console.error("zoContactInit function not found in zocontact.js");
             }
-          
         }
         if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
             console.log("User desk data not found. Initializing user desk...");
@@ -395,6 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========== end_3.3_session_state_polling =========== */
+
 
 
 
