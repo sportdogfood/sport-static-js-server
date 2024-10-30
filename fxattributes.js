@@ -85,11 +85,13 @@ window.attributesInit = attributesInit;
 
 // Ensure attributesInit runs only if userZoom data is guaranteed to be available
 document.addEventListener('DOMContentLoaded', () => {
-    const userZoomRaw = localStorage.getItem('userZoom');
-    if (userZoomRaw) {
-        console.log('UserZoom data is available. Attempting to initialize attributes.');
-        window.attributesInit();
-    } else {
-        console.warn('UserZoom data is not available at DOMContentLoaded. attributesInit will not run automatically.');
-    }
+    setTimeout(() => {
+        const userZoomRaw = localStorage.getItem('userZoom');
+        if (userZoomRaw) {
+            console.log('UserZoom data is available. Attempting to initialize attributes.');
+            window.attributesInit();
+        } else {
+            console.warn('UserZoom data is not available after delay. attributesInit will not run automatically.');
+        }
+    }, 20000); // Delay of 20 seconds
 });
