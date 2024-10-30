@@ -8,6 +8,30 @@ let pollingIntervalId = null; // Store interval ID for later clearing
 // Add 15-second delay before start polling
 setTimeout(() => startSessionPolling(), 15000);
 
+// Function to load fxCustomer script dynamically
+function loadFxCustomerScript() {
+    if (!document.getElementById('fxcustomer-script')) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js";
+        scriptElement.id = 'fxcustomer-script';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+        console.log("fxcustomer.js script loaded dynamically.");
+    }
+}
+
+// Function to load zoContact script dynamically
+function loadZoContactScript() {
+    if (!document.getElementById('zocontact-script')) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/zocontact.js";
+        scriptElement.id = 'zocontact-script';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+        console.log("zocontact.js script loaded dynamically.");
+    }
+}
+
 // Function to poll user session data
 function pollUserSession() {
     if (!SessionManager.session) {
@@ -112,7 +136,8 @@ function pollUserSession() {
             if (typeof fxCustomerInit === 'function') {
                 fxCustomerInit(window.fx_customerId);
             } else {
-                console.error("fxCustomerInit function not found in fxcustomer.js");
+                console.error("fxCustomerInit function not found in fxcustomer.js. Loading script dynamically...");
+                loadFxCustomerScript();
             }
         }
         if (!SessionManager.session.userContact) {
@@ -120,7 +145,8 @@ function pollUserSession() {
             if (typeof zoContactInit === 'function') {
                 zoContactInit(window.fx_customerId);
             } else {
-                console.error("zoContactInit function not found in zocontact.js");
+                console.error("zoContactInit function not found in zocontact.js. Loading script dynamically...");
+                loadZoContactScript();
             }
         }
         if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {

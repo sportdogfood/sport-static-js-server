@@ -253,6 +253,30 @@ let pollingIntervalId = null; // Store interval ID for later clearing
 // Add 15-second delay before start polling
 setTimeout(() => startSessionPolling(), 15000);
 
+// Function to load fxCustomer script dynamically
+function loadFxCustomerScript() {
+    if (!document.getElementById('fxcustomer-script')) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js";
+        scriptElement.id = 'fxcustomer-script';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+        console.log("fxcustomer.js script loaded dynamically.");
+    }
+}
+
+// Function to load zoContact script dynamically
+function loadZoContactScript() {
+    if (!document.getElementById('zocontact-script')) {
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/zocontact.js";
+        scriptElement.id = 'zocontact-script';
+        scriptElement.async = true;
+        document.body.appendChild(scriptElement);
+        console.log("zocontact.js script loaded dynamically.");
+    }
+}
+
 // Function to poll user session data
 function pollUserSession() {
     if (!SessionManager.session) {
@@ -357,7 +381,8 @@ function pollUserSession() {
             if (typeof fxCustomerInit === 'function') {
                 fxCustomerInit(window.fx_customerId);
             } else {
-                console.error("fxCustomerInit function not found in fxcustomer.js");
+                console.error("fxCustomerInit function not found in fxcustomer.js. Loading script dynamically...");
+                loadFxCustomerScript();
             }
         }
         if (!SessionManager.session.userContact) {
@@ -365,7 +390,8 @@ function pollUserSession() {
             if (typeof zoContactInit === 'function') {
                 zoContactInit(window.fx_customerId);
             } else {
-                console.error("zoContactInit function not found in zocontact.js");
+                console.error("zoContactInit function not found in zocontact.js. Loading script dynamically...");
+                loadZoContactScript();
             }
         }
         if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
@@ -469,7 +495,7 @@ function attachButtonEventListeners() {
         {
             id: 'login-button',
             handler: () => {
-                console.log('[EventListener] Login button clicked.');
+                //console.log('[EventListener] Login button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogin === 'function') {
                     SessionManager.handleLogin();
                     debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
@@ -481,7 +507,7 @@ function attachButtonEventListeners() {
         {
             id: 'logout-button',
             handler: () => {
-                console.log('[EventListener] Logout button clicked.');
+               // console.log('[EventListener] Logout button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogout === 'function') {
                     SessionManager.handleLogout();
                     debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
@@ -493,7 +519,7 @@ function attachButtonEventListeners() {
         {
             id: 'auth-button',
             handler: () => {
-                console.log('[EventListener] Auth button clicked.');
+               // console.log('[EventListener] Auth button clicked.');
                 if (typeof authenticateCustomer === 'function') {
                     authenticateCustomer()
                         .then(() => {
@@ -512,7 +538,7 @@ function attachButtonEventListeners() {
     buttons.forEach(({ id, handler }) => {
         const button = document.getElementById(id);
         if (button && !button.listenerAdded) {
-            console.log(`[EventListener] Adding click event listener to button: ${id}`);
+           // console.log(`[EventListener] Adding click event listener to button: ${id}`);
             button.addEventListener('click', handler);
             button.listenerAdded = true;
         } else if (!button) {
@@ -565,7 +591,7 @@ function attachButtonEventListeners() {
         {
             id: 'login-button',
             handler: () => {
-                console.log('[EventListener] Login button clicked.');
+              //  console.log('[EventListener] Login button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogin === 'function') {
                     SessionManager.handleLogin();
                     debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
@@ -577,7 +603,7 @@ function attachButtonEventListeners() {
         {
             id: 'logout-button',
             handler: () => {
-                console.log('[EventListener] Logout button clicked.');
+              //  console.log('[EventListener] Logout button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogout === 'function') {
                     SessionManager.handleLogout();
                     debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
@@ -589,7 +615,7 @@ function attachButtonEventListeners() {
         {
             id: 'auth-button',
             handler: () => {
-                console.log('[EventListener] Auth button clicked.');
+               // console.log('[EventListener] Auth button clicked.');
                 if (typeof authenticateCustomer === 'function') {
                     authenticateCustomer().then(() => {
                         debouncedPushPagesense('auth-click', null);
@@ -606,7 +632,7 @@ function attachButtonEventListeners() {
     buttons.forEach(({ id, handler }) => {
         const button = document.getElementById(id);
         if (button && !button.listenerAdded) {
-            console.log(`[EventListener] Adding click event listener to button: ${id}`);
+         //   console.log(`[EventListener] Adding click event listener to button: ${id}`);
             button.addEventListener('click', handler);
             button.listenerAdded = true;
         } else if (!button) {
@@ -777,7 +803,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginButton = document.getElementById('login-button');
     if (loginButton && !loginButton.listenerAdded) {
         loginButton.addEventListener('click', () => {
-            console.log('[EventListener] Login button clicked. Redirecting to login page.');
+          //  console.log('[EventListener] Login button clicked. Redirecting to login page.');
             window.location.href = '/login';
         });
         loginButton.listenerAdded = true;
@@ -862,7 +888,7 @@ function attachButtonEventListeners() {
     const buttons = [
         {
             id: 'login-button', handler: () => {
-                console.log('[EventListener] Login button clicked.');
+               // console.log('[EventListener] Login button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogin === 'function') {
                     SessionManager.handleLogin();
                     debouncedPushPagesense('login-click', localStorage.getItem('fx_customerId'));
@@ -873,7 +899,7 @@ function attachButtonEventListeners() {
         },
         {
             id: 'logout-button', handler: () => {
-                console.log('[EventListener] Logout button clicked.');
+              //  console.log('[EventListener] Logout button clicked.');
                 if (SessionManager && typeof SessionManager.handleLogout === 'function') {
                     SessionManager.handleLogout();
                     debouncedPushPagesense('logout-click', localStorage.getItem('fx_customerId'));
@@ -884,7 +910,7 @@ function attachButtonEventListeners() {
         },
         {
             id: 'auth-button', handler: () => {
-                console.log('[EventListener] Auth button clicked.');
+              //  console.log('[EventListener] Auth button clicked.');
                 if (typeof authenticateCustomer === 'function') {
                     authenticateCustomer().then(() => {
                         debouncedPushPagesense('auth-click', null);
@@ -902,11 +928,11 @@ function attachButtonEventListeners() {
         const button = document.getElementById(id);
         if (button) {
             if (!button.listenerAdded) {
-                console.log(`[EventListener] Adding click event listener to button: ${id}`);
+              //  console.log(`[EventListener] Adding click event listener to button: ${id}`);
                 button.addEventListener('click', handler);
                 button.listenerAdded = true;
             } else {
-                console.log(`[EventListener] Button with ID: ${id} already has an event listener.`);
+              //  console.log(`[EventListener] Button with ID: ${id} already has an event listener.`);
             }
         } else {
             // Log at debug level rather than an error to avoid noise on non-login/logout pages.

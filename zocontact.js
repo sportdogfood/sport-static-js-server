@@ -1,5 +1,9 @@
 // Function to manually refresh and restart fetching CRM data
 function manualRefreshCRM(fx_customerId) {
+    if (!fx_customerId) {
+        console.error("CRM Contact ID is not found, unable to proceed.");
+        return;
+    }
     console.log('Manual refresh triggered for CRM data.');
     fetchAndStoreCRMData(fx_customerId);
 }
@@ -62,15 +66,33 @@ function getFriendlyDateTime() {
     return new Date().toLocaleString('en-US', { timeZone: 'America/New_York' });
 }
 
-// Automatically trigger data polling after initial delay
-setTimeout(() => {
-    const fx_customerId = localStorage.getItem('fx_customerId'); // Fetch the customer ID from local storage
-    if (fx_customerId) {
-        fetchAndStoreCRMData(fx_customerId);
-    } else {
-        console.warn("fx_customerId is not available, unable to start CRM data fetching.");
+// Function to initialize Zoho CRM data
+function zoContactInit(fx_customerId) {
+    if (!fx_customerId) {
+        console.error("Customer ID is required to initialize Zoho CRM data.");
+        return;
     }
-}, 20000); // Delay of 20 seconds
+    console.log("Initializing Zoho CRM data for customer:", fx_customerId);
+    fetchAndStoreCRMData(fx_customerId);
+}
+
+// Public API (if needed)
+window.zoContactInit = zoContactInit;
+
+// Automatically trigger data polling after initial delay
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const fx_customerId = localStorage.getItem('fx_customerId'); // Fetch the customer ID from local storage
+        if (fx_customerId) {
+            fetchAndStoreCRMData(fx_customerId);
+        } else {
+            console.warn("fx_customerId is not available, unable to start CRM data fetching.");
+        }
+    }, 20000); // Delay of 20 seconds
+
+    // Add a manual refresh button to trigger data fetching
+    addManualRefreshButton();
+});
 
 // Add a manual refresh button to trigger data fetching
 function addManualRefreshButton() {
@@ -86,6 +108,3 @@ function addManualRefreshButton() {
     };
     document.body.appendChild(button);
 }
-
-// Call to add the refresh button
-addManualRefreshButton();

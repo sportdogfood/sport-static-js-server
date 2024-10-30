@@ -77,9 +77,23 @@ addRefreshFoxyCustomerButton();
 
 // Function to initialize FoxyCart customer data
 function fxCustomerInit(customerId) {
+    if (!customerId) {
+        console.error("Customer ID is required to initialize FoxyCart data.");
+        return;
+    }
     console.log("Initializing FoxyCart data for customer:", customerId);
     fetchFoxyCustomerData(customerId);
 }
 
 // Public API (if needed)
 window.fxCustomerInit = fxCustomerInit;
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Fetch customer ID from localStorage if present and initialize data
+    const storedCustomerId = localStorage.getItem('fx_customerId');
+    if (storedCustomerId) {
+        fxCustomerInit(storedCustomerId);
+    } else {
+        console.warn("No fx_customerId found in localStorage, skipping automatic initialization of FoxyCart data.");
+    }
+});
