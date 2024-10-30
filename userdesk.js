@@ -1,4 +1,3 @@
-// userdesk.js
 var UserDesk = (function() {
     // Function to initialize user desk details by fetching data from the proxy endpoint using async export model
     async function initialize(customerId) {
@@ -6,9 +5,9 @@ var UserDesk = (function() {
         
         try {
             // Define the base URL for the proxy
-            var baseUrl = `https://zaproxy-7ec3ff690999.herokuapp.com`;
+            var baseUrl = `https://zaproxy-7ec3ff690999.herokuapp.com`; // Replace with your actual proxy server URL
             var workspace = `crm`;
-            var view = `1386797000041005149`;
+            var view = `1386797000017932368`;
             var searchby = 'Foxy ID';
             var searchinput = customerId;
             var apiUrl = `${baseUrl}/workspaces/${workspace}/views/${view}/data`;

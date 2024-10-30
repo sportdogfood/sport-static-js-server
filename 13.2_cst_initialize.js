@@ -50,62 +50,59 @@ SessionManager.initializeUserDesk = function(customerId) {
 
 // Initialize userCustomer
 SessionManager.initializeUserCustomer = function() {
-    if (!localStorage.getItem('userCustomer')) {
-        console.log("Initializing user customer details...");
-        const scriptInfo = {
-            src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js',
-            id: 'fxcustomer',
-            initFunction: 'fxCustomerInit'
+    console.log("Initializing user customer details...");
+
+    if (localStorage.getItem('userCustomer') === null) {
+        const script = document.createElement('script');
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/fxcustomer.js'; 
+        script.id = 'fxcustomer';
+
+        script.onload = function() {
+            console.log("fxcustomer.js loaded successfully");
+            if (typeof fxCustomerInit === 'function') {
+                fxCustomerInit();
+            } else {
+                console.error("fxCustomerInit function not found in fxcustomer.js");
+            }
         };
 
-        loadAndExecuteScript(scriptInfo);
+        script.onerror = function() {
+            console.error("Failed to load fxcustomer.js");
+        };
+
+        document.head.appendChild(script);
+    } else {
+        console.log("userCustomer already exists in local storage.");
     }
 };
 
 // Initialize userContact
 SessionManager.initializeUserContact = function() {
-    if (!localStorage.getItem('userContact')) {
-        console.log("Initializing user contact details...");
-        const scriptInfo = {
-            src: 'https://sportdogfood.github.io/sport-static-js-server/zocontact.js',
-            id: 'zocontact',
-            initFunction: 'zoContactInit'
-        };
+    console.log("Initializing user contact details...");
 
-        loadAndExecuteScript(scriptInfo);
-    }
-};
+    if (localStorage.getItem('userContact') === null) {
+        const script = document.createElement('script');
+        script.src = 'https://sportdogfood.github.io/sport-static-js-server/zocontact.js';
+        script.id = 'zocontact';
 
-// Helper to load scripts and execute initialization functions
-function loadAndExecuteScript({ src, id, initFunction }) {
-    if (!document.getElementById(id)) {
-        const scriptElement = document.createElement('script');
-        scriptElement.src = src;
-        scriptElement.id = id;
-
-        scriptElement.onload = () => {
-            console.log(`${id}.js loaded successfully`);
-            if (typeof window[initFunction] === 'function') {
-                window[initFunction]();
+        script.onload = function() {
+            console.log("zocontact.js loaded successfully");
+            if (typeof zoContactInit === 'function') {
+                zoContactInit();
             } else {
-                console.error(`${initFunction} function not found in ${id}.js`);
+                console.error("zoContactInit function not found in zocontact.js");
             }
         };
 
-        scriptElement.onerror = () => {
-            console.error(`Failed to load ${id}.js`);
+        script.onerror = function() {
+            console.error("Failed to load zocontact.js");
         };
 
-        document.head.appendChild(scriptElement);
+        document.head.appendChild(script);
     } else {
-        console.log(`${id}.js is already loaded.`);
-        if (typeof window[initFunction] === 'function') {
-            window[initFunction]();
-        } else {
-            console.error(`${initFunction} function not found`);
-        }
+        console.log("userContact already exists in local storage.");
     }
-}
+};
 
 // Initialize userThrive
 SessionManager.initializeUserThrive = function() {
@@ -130,6 +127,7 @@ SessionManager.initializeUserTrans = function() {
 // Initialize userGetAgain
 SessionManager.initializeUserGetAgain = function() {
     console.log("Initializing user 'get again' details...");
+    // Placeholder
 };
 
 /* =========== end_13.2_user_initialization =========== */
