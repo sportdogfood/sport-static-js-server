@@ -245,14 +245,12 @@ SessionManager.initializeUserCartPlaceholder = function () {
 /* =========== end_3.2_user_data_enrichment =========== */
 /* =========== start_3.3_session_state_polling =========== */
 
-// Define the polling interval in milliseconds (45 seconds)
-const POLLING_INTERVAL = 45000;
-let pollingCount = 0; // Track the number of polling attempts
-const MAX_POLLING_COUNT = 6; // Maximum polling attempts
-let pollingIntervalId = null; // Store interval ID for later clearing
+// Define the delay in milliseconds (45 seconds)
+const RETRY_DELAY = 45000;
+let retryAttempted = false; // Track if a retry has been attempted
 
-// Add 15-second delay before start polling
-setTimeout(() => startSessionPolling(), 15000);
+// Add 15-second delay before starting the session data retrieval
+setTimeout(() => retrieveSessionData(), 15000);
 
 // Function to load fxCustomer script dynamically
 function loadFxCustomerScript() {
@@ -278,14 +276,14 @@ function loadZoContactScript() {
     }
 }
 
-// Function to poll user session data
-function pollUserSession() {
+// Function to retrieve user session data
+function retrieveSessionData() {
     if (!SessionManager.session) {
-        console.error("Session not initialized, polling will be skipped.");
+        console.error("Session not initialized, skipping data retrieval.");
         return;
     }
 
-    console.log("Polling user session data... (Attempt: " + (pollingCount + 1) + ")");
+    console.log("Retrieving user session data...");
 
     const cookies = SessionManager.getCookies();
     
@@ -333,7 +331,7 @@ function pollUserSession() {
     const loginButtonState = loginButton ? (loginButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
     const logoutButtonState = logoutButton ? (logoutButton.style.display !== 'none' ? 'visible' : 'hidden') : 'not found';
 
-    // Update polling time
+    // Update current time
     const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
     const currentUserState = {
         status: status || 'unknown',
@@ -367,14 +365,6 @@ function pollUserSession() {
         }
     });
 
-    // Increment the polling count and stop if the max count is reached
-    pollingCount++;
-    if (pollingCount >= MAX_POLLING_COUNT) {
-        console.warn("Polling has reached the maximum count of 6. Stopping polling...");
-        clearInterval(pollingIntervalId); // Stop the polling after 6 attempts
-        return;
-    }
-
     // Initialization conditions based on the updated Section 13.2
     if (window.fx_customerId) {
         if (!SessionManager.session.userCustomer) {
@@ -382,7 +372,6 @@ function pollUserSession() {
             if (typeof fxCustomerInit === 'function') {
                 fxCustomerInit(window.fx_customerId);
             } else {
-                console.error("fxCustomerInit function not found in fxcustomer.js. Loading script dynamically...");
                 loadFxCustomerScript();
             }
         }
@@ -391,7 +380,6 @@ function pollUserSession() {
             if (typeof zoContactInit === 'function') {
                 zoContactInit(window.fx_customerId);
             } else {
-                console.error("zoContactInit function not found in zocontact.js. Loading script dynamically...");
                 loadZoContactScript();
             }
         }
@@ -406,30 +394,29 @@ function pollUserSession() {
     } else {
         console.warn("No valid customer ID found during polling. Skipping initialization tasks.");
     }
+
+    // Retry once after 45 seconds if data was not successfully initialized
+    if (!retryAttempted) {
+        console.log("Retrying after delay of 45 seconds...");
+        retryAttempted = true;
+        setTimeout(() => retrieveSessionData(), RETRY_DELAY);
+    } else {
+        console.log("Retry attempt completed. No further retries will be made.");
+    }
 }
 
-// Start polling function
-function startSessionPolling() {
-    // Poll immediately after the delay
-    pollUserSession();
-
-    // Set interval to poll every 45 seconds and store the interval ID
-    pollingIntervalId = setInterval(() => {
-        pollUserSession();
-    }, POLLING_INTERVAL);
-}
-
-// Start polling when DOMContentLoaded and session is initialized
+// Start retrieving session data when DOMContentLoaded and session is initialized
 document.addEventListener('DOMContentLoaded', () => {
     if (SessionManager && typeof SessionManager.initializeSession === 'function') {
         SessionManager.initializeSession();
-        setTimeout(startSessionPolling, 15000); // Delay start of polling by 15 seconds
+        setTimeout(retrieveSessionData, 15000); // Delay start of session data retrieval by 15 seconds
     } else {
-        console.error('SessionManager is not defined properly, unable to start polling.');
+        console.error('SessionManager is not defined properly, unable to retrieve session data.');
     }
 });
 
 /* =========== end_3.3_session_state_polling =========== */
+
 
 
 

@@ -1,14 +1,6 @@
 var UserDesk = (function() {
-    let retryCount = 0; // Counter to track retry attempts
-    const MAX_RETRIES = 3; // Maximum number of retry attempts
-
     // Function to initialize user desk details by fetching data from the proxy endpoint using async export model
     async function initialize(customerId) {
-        if (retryCount >= MAX_RETRIES) {
-            console.error("Retry limit reached for fetching user desk details. Initialization aborted.");
-            return;
-        }
-
         console.log("Fetching user desk details for customerId: " + customerId);
 
         try {
@@ -62,22 +54,9 @@ var UserDesk = (function() {
                 }
             } else {
                 console.error("No data found for customerId: " + customerId);
-                retryFetch(customerId);
             }
         } catch (error) {
             console.error("Error fetching user desk details: ", error);
-            retryFetch(customerId);
-        }
-    }
-
-    // Function to retry fetching the data
-    function retryFetch(customerId) {
-        retryCount++;
-        if (retryCount < MAX_RETRIES) {
-            console.log(`Retrying to fetch user desk details. Attempt ${retryCount}/${MAX_RETRIES}`);
-            initialize(customerId); // Retry fetching
-        } else {
-            console.error("Maximum retry attempts reached. No more retries will be made.");
         }
     }
 
