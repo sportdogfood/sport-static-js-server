@@ -2,7 +2,8 @@
 
 // Define the polling interval in milliseconds (45 seconds)
 const POLLING_INTERVAL = 45000;
-let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
+let pollingCount = 0; // Track the number of polling attempts
+const MAX_POLLING_COUNT = 6; // Maximum polling attempts
 let pollingIntervalId = null; // Store interval ID for later clearing
 
 // Add 15-second delay before start polling
@@ -39,7 +40,7 @@ function pollUserSession() {
         return;
     }
 
-    console.log("Polling user session data...");
+    console.log("Polling user session data... (Attempt: " + (pollingCount + 1) + ")");
 
     const cookies = SessionManager.getCookies();
     
@@ -121,11 +122,11 @@ function pollUserSession() {
         }
     });
 
-    // Auto logout check
-    if (Date.now() > pollingEndTime) {
-        console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
-        clearInterval(pollingIntervalId); // Stop the polling
-        SessionManager.handleLogout();
+    // Increment the polling count and stop if the max count is reached
+    pollingCount++;
+    if (pollingCount >= MAX_POLLING_COUNT) {
+        console.warn("Polling has reached the maximum count of 6. Stopping polling...");
+        clearInterval(pollingIntervalId); // Stop the polling after 6 attempts
         return;
     }
 
@@ -169,13 +170,7 @@ function startSessionPolling() {
 
     // Set interval to poll every 45 seconds and store the interval ID
     pollingIntervalId = setInterval(() => {
-        if (Date.now() > pollingEndTime) {
-            console.warn("Polling has reached its time limit. Stopping polling...");
-            clearInterval(pollingIntervalId); // Stop the polling after 6 minutes
-            SessionManager.handleLogout();
-        } else {
-            pollUserSession();
-        }
+        pollUserSession();
     }, POLLING_INTERVAL);
 }
 
