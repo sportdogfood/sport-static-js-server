@@ -3,6 +3,7 @@
 // Define the polling interval in milliseconds (45 seconds)
 const POLLING_INTERVAL = 45000;
 let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
+let pollingIntervalId = null; // Store interval ID for later clearing
 
 // Add 15-second delay before start polling
 setTimeout(() => startSessionPolling(), 15000);
@@ -17,7 +18,8 @@ function pollUserSession() {
     console.log("Polling user session data...");
 
     const cookies = SessionManager.getCookies();
-    // Check if fx_customer_sso exists
+    
+    // Check if fx_customer_sso exists and update customer ID and authentication status accordingly
     if (cookies['fx_customer_sso']) {
         const ssoToken = cookies['fx_customer_sso'];
         console.log("SSO token found. Processing fx_customer_sso...");
@@ -27,15 +29,13 @@ function pollUserSession() {
         const fcAuthToken = urlParams.get('fc_auth_token');
 
         if (fcCustomerId) {
+            window.fx_customerId = fcCustomerId; // Update fx_customerId globally
             document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
-            window.fx_customerId = fcCustomerId; // Update fx_customerId in the session
-        }
-        if (fcAuthToken) {
-            SessionManager.updateSession({ status: 'isUserAuthenticated' });
+            SessionManager.updateSession({ userCookies: { fx_customer_id: fcCustomerId } });
         }
 
-        if (!cookies['fx_customer_id'] && fcCustomerId) {
-            document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
+        if (fcAuthToken) {
+            SessionManager.updateSession({ status: 'isUserAuthenticated' });
         }
     }
 
@@ -100,6 +100,7 @@ function pollUserSession() {
     // Auto logout check
     if (Date.now() > pollingEndTime) {
         console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
+        clearInterval(pollingIntervalId); // Stop the polling
         SessionManager.handleLogout();
         return;
     }
@@ -108,11 +109,19 @@ function pollUserSession() {
     if (window.fx_customerId) {
         if (!SessionManager.session.userCustomer) {
             console.log("User customer data not found. Initializing user customer...");
-            SessionManager.initializeUserCustomer();
+            if (typeof fxCustomerInit === 'function') {
+                fxCustomerInit(window.fx_customerId);
+            } else {
+                console.error("fxCustomerInit function not found in fxcustomer.js");
+            }
         }
         if (!SessionManager.session.userContact) {
             console.log("User contact data not found. Initializing user contact...");
-            SessionManager.initializeUserContact();
+            if (typeof zoContactInit === 'function') {
+                zoContactInit(window.fx_customerId);
+            } else {
+                console.error("zoContactInit function not found in zocontact.js");
+            }
         }
         if (!SessionManager.session.userDesk || !SessionManager.session.userDesk.ID) {
             console.log("User desk data not found. Initializing user desk...");
@@ -132,8 +141,16 @@ function startSessionPolling() {
     // Poll immediately after the delay
     pollUserSession();
 
-    // Set interval to poll every 45 seconds
-    setInterval(pollUserSession, POLLING_INTERVAL);
+    // Set interval to poll every 45 seconds and store the interval ID
+    pollingIntervalId = setInterval(() => {
+        if (Date.now() > pollingEndTime) {
+            console.warn("Polling has reached its time limit. Stopping polling...");
+            clearInterval(pollingIntervalId); // Stop the polling after 6 minutes
+            SessionManager.handleLogout();
+        } else {
+            pollUserSession();
+        }
+    }, POLLING_INTERVAL);
 }
 
 // Start polling when DOMContentLoaded and session is initialized

@@ -248,6 +248,7 @@ SessionManager.initializeUserCartPlaceholder = function () {
 // Define the polling interval in milliseconds (45 seconds)
 const POLLING_INTERVAL = 45000;
 let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
+let pollingIntervalId = null; // Store interval ID for later clearing
 
 // Add 15-second delay before start polling
 setTimeout(() => startSessionPolling(), 15000);
@@ -344,6 +345,7 @@ function pollUserSession() {
     // Auto logout check
     if (Date.now() > pollingEndTime) {
         console.warn("Polling exceeded limit of 6 minutes. Triggering auto logout...");
+        clearInterval(pollingIntervalId); // Stop the polling
         SessionManager.handleLogout();
         return;
     }
@@ -384,8 +386,16 @@ function startSessionPolling() {
     // Poll immediately after the delay
     pollUserSession();
 
-    // Set interval to poll every 45 seconds
-    setInterval(pollUserSession, POLLING_INTERVAL);
+    // Set interval to poll every 45 seconds and store the interval ID
+    pollingIntervalId = setInterval(() => {
+        if (Date.now() > pollingEndTime) {
+            console.warn("Polling has reached its time limit. Stopping polling...");
+            clearInterval(pollingIntervalId); // Stop the polling after 6 minutes
+            SessionManager.handleLogout();
+        } else {
+            pollUserSession();
+        }
+    }, POLLING_INTERVAL);
 }
 
 // Start polling when DOMContentLoaded and session is initialized
@@ -399,10 +409,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =========== end_3.3_session_state_polling =========== */
-
-
-
-
 
 
 
@@ -788,18 +794,22 @@ function debounce(func, delay) {
     };
 }
 
-// Debounced version of pushPagesense
-//const debouncedPushPagesense = debounce(pushPagesense, 2000);
+let pagesenseCallCount = 0; // Keep track of how many times pushPagesense has been called
 
-// Function to 
+// Function to push events to PageSense, can be called a maximum of 4 times
 function pushPagesense(actionType, customerId) {
-    // Prevent recursive 
+    if (pagesenseCallCount >= 4) {
+        console.warn('Max number of PageSense calls reached. Skipping action:', actionType);
+        return;
+    }
+
+    // Prevent recursive calls
     if (window.pushPagesenseLock) {
         console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
         return;
     }
 
-    // Ensure that 
+    // Ensure that PageSense is loaded
     if (typeof window.pagesense === 'undefined') {
         console.warn('PageSense is not yet loaded. Skipping action:', actionType);
         return;
@@ -811,6 +821,7 @@ function pushPagesense(actionType, customerId) {
         if (typeof window.pushPagesense === 'function') {
             window.pushPagesense(actionType, customerId);
             console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+            pagesenseCallCount++;
         } else {
             console.error('Pagesense function is not defined on the window object.');
         }
@@ -820,7 +831,6 @@ function pushPagesense(actionType, customerId) {
         window.pushPagesenseLock = false;
     }
 }
-
 
 // Function to load PageSense script dynamically
 function loadPageSenseScript() {
@@ -833,7 +843,19 @@ function loadPageSenseScript() {
         console.log("PageSense script loaded dynamically.");
     }
 }
+
+/*
+   this is section-9 pagesense-tracking
+this should only be executed when called. it should only be called max 6 times where
+each userEvent will be logged and sent to pagesense as these events
+auth-click, fx_customerId 500, 595, 665, 874
+login-click, fx_customerId 475, 571, 642, 852
+logout-click, fx_customerId 487, 583, 653, 863
+login-success, fx_customerId 988
+*/
+
 /* =========== end_9_pagesense_track =========== */
+
 /* =========== start_10_eventsAuth =========== */
 
 function attachButtonEventListeners() {
