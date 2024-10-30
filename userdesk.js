@@ -6,7 +6,7 @@ var UserDesk = (function() {
         try {
             // Define the base URL for the proxy
             var baseUrl = `https://zaproxy-7ec3ff690999.herokuapp.com`; // Replace with your actual proxy server URL
-            var workspace = `crm`;
+            var workspace = `1386797000003126041`;
             var view = `1386797000017932368`;
             var searchby = 'Foxy ID';
             var searchinput = customerId;
