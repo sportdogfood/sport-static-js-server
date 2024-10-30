@@ -4,6 +4,9 @@
 const POLLING_INTERVAL = 45000;
 let pollingEndTime = Date.now() + (6 * 60 * 1000); // Poll for 6 minutes
 
+// Add 15-second delay before start polling
+setTimeout(() => startSessionPolling(), 15000);
+
 // Function to poll user session data
 function pollUserSession() {
     if (!SessionManager.session) {
@@ -12,6 +15,30 @@ function pollUserSession() {
     }
 
     console.log("Polling user session data...");
+
+    const cookies = SessionManager.getCookies();
+    // Check if fx_customer_sso exists
+    if (cookies['fx_customer_sso']) {
+        const ssoToken = cookies['fx_customer_sso'];
+        console.log("SSO token found. Processing fx_customer_sso...");
+
+        const urlParams = new URLSearchParams(ssoToken.split('?')[1]);
+        const fcCustomerId = urlParams.get('fc_customer_id');
+        const fcAuthToken = urlParams.get('fc_auth_token');
+
+        if (fcCustomerId) {
+            document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
+            window.fx_customerId = fcCustomerId; // Update fx_customerId in the session
+        }
+        if (fcAuthToken) {
+            SessionManager.updateSession({ status: 'isUserAuthenticated' });
+        }
+
+        if (!cookies['fx_customer_id'] && fcCustomerId) {
+            document.cookie = `fx_customer_id=${fcCustomerId}; path=/;`;
+        }
+    }
+
     const {
         status,
         userMeta: { lastScriptRun, lastUpdate } = {},
@@ -102,7 +129,7 @@ function pollUserSession() {
 
 // Start polling function
 function startSessionPolling() {
-    // Poll immediately
+    // Poll immediately after the delay
     pollUserSession();
 
     // Set interval to poll every 45 seconds
@@ -113,7 +140,7 @@ function startSessionPolling() {
 document.addEventListener('DOMContentLoaded', () => {
     if (SessionManager && typeof SessionManager.initializeSession === 'function') {
         SessionManager.initializeSession();
-        startSessionPolling();
+        setTimeout(startSessionPolling, 15000); // Delay start of polling by 15 seconds
     } else {
         console.error('SessionManager is not defined properly, unable to start polling.');
     }
