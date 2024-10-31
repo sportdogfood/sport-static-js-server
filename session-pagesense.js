@@ -1,7 +1,10 @@
-/* =========== PageSense Tracking and Script Loading =========== */
-
-// Function to handle PageSense tracking events
+// Function to push events to PageSense, can be called a maximum of 4 times
 function pushPagesense(actionType, customerId) {
+    if (pagesenseCallCount >= 4) {
+        console.warn('Max number of PageSense calls reached. Skipping action:', actionType);
+        return;
+    }
+
     // Prevent recursive calls
     if (window.pushPagesenseLock) {
         console.warn('PushPagesense is currently locked to prevent recursion for action:', actionType);
@@ -20,6 +23,7 @@ function pushPagesense(actionType, customerId) {
         if (typeof window.pushPagesense === 'function') {
             window.pushPagesense(actionType, customerId);
             console.log('Pagesense tracking for action:', actionType, 'Customer ID:', customerId);
+            pagesenseCallCount++;
         } else {
             console.error('Pagesense function is not defined on the window object.');
         }

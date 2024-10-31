@@ -1,6 +1,4 @@
-// Reorder3: Authentication Handling
-
-// Function to authenticate the customer
+// Function to authenticate customer
 async function authenticateCustomer() {
     const email = document.getElementById('em')?.value;
     const password = document.getElementById('passwordInput')?.value;
@@ -37,12 +35,14 @@ async function authenticateCustomer() {
     }
 }
 
-// Function to display authentication result messages
+// Function to display authentication result
 function displayAuthResult(message) {
     const resultElement = document.getElementById('authResult');
     if (resultElement) {
         resultElement.textContent = message;
         resultElement.style.display = 'block';
+    } else {
+        console.error('Authentication result element not found in the DOM.');
     }
 }
 
@@ -56,46 +56,32 @@ function handleSuccessfulAuthentication(responseData, email) {
 
     displayAuthResult("Authentication successful! Welcome.");
 
+    // Store customer data in localStorage for session persistence
     localStorage.setItem("fx_customerEmail", email);
     localStorage.setItem("fx_customerId", responseData.fc_customer_id);
 
-    document.cookie = `fx_customer=${responseData.fc_auth_token}; path=/; Secure; SameSite=Strict`;
-    document.cookie = `fx_customerId=${responseData.fc_customer_id}; path=/; Secure; SameSite=Strict`;
-    document.cookie = `fx_customer_em=${encodeURIComponent(email)}; path=/; Secure; SameSite=Strict`;
-    document.cookie = `fx_customer_jwt=${responseData.jwt}; path=/; Secure; SameSite=Strict`;
-    document.cookie = `fx_customer_sso=${responseData.sso}; path=/; Secure; SameSite=Strict`;
+    // Set cookies for secure customer identification
+    const cookieAttributes = "path=/; Secure; SameSite=Strict";
+    document.cookie = `fx_customer=${responseData.fc_auth_token}; ${cookieAttributes}`;
+    document.cookie = `fx_customerId=${responseData.fc_customer_id}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_em=${encodeURIComponent(email)}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_jwt=${responseData.jwt}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_sso=${responseData.sso}; ${cookieAttributes}`;
 
+    // Set sporturl cookie with additional metadata for customer session
     const sportpin = Math.floor(1000 + Math.random() * 9000);
     const timestamp = Date.now();
     const sporturl = `https://www.sportdogfood.com/login&em=${encodeURIComponent(email)}&cid=${responseData.fc_customer_id}&pn=${sportpin}&ts=${timestamp}`;
     document.cookie = `sporturl=${encodeURIComponent(sporturl)}; path=/; max-age=${60 * 60 * 24 * 180}; Secure; SameSite=Strict`;
 
+    // Fetch additional customer data and track login success
     fetchCustomerData(responseData.fc_customer_id);
     debouncedPushPagesense('login-success', responseData.fc_customer_id);
 
-    // Load PageSense script dynamically after successful authentication
+    // Load PageSense tracking script dynamically after successful login
     loadPageSenseScript();
 }
 
-// Function to load PageSense script dynamically
-function loadPageSenseScript() {
-    if (!document.getElementById('pagesense-script')) {
-        const scriptElement = document.createElement('script');
-        scriptElement.src = "https://cdn.pagesense.io/js/sportdogfood141/683c76dd5be1480e9ff129b5be0042a9.js";
-        scriptElement.id = 'pagesense-script';
-        scriptElement.async = true;
-        document.body.appendChild(scriptElement);
-        console.log("PageSense script loaded dynamically.");
-    }
-}
-
-// Placeholder for fetchCustomerData
-async function fetchCustomerData(customerId) {
-    console.log(`Fetching additional data for customer ID: ${customerId}`);
-    // Implement the actual data fetching logic here
-}
-
-// Event listener for when the user is authenticated
 document.addEventListener('authenticated', () => {
     const scriptsToLoad = [
         { src: 'https://sportdogfood.github.io/sport-static-js-server/fxcustomerzoom.js', id: 'fxcustomerzoom', initFunction: 'customerzoomInit' },
@@ -131,7 +117,7 @@ document.addEventListener('authenticated', () => {
                 console.log(`Re-executing ${scriptInfo.initFunction} since ${scriptInfo.id}.js is already loaded.`);
                 window[scriptInfo.initFunction]();
             } else {
-                console.warn(`${scriptInfo.initFunction} function not found even though the script is loaded. Ensure it was correctly attached to the window.`);
+                console.warn(`${scriptInfo.initFunction} function not found even though the script is loaded.`);
             }
         }
     });
