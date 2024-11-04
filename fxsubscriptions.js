@@ -36,11 +36,11 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Properly update fx:subscriptions in _embedded using the global function
+        // Check if updateEmbeddedData function is available
         if (typeof window.updateEmbeddedData === 'function') {
             window.updateEmbeddedData('fx:subscriptions', subscriptions);
         } else {
-            console.error("updateEmbeddedData function not found in global scope.");
+            console.warn("updateEmbeddedData function not found in global scope. Consider defining it for proper data embedding.");
         }
 
         // Update session state using the global function
@@ -83,3 +83,9 @@ function subscriptionsInit() {
 // Attach the function to the global window object for external access
 window.fetchFoxyCartSubscriptions = fetchFoxyCartSubscriptions;
 window.subscriptionsInit = subscriptionsInit;
+
+// Helper function to get friendly date and time (assuming it was defined somewhere)
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString();
+}
