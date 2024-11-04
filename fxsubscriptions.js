@@ -36,11 +36,13 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Add fx:subscriptions to userZoom._embedded, ensure it's not null
-        if (window.userZoom && window.userZoom._embedded) {
-            window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : {};
+        // Ensure userZoom._embedded exists, then add fx:subscriptions
+        if (!window.userZoom) {
+            window.userZoom = { _embedded: { 'fx:subscriptions': subscriptions.length > 0 ? subscriptions : {} } };
+        } else if (!window.userZoom._embedded) {
+            window.userZoom._embedded = { 'fx:subscriptions': subscriptions.length > 0 ? subscriptions : {} };
         } else {
-            console.error("userZoom._embedded is not defined in the global scope.");
+            window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : {};
         }
 
         // Update session state using the global function
