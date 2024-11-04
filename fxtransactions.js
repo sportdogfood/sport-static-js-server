@@ -36,11 +36,15 @@ async function fetchFoxyCartTransactions(customerId) {
             console.log("No transactions found in response data.");
         }
 
-        // Properly update fx:transactions in _embedded using the global function
-        if (typeof window.updateEmbeddedData === 'function') {
-            window.updateEmbeddedData('fx:transactions', transactions);
+        // Add fx:transactions to userZoom._embedded, ensure it's not null
+        if (window.userZoom && window.userZoom._embedded) {
+            window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : {};
         } else {
-            console.error("updateEmbeddedData function not found in global scope.");
+            if (window.userZoom) {
+                window.userZoom._embedded = { 'fx:transactions': transactions.length > 0 ? transactions : {} };
+            } else {
+                console.error("userZoom is not defined in the global scope.");
+            }
         }
 
         // Update session state using the global function
@@ -83,3 +87,9 @@ function transactionsInit() {
 // Attach the function to the global window object for external access
 window.fetchFoxyCartTransactions = fetchFoxyCartTransactions;
 window.transactionsInit = transactionsInit;
+
+// Helper function to get friendly date and time (assuming it was defined somewhere)
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString();
+}
