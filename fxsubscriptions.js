@@ -36,15 +36,11 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Define a fallback for updateEmbeddedData if it is not available
-        if (typeof window.updateEmbeddedData === 'function') {
-            window.updateEmbeddedData('fx:subscriptions', subscriptions);
+        // Add fx:subscriptions to userZoom._embedded, ensure it's not null
+        if (window.userZoom && window.userZoom._embedded) {
+            window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : {};
         } else {
-            window.updateEmbeddedData = function(key, value) {
-                console.warn(`Fallback: updateEmbeddedData called with key: ${key}, value:`, value);
-                // You can add any fallback logic here if needed
-            };
-            window.updateEmbeddedData('fx:subscriptions', subscriptions);
+            console.error("userZoom._embedded is not defined in the global scope.");
         }
 
         // Update session state using the global function
