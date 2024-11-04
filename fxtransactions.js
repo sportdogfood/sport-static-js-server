@@ -36,15 +36,13 @@ async function fetchFoxyCartTransactions(customerId) {
             console.log("No transactions found in response data.");
         }
 
-        // Add fx:transactions to userZoom._embedded, ensure it's not null
-        if (window.userZoom && window.userZoom._embedded) {
-            window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : {};
+        // Ensure userZoom._embedded exists, then add fx:transactions
+        if (!window.userZoom) {
+            window.userZoom = { _embedded: { 'fx:transactions': transactions.length > 0 ? transactions : {} } };
+        } else if (!window.userZoom._embedded) {
+            window.userZoom._embedded = { 'fx:transactions': transactions.length > 0 ? transactions : {} };
         } else {
-            if (window.userZoom) {
-                window.userZoom._embedded = { 'fx:transactions': transactions.length > 0 ? transactions : {} };
-            } else {
-                console.error("userZoom is not defined in the global scope.");
-            }
+            window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : {};
         }
 
         // Update session state using the global function
