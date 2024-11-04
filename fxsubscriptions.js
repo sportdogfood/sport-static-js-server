@@ -39,6 +39,7 @@ async function fetchFoxyCartSubscriptions(customerId) {
         // Ensure userZoom and _embedded exist, then add fx:subscriptions
         window.userZoom = window.userZoom || {};
         window.userZoom._embedded = window.userZoom._embedded || {};
+        window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : [];
 
         // Add fx:subscriptions without overwriting existing embedded data
         window.userZoom._embedded['fx:subscriptions'] = subscriptions;
