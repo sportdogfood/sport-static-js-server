@@ -36,13 +36,14 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Ensure userZoom._embedded exists, then add fx:subscriptions
+        // Ensure userZoom exists, then add fx:subscriptions to _embedded
         if (!window.userZoom) {
-            window.userZoom = { _embedded: { 'fx:subscriptions': subscriptions.length > 0 ? subscriptions : {} } };
-        } else if (!window.userZoom._embedded) {
-            window.userZoom._embedded = { 'fx:subscriptions': subscriptions.length > 0 ? subscriptions : {} };
+            window.userZoom = { _embedded: { 'fx:subscriptions': subscriptions.length > 0 ? subscriptions : [] } };
         } else {
-            window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : {};
+            if (!window.userZoom._embedded) {
+                window.userZoom._embedded = {};
+            }
+            window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : [];
         }
 
         // Update session state using the global function
