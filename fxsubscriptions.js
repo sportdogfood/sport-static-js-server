@@ -36,11 +36,15 @@ async function fetchFoxyCartSubscriptions(customerId) {
             console.log("No subscriptions found in response data.");
         }
 
-        // Check if updateEmbeddedData function is available
+        // Define a fallback for updateEmbeddedData if it is not available
         if (typeof window.updateEmbeddedData === 'function') {
             window.updateEmbeddedData('fx:subscriptions', subscriptions);
         } else {
-            console.warn("updateEmbeddedData function not found in global scope. Consider defining it for proper data embedding.");
+            window.updateEmbeddedData = function(key, value) {
+                console.warn(`Fallback: updateEmbeddedData called with key: ${key}, value:`, value);
+                // You can add any fallback logic here if needed
+            };
+            window.updateEmbeddedData('fx:subscriptions', subscriptions);
         }
 
         // Update session state using the global function
