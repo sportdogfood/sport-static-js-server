@@ -1,15 +1,10 @@
 // Function to handle user attributes with a single controlled execution
-function attributesInit(retryCount = 0) {
+function attributesInit() {
     try {
-        // Read from localStorage with retry mechanism
+        // Read from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
-            if (retryCount < 3) { // Retry up to 3 times
-                console.warn(`Attempt ${retryCount + 1}: UserZoom data not available yet, retrying...`);
-                setTimeout(() => attributesInit(retryCount + 1), 500); // Retry after 500 ms
-            } else {
-                console.error('UserZoom data not available after multiple retries. Initialization aborted.');
-            }
+            console.error('UserZoom data not available. Initialization aborted.');
             return;
         }
 
@@ -18,12 +13,7 @@ function attributesInit(retryCount = 0) {
 
         // Check if userZoom and attributes are available
         if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
-            if (retryCount < 3) { // Retry up to 3 times for embedded attributes
-                console.warn(`Attempt ${retryCount + 1}: User attributes not available, retrying...`);
-                setTimeout(() => attributesInit(retryCount + 1), 500); // Retry after 500 ms
-            } else {
-                console.error('User attributes are not available after multiple retries. Initialization aborted.');
-            }
+            console.error('User attributes are not available. Initialization aborted.');
             return;
         }
 

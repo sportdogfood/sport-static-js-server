@@ -1,92 +1,97 @@
-console.log('fxsubscriptions.js is executing properly.');
-
-// Define the function to fetch FoxyCart subscriptions
-async function fetchFoxyCartSubscriptions(customerId) {
-    if (!customerId) {
-        console.error("Customer ID is missing or invalid.");
-        return { total_items: 0, subscriptions: [] };
-    }
-
-    const proxyUrl = `https://sportcorsproxy.herokuapp.com/foxycart/subscriptions?customer_id=${customerId}`;
-
+// Function to handle user subscriptions with a single controlled execution
+function subscriptionsInit() {
     try {
-        const response = await fetch(proxyUrl, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
+        // Read from localStorage
+        const userZoomRaw = localStorage.getItem('userZoom');
+        if (!userZoomRaw) {
+            console.error('UserZoom data not available. Initialization aborted.');
+            return;
+        }
+
+        // Parse userZoom data
+        let userZoom = JSON.parse(userZoomRaw);
+
+        // Check if userZoom and subscriptions are available
+        if (!userZoom) {
+            console.error('UserZoom is not available. Initialization aborted.');
+            return;
+        }
+
+        // Check if subscriptions have already been processed to avoid re-execution
+        let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
+        if (userSession['subscriptionsProcessed'] || userZoom._embedded?.['fx:subscriptions']) {
+            console.info('Subscriptions have already been processed. Skipping re-execution.');
+            return;
+        }
+
+        // Assume subscriptions data is retrieved from an API or local data
+        const subscriptions = fetchSubscriptionsData(); // Placeholder function for fetching subscriptions data
+        const processedSubscriptions = []; // Array to store processed subscriptions for userZoom
+
+        subscriptions.forEach((subscription) => {
+            const id = subscription?.id || '';
+            const status = subscription?.status ?? null;
+
+            const subscriptionData = {
+                subscriptionId: id,
+                subscriptionStatus: status,
+                lastupdate: getFriendlyDateTime(),
+            };
+
+            // Add to userSession
+            userSession[`userSubscription_${id}`] = subscriptionData;
+
+            // Add to processedSubscriptions for userZoom
+            processedSubscriptions.push(subscriptionData);
         });
 
-        if (response.status === 404) {
-            console.log("No active subscriptions found for this customer (404 response).");
-            return { total_items: 0, subscriptions: [] };
-        }
+        // Mark subscriptions as processed in userSession
+        userSession['subscriptionsProcessed'] = true;
 
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
-        }
+        // Update session in localStorage
+        localStorage.setItem('userSession', JSON.stringify(userSession));
+        console.log("Subscriptions have been successfully processed and stored in userSession.");
 
-        const data = await response.json();
-        console.log("Response data:", data);
+        // Add fx:subscriptions to userZoom._embedded
+        userZoom._embedded = userZoom._embedded || {};
+        userZoom._embedded['fx:subscriptions'] = processedSubscriptions;
 
-        const totalItems = data.total_items || 0;
-        const subscriptions = data.subscriptions || [];
-
-        if (subscriptions.length === 0) {
-            console.log("No subscriptions found in response data.");
-        }
-
-        // Ensure userZoom and _embedded exist, then add fx:subscriptions
-        window.userZoom = window.userZoom || {};
-        window.userZoom._embedded = window.userZoom._embedded || {};
-        window.userZoom._embedded['fx:subscriptions'] = subscriptions.length > 0 ? subscriptions : [];
-
-        // Add fx:subscriptions without overwriting existing embedded data
-        window.userZoom._embedded['fx:subscriptions'] = subscriptions;
-
-        // Update session state using the global function
-        if (typeof window.updateUserSession === 'function') {
-            window.updateUserSession({ subscriptionsFetched: true, lastupdate: getFriendlyDateTime() });
-            window.updateUserSession({ subscriptions_totalItems: totalItems, lastupdate: getFriendlyDateTime() });
-        } else {
-            console.error("updateUserSession function not found in global scope.");
-        }
-
-        return { total_items: totalItems, subscriptions: subscriptions };
+        // Update userZoom in localStorage
+        localStorage.setItem('userZoom', JSON.stringify(userZoom));
+        console.log("Subscriptions have been successfully processed and added to userZoom.");
 
     } catch (error) {
-        console.error("Failed to fetch data from FoxyCart API: ", error);
-        return { total_items: 0, subscriptions: [] };
+        console.error('An error occurred in subscriptionsInit:', error);
     }
 }
 
-// Define the main initialization function for subscriptions
-function subscriptionsInit() {
-    console.log('fxsubscriptions.js initialization function is called.');
-
-    // Ensure that the customer ID is available before proceeding
-    const customerId = window.fx_customerId;
-    if (!customerId) {
-        console.error('No customer ID found. Cannot initialize subscriptions fetching.');
-        return;
-    }
-
-    // Fetch subscriptions for the customer
-    fetchFoxyCartSubscriptions(customerId)
-      .then(() => {
-        console.log('Subscriptions successfully fetched and processed.');
-      })
-      .catch((error) => {
-        console.error('Error during subscriptions fetching initialization:', error);
-      });
-}
-
-// Attach the function to the global window object for external access
-window.fetchFoxyCartSubscriptions = fetchFoxyCartSubscriptions;
-window.subscriptionsInit = subscriptionsInit;
-
-// Helper function to get friendly date and time (assuming it was defined somewhere)
+// Helper function to get friendly date and time
 function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString();
 }
+
+// Placeholder function to simulate fetching subscriptions data
+function fetchSubscriptionsData() {
+    // Replace with actual API call or data retrieval logic
+    return [
+        { id: 'sub1', status: 'active' },
+        { id: 'sub2', status: 'inactive' }
+    ];
+}
+
+// Make sure the init function is available globally if needed
+window.subscriptionsInit = subscriptionsInit;
+
+// Ensure subscriptionsInit runs only if userZoom data is guaranteed to be available
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const userZoomRaw = localStorage.getItem('userZoom');
+        if (userZoomRaw) {
+            console.log('UserZoom data is available. Attempting to initialize subscriptions.');
+            window.subscriptionsInit();
+        } else {
+            console.warn('UserZoom data is not available after delay. subscriptionsInit will not run automatically.');
+        }
+    }, 20000); // Delay of 20 seconds
+});
