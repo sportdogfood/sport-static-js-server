@@ -103,5 +103,5 @@ function getFriendlyDateTime() {
     return now.toLocaleString();
 }
 
-// Remove DOMContentLoaded and polling logic as transactionsInit should be triggered by customerzoom
-// transactionsInit will only run if explicitly called by customerzoom or userZoom is fully ready
+// Ensure transactionsInit runs only when called explicitly by `fxcustomerzoom.js`
+// Removed automatic triggering logic to ensure it does not run unless explicitly requested

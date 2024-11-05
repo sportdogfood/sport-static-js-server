@@ -12,7 +12,7 @@ function attributesInit() {
         // Read userZoom data from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
-            console.error('UserZoom data not found in localStorage. Initialization aborted.');
+            console.warn('UserZoom data not found in localStorage. Initialization will not proceed.');
             return;
         }
 
@@ -21,7 +21,7 @@ function attributesInit() {
 
         // Verify userZoom contains the attributes required
         if (!userZoom || typeof userZoom !== 'object' || !userZoom._embedded?.['fx:attributes']) {
-            console.error('User attributes are not available in userZoom. Initialization aborted.');
+            console.warn('User attributes are not available in userZoom. Initialization will not proceed.');
             return;
         }
 

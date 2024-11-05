@@ -3,29 +3,29 @@ console.log('fxsubscriptions.js is executing properly.');
 // Function to handle user subscriptions with a single controlled execution
 function subscriptionsInit() {
     try {
-        // Only proceed if userZoom and fx_customerId are available
+        // Ensure `userZoom` and `fx_customerId` are available before proceeding
         if (!window.userZoom || !window.fx_customerId) {
             console.warn('UserZoom or fx_customerId not available. subscriptionsInit will not run.');
             return;
         }
 
-        // Read from localStorage
+        // Read userZoom data from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
-            console.error('UserZoom data not found in localStorage. Initialization aborted.');
+            console.warn('UserZoom data not found in localStorage. Initialization will not proceed.');
             return;
         }
 
         // Parse userZoom data
         let userZoom = JSON.parse(userZoomRaw);
 
-        // Check if userZoom is valid
+        // Verify userZoom is valid
         if (!userZoom || typeof userZoom !== 'object') {
-            console.error('Parsed userZoom data is not valid. Initialization aborted.');
+            console.warn('Parsed userZoom data is not valid. Initialization will not proceed.');
             return;
         }
 
-        // Check if subscriptions have already been processed to avoid re-execution
+        // Avoid re-processing if subscriptions are already processed
         let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
         if (userSession['subscriptionsProcessed'] || userZoom._embedded?.['fx:subscriptions']) {
             console.info('Subscriptions have already been processed. Skipping re-execution.');
@@ -56,14 +56,15 @@ function subscriptionsInit() {
         // Mark subscriptions as processed in userSession
         userSession['subscriptionsProcessed'] = true;
 
-        // Update session in localStorage
+        // Update session in localStorage without overwriting other properties
         localStorage.setItem('userSession', JSON.stringify(userSession));
         console.log("Subscriptions have been successfully processed and stored in userSession.");
 
-        // Add fx:subscriptions to userZoom._embedded, ensuring it is added even if empty
-        userZoom._embedded = userZoom._embedded || {};
-        userZoom._embedded['fx:subscriptions'] = processedSubscriptions.length > 0 ? processedSubscriptions : [];
-        console.log("fx:subscriptions set in userZoom._embedded:", userZoom._embedded['fx:subscriptions']);
+        // Merge `fx:subscriptions` into `userZoom._embedded` without overwriting other properties
+        userZoom._embedded = {
+            ...userZoom._embedded,
+            'fx:subscriptions': processedSubscriptions.length > 0 ? processedSubscriptions : []
+        };
 
         // Update userZoom in localStorage
         localStorage.setItem('userZoom', JSON.stringify(userZoom));
@@ -92,5 +93,5 @@ function fetchSubscriptionsData() {
 // Attach the init function to the global window object for external access
 window.subscriptionsInit = subscriptionsInit;
 
-// Remove any auto-trigger or event listener to prevent automatic execution
-// subscriptionsInit should only run when explicitly called by fxcustomerzoom.js or manually invoked
+// Ensure subscriptionsInit runs only when called explicitly by `fxcustomerzoom.js`
+// Removed automatic triggering logic to ensure it does not run unless explicitly requested
