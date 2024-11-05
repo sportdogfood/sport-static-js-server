@@ -129,21 +129,43 @@ document.addEventListener('DOMContentLoaded', () => {
 // Event listener to trigger subscriptions, attributes, and transactions initialization after userZoom is ready
 document.addEventListener('userZoomReady', () => {
     console.log('UserZoom is fully loaded. Triggering fxsubscriptions, fxattributes, and fxtransactions initialization.');
+
     if (typeof window.subscriptionsInit === 'function') {
-        window.subscriptionsInit();
+        try {
+            window.subscriptionsInit();
+            console.log('subscriptionsInit function executed successfully.');
+        } catch (error) {
+            console.error('Error executing subscriptionsInit:', error);
+        }
     } else {
         console.error('subscriptionsInit function not found in global scope.');
     }
 
     if (typeof window.attributesInit === 'function') {
-        window.attributesInit();
+        try {
+            window.attributesInit();
+            console.log('attributesInit function executed successfully.');
+        } catch (error) {
+            console.error('Error executing attributesInit:', error);
+        }
     } else {
         console.error('attributesInit function not found in global scope.');
     }
 
     if (typeof window.transactionsInit === 'function') {
-        window.transactionsInit();
+        try {
+            window.transactionsInit();
+            console.log('transactionsInit function executed successfully.');
+        } catch (error) {
+            console.error('Error executing transactionsInit:', error);
+        }
     } else {
         console.error('transactionsInit function not found in global scope.');
     }
 });
+
+// Helper function to get friendly date and time
+function getFriendlyDateTime() {
+    const now = new Date();
+    return now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+}

@@ -12,16 +12,16 @@ function subscriptionsInit() {
         // Read from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
-            console.error('UserZoom data not available. Initialization aborted.');
+            console.error('UserZoom data not found in localStorage. Initialization aborted.');
             return;
         }
 
         // Parse userZoom data
         let userZoom = JSON.parse(userZoomRaw);
 
-        // Check if userZoom is available
-        if (!userZoom) {
-            console.error('UserZoom is not available. Initialization aborted.');
+        // Check if userZoom is valid
+        if (!userZoom || typeof userZoom !== 'object') {
+            console.error('Parsed userZoom data is not valid. Initialization aborted.');
             return;
         }
 
@@ -89,13 +89,8 @@ function fetchSubscriptionsData() {
     ];
 }
 
-// Make sure the init function is available globally if needed
+// Attach the init function to the global window object for external access
 window.subscriptionsInit = subscriptionsInit;
 
-// Ensure subscriptionsInit is only run when explicitly called or when userZoom is ready
-document.addEventListener('userZoomReady', () => {
-    if (window.userZoom && window.fx_customerId) {
-        console.log('UserZoom is now available. Triggering subscriptionsInit.');
-        window.subscriptionsInit();
-    }
-});
+// Remove any auto-trigger or event listener to prevent automatic execution
+// subscriptionsInit should only run when explicitly called by fxcustomerzoom.js or manually invoked

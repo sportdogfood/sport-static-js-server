@@ -1,29 +1,31 @@
+console.log('fxattributes.js is executing properly.');
+
 // Function to handle user attributes with a single controlled execution
 function attributesInit() {
     try {
-        // Only proceed if userZoom and fx_customerId are available
+        // Ensure `userZoom` and `fx_customerId` are available before proceeding
         if (!window.userZoom || !window.fx_customerId) {
             console.warn('UserZoom or fx_customerId not available. attributesInit will not run.');
             return;
         }
 
-        // Read from localStorage
+        // Read userZoom data from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
-            console.error('UserZoom data not available. Initialization aborted.');
+            console.error('UserZoom data not found in localStorage. Initialization aborted.');
             return;
         }
 
         // Parse userZoom data
         let userZoom = JSON.parse(userZoomRaw);
 
-        // Check if userZoom and attributes are available
-        if (!userZoom || !userZoom._embedded?.['fx:attributes']) {
-            console.error('User attributes are not available. Initialization aborted.');
+        // Verify userZoom contains the attributes required
+        if (!userZoom || typeof userZoom !== 'object' || !userZoom._embedded?.['fx:attributes']) {
+            console.error('User attributes are not available in userZoom. Initialization aborted.');
             return;
         }
 
-        // Check if attributes have already been processed to avoid re-execution
+        // Avoid re-processing if attributes are already processed
         let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
         if (userSession['attributesProcessed'] || userZoom._embedded?.['fx:attributesProcessed']) {
             console.info('Attributes have already been processed. Skipping re-execution.');
@@ -79,5 +81,5 @@ function getFriendlyDateTime() {
 // Make sure the init function is available globally if needed
 window.attributesInit = attributesInit;
 
-// Ensure attributesInit runs only when called explicitly or by customerzoom
-// Remove DOMContentLoaded and polling logic as attributesInit should be triggered by customerzoom
+// Remove any automatic triggering to ensure attributesInit is only run when explicitly called
+// attributesInit should only be run when fxcustomerzoom.js calls it explicitly
