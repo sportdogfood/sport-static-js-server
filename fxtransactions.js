@@ -37,15 +37,14 @@ async function fetchFoxyCartTransactions(customerId) {
         }
 
         // Ensure userZoom and _embedded exist, then add fx:transactions
+        console.log("Before updating userZoom, current userZoom:", window.userZoom);
         window.userZoom = window.userZoom || {};
         window.userZoom._embedded = window.userZoom._embedded || {};
 
         // Merge existing embedded data without overwriting and add transactions
-        window.userZoom._embedded = {
-            ...window.userZoom._embedded,
-            'fx:transactions': transactions.length > 0 ? transactions : []
-        };
+        window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : [];
 
+        console.log("After updating userZoom, current userZoom:", window.userZoom);
         console.log("fx:transactions set in userZoom._embedded:", window.userZoom._embedded['fx:transactions']);
 
         // Save updated userZoom to localStorage to persist changes
