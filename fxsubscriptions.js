@@ -9,22 +9,6 @@ function subscriptionsInit() {
             return;
         }
 
-        // Read userZoom data from localStorage
-        const userZoomRaw = localStorage.getItem('userZoom');
-        if (!userZoomRaw) {
-            console.warn('UserZoom data not found in localStorage. Initialization will not proceed.');
-            return;
-        }
-
-        // Parse userZoom data
-        let userZoom = JSON.parse(userZoomRaw);
-
-        // Verify userZoom is valid
-        if (!userZoom || typeof userZoom !== 'object') {
-            console.warn('Parsed userZoom data is not valid. Initialization will not proceed.');
-            return;
-        }
-
         // Avoid re-processing if subscriptions are already processed
         let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
         if (userSession['subscriptionsProcessed']) {

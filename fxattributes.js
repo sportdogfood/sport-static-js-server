@@ -2,41 +2,21 @@ console.log('fxattributes.js is loaded and ready for controlled execution.');
 
 // Function to handle user attributes with a single controlled execution
 function attributesInit() {
-    // Ensure that this function is only run if explicitly called
-    if (!window.attributesInitCalled) {
-        console.warn('attributesInit was called without proper authorization. Initialization is aborted.');
-        return;
-    }
-
     try {
         console.log('fxattributes.js is executing properly.');
 
-        // Ensure `userZoom` and `fx_customerId` are available before proceeding
-        if (!window.userZoom || !window.fx_customerId) {
-            console.warn('UserZoom or fx_customerId not available. attributesInit will not run.');
-            return;
-        }
-
-        // Read userZoom data from localStorage
-        const userZoomRaw = localStorage.getItem('userZoom');
-        if (!userZoomRaw) {
-            console.warn('UserZoom data not found in localStorage. Initialization will not proceed.');
-            return;
-        }
-
-        // Parse userZoom data
-        let userZoom = JSON.parse(userZoomRaw);
-
-        // Verify userZoom contains the attributes required
-        if (!userZoom || typeof userZoom !== 'object' || !userZoom._embedded?.['fx:attributes']) {
-            console.warn('User attributes are not available in userZoom. Initialization will not proceed.');
-            return;
-        }
+        // Assume that the userZoom and related data are valid, as this function should only run when explicitly called by fxcustomerzoom.js
+        let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
+        let userZoom = JSON.parse(localStorage.getItem('userZoom'));
 
         // Avoid re-processing if attributes are already processed
-        let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
-        if (userSession['attributesProcessed'] || userZoom._embedded?.['fx:attributesProcessed']) {
+        if (userSession['attributesProcessed']) {
             console.info('Attributes have already been processed. Skipping re-execution.');
+            return;
+        }
+
+        if (!userZoom || typeof userZoom !== 'object' || !userZoom._embedded?.['fx:attributes']) {
+            console.warn('User attributes are not available in userZoom. Initialization will not proceed.');
             return;
         }
 
@@ -80,9 +60,6 @@ function attributesInit() {
 
     } catch (error) {
         console.error('An error occurred in attributesInit:', error);
-    } finally {
-        // Reset the guard flag after execution
-        window.attributesInitCalled = false;
     }
 }
 
@@ -92,15 +69,9 @@ function getFriendlyDateTime() {
     return now.toLocaleString();
 }
 
-// Make sure the init function is available globally if needed
+// Attach the init function to the global window object for external access
 window.attributesInit = attributesInit;
 
-// Ensure attributesInit runs only when explicitly called by `fxcustomerzoom.js`
-// Removed automatic triggering logic to ensure it does not run unless explicitly requested
-
-// Introducing an explicit guard to make sure the function only runs when allowed
-window.attributesInitCalled = false;
-
+// Removed any internal guards or checks to ensure this function will only be executed when explicitly called
 // fxcustomerzoom.js should call the function like this:
-// window.attributesInitCalled = true;
 // attributesInit();
