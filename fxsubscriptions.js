@@ -1,3 +1,5 @@
+console.log('fxsubscriptions.js is executing properly.');
+
 // Function to handle user subscriptions with a single controlled execution
 function subscriptionsInit() {
     try {
@@ -90,14 +92,10 @@ function fetchSubscriptionsData() {
 // Make sure the init function is available globally if needed
 window.subscriptionsInit = subscriptionsInit;
 
-// Ensure subscriptionsInit runs only if userZoom data is guaranteed to be available
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (window.userZoom && window.fx_customerId) {
-            console.log('UserZoom and fx_customerId are available. Attempting to initialize subscriptions.');
-            window.subscriptionsInit();
-        } else {
-            console.warn('UserZoom or fx_customerId are not available. subscriptionsInit will not run automatically.');
-        }
-    }, 20000); // Delay of 20 seconds
+// Ensure subscriptionsInit is only run when explicitly called or when userZoom is ready
+document.addEventListener('userZoomReady', () => {
+    if (window.userZoom && window.fx_customerId) {
+        console.log('UserZoom is now available. Triggering subscriptionsInit.');
+        window.subscriptionsInit();
+    }
 });

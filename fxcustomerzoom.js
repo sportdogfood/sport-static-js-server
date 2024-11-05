@@ -33,6 +33,9 @@ async function fetchCustomerData(customerId) {
             // Store updated customer data in localStorage
             localStorage.setItem("userZoom", JSON.stringify(responseData));
 
+            // Dispatch an event to indicate userZoom is ready
+            document.dispatchEvent(new Event('userZoomReady'));
+
             // Safely call initializeAndUpdate if it exists
             if (typeof window.initializeAndUpdate === 'function') {
                 window.initializeAndUpdate();
@@ -47,16 +50,6 @@ async function fetchCustomerData(customerId) {
             } else {
                 console.error('updateUserSession function not found in global scope.');
             }
-
-            // Call attributesInit() after successful data retrieval, only if attributesProcessed is not set
-            if (typeof window.attributesInit === 'function' && !responseData._embedded?.['fx:attributesProcessed']) {
-                setTimeout(() => window.attributesInit(), 10000); // Ensures attributesInit runs after a delay if data is ready and not yet processed
-            } else if (responseData._embedded?.['fx:attributesProcessed']) {
-                console.info('Attributes have already been processed. Skipping attributesInit.');
-            } else {
-                console.error('attributesInit function not found in global scope.');
-            }
-
         } else {
             console.error('No customer data received');
         }
@@ -130,5 +123,27 @@ document.addEventListener('DOMContentLoaded', () => {
         window.customerzoomInit();
     } else {
         console.error('customerzoomInit function not found during DOMContentLoaded.');
+    }
+});
+
+// Event listener to trigger subscriptions, attributes, and transactions initialization after userZoom is ready
+document.addEventListener('userZoomReady', () => {
+    console.log('UserZoom is fully loaded. Triggering fxsubscriptions, fxattributes, and fxtransactions initialization.');
+    if (typeof window.subscriptionsInit === 'function') {
+        window.subscriptionsInit();
+    } else {
+        console.error('subscriptionsInit function not found in global scope.');
+    }
+
+    if (typeof window.attributesInit === 'function') {
+        window.attributesInit();
+    } else {
+        console.error('attributesInit function not found in global scope.');
+    }
+
+    if (typeof window.transactionsInit === 'function') {
+        window.transactionsInit();
+    } else {
+        console.error('transactionsInit function not found in global scope.');
     }
 });

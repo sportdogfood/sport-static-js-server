@@ -79,14 +79,5 @@ function getFriendlyDateTime() {
 // Make sure the init function is available globally if needed
 window.attributesInit = attributesInit;
 
-// Ensure attributesInit runs only if userZoom data is guaranteed to be available
-document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        if (window.userZoom && window.fx_customerId) {
-            console.log('UserZoom and fx_customerId are available. Attempting to initialize attributes.');
-            window.attributesInit();
-        } else {
-            console.warn('UserZoom or fx_customerId are not available. attributesInit will not run automatically.');
-        }
-    }, 20000); // Delay of 20 seconds
-});
+// Ensure attributesInit runs only when called explicitly or by customerzoom
+// Remove DOMContentLoaded and polling logic as attributesInit should be triggered by customerzoom

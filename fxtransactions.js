@@ -1,3 +1,4 @@
+// Log to confirm script execution
 console.log('fxtransactions.js is executing properly.');
 
 // Define the function to fetch FoxyCart transactions
@@ -86,21 +87,11 @@ function transactionsInit() {
 window.fetchFoxyCartTransactions = fetchFoxyCartTransactions;
 window.transactionsInit = transactionsInit;
 
-// Helper function to get friendly date and time (assuming it was defined somewhere)
+// Helper function to get friendly date and time
 function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString();
 }
 
-// Ensure transactionsInit runs only if userZoom and fx_customerId are guaranteed to be available or called explicitly
-document.addEventListener('DOMContentLoaded', () => {
-    const checkInterval = setInterval(() => {
-        if (window.userZoom && window.fx_customerId) {
-            console.log('UserZoom and fx_customerId are available. Attempting to initialize transactions.');
-            window.transactionsInit();
-            clearInterval(checkInterval);
-        } else {
-            console.warn('Waiting for UserZoom and fx_customerId to be available. transactionsInit will not run automatically until they are both set.');
-        }
-    }, 5000); // Check every 5 seconds
-});
+// Remove DOMContentLoaded and polling logic as transactionsInit should be triggered by customerzoom
+// transactionsInit will only run if explicitly called by customerzoom or userZoom is fully ready
