@@ -20,9 +20,9 @@ function attributesInit() {
             return;
         }
 
-        // Process the attributes and add them to userSession and userZoom
+        // Process the attributes and add them to userSession
         const attributes = userZoom._embedded['fx:attributes'];
-        const processedAttributes = []; // Array to store processed attributes for userZoom
+        const processedAttributes = []; // Array to store processed attributes
 
         attributes.forEach((attribute) => {
             const name = attribute?.name || '';
@@ -37,7 +37,7 @@ function attributesInit() {
             // Add to userSession
             userSession[`userAttribute_${name}`] = attributeData;
 
-            // Add to processedAttributes for userZoom
+            // Add to processedAttributes array
             processedAttributes.push(attributeData);
         });
 
@@ -48,15 +48,13 @@ function attributesInit() {
         localStorage.setItem('userSession', JSON.stringify(userSession));
         console.log("Attributes have been successfully processed and stored in userSession.");
 
-        // Merge `fx:attributesProcessed` into `userZoom._embedded` without overwriting other properties
-        userZoom._embedded = {
-            ...userZoom._embedded,
-            'fx:attributesProcessed': processedAttributes
+        // Save processed attributes to a new localStorage key: `userAttributesProcessed`
+        const userAttributesProcessed = {
+            attributes: processedAttributes,
+            lastUpdated: getFriendlyDateTime(),
         };
-
-        // Update userZoom in localStorage
-        localStorage.setItem('userZoom', JSON.stringify(userZoom));
-        console.log("Attributes have been successfully processed and added to userZoom.");
+        localStorage.setItem('userAttributesProcessed', JSON.stringify(userAttributesProcessed));
+        console.log("Attributes have been successfully processed and stored in userAttributesProcessed.");
 
     } catch (error) {
         console.error('An error occurred in attributesInit:', error);
