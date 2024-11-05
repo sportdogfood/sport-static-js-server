@@ -92,14 +92,15 @@ function getFriendlyDateTime() {
     return now.toLocaleString();
 }
 
-// Ensure transactionsInit runs only if userZoom data is guaranteed to be available
+// Ensure transactionsInit runs only if userZoom and fx_customerId are guaranteed to be available or called explicitly
 document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
+    const checkInterval = setInterval(() => {
         if (window.userZoom && window.fx_customerId) {
             console.log('UserZoom and fx_customerId are available. Attempting to initialize transactions.');
             window.transactionsInit();
+            clearInterval(checkInterval);
         } else {
-            console.warn('UserZoom or fx_customerId are not available. transactionsInit will not run automatically.');
+            console.warn('Waiting for UserZoom and fx_customerId to be available. transactionsInit will not run automatically until they are both set.');
         }
-    }, 20000); // Delay of 20 seconds
+    }, 5000); // Check every 5 seconds
 });
