@@ -52,9 +52,10 @@ function subscriptionsInit() {
         localStorage.setItem('userSession', JSON.stringify(userSession));
         console.log("Subscriptions have been successfully processed and stored in userSession.");
 
-        // Add fx:subscriptions to userZoom._embedded
+        // Add fx:subscriptions to userZoom._embedded, ensuring it is added even if empty
         userZoom._embedded = userZoom._embedded || {};
-        userZoom._embedded['fx:subscriptions'] = processedSubscriptions;
+        userZoom._embedded['fx:subscriptions'] = processedSubscriptions.length > 0 ? processedSubscriptions : [];
+        console.log("fx:subscriptions set in userZoom._embedded:", userZoom._embedded['fx:subscriptions']);
 
         // Update userZoom in localStorage
         localStorage.setItem('userZoom', JSON.stringify(userZoom));
