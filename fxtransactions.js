@@ -36,20 +36,18 @@ async function fetchFoxyCartTransactions(customerId) {
             console.log("No transactions found in response data.");
         }
 
-        // Ensure userZoom and _embedded exist, then add fx:transactions
-        console.log("Before updating userZoom, current userZoom:", window.userZoom);
-        window.userZoom = window.userZoom || {};
-        window.userZoom._embedded = window.userZoom._embedded || {};
+        // Set userTransactions in localStorage instead of userZoom
+        const userTransactions = {
+            'fx:transactions': transactions.length > 0 ? transactions : [],
+            totalItems: totalItems,
+            lastUpdated: getFriendlyDateTime(),
+        };
 
-        // Merge existing embedded data without overwriting and add transactions
-        window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : [];
+        console.log("Storing transactions in userTransactions:", userTransactions);
 
-        console.log("After updating userZoom, current userZoom:", window.userZoom);
-        console.log("fx:transactions set in userZoom._embedded:", window.userZoom._embedded['fx:transactions']);
-
-        // Save updated userZoom to localStorage to persist changes
-        localStorage.setItem('userZoom', JSON.stringify(window.userZoom));
-        console.log("userZoom updated in localStorage.");
+        // Save userTransactions to localStorage to persist changes
+        localStorage.setItem('userTransactions', JSON.stringify(userTransactions));
+        console.log("userTransactions updated in localStorage.");
 
         // Update session state using the global function
         if (typeof window.updateUserSession === 'function') {
@@ -70,9 +68,9 @@ async function fetchFoxyCartTransactions(customerId) {
 // Define the main initialization function for transactions
 function transactionsInit() {
     try {
-        // Only proceed if userZoom and fx_customerId are available
-        if (!window.userZoom || !window.fx_customerId) {
-            console.warn('UserZoom or fx_customerId not available. transactionsInit will not run.');
+        // Only proceed if fx_customerId is available
+        if (!window.fx_customerId) {
+            console.warn('fx_customerId not available. transactionsInit will not run.');
             return;
         }
 
