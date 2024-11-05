@@ -90,7 +90,6 @@ function transactionsInit() {
     }
 }
 
-// Attach the function to the global window object for external access
 window.fetchFoxyCartTransactions = fetchFoxyCartTransactions;
 window.transactionsInit = transactionsInit;
 
