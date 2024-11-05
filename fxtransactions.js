@@ -41,6 +41,13 @@ async function fetchFoxyCartTransactions(customerId) {
         window.userZoom = window.userZoom || {};
         window.userZoom._embedded = window.userZoom._embedded || {};
         window.userZoom._embedded['fx:transactions'] = transactions.length > 0 ? transactions : [];
+        console.log("fx:transactions set in userZoom._embedded:", window.userZoom._embedded['fx:transactions']);
+
+        // Ensure subscriptions are also handled, add if necessary
+        if (!window.userZoom._embedded['fx:subscriptions']) {
+            window.userZoom._embedded['fx:subscriptions'] = [];
+            console.log("fx:subscriptions initialized in userZoom._embedded as empty array.");
+        }
 
         // Update session state using the global function
         if (typeof window.updateUserSession === 'function') {
