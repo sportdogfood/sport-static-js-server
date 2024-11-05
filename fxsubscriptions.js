@@ -1,6 +1,12 @@
 // Function to handle user subscriptions with a single controlled execution
 function subscriptionsInit() {
     try {
+        // Only proceed if userZoom and fx_customerId are available
+        if (!window.userZoom || !window.fx_customerId) {
+            console.warn('UserZoom or fx_customerId not available. subscriptionsInit will not run.');
+            return;
+        }
+
         // Read from localStorage
         const userZoomRaw = localStorage.getItem('userZoom');
         if (!userZoomRaw) {
@@ -11,7 +17,7 @@ function subscriptionsInit() {
         // Parse userZoom data
         let userZoom = JSON.parse(userZoomRaw);
 
-        // Check if userZoom and subscriptions are available
+        // Check if userZoom is available
         if (!userZoom) {
             console.error('UserZoom is not available. Initialization aborted.');
             return;
@@ -87,12 +93,11 @@ window.subscriptionsInit = subscriptionsInit;
 // Ensure subscriptionsInit runs only if userZoom data is guaranteed to be available
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
-        const userZoomRaw = localStorage.getItem('userZoom');
-        if (userZoomRaw) {
-            console.log('UserZoom data is available. Attempting to initialize subscriptions.');
+        if (window.userZoom && window.fx_customerId) {
+            console.log('UserZoom and fx_customerId are available. Attempting to initialize subscriptions.');
             window.subscriptionsInit();
         } else {
-            console.warn('UserZoom data is not available after delay. subscriptionsInit will not run automatically.');
+            console.warn('UserZoom or fx_customerId are not available. subscriptionsInit will not run automatically.');
         }
     }, 20000); // Delay of 20 seconds
 });
