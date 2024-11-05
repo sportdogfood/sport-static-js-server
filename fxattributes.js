@@ -56,12 +56,15 @@ function attributesInit() {
         // Mark attributes as processed in userSession
         userSession['attributesProcessed'] = true;
 
-        // Update session in localStorage
+        // Update session in localStorage without overwriting other properties
         localStorage.setItem('userSession', JSON.stringify(userSession));
         console.log("Attributes have been successfully processed and stored in userSession.");
 
-        // Add fx:attributesProcessed to userZoom._embedded
-        userZoom._embedded['fx:attributesProcessed'] = processedAttributes;
+        // Merge `fx:attributesProcessed` into `userZoom._embedded` without overwriting other properties
+        userZoom._embedded = {
+            ...userZoom._embedded,
+            'fx:attributesProcessed': processedAttributes
+        };
 
         // Update userZoom in localStorage
         localStorage.setItem('userZoom', JSON.stringify(userZoom));
@@ -81,5 +84,5 @@ function getFriendlyDateTime() {
 // Make sure the init function is available globally if needed
 window.attributesInit = attributesInit;
 
-// Remove any automatic triggering to ensure attributesInit is only run when explicitly called
-// attributesInit should only be run when fxcustomerzoom.js calls it explicitly
+// Ensure attributesInit runs only when called explicitly by `fxcustomerzoom.js`
+// Removed automatic triggering logic to ensure it does not run unless explicitly requested

@@ -1,4 +1,3 @@
-// Log to confirm script execution
 console.log('fxtransactions.js is executing properly.');
 
 // Define the function to fetch FoxyCart transactions
@@ -39,6 +38,9 @@ async function fetchFoxyCartTransactions(customerId) {
 
         // Ensure userZoom and _embedded exist, then add fx:transactions
         window.userZoom = window.userZoom || {};
+        window.userZoom._embedded = window.userZoom._embedded || {};
+
+        // Merge existing embedded data without overwriting and add transactions
         window.userZoom._embedded = {
             ...window.userZoom._embedded,
             'fx:transactions': transactions.length > 0 ? transactions : []
