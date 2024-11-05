@@ -1,8 +1,16 @@
-console.log('fxattributes.js is executing properly.');
+console.log('fxattributes.js is loaded and ready for controlled execution.');
 
 // Function to handle user attributes with a single controlled execution
 function attributesInit() {
+    // Ensure that this function is only run if explicitly called
+    if (!window.attributesInitCalled) {
+        console.warn('attributesInit was called without proper authorization. Initialization is aborted.');
+        return;
+    }
+
     try {
+        console.log('fxattributes.js is executing properly.');
+
         // Ensure `userZoom` and `fx_customerId` are available before proceeding
         if (!window.userZoom || !window.fx_customerId) {
             console.warn('UserZoom or fx_customerId not available. attributesInit will not run.');
@@ -72,6 +80,9 @@ function attributesInit() {
 
     } catch (error) {
         console.error('An error occurred in attributesInit:', error);
+    } finally {
+        // Reset the guard flag after execution
+        window.attributesInitCalled = false;
     }
 }
 
@@ -84,5 +95,12 @@ function getFriendlyDateTime() {
 // Make sure the init function is available globally if needed
 window.attributesInit = attributesInit;
 
-// Ensure attributesInit runs only when called explicitly by `fxcustomerzoom.js`
+// Ensure attributesInit runs only when explicitly called by `fxcustomerzoom.js`
 // Removed automatic triggering logic to ensure it does not run unless explicitly requested
+
+// Introducing an explicit guard to make sure the function only runs when allowed
+window.attributesInitCalled = false;
+
+// fxcustomerzoom.js should call the function like this:
+// window.attributesInitCalled = true;
+// attributesInit();
