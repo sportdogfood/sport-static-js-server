@@ -3,9 +3,9 @@ console.log('fxsubscriptions.js is executing properly.');
 // Function to handle user subscriptions with a single controlled execution
 function subscriptionsInit() {
     try {
-        // Ensure `userZoom` and `fx_customerId` are available before proceeding
-        if (!window.userZoom || !window.fx_customerId) {
-            console.warn('UserZoom or fx_customerId not available. subscriptionsInit will not run.');
+        // Ensure `fx_customerId` is available before proceeding
+        if (!window.fx_customerId) {
+            console.warn('fx_customerId not available. subscriptionsInit will not run.');
             return;
         }
 
@@ -27,30 +27,29 @@ function subscriptionsInit() {
 
         // Avoid re-processing if subscriptions are already processed
         let userSession = JSON.parse(localStorage.getItem('userSession')) || {};
-        if (userSession['subscriptionsProcessed'] || userZoom._embedded?.['fx:subscriptions']) {
+        if (userSession['subscriptionsProcessed']) {
             console.info('Subscriptions have already been processed. Skipping re-execution.');
             return;
         }
 
         // Assume subscriptions data is retrieved from an API or local data
         const subscriptions = fetchSubscriptionsData(); // Placeholder function for fetching subscriptions data
-        const processedSubscriptions = []; // Array to store processed subscriptions for userZoom
+        const activeSubscriptions = []; // Array to store active subscriptions only
 
         subscriptions.forEach((subscription) => {
             const id = subscription?.id || '';
             const status = subscription?.status ?? null;
 
-            const subscriptionData = {
-                subscriptionId: id,
-                subscriptionStatus: status,
-                lastupdate: getFriendlyDateTime(),
-            };
+            if (status === 'active') {
+                const subscriptionData = {
+                    subscriptionId: id,
+                    subscriptionStatus: status,
+                    lastupdate: getFriendlyDateTime(),
+                };
 
-            // Add to userSession
-            userSession[`userSubscription_${id}`] = subscriptionData;
-
-            // Add to processedSubscriptions for userZoom
-            processedSubscriptions.push(subscriptionData);
+                // Add active subscriptions to the list
+                activeSubscriptions.push(subscriptionData);
+            }
         });
 
         // Mark subscriptions as processed in userSession
@@ -60,15 +59,15 @@ function subscriptionsInit() {
         localStorage.setItem('userSession', JSON.stringify(userSession));
         console.log("Subscriptions have been successfully processed and stored in userSession.");
 
-        // Merge `fx:subscriptions` into `userZoom._embedded` without overwriting other properties
-        userZoom._embedded = {
-            ...userZoom._embedded,
-            'fx:subscriptions': processedSubscriptions.length > 0 ? processedSubscriptions : []
+        // Create and save the userSubscriptions in localStorage
+        const userSubscriptions = {
+            'fx:subscriptions': activeSubscriptions.length > 0 ? activeSubscriptions : [],
+            lastUpdated: getFriendlyDateTime(),
         };
 
-        // Update userZoom in localStorage
-        localStorage.setItem('userZoom', JSON.stringify(userZoom));
-        console.log("Subscriptions have been successfully processed and added to userZoom.");
+        // Save userSubscriptions to localStorage
+        localStorage.setItem('userSubscriptions', JSON.stringify(userSubscriptions));
+        console.log("Active subscriptions have been successfully processed and added to userSubscriptions.");
 
     } catch (error) {
         console.error('An error occurred in subscriptionsInit:', error);
@@ -86,7 +85,8 @@ function fetchSubscriptionsData() {
     // Replace with actual API call or data retrieval logic
     return [
         { id: 'sub1', status: 'active' },
-        { id: 'sub2', status: 'inactive' }
+        { id: 'sub2', status: 'inactive' },
+        { id: 'sub3', status: 'active' }
     ];
 }
 
