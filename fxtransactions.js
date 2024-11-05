@@ -59,23 +59,27 @@ async function fetchFoxyCartTransactions(customerId) {
 
 // Define the main initialization function for transactions
 function transactionsInit() {
-    console.log('fxtransactions.js initialization function is called.');
+    try {
+        // Only proceed if userZoom and fx_customerId are available
+        if (!window.userZoom || !window.fx_customerId) {
+            console.warn('UserZoom or fx_customerId not available. transactionsInit will not run.');
+            return;
+        }
 
-    // Ensure that the customer ID is available before proceeding
-    const customerId = window.fx_customerId;
-    if (!customerId) {
-        console.error('No customer ID found. Cannot initialize transactions fetching.');
-        return;
+        console.log('fxtransactions.js initialization function is called.');
+
+        // Fetch transactions for the customer
+        const customerId = window.fx_customerId;
+        fetchFoxyCartTransactions(customerId)
+            .then(() => {
+                console.log('Transactions successfully fetched and processed.');
+            })
+            .catch((error) => {
+                console.error('Error during transactions fetching initialization:', error);
+            });
+    } catch (error) {
+        console.error('An error occurred in transactionsInit:', error);
     }
-
-    // Fetch transactions for the customer
-    fetchFoxyCartTransactions(customerId)
-        .then(() => {
-            console.log('Transactions successfully fetched and processed.');
-        })
-        .catch((error) => {
-            console.error('Error during transactions fetching initialization:', error);
-        });
 }
 
 // Attach the function to the global window object for external access
@@ -87,3 +91,15 @@ function getFriendlyDateTime() {
     const now = new Date();
     return now.toLocaleString();
 }
+
+// Ensure transactionsInit runs only if userZoom data is guaranteed to be available
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (window.userZoom && window.fx_customerId) {
+            console.log('UserZoom and fx_customerId are available. Attempting to initialize transactions.');
+            window.transactionsInit();
+        } else {
+            console.warn('UserZoom or fx_customerId are not available. transactionsInit will not run automatically.');
+        }
+    }, 20000); // Delay of 20 seconds
+});
