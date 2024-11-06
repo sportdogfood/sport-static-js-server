@@ -1,3 +1,15 @@
+<!-- buttons.html -->
+<div id="status-div" style="display: none;"></div>
+
+<div id="login-section">
+  <!-- Unique button IDs for consistency -->
+  <button id="login-button" style="display: inline;">Login</button>
+  <button id="logout-button" style="display: none;">Logout</button>
+  <!-- "Sign In" button that also triggers the login modal -->
+  <button id="sign-in-button" class="button button-2">Sign In</button>
+</div>
+
+<!-- loginmodal.html -->
 <div class="layout">
     <div class="modal-settings w-embed">
         <style>
@@ -92,9 +104,6 @@
         </style>
     </div>
 
-    <!-- Button to open the modal -->
-    <button el="open-button" class="button button-2">Sign In</button>
-
     <!-- Modal Dialog -->
     <dialog el="dialog" class="dialog" id="loginModal">
         <h2>Sign In</h2>
@@ -144,27 +153,4 @@
     </dialog>
 </div>
 
-<script>
-    // Add event listener to 'auth-button' for login modal authentication
-    document.addEventListener('DOMContentLoaded', function () {
-        // Attach event listener to 'auth-button' for triggering authentication
-        const authButton = document.getElementById('auth-button');
-        if (authButton) {
-            authButton.addEventListener('click', authenticateCustomer);
-            console.log('Authentication button event listener added.');
-        }
 
-        // Add password toggle functionality
-        const togglePassword = document.getElementById('togglePassword');
-        if (togglePassword) {
-            togglePassword.addEventListener('click', function () {
-                const passwordInput = document.getElementById('passwordInput');
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                } else {
-                    passwordInput.type = 'password';
-                }
-            });
-        }
-    });
-</script>
