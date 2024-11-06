@@ -15,12 +15,21 @@ function attributesInit() {
             return;
         }
 
-        if (!userZoom || typeof userZoom !== 'object' || !userZoom._embedded?.['fx:attributes']) {
-            console.warn('User attributes are not available in userZoom. Initialization will not proceed.');
-            return;
+        // If userZoom does not exist or does not have attributes, initialize an empty object
+        if (!userZoom || typeof userZoom !== 'object') {
+            console.warn('UserZoom data is missing, initializing an empty userZoom object.');
+            userZoom = { _embedded: { 'fx:attributes': [] } };
+            localStorage.setItem('userZoom', JSON.stringify(userZoom));
         }
 
-        // Process the attributes and add them to userSession
+        if (!userZoom._embedded || !userZoom._embedded['fx:attributes']) {
+            // If attributes are still missing after initializing userZoom, mark as empty
+            userZoom._embedded['fx:attributes'] = [];
+            localStorage.setItem('userZoom', JSON.stringify(userZoom));
+            console.info('User attributes not found. Initialized with an empty attributes array.');
+        }
+
+        // Process the attributes if they exist
         const attributes = userZoom._embedded['fx:attributes'];
         const processedAttributes = []; // Array to store processed attributes
         let totalItems = 0;
