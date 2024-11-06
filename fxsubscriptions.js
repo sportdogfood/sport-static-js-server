@@ -47,6 +47,7 @@ function subscriptionsInit() {
         const userSubscriptions = {
             'fx:subscriptions': activeSubscriptions.length > 0 ? activeSubscriptions : [],
             lastUpdated: getFriendlyDateTime(),
+            totalItems: activeSubscriptions.length,
         };
 
         // Save userSubscriptions to localStorage
@@ -78,4 +79,4 @@ function fetchSubscriptionsData() {
 window.subscriptionsInit = subscriptionsInit;
 
 // Ensure subscriptionsInit runs only when called explicitly by `fxcustomerzoom.js`
-// Removed automatic triggering logic to ensure it does not run unless explicitly requested
+// Removed automatic triggering logic to e

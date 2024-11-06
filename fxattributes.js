@@ -23,6 +23,7 @@ function attributesInit() {
         // Process the attributes and add them to userSession
         const attributes = userZoom._embedded['fx:attributes'];
         const processedAttributes = []; // Array to store processed attributes
+        let totalItems = 0;
 
         attributes.forEach((attribute) => {
             const name = attribute?.name || '';
@@ -37,8 +38,16 @@ function attributesInit() {
             // Add to userSession
             userSession[`userAttribute_${name}`] = attributeData;
 
+            // If the attribute name is `Zoho_CRM_ID`, set a global variable and store it in localStorage
+            if (name === 'Zoho_CRM_ID') {
+                window.fx_crmId = value;
+                localStorage.setItem('fx_crmId', value);
+                console.log(`Global fx_crmId set to: ${value}`);
+            }
+
             // Add to processedAttributes array
             processedAttributes.push(attributeData);
+            totalItems += 1;
         });
 
         // Mark attributes as processed in userSession
@@ -50,8 +59,9 @@ function attributesInit() {
 
         // Save processed attributes to a new localStorage key: `userAttributesProcessed`
         const userAttributesProcessed = {
-            attributes: processedAttributes,
+            attributes: processedAttributes.length > 0 ? processedAttributes : [],
             lastUpdated: getFriendlyDateTime(),
+            totalItems: totalItems,
         };
         localStorage.setItem('userAttributesProcessed', JSON.stringify(userAttributesProcessed));
         console.log("Attributes have been successfully processed and stored in userAttributesProcessed.");
