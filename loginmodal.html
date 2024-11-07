@@ -93,7 +93,7 @@
     </div>
 
     <!-- Button to open the modal -->
-    <button el="open-button" class="button button-2">open</button>
+    <button el="open-button" id="login-button" class="button button-2" style="display: inline;">Login</button>
 
     <!-- Modal Dialog -->
     <dialog el="dialog" class="dialog" id="loginModal">
@@ -145,16 +145,32 @@
 </div>
 
 <script>
-    // Add event listener to 'auth-button' for login modal authentication
     document.addEventListener('DOMContentLoaded', function () {
-        // Attach event listener to 'auth-button' for triggering authentication
+        // Open login modal on 'login-button' click
+        const loginButton = document.getElementById('login-button');
+        const loginModal = document.getElementById('loginModal');
+        if (loginButton) {
+            loginButton.addEventListener('click', function () {
+                loginModal.showModal(); // Show the modal dialog
+            });
+        }
+
+        // Close modal using 'closeModal' button
+        const closeModalButton = document.getElementById('closeModal');
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', function () {
+                loginModal.close(); // Close the modal dialog
+            });
+        }
+
+        // Add event listener to 'auth-button' for authentication
         const authButton = document.getElementById('auth-button');
         if (authButton) {
             authButton.addEventListener('click', authenticateCustomer);
             console.log('Authentication button event listener added.');
         }
 
-        // Add password toggle functionality
+        // Password toggle functionality
         const togglePassword = document.getElementById('togglePassword');
         if (togglePassword) {
             togglePassword.addEventListener('click', function () {
@@ -167,4 +183,14 @@
             });
         }
     });
+
+    function authenticateCustomer() {
+        // Implement your authentication logic here
+        console.log('Authentication in progress...');
+        // Example: Displaying authentication result message
+        const authResult = document.getElementById('authResult');
+        if (authResult) {
+            authResult.textContent = 'Successfully logged in!';
+        }
+    }
 </script>

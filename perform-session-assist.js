@@ -114,3 +114,5 @@
             }, 500);
         }, 1000); // Delay added to ensure cookies are fully loaded
     }
+
+    
