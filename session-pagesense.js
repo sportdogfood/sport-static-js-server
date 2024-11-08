@@ -1,3 +1,6 @@
+// Initialize pagesenseCallCount globally
+let pagesenseCallCount = 0;
+
 // Track which events have already triggered PageSense push
 const pagesenseEventTracker = {
     'user-auth': false,

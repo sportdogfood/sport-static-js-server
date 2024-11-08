@@ -774,47 +774,83 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    /**
-     * Handle successful authentication
-     * @param {object} responseData - Data from authentication response
-     * @param {string} email - User's email
-     */
-    function handleSuccessfulAuthentication(responseData, email) {
-        document.dispatchEvent(new Event('authenticated'));
-        window.fx_customerId = responseData.fc_customer_id;
-        window.fx_customer_em = email;
+/**
+ * Handle successful authentication
+ * @param {object} responseData - Data from authentication response
+ * @param {string} email - User's email
+ */
+function handleSuccessfulAuthentication(responseData, email) {
+    console.log('Authentication successful. Processing response data.');
 
-        const cookieAttributes = "path=/; Secure; SameSite=Lax";
-        document.cookie = `fx_customer=${responseData.fc_auth_token}; ${cookieAttributes}`;
-        document.cookie = `fx_customerId=${responseData.fc_customer_id}; ${cookieAttributes}`;
-        document.cookie = `fx_customer_em=${encodeURIComponent(email)}; ${cookieAttributes}`;
-        document.cookie = `fx_customer_jwt=${responseData.jwt}; ${cookieAttributes}`;
-        document.cookie = `fx_customer_sso=${responseData.sso}; ${cookieAttributes}`;
+    // Step 1: Extract relevant data from authentication response
+    const { fc_customer_id, jwt, session_token, expires_in, sso, fc_auth_token } = responseData;
 
-        console.log("Cookies set successfully.");
+    // Step 2: Update global variables and user session data
+    window.fx_customerId = fc_customer_id;
+    window.jwt = jwt; // If needed globally
+    window.session_token = session_token; // If needed globally
 
-        // Read the updated cookies
-        const cookies = getCookies();
-        // Update userMeta with new data
-        window.userMeta = {
-            ...window.userMeta,
-            fx_customerId: cookies['fx_customerId'] || null,
-            fx_customer_em: cookies['fx_customer_em'] || null,
-            // ... other userMeta properties
-        };
+    // Update userMeta
+    window.userMeta = {
+        ...window.userMeta,
+        fx_customerId: fc_customer_id,
+        jwt: jwt,
+        sessionToken: session_token,
+        authTokenExpiration: new Date(Date.now() + expires_in * 1000), // Calculate expiration time
+    };
 
-        // Re-evaluate user state based on updated cookies
-        evaluateUser(cookies, window.userMeta.geoData);
+    // Log the updated values for debugging
+    console.log('Updated userMeta after authentication:', window.userMeta);
 
-        modalOverlay.classList.remove('active');
-        loginButton.style.display = 'none';
-        logoutButton.style.display = 'inline';
-        updateStatusDiv();
-        updateUserStateAfterAuth(true);
+    // Step 3: Update Local Storage if needed
+    saveToLocalStorage(); // Save the updated userMeta to persist between sessions
 
-        // Save to localStorage after updating state
-        saveToLocalStorage();
+    // Step 4: Dispatch custom event indicating user has been authenticated
+    const authEvent = new CustomEvent('userAuthenticated', { detail: { fx_customerId: fc_customer_id } });
+    window.dispatchEvent(authEvent);
+
+    // Step 5: Initialize or Update User Session
+    if (!window.userSession) {
+        initializeUserSession();
+    } else {
+        window.userSession.lastUpdated = getFriendlyDateTime();
     }
+
+    // Step 6: Trigger any post-authentication workflows
+    postAuthenticationWorkflow();
+
+    // Step 7: Set Cookies with Authentication Data
+    const cookieAttributes = "path=/; Secure; SameSite=Lax";
+    document.cookie = `fx_customer=${fc_auth_token}; ${cookieAttributes}`;
+    document.cookie = `fx_customerId=${fc_customer_id}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_em=${encodeURIComponent(email)}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_jwt=${jwt}; ${cookieAttributes}`;
+    document.cookie = `fx_customer_sso=${sso}; ${cookieAttributes}`;
+    console.log("Cookies set successfully.");
+
+    // Step 8: Read the updated cookies
+    const cookies = getCookies();
+    console.log('Updated cookies:', cookies);
+
+    // Step 9: Update userMeta with new data from cookies
+    window.userMeta = {
+        ...window.userMeta,
+        fx_customerId: cookies['fx_customerId'] || null,
+        fx_customer_em: cookies['fx_customer_em'] || null,
+        // ... other userMeta properties
+    };
+
+    // Step 10: Re-evaluate user state based on updated cookies
+    evaluateUser(cookies, window.userMeta.geoData);
+
+    // Step 11: Update UI elements
+    modalOverlay.classList.remove('active');
+    loginButton.style.display = 'none';
+    logoutButton.style.display = 'inline';
+    updateStatusDiv();
+    updateUserStateAfterAuth(true);
+}
+
 
     // Attach event listener to logout button
     if (logoutButton && !logoutButton.listenerAdded) {
