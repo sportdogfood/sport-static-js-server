@@ -1,4 +1,4 @@
-/* Last Updated: November 1, 2024, 4:00 PM EDT */
+/* Last Updated: November 8, 2024, 11:23 AM EDT 1007*/
 
 // ============================
 // Global Variable Declarations
@@ -23,6 +23,8 @@ const idleLimit = 10 * 60 * 1000; // 10 minutes
 // ============================
 // Utility Functions
 // ============================
+
+
 
 /**
  * Get current date and time in US/EDT
@@ -425,57 +427,82 @@ function evaluateUser(cookies, geoData) {
 /**
  * Initialize user data from cookies and update state
  */
+
+// Function to get friendly date/time in US/EDT format
+function getFriendlyDateTime() {
+    const options = { timeZone: 'America/New_York', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return new Date().toLocaleString('en-US', options);
+}
+
+// Modified async function to initialize user data with delays and logging
 async function initializeUserData() {
-    console.log('User data initialization started.');
+    console.log('User data initialization started at:', getFriendlyDateTime());
 
     // Step 1: Get Cookies
-    const cookies = getCookies();
+    const cookies = await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(getCookies());
+        }, 500); // Add delay to ensure cookies are retrieved correctly
+    });
 
-    window.fx_customerId = cookies['fx_customerId'] || null;
-    window.fx_customer_em = cookies['fx_customer_em'] || null;
-    // ... [other fx_customer variables]
+    console.log('Cookies retrieved:', cookies);
 
+    // Step 2: Ensure `fcsid` is present before continuing
+    if (!cookies['fcsid']) {
+        console.warn('fcsid cookie is not available. Delaying until cookies are properly retrieved.');
+        // Retry fetching cookies or handle accordingly
+        return; // Alternatively, you can add a retry mechanism here
+    }
+
+    // Step 3: Load Geolocation Data
+    const geoData = await loadGeoLocationData();
+    console.log('Geolocation data retrieved:', geoData);
+
+    // Step 4: Check Local Storage and Window Location
+    const initialLandingPage = window.location.href;
+    console.log('Initial landing page:', initialLandingPage);
+
+    const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
+    console.log('Local storage data retrieved:', localStorageData);
+
+    // Step 5: Initialize User State, User Meta, and User Session
     window.userMeta = {
         ...window.userMeta,
-        lastUpdated: getLastUpdated(),
-        friendlyLastUpdated: getLastUpdated(),
-        fx_customerId: window.fx_customerId,
-        fx_customer_em: window.fx_customer_em,
+        lastUpdated: getFriendlyDateTime(),
+        friendlyLastUpdated: getFriendlyDateTime(),
+        fx_customerId: cookies['fx_customerId'] || null,
+        fx_customer_em: cookies['fx_customer_em'] || null,
+        geoData: geoData,
+        initialLandingPage: initialLandingPage,
         // ... [other fx_customer variables]
     };
 
     window.userSession = {
         ...window.userSession,
-        lastUpdated: getLastUpdated(),
+        lastUpdated: getFriendlyDateTime(),
         sessionId: cookies['fcsid'] || 'anon',
         sessionState: {
-            ...window.userSession.sessionState,
-            timeStarted: window.userSession.sessionState.timeStarted || getLastUpdated(),
-            secondsSpent: window.userSession.sessionState.secondsSpent || 0
+            ...window.userSession?.sessionState,
+            timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
+            secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
         }
     };
 
-    // Step 2: Load Geolocation Data
-    const geoData = await loadGeoLocationData();
-
-    // Step 3: Evaluate User
-    evaluateUser(cookies, geoData);
-
-    // Step 4: Initialize or Update Session
-    if (!window.userSession.sessionState.timeStarted) {
-        window.userSession.sessionState.timeStarted = getLastUpdated();
-    }
+    window.userState = {
+        state: cookies['fx_customerId'] ? 'customer' : 'visitor',
+        subState: '',
+    };
 
     // Save to localStorage
     saveToLocalStorage();
 
-    console.log("Final userMeta before updating state:", window.userMeta);
+    console.log("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
 
     // Fire session start and update session state
     fireSessionStart();
     updateSessionState(window.userMeta);
 
-    console.log('User data initialization completed.');
+    console.log('User data initialization completed at:', getFriendlyDateTime());
 }
 
 /**
@@ -912,7 +939,7 @@ function sendSessionWebhook() {
         console.log('[SessionManager] Logging out with payload:', payload);
 
         // Send the payload to the webhook URL
-        fetch('https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/session', {
+        fetch('https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

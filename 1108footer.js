@@ -1,4 +1,4 @@
-/* Last Updated: November 1, 2024, 4:00 PM EDT */
+/* Last Updated: November 8, 2024, 11:23 AM EDT 1007*/
 
 // ============================
 // Global Variable Declarations
@@ -23,6 +23,8 @@ const idleLimit = 10 * 60 * 1000; // 10 minutes
 // ============================
 // Utility Functions
 // ============================
+
+
 
 /**
  * Get current date and time in US/EDT
@@ -220,6 +222,7 @@ function updateUserStateAfterAuth(success) {
         window.userState.state = 'customer';
         window.userState.subState = 'user-logged-in';
         window.userAuth = 'authenticated';
+        pushPagesense('user-auth', window.fx_customerId || "");
     } else {
         window.userState.state = 'visitor';
         window.userState.subState = '';
@@ -424,57 +427,82 @@ function evaluateUser(cookies, geoData) {
 /**
  * Initialize user data from cookies and update state
  */
+
+// Function to get friendly date/time in US/EDT format
+function getFriendlyDateTime() {
+    const options = { timeZone: 'America/New_York', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return new Date().toLocaleString('en-US', options);
+}
+
+// Modified async function to initialize user data with delays and logging
 async function initializeUserData() {
-    console.log('User data initialization started.');
+    console.log('User data initialization started at:', getFriendlyDateTime());
 
     // Step 1: Get Cookies
-    const cookies = getCookies();
+    const cookies = await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(getCookies());
+        }, 500); // Add delay to ensure cookies are retrieved correctly
+    });
 
-    window.fx_customerId = cookies['fx_customerId'] || null;
-    window.fx_customer_em = cookies['fx_customer_em'] || null;
-    // ... [other fx_customer variables]
+    console.log('Cookies retrieved:', cookies);
 
+    // Step 2: Ensure `fcsid` is present before continuing
+    if (!cookies['fcsid']) {
+        console.warn('fcsid cookie is not available. Delaying until cookies are properly retrieved.');
+        // Retry fetching cookies or handle accordingly
+        return; // Alternatively, you can add a retry mechanism here
+    }
+
+    // Step 3: Load Geolocation Data
+    const geoData = await loadGeoLocationData();
+    console.log('Geolocation data retrieved:', geoData);
+
+    // Step 4: Check Local Storage and Window Location
+    const initialLandingPage = window.location.href;
+    console.log('Initial landing page:', initialLandingPage);
+
+    const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
+    console.log('Local storage data retrieved:', localStorageData);
+
+    // Step 5: Initialize User State, User Meta, and User Session
     window.userMeta = {
         ...window.userMeta,
-        lastUpdated: getLastUpdated(),
-        friendlyLastUpdated: getLastUpdated(),
-        fx_customerId: window.fx_customerId,
-        fx_customer_em: window.fx_customer_em,
+        lastUpdated: getFriendlyDateTime(),
+        friendlyLastUpdated: getFriendlyDateTime(),
+        fx_customerId: cookies['fx_customerId'] || null,
+        fx_customer_em: cookies['fx_customer_em'] || null,
+        geoData: geoData,
+        initialLandingPage: initialLandingPage,
         // ... [other fx_customer variables]
     };
 
     window.userSession = {
         ...window.userSession,
-        lastUpdated: getLastUpdated(),
+        lastUpdated: getFriendlyDateTime(),
         sessionId: cookies['fcsid'] || 'anon',
         sessionState: {
-            ...window.userSession.sessionState,
-            timeStarted: window.userSession.sessionState.timeStarted || getLastUpdated(),
-            secondsSpent: window.userSession.sessionState.secondsSpent || 0
+            ...window.userSession?.sessionState,
+            timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
+            secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
         }
     };
 
-    // Step 2: Load Geolocation Data
-    const geoData = await loadGeoLocationData();
-
-    // Step 3: Evaluate User
-    evaluateUser(cookies, geoData);
-
-    // Step 4: Initialize or Update Session
-    if (!window.userSession.sessionState.timeStarted) {
-        window.userSession.sessionState.timeStarted = getLastUpdated();
-    }
+    window.userState = {
+        state: cookies['fx_customerId'] ? 'customer' : 'visitor',
+        subState: '',
+    };
 
     // Save to localStorage
     saveToLocalStorage();
 
-    console.log("Final userMeta before updating state:", window.userMeta);
+    console.log("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
 
     // Fire session start and update session state
     fireSessionStart();
     updateSessionState(window.userMeta);
 
-    console.log('User data initialization completed.');
+    console.log('User data initialization completed at:', getFriendlyDateTime());
 }
 
 /**
@@ -531,6 +559,75 @@ async function performSessionAssist() {
 
     console.log('Session assist operations completed.');
 }
+
+// Function to Load External evaluateCustomerState Script
+function loadEvaluateCustomerStateScript() {
+    if (!document.getElementById('evaluatecustomerstate-script') && !window.evaluateCustomerStateLoading) {
+        window.evaluateCustomerStateLoading = true; // Flag to prevent multiple loading attempts
+
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/evaluatecustomerstate.js";
+        scriptElement.id = 'evaluatecustomerstate-script';
+        scriptElement.async = true;
+
+        scriptElement.onload = function () {
+            console.log("EvaluateCustomerState script loaded successfully.");
+            window.evaluateCustomerStateLoaded = true; // Flag to indicate the script has been loaded
+            window.evaluateCustomerStateLoading = false;
+        };
+
+        scriptElement.onerror = function () {
+            console.error("Failed to load EvaluateCustomerState script.");
+            window.evaluateCustomerStateLoading = false;
+        };
+
+        document.body.appendChild(scriptElement);
+        console.log("Attempting to load EvaluateCustomerState script dynamically.");
+    } else {
+        console.log("EvaluateCustomerState script is already loading or has been loaded.");
+    }
+}
+
+// Modified Function to Load External PageSense Script
+function loadPageSenseScript() {
+    // Check if the script is already loaded or if there is an ongoing attempt to load it
+    if (!document.getElementById('pagesense-script') && !window.pagesenseScriptLoading) {
+        window.pagesenseScriptLoading = true; // Flag to prevent multiple loading attempts
+
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/session-pagesense.js";
+        scriptElement.id = 'pagesense-script';
+        scriptElement.async = true;
+
+        scriptElement.onload = function () {
+            console.log("PageSense script loaded successfully from session-pagesense.js.");
+            window.pagesenseScriptLoaded = true; // Flag to indicate the script has been loaded
+            window.pagesenseScriptLoading = false;
+        };
+
+        scriptElement.onerror = function () {
+            console.error("Failed to load PageSense script from session-pagesense.js.");
+            window.pagesenseScriptLoading = false;
+        };
+
+        document.body.appendChild(scriptElement);
+        console.log("Attempting to load PageSense script dynamically from session-pagesense.js.");
+    } else {
+        console.log("PageSense script is already loading or has been loaded.");
+    }
+}
+
+
+function evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta) {
+    if (window.evaluateCustomerStateLoaded) {
+        evaluateCustomerState(fx_customerId, sessionState, userMeta);
+    } else {
+        // Retry after a short delay if script is not yet loaded
+        console.warn("EvaluateCustomerState script not yet loaded. Retrying shortly...");
+        setTimeout(() => evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta), 100); // Retry in 100ms
+    }
+}
+
 
 /**
  * Check if the user is idle and handle accordingly
@@ -784,6 +881,22 @@ function refreshCustomerZoom() {
     loadAuthenticatedUserScripts();
 }
 
+// execute the function on user interaction
+function onUserInteraction() {
+    const fx_customerId = window.fx_customerId || null;
+    const sessionState = {
+        secondsSpent: window.sessionState ? window.sessionState.secondsSpent : 0
+    };
+    const userMeta = {
+        landingPage: window.userMeta ? window.userMeta.landingPage : '',
+        geoData: {
+            region: window.userMeta && window.userMeta.geoData ? window.userMeta.geoData.region : ''
+        }
+    };
+
+    evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta);
+}
+
 // Manually execute performSessionAssist and continue polling
 function refreshSessionAssist() {
     performSessionAssist();
@@ -826,7 +939,7 @@ function sendSessionWebhook() {
         console.log('[SessionManager] Logging out with payload:', payload);
 
         // Send the payload to the webhook URL
-        fetch('https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/session', {
+        fetch('https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -907,7 +1020,8 @@ document.addEventListener('DOMContentLoaded', () => {
     resetIdleTimer();     // Initialize last activity time
     startSessionAssistPolling(); // Start polling for session assist
     initializeUserData(); //initialize user data
-
+    loadPageSenseScript(); // Load the session-pagesense.js script dynamically when the DOM is ready
+    loadEvaluateCustomerStateScript(); // Load the evaluatecustomerstate.js script dynamically when the DOM is ready
     // Start the idle check interval
     idleCheckInterval = setInterval(checkIdleTime, 1000); // Check every second
 });
