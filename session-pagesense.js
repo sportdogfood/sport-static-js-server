@@ -1,9 +1,28 @@
+// Track which events have already triggered PageSense push
+const pagesenseEventTracker = {
+    'user-auth': false,
+    'user-logged-in': false,
+    'user-logged-out': false,
+    'user-land-home': false,
+    'user-land-thispage': false,
+    'user-fxId': false
+};
+
 // Function to push events to PageSense, can be called a maximum of 4 times
-function pushPagesense(actionType, customerId) {
+function pushPagesense(actionType, customerId = "") {
     if (pagesenseCallCount >= 4) {
         console.warn('Max number of PageSense calls reached. Skipping action:', actionType);
         return;
     }
+
+    // Check if this event type has already been pushed
+    if (pagesenseEventTracker[actionType]) {
+        console.log(`Pagesense event for actionType: ${actionType} has already been triggered. Skipping.`);
+        return;
+    }
+
+    // Mark the event as triggered
+    pagesenseEventTracker[actionType] = true;
 
     // Prevent recursive calls
     if (window.pushPagesenseLock) {
@@ -31,17 +50,5 @@ function pushPagesense(actionType, customerId) {
         console.error('Error while pushing Pagesense action:', error);
     } finally {
         window.pushPagesenseLock = false;
-    }
-}
-
-// Function to load PageSense script dynamically
-function loadPageSenseScript() {
-    if (!document.getElementById('pagesense-script')) {
-        const scriptElement = document.createElement('script');
-        scriptElement.src = "https://cdn.pagesense.io/js/sportdogfood141/683c76dd5be1480e9ff129b5be0042a9.js";
-        scriptElement.id = 'pagesense-script';
-        scriptElement.async = true;
-        document.body.appendChild(scriptElement);
-        console.log("PageSense script loaded dynamically.");
     }
 }
