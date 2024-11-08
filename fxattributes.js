@@ -5,14 +5,19 @@ console.log('fxattributes.js is loaded and ready for controlled execution.');
 /**
  * Handle attributes initialization
  */
-function attributesInit() {
+function attributesInit(retryCount = 3) {
     try {
         console.log('fxattributes.js is executing properly.');
 
         // Fetch the customer ID from global scope
         const customerId = window.fx_customerId;
         if (!customerId) {
-            console.error("No customer ID found in window.fx_customerId.");
+            if (retryCount > 0) {
+                console.warn(`No customer ID found in window.fx_customerId. Retrying in 500ms... Attempts left: ${retryCount}`);
+                setTimeout(() => attributesInit(retryCount - 1), 500); // Retry after 500ms
+            } else {
+                console.error("No customer ID found after multiple attempts.");
+            }
             return;
         }
 
@@ -27,7 +32,7 @@ function attributesInit() {
  * Fetch FoxyCart customer attributes data
  * @param {string} customerId - The customer ID
  */
-async function fetchFoxyCustomerAttributes(customerId) {
+async function fetchFoxyCustomerAttributes(customerId, retryCount = 3) {
     if (!customerId) {
         console.error("No customer ID provided.");
         return;
@@ -53,31 +58,39 @@ async function fetchFoxyCustomerAttributes(customerId) {
         const responseData = await response.json();
         console.log("FoxyCart attributes data received:", responseData);
 
-        if (!responseData) {
-            console.error("Response data is empty or undefined.");
+        if (!responseData || !responseData._embedded || !responseData._embedded.attributes) {
+            console.error("Response data is empty or not in the expected HAL format.");
             return;
         }
 
+        // Extract the attributes array from the HAL response
+        const attributes = responseData._embedded.attributes;
+
         // Store the response data in localStorage
-        localStorage.setItem("userAttributesData", JSON.stringify(responseData));
+        localStorage.setItem("userAttributesData", JSON.stringify(attributes));
         console.log("FoxyCart attributes data stored in localStorage under 'userAttributesData'.");
 
         // Process the attributes
-        processAttributesData(responseData);
+        processAttributesData(attributes);
 
     } catch (error) {
         console.error("Error fetching data from FoxyCart Attributes API:", error);
+
+        if (retryCount > 0) {
+            console.log(`Retrying fetch. Attempts left: ${retryCount}`);
+            setTimeout(() => fetchFoxyCustomerAttributes(customerId, retryCount - 1), 1000); // Retry after 1 second
+        } else {
+            console.error("All retry attempts failed.");
+        }
     }
 }
 
 /**
  * Process the fetched attributes data
- * @param {object} data - The fetched attributes data
+ * @param {Array} attributes - The fetched attributes data from the HAL response
  */
-function processAttributesData(data) {
+function processAttributesData(attributes) {
     try {
-        // Assuming the attributes are in data.attributes array
-        const attributes = data.attributes;
         if (!attributes || !Array.isArray(attributes)) {
             console.error("Attributes data is missing or not in expected format.");
             return;
