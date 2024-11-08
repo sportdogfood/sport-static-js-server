@@ -220,6 +220,7 @@ function updateUserStateAfterAuth(success) {
         window.userState.state = 'customer';
         window.userState.subState = 'user-logged-in';
         window.userAuth = 'authenticated';
+        pushPagesense('user-auth', window.fx_customerId || "");
     } else {
         window.userState.state = 'visitor';
         window.userState.subState = '';
@@ -532,6 +533,75 @@ async function performSessionAssist() {
     console.log('Session assist operations completed.');
 }
 
+// Function to Load External evaluateCustomerState Script
+function loadEvaluateCustomerStateScript() {
+    if (!document.getElementById('evaluatecustomerstate-script') && !window.evaluateCustomerStateLoading) {
+        window.evaluateCustomerStateLoading = true; // Flag to prevent multiple loading attempts
+
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/evaluatecustomerstate.js";
+        scriptElement.id = 'evaluatecustomerstate-script';
+        scriptElement.async = true;
+
+        scriptElement.onload = function () {
+            console.log("EvaluateCustomerState script loaded successfully.");
+            window.evaluateCustomerStateLoaded = true; // Flag to indicate the script has been loaded
+            window.evaluateCustomerStateLoading = false;
+        };
+
+        scriptElement.onerror = function () {
+            console.error("Failed to load EvaluateCustomerState script.");
+            window.evaluateCustomerStateLoading = false;
+        };
+
+        document.body.appendChild(scriptElement);
+        console.log("Attempting to load EvaluateCustomerState script dynamically.");
+    } else {
+        console.log("EvaluateCustomerState script is already loading or has been loaded.");
+    }
+}
+
+// Modified Function to Load External PageSense Script
+function loadPageSenseScript() {
+    // Check if the script is already loaded or if there is an ongoing attempt to load it
+    if (!document.getElementById('pagesense-script') && !window.pagesenseScriptLoading) {
+        window.pagesenseScriptLoading = true; // Flag to prevent multiple loading attempts
+
+        const scriptElement = document.createElement('script');
+        scriptElement.src = "https://sportdogfood.github.io/sport-static-js-server/session-pagesense.js";
+        scriptElement.id = 'pagesense-script';
+        scriptElement.async = true;
+
+        scriptElement.onload = function () {
+            console.log("PageSense script loaded successfully from session-pagesense.js.");
+            window.pagesenseScriptLoaded = true; // Flag to indicate the script has been loaded
+            window.pagesenseScriptLoading = false;
+        };
+
+        scriptElement.onerror = function () {
+            console.error("Failed to load PageSense script from session-pagesense.js.");
+            window.pagesenseScriptLoading = false;
+        };
+
+        document.body.appendChild(scriptElement);
+        console.log("Attempting to load PageSense script dynamically from session-pagesense.js.");
+    } else {
+        console.log("PageSense script is already loading or has been loaded.");
+    }
+}
+
+
+function evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta) {
+    if (window.evaluateCustomerStateLoaded) {
+        evaluateCustomerState(fx_customerId, sessionState, userMeta);
+    } else {
+        // Retry after a short delay if script is not yet loaded
+        console.warn("EvaluateCustomerState script not yet loaded. Retrying shortly...");
+        setTimeout(() => evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta), 100); // Retry in 100ms
+    }
+}
+
+
 /**
  * Check if the user is idle and handle accordingly
  */
@@ -784,6 +854,22 @@ function refreshCustomerZoom() {
     loadAuthenticatedUserScripts();
 }
 
+// execute the function on user interaction
+function onUserInteraction() {
+    const fx_customerId = window.fx_customerId || null;
+    const sessionState = {
+        secondsSpent: window.sessionState ? window.sessionState.secondsSpent : 0
+    };
+    const userMeta = {
+        landingPage: window.userMeta ? window.userMeta.landingPage : '',
+        geoData: {
+            region: window.userMeta && window.userMeta.geoData ? window.userMeta.geoData.region : ''
+        }
+    };
+
+    evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta);
+}
+
 // Manually execute performSessionAssist and continue polling
 function refreshSessionAssist() {
     performSessionAssist();
@@ -907,7 +993,8 @@ document.addEventListener('DOMContentLoaded', () => {
     resetIdleTimer();     // Initialize last activity time
     startSessionAssistPolling(); // Start polling for session assist
     initializeUserData(); //initialize user data
-
+    loadPageSenseScript(); // Load the session-pagesense.js script dynamically when the DOM is ready
+    loadEvaluateCustomerStateScript(); // Load the evaluatecustomerstate.js script dynamically when the DOM is ready
     // Start the idle check interval
     idleCheckInterval = setInterval(checkIdleTime, 1000); // Check every second
 });
