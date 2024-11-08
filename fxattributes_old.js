@@ -33,19 +33,11 @@ async function fetchFoxyCustomerAttributes(customerId) {
         return;
     }
 
-    // Updated API URL to conform to the new server route
-    const apiUrl = `/foxycart/customers/fxattributes/${encodeURIComponent(customerId)}`;
+    const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/${encodeURIComponent(customerId)}/attributes`;
     console.log("Fetching FoxyCart customer attributes data from URL:", apiUrl);
 
     try {
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                // Include any additional headers if required, e.g., authentication tokens
-            }
-        });
-
+        const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
         }
