@@ -18,7 +18,11 @@ window.geoDataFetched = false;
 
 let sessionAssistIntervalId = null;
 let idleTimeoutId = null;
-const idleLimit = 10 * 60 * 1000; // 10 minutes
+let lastActivityTime = Date.now();
+let idleLimit = 10 * 60 * 1000; // Set idle limit to 10 minutes (adjust as needed)
+let idleCheckInterval;
+let loggedOut = false; // Flag to indicate if the user has been logged out
+
 
 // ============================
 // Utility Functions
@@ -999,27 +1003,29 @@ function sendSessionWebhook() {
     }
 }
 
+
 // Reset idle timer on user activity
 function resetIdleTimer() {
-    if (document.hidden) {
-        // Don't reset the timer if the page is hidden
-        return;
+    if (!loggedOut) { // Only reset the timer if the user has not been logged out
+        lastActivityTime = Date.now();
+        console.log('User activity detected. Timer reset.');
     }
-    lastActivityTime = Date.now();
 }
 
 // Check for idle time
 function checkIdleTime() {
-    if (document.hidden) {
-        // Don't check idle time if the page is hidden
-        return;
-    }
+    if (loggedOut) return; // Do not check idle time if the user has been logged out
+
     const currentTime = Date.now();
     if (currentTime - lastActivityTime >= idleLimit) {
         console.log('User has been idle for too long. Logging out.');
         handleLogout(); // Log the user out after being idle
         stopSessionAssistPolling(); // Stop polling after logout
-        clearInterval(idleCheckInterval); // Stop checking idle time
+        loggedOut = true; // Set the flag to indicate the user is logged out
+        clearInterval(idleCheckInterval); // Stop the idle check interval
+    } else {
+        console.log('User is still active. Time since last activity:', (currentTime - lastActivityTime) / 1000, 'seconds');
+        setTimeout(checkIdleTime, 60 * 1000); // Set the next check in 1 minute
     }
 }
 
@@ -1032,17 +1038,14 @@ function setupIdleDetection() {
     // Handle page visibility change
     document.addEventListener('visibilitychange', () => {
         if (!document.hidden) {
-            // Page became visible, reset idle timer
             console.log('Page is visible. Resetting idle timer.');
             resetIdleTimer();
-        } else {
-            console.log('Page is hidden.');
         }
     });
 
     // Handle window focus and blur
     window.addEventListener('focus', () => {
-        console.log('Window focused.');
+        console.log('Window focused. Resetting idle timer.');
         resetIdleTimer();
     });
     window.addEventListener('blur', () => {
@@ -1054,10 +1057,12 @@ function setupIdleDetection() {
 document.addEventListener('DOMContentLoaded', () => {
     setupIdleDetection(); // Start monitoring user activity for idle detection
     resetIdleTimer();     // Initialize last activity time
+    checkIdleTime();      // Start the initial idle check
     startSessionAssistPolling(); // Start polling for session assist
-    initializeUserData(); //initialize user data
+    initializeUserData(); // Initialize user data
     loadPageSenseScript(); // Load the session-pagesense.js script dynamically when the DOM is ready
     loadEvaluateCustomerStateScript(); // Load the evaluatecustomerstate.js script dynamically when the DOM is ready
     // Start the idle check interval
-    idleCheckInterval = setInterval(checkIdleTime, 1000); // Check every second
+    idleCheckInterval = setInterval(checkIdleTime, 1000); // Check every 1 second
 });
+
