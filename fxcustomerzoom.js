@@ -126,10 +126,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+
 // Event listener to trigger subscriptions, attributes, and transactions initialization after userZoom is ready
 document.addEventListener('userZoomReady', () => {
     console.log('UserZoom is fully loaded. Triggering fxsubscriptions, fxattributes, and fxtransactions initialization.');
 
+    // Fetch the userZoom data from localStorage
+    const userZoomData = JSON.parse(localStorage.getItem('userZoom'));
+
+    // Check if _embedded["fx:attributes"] exists and is not null
+    if (userZoomData && userZoomData._embedded && userZoomData._embedded['fx:attributes']) {
+        console.log('Processing fx:attributes found in userZoom.');
+
+        const attributes = userZoomData._embedded['fx:attributes'];
+
+        // Loop through each attribute and process them similar to fxattributes
+        try {
+            if (!attributes || !Array.isArray(attributes)) {
+                console.error("Attributes data is missing or not in expected format.");
+            } else {
+                const userSession = JSON.parse(localStorage.getItem('userSession')) || {};
+                const processedAttributes = [];
+                let totalItems = 0;
+
+                attributes.forEach((attribute) => {
+                    const name = attribute?.name || '';
+                    const value = attribute?.value ?? null;
+
+                    const attributeData = {
+                        attributeName: name,
+                        attributeValue: value,
+                        lastUpdate: getFriendlyDateTime(),
+                    };
+
+                    // Add to userSession
+                    userSession[`userAttribute_${name}`] = attributeData;
+
+                    // If the attribute name is `Zoho_CRM_ID`, set a global variable and store it in localStorage
+                    if (name === 'Zoho_CRM_ID') {
+                        window.fx_crmId = value;
+                        localStorage.setItem('fx_crmId', value);
+                        console.log(`Global fx_crmId set to: ${value}`);
+                    }
+
+                    // Add to processedAttributes array
+                    processedAttributes.push(attributeData);
+                    totalItems += 1;
+                });
+
+                // Mark attributes as processed in userSession
+                userSession['attributesProcessed'] = true;
+
+                // Update session in localStorage without overwriting other properties
+                localStorage.setItem('userSession', JSON.stringify(userSession));
+                console.log("Attributes from userZoom have been successfully processed and stored in userSession.");
+
+                // Save processed attributes to a new localStorage key: `userAttributesProcessed`
+                const userAttributesProcessed = {
+                    attributes: processedAttributes.length > 0 ? processedAttributes : [],
+                    lastUpdated: getFriendlyDateTime(),
+                    totalItems: totalItems,
+                };
+                localStorage.setItem('userAttributesProcessed', JSON.stringify(userAttributesProcessed));
+                console.log("Attributes from userZoom have been successfully processed and stored in userAttributesProcessed.");
+            }
+        } catch (error) {
+            console.error('An error occurred while processing attributes data from userZoom:', error);
+        }
+    } else {
+        console.warn("No attributes found in userZoom _embedded['fx:attributes'].");
+    }
+
+    // Execute other functions if available
     if (typeof window.subscriptionsInit === 'function') {
         try {
             window.subscriptionsInit();
@@ -141,17 +209,7 @@ document.addEventListener('userZoomReady', () => {
         console.error('subscriptionsInit function not found in global scope.');
     }
 
-    if (typeof window.attributesInit === 'function') {
-        try {
-            window.attributesInit();
-            console.log('attributesInit function executed successfully.');
-        } catch (error) {
-            console.error('Error executing attributesInit:', error);
-        }
-    } else {
-        console.error('attributesInit function not found in global scope.');
-    }
-
+    
     if (typeof window.transactionsInit === 'function') {
         try {
             window.transactionsInit();
@@ -163,6 +221,7 @@ document.addEventListener('userZoomReady', () => {
         console.error('transactionsInit function not found in global scope.');
     }
 });
+
 
 // Helper function to get friendly date and time
 function getFriendlyDateTime() {
