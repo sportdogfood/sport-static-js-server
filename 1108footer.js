@@ -432,6 +432,10 @@ function evaluateUser(cookies, geoData) {
  * Initialize user data from cookies and update state
  */
 
+// Ensure FC is initialized properly before use
+var FC = FC || {};
+let is_subscription_modification;
+
 // Function to get friendly date/time in US/EDT format
 function getFriendlyDateTime() {
     const options = { timeZone: 'America/New_York', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
@@ -439,75 +443,85 @@ function getFriendlyDateTime() {
 }
 
 // Modified async function to initialize user data with delays and logging
-async function initializeUserData() {
+function initializeUserData() {
     console.log('User data initialization started at:', getFriendlyDateTime());
 
-    // Step 1: Get Cookies
-    const cookies = await new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(getCookies());
-        }, 500); // Add delay to ensure cookies are retrieved correctly
-    });
+    // This function is called when the FoxyCart library is loaded
+    FC.onLoad = function () {
+        // Wait until the FoxyCart client is ready
+        FC.client.on('ready.done', async function () {
+            // This code runs after the FoxyCart client has fully loaded
 
-    console.log('Cookies retrieved:', cookies);
+            // Step 1: Get fcsid from FoxyCart session
+            if (FC.json && FC.json.session_id) {
+                const fcsid = FC.json.session_id;
+                console.log('Successfully retrieved fcsid:', fcsid);
+                localStorage.setItem('fcsid', fcsid);
+            } else {
+                console.error('Failed to retrieve fcsid. FC.json.session_id is not available.');
+                return; // Exit if fcsid could not be retrieved
+            }
 
-    // Step 2: Ensure `fcsid` is present before continuing
-    if (!cookies['fcsid']) {
-        console.warn('fcsid cookie is not available. Delaying until cookies are properly retrieved.');
-        // Retry fetching cookies or handle accordingly
-        return; // Alternatively, you can add a retry mechanism here
-    }
+            // Step 2: Load Geolocation Data
+            const geoData = await loadGeoLocationData();
+            console.log('Geolocation data retrieved:', geoData);
 
-    // Step 3: Load Geolocation Data
-    const geoData = await loadGeoLocationData();
-    console.log('Geolocation data retrieved:', geoData);
+            // Step 3: Get Cookies
+            const cookies = getCookies();
+            console.log('Cookies retrieved:', cookies);
 
-    // Step 4: Check Local Storage and Window Location
-    const initialLandingPage = window.location.href;
-    console.log('Initial landing page:', initialLandingPage);
+            // Step 4: Check Local Storage and Window Location
+            const initialLandingPage = window.location.href;
+            console.log('Initial landing page:', initialLandingPage);
 
-    const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
-    console.log('Local storage data retrieved:', localStorageData);
+            const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
+            console.log('Local storage data retrieved:', localStorageData);
 
-    // Step 5: Initialize User State, User Meta, and User Session
-    window.userMeta = {
-        ...window.userMeta,
-        lastUpdated: getFriendlyDateTime(),
-        friendlyLastUpdated: getFriendlyDateTime(),
-        fx_customerId: cookies['fx_customerId'] || null,
-        fx_customer_em: cookies['fx_customer_em'] || null,
-        geoData: geoData,
-        initialLandingPage: initialLandingPage,
-        // ... [other fx_customer variables]
+            // Step 5: Initialize User State, User Meta, and User Session
+            window.userMeta = {
+                ...window.userMeta,
+                lastUpdated: getFriendlyDateTime(),
+                friendlyLastUpdated: getFriendlyDateTime(),
+                fx_customerId: cookies['fx_customerId'] || null,
+                fx_customer_em: cookies['fx_customer_em'] || null,
+                geoData: geoData,
+                initialLandingPage: initialLandingPage,
+                // ... [other fx_customer variables]
+            };
+
+            window.userSession = {
+                ...window.userSession,
+                lastUpdated: getFriendlyDateTime(),
+                sessionId: cookies['fcsid'] || 'anon',
+                sessionState: {
+                    ...window.userSession?.sessionState,
+                    timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
+                    secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
+                }
+            };
+
+            window.userState = {
+                state: cookies['fx_customerId'] ? 'customer' : 'visitor',
+                subState: '',
+            };
+
+            // Save to localStorage
+            saveToLocalStorage();
+
+            console.log("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
+
+            // Fire session start and update session state
+            fireSessionStart();
+            updateSessionState(window.userMeta);
+
+            console.log('User data initialization completed at:', getFriendlyDateTime());
+        });
     };
-
-    window.userSession = {
-        ...window.userSession,
-        lastUpdated: getFriendlyDateTime(),
-        sessionId: cookies['fcsid'] || 'anon',
-        sessionState: {
-            ...window.userSession?.sessionState,
-            timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
-            secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
-        }
-    };
-
-    window.userState = {
-        state: cookies['fx_customerId'] ? 'customer' : 'visitor',
-        subState: '',
-    };
-
-    // Save to localStorage
-    saveToLocalStorage();
-
-    console.log("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
-
-    // Fire session start and update session state
-    fireSessionStart();
-    updateSessionState(window.userMeta);
-
-    console.log('User data initialization completed at:', getFriendlyDateTime());
 }
+
+// Calling the initializeUserData function
+initializeUserData();
+
 
 /**
  * Refresh geolocation data by resetting the flag and fetching again
@@ -621,7 +635,6 @@ function loadPageSenseScript() {
     }
 }
 
-
 function evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta) {
     if (window.evaluateCustomerStateLoaded) {
         evaluateCustomerState(fx_customerId, sessionState, userMeta);
@@ -631,6 +644,8 @@ function evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta) 
         setTimeout(() => evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta), 100); // Retry in 100ms
     }
 }
+
+// Commented out reference to undefined postAuthenticationWorkflow
 
 
 /**
@@ -1024,7 +1039,7 @@ function checkIdleTime() {
         loggedOut = true; // Set the flag to indicate the user is logged out
         clearInterval(idleCheckInterval); // Stop the idle check interval
     } else {
-        console.log('User is still active. Time since last activity:', (currentTime - lastActivityTime) / 1000, 'seconds');
+        //console.log('User is still active. Time since last activity:', (currentTime - lastActivityTime) / 1000, 'seconds');
         setTimeout(checkIdleTime, 60 * 1000); // Set the next check in 1 minute
     }
 }
