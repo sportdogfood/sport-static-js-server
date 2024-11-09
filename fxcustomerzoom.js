@@ -1,4 +1,4 @@
-// Log to confirm script execution 
+// Log to confirm script execution  
 console.log('fxcustomerzoom.js is executing properly.');
 
 // Define the fetchCustomerData function
@@ -119,13 +119,25 @@ if (typeof window.updateUserSession !== 'function') {
 // Ensure the initialization function is called when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Attempting to call customerzoomInit after DOM content is loaded.');
-    if (typeof window.customerzoomInit === 'function') {
-        window.customerzoomInit();
-    } else {
-        console.error('customerzoomInit function not found during DOMContentLoaded.');
+    
+    // Retry mechanism to ensure function availability
+    const retryCount = 3; // Number of retries
+    let attempt = 0;
+    
+    function callCustomerZoomInit() {
+        if (typeof window.customerzoomInit === 'function') {
+            window.customerzoomInit();
+        } else if (attempt < retryCount) {
+            attempt++;
+            console.warn('customerzoomInit function not found, retrying...');
+            setTimeout(callCustomerZoomInit, 500); // Retry every 500ms
+        } else {
+            console.error('customerzoomInit function not found after retries.');
+        }
     }
+    
+    callCustomerZoomInit();
 });
-
 
 // Event listener to trigger subscriptions, attributes, and transactions initialization after userZoom is ready
 document.addEventListener('userZoomReady', () => {
