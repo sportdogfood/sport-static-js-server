@@ -42,6 +42,7 @@ async function fetchFoxyCustomerAttributes(customerId, retryCount = 3) {
     const apiUrl = `https://sportcorsproxy.herokuapp.com/foxycart/customers/fxattributes/${encodeURIComponent(customerId)}`;
     console.log("Fetching FoxyCart customer attributes data from URL:", apiUrl);
 
+
     try {
         const response = await fetch(apiUrl, {
             method: 'GET',
