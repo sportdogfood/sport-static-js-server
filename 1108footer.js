@@ -836,7 +836,7 @@ function handleSuccessfulAuthentication(responseData, email) {
     }
 
     // Step 6: Trigger any post-authentication workflows
-    postAuthenticationWorkflow();
+    //postAuthenticationWorkflow();
 
     // Step 7: Set Cookies with Authentication Data
     const cookieAttributes = "path=/; Secure; SameSite=Lax";
