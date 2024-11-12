@@ -91,6 +91,7 @@ function initializeUserData() {
     };
 }
 
+//stage2
 // Initialize session timing and idle timeout logic
 let sessionTimer;
 let idleTimer;
@@ -246,6 +247,83 @@ function initializeUserData() {
         });
     };
 }
+
+
+//stage3
+function sessionFirstEvaluate() {
+    console.log('Session-first evaluation started at:', getFriendlyDateTime());
+
+    // Check if user has fx_customerId or other session-related data to identify them
+    if (window.userMeta.fx_customerId) {
+        // Returning customer logic
+        window.userState.state = 'customer';
+        window.userState.subState = 'returning';
+        console.log('Returning customer detected:', window.userMeta.fx_customerId);
+
+        // Trigger any actions specific to returning customers
+        handleReturningCustomer();
+
+    } else if (window.userMeta.geoData && window.userMeta.geoData.country) {
+        // New user or visitor logic, can use geo data to personalize
+        window.userState.state = 'visitor';
+        window.userState.subState = 'new';
+        console.log('New visitor detected based on geo data:', window.userMeta.geoData);
+
+        // Trigger actions for new visitors, like a welcome message or promotional offer
+        handleNewVisitor();
+
+    } else {
+        // If no identifiable customer or geo data is found, treat as an anonymous visitor
+        window.userState.state = 'visitor';
+        window.userState.subState = 'anonymous';
+        console.log('Anonymous visitor detected.');
+    }
+
+    // Log the final user state
+    console.log('User state after first evaluation:', window.userState);
+
+    // Perform actions based on user state
+    performUserStateActions();
+}
+
+function handleReturningCustomer() {
+    // Implement logic for returning customers, such as:
+    // - Showing personalized content
+    // - Providing access to order history, favorites, etc.
+    console.log('Executing logic for returning customer...');
+}
+
+function handleNewVisitor() {
+    // Implement logic for new visitors, such as:
+    // - Offering promotions
+    // - Showing a welcome message
+    console.log('Executing logic for new visitor...');
+}
+
+function performUserStateActions() {
+    // Trigger different actions based on user state (customer, visitor)
+    if (window.userState.state === 'customer') {
+        // Logic for authenticated/returning customer
+        console.log('Performing actions for authenticated user...');
+    } else if (window.userState.state === 'visitor') {
+        // Logic for new/anonymous visitor
+        console.log('Performing actions for visitor...');
+    }
+}
+
+// Call sessionFirstEvaluate when the session is initialized
+initializeUserData = function () {
+    console.log('User data initialization started at:', getFriendlyDateTime());
+
+    FC.onLoad = function () {
+        FC.client.on('ready.done', async function () {
+            // Initializing session data and calling sessionFirstEvaluate after
+            // session data is retrieved and stored
+            sessionFirstEvaluate();
+        });
+    };
+}
+
 
 /* Last Updated: November 8, 2024, 11:23 AM EDT 1007*/
 
