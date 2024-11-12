@@ -268,7 +268,7 @@ window.geoDataFetched = false;
 let sessionAssistIntervalId = null;
 let idleTimeoutId = null;
 let lastActivityTime = Date.now();
-let idleLimit = 10 * 60 * 1000; // Set idle limit to 10 minutes (adjust as needed)
+//let idleLimit = 10 * 60 * 1000; // Set idle limit to 10 minutes (adjust as needed)
 let idleCheckInterval;
 let loggedOut = false; // Flag to indicate if the user has been logged out
 
