@@ -91,6 +91,161 @@ function initializeUserData() {
     };
 }
 
+// Initialize session timing and idle timeout logic
+let sessionTimer;
+let idleTimer;
+let idleLimit = 10 * 60 * 1000; // 10 minutes of inactivity before timeout
+
+// Function to start tracking session time
+function startSessionTimer() {
+    if (sessionTimer) {
+        clearInterval(sessionTimer); // Clear any existing timer
+    }
+
+    // Start a new session timer to track time spent
+    sessionTimer = setInterval(() => {
+        // Increment the time spent on the session
+        const currentTimeSpent = window.userSession.sessionState.secondsSpent || 0;
+        window.userSession.sessionState.secondsSpent = currentTimeSpent + 1;
+
+        // Update session state in sessionStorage
+        sessionStorage.setItem('userSession', JSON.stringify(window.userSession));
+
+        // Log the updated time spent for debugging
+        console.log('Time spent on session:', window.userSession.sessionState.secondsSpent);
+    }, 1000); // Update every second
+}
+
+// Function to start tracking idle time
+function startIdleTimer() {
+    // Clear any existing idle timer
+    if (idleTimer) {
+        clearTimeout(idleTimer);
+    }
+
+    // Set the idle timer to trigger after the specified idle limit
+    idleTimer = setTimeout(() => {
+        handleIdleTimeout();
+    }, idleLimit); // 10 minutes of inactivity
+}
+
+// Reset idle timer on any user interaction
+function resetIdleTimer() {
+    startIdleTimer(); // Restart idle timer
+}
+
+// Handle idle timeout (e.g., log out user or show a prompt)
+function handleIdleTimeout() {
+    console.log('User has been idle for too long, logging out...');
+
+    // You can trigger logout or any other action here
+    handleLogout(); // Trigger logout function (if defined)
+}
+
+// Event listeners to reset idle timer on user activity
+document.addEventListener('mousemove', resetIdleTimer);
+document.addEventListener('keydown', resetIdleTimer);
+document.addEventListener('click', resetIdleTimer);
+document.addEventListener('scroll', resetIdleTimer);
+
+// Modified async function to initialize user data with delays and logging
+function initializeUserData() {
+    console.log('User data initialization started at:', getFriendlyDateTime());
+
+    // This function is called when the FoxyCart library is loaded
+    FC.onLoad = function () {
+        // Wait until the FoxyCart client is ready
+        FC.client.on('ready.done', async function () {
+            // This code runs after the FoxyCart client has fully loaded
+
+            // Step 1: Get fcsid from FoxyCart session
+            if (FC.json && FC.json.session_id) {
+                const fcsid = FC.json.session_id;
+                console.log('Successfully retrieved fcsid:', fcsid);
+                localStorage.setItem('fcsid', fcsid);
+            } else {
+                console.error('Failed to retrieve fcsid. FC.json.session_id is not available.');
+                return; // Exit if fcsid could not be retrieved
+            }
+
+            // Step 2: Check if Geo Data has already been fetched
+            if (!sessionStorage.getItem('geoFetched')) {
+                // Fetch Geolocation Data
+                const geoData = await loadGeoLocationData();
+                console.log('Geolocation data retrieved:', geoData);
+
+                // Set flag that geo data has been fetched
+                sessionStorage.setItem('geoFetched', 'true');
+            } else {
+                console.log('Geolocation data already fetched, skipping...');
+            }
+
+            // Step 3: Check if Cookies have already been fetched
+            if (!sessionStorage.getItem('cookiesFetched')) {
+                // Get Cookies
+                const cookies = getCookies();
+                console.log('Cookies retrieved:', cookies);
+
+                // Set flag that cookies have been fetched
+                sessionStorage.setItem('cookiesFetched', 'true');
+            } else {
+                console.log('Cookies already fetched, skipping...');
+            }
+
+            // Step 4: Check Local Storage and Window Location
+            const initialLandingPage = window.location.href;
+            console.log('Initial landing page:', initialLandingPage);
+
+            const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
+            console.log('Local storage data retrieved:', localStorageData);
+
+            // Step 5: Initialize User State, User Meta, and User Session
+            window.userMeta = {
+                ...window.userMeta,
+                lastUpdated: getFriendlyDateTime(),
+                friendlyLastUpdated: getFriendlyDateTime(),
+                fx_customerId: cookies['fx_customerId'] || null,
+                fx_customer_em: cookies['fx_customer_em'] || null,
+                geoData: geoData,
+                initialLandingPage: initialLandingPage,
+                // ... [other fx_customer variables]
+            };
+
+            window.userSession = {
+                ...window.userSession,
+                lastUpdated: getFriendlyDateTime(),
+                sessionId: cookies['fcsid'] || 'anon',
+                sessionState: {
+                    ...window.userSession?.sessionState,
+                    timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
+                    secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
+                }
+            };
+
+            window.userState = {
+                state: cookies['fx_customerId'] ? 'customer' : 'visitor',
+                subState: '',
+            };
+
+            // Save to localStorage
+            saveToLocalStorage();
+
+            console.log("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
+
+            // Fire session start and update session state
+            fireSessionStart();
+            updateSessionState(window.userMeta);
+
+            // Start session timer to track time spent
+            startSessionTimer();
+
+            // Start idle timer to track inactivity
+            startIdleTimer();
+
+            console.log('User data initialization completed at:', getFriendlyDateTime());
+        });
+    };
+}
 
 /* Last Updated: November 8, 2024, 11:23 AM EDT 1007*/
 
