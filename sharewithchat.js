@@ -324,6 +324,54 @@ initializeUserData = function () {
     };
 }
 
+//step4
+// Function to handle logout and clear session data
+function handleLogout() {
+    console.log('Logging out user and clearing session data.');
+
+    // Clear session data from sessionStorage and localStorage
+    sessionStorage.removeItem('fcsid');
+    sessionStorage.removeItem('userSession');
+    sessionStorage.removeItem('userMeta');
+    sessionStorage.removeItem('geoFetched');
+    sessionStorage.removeItem('cookiesFetched');
+    
+    // Clear session-related flags
+    window.userSession = {};
+    window.userMeta = {};
+    window.userState = { state: 'visitor', subState: '' };
+
+    // Clear idle and session timers
+    clearInterval(sessionTimer); // Stop session timer
+    clearTimeout(idleTimer); // Stop idle timer
+
+    // Optionally, redirect the user or show a confirmation message
+    window.location.href = '/logout'; // Example: redirect to a logout confirmation page
+
+    console.log('Session data cleared, user logged out.');
+}
+
+// Function to handle session termination
+function endSession() {
+    console.log('Session has ended due to inactivity or logout.');
+
+    // Clear all session-related data
+    handleLogout();
+
+    // Trigger any necessary actions (e.g., tracking session end)
+    fireSessionEnd(); // Example: trigger session end event for analytics
+}
+
+// Event listener to log out after a certain period of inactivity
+function startIdleSessionTimeout() {
+    setTimeout(() => {
+        endSession(); // End the session after the idle timeout
+    }, idleLimit); // Idle limit from previous stages
+}
+
+// Call this to initialize session and handle idle timeout
+startIdleSessionTimeout();
+
 
 /* Last Updated: November 8, 2024, 11:23 AM EDT 1007*/
 
