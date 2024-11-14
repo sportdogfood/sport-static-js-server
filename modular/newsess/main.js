@@ -20,20 +20,20 @@ import { setupUIEventListeners } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize essential session modules in the correct order
-    sessionInit.init();                // Initialize session data
+    sessionInit.init();                        // Initialize session data
     sessionMeta.loadEvaluateCustomerStateScript(); // Load EvaluateCustomerState script
-    sessionMeta.loadPageSenseScript(); // Load PageSense script
-    sessionGeo.geoInit();              // Initialize geolocation
-    sessionIAM.iamInit();              // Initialize IAM-related functionalities
-    sessionTimer.startTimerInit();     // Initialize session timer
-    sessionPageLo.pageInit();          // Initialize page load-related functionalities
-    sessionPageLoEl.pageLoElInit();    // Initialize page load element-related functionalities
-    sessionEnrich.enrichInit();        // Initialize session enrichment
-    sessionCookies.cookiesInit();      // Initialize cookie management
-    sessionMakeCookies.makeCookieInit(); // Initialize cookie creation
-    sessionAuth.authInit();            // Initialize authentication
-    sessionEnd.endInit();              // Initialize session end functionalities
-    sessionFC.init();                   // Initialize FC module
+    sessionMeta.loadPageSenseScript();         // Load PageSense script
+    sessionGeo.init();                         // Initialize geolocation
+    sessionIAM.init();                         // Initialize IAM-related functionalities
+    sessionTimer.startTimerInit();             // Initialize session timer
+    sessionPageLo.init();                      // Initialize page load-related functionalities
+    sessionPageLoEl.init();                    // Initialize page load elements-related functionalities
+    sessionEnrich.init();                      // Initialize session enrichment
+    sessionCookies.init();                     // Initialize cookie management
+    sessionMakeCookies.init();                 // Initialize cookie creation
+    sessionAuth.init();                        // Initialize authentication
+    sessionEnd.init();                         // Initialize session end functionalities
+    sessionFC.init();                           // Initialize FC module
 
     // Setup idle detection
     if (typeof sessionTimer.setupIdleDetection === 'function') {

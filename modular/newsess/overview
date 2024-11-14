@@ -1,0 +1,61 @@
+Session Management System Overview
+Your Session Management System is architected using a modular design, ensuring scalability, maintainability, and clear separation of concerns. The central hub, sessionManager.js, orchestrates the integration and interaction of various specialized modules, each responsible for distinct aspects of session handling.
+
+Core Modules and Responsibilities
+sessionInit.js
+
+Purpose: Initializes session data, loads existing sessions from localStorage, and sets default states.
+Functionality: Sets up the foundational session structure upon application launch.
+sessionMeta.js
+
+Purpose: Manages session metadata and dynamically loads external scripts.
+Functionality: Handles metadata operations and integrates third-party analytics or tracking scripts.
+sessionIAM.js
+
+Purpose: Manages Identity and Access Management (IAM), handling user roles and permissions.
+Functionality: Validates user access levels and controls resource accessibility based on roles.
+sessionPageLo.js
+
+Purpose: Tracks page loads and captures page-specific metadata.
+Functionality: Monitors user navigation and records relevant page data for analytics.
+sessionPageLoEl.js
+
+Purpose: Manages session activities tied to specific page elements, such as visibility and interactions.
+Functionality: Observes user interactions with critical UI components and updates session data accordingly.
+sessionEnrich.js
+
+Purpose: Enriches session data with additional contextual information.
+Functionality: Integrates data from user interactions, geolocation, and other sources to provide deeper insights.
+sessionTimer.js
+
+Purpose: Manages session timing, including idle detection and session assist polling.
+Functionality: Tracks session duration, resets timers based on user activity, and handles timeout scenarios.
+sessionGeo.js
+
+Purpose: Handles geolocation data within the session.
+Functionality: Requests user location, processes geolocation information, performs reverse geocoding, and enriches session data with location details.
+sessionCookies.js
+
+Purpose: Manages existing cookies, including reading and deleting operations.
+Functionality: Provides utilities to access and manipulate browser cookies essential for session management.
+sessionMakeCookies.js
+
+Purpose: Handles the creation and setting of new cookies with specified attributes.
+Functionality: Sets secure, SameSite cookies for authentication tokens and user preferences.
+sessionAuth.js
+
+Purpose: Manages authentication processes, including user login and state handling.
+Functionality: Authenticates users, sets authentication cookies, updates session metadata, and adjusts UI elements based on authentication status.
+sessionEnd.js
+
+Purpose: Handles session termination, logout processes, and sending session data via webhooks.
+Functionality: Clears session data, deletes authentication cookies, and ensures proper cleanup upon user logout.
+sessionFC.js
+
+Purpose: Integrates and manages the FoxyCart (FC) library.
+Functionality: Sets up event listeners, loads necessary scripts, and manages e-commerce related session data.
+sessionWebhook.js
+
+Purpose: Sends session data to designated webhook URLs during specific events.
+Functionality: Facilitates data transmission for analytics, logging, or third-party integrations upon session termination or other triggers.
+Integration via sessionManager.js

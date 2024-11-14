@@ -1,3 +1,6 @@
+Integration via sessionManager.js
+sessionManager.js serves as the central orchestrator, importing all modules and re-exporting them for use across the application. This centralized approach ensures that all session-related functionalities are easily accessible and can interact seamlessly.
+
 // sessionManager.js
 
 import sessionInit from './sessionInit.js';
@@ -12,8 +15,8 @@ import sessionCookies from './sessionCookies.js';
 import sessionMakeCookies from './sessionMakeCookies.js';
 import sessionAuth from './sessionAuth.js';
 import sessionEnd from './sessionEnd.js';
-import sessionFC from './sessionFC.js'; // Newly added module
-import { sendSessionWebhook } from './sessionWebhook.js'; // Imported from sessionWebhook.js
+import sessionFC from './sessionFC.js';
+import { sendSessionWebhook } from './sessionWebhook.js';
 
 export {
     sessionInit,
