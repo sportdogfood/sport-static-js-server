@@ -1,0 +1,29 @@
+Explanation of Interactions:
+
+Initialization Flow:
+
+main.js initializes all session modules in a specific sequence to ensure dependencies are met.
+After initialization, it sets up UI event listeners and loads external scripts required for session management.
+UI Interactions:
+
+Login Process:
+User clicks the Login button → Modal opens.
+User submits credentials via the Auth button → authenticateCustomerHandler invokes sessionAuth.authFunctions.authenticateCustomer → On successful authentication, updates global state and UI.
+Logout Process:
+User clicks the Logout button → handleLogoutHandler invokes sessionEnd.handleLogout → Clears authentication data and updates UI.
+Refreshing Data:
+User clicks Refresh Geo → Invokes sessionGeo.geoFunctions.refreshGeoLocationData to fetch updated geolocation data.
+User clicks Refresh CustomerZoom → Invokes sessionGeo.refreshCustomerZoom to refresh CustomerZoom functionalities.
+Script Loading:
+
+Session Meta Module:
+Responsible for loading external scripts like PageSense and EvaluateCustomerState.
+Session Auth Module:
+Handles authentication-related scripts and functions, including dispatching events upon successful authentication.
+State Management:
+
+Global variables like window.userMeta, window.userState, and window.userSession are updated across different modules to reflect the current session state.
+Custom events (userAuthenticated, userStateChanged, userLoggedOut) are dispatched to allow other parts of the application to respond to state changes.
+Idle Detection & Session Assist Polling:
+
+Managed by the sessionTimer module, which monitors user activity and assists in maintaining session integrity.

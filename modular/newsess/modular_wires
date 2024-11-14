@@ -1,0 +1,59 @@
+main.js
+│
+├── Initializes Session Modules in Order:
+│   ├── sessionInit
+│   ├── sessionMeta
+│   ├── sessionGeo
+│   ├── sessionIAM
+│   ├── sessionPageLo
+│   ├── sessionPageLoEl
+│   ├── sessionEnrich
+│   ├── sessionTimer
+│   ├── sessionCookies
+│   ├── sessionMakeCookies
+│   ├── sessionAuth
+│   └── sessionEnd
+│
+├── Sets Up UI Event Listeners via ui.js
+│
+├── Loads External Scripts via sessionMeta:
+│   ├── PageSense Script
+│   └── EvaluateCustomerState Script
+│
+└── Starts Idle Detection and Session Assist Polling via sessionTimer
+
+sessionManager.js
+├── sessionInit
+├── sessionMeta
+│   ├── loadEvaluateCustomerStateScript
+│   └── loadPageSenseScript
+├── sessionIAM
+├── sessionPageLo
+├── sessionPageLoEl
+├── sessionEnrich
+├── sessionTimer
+│   ├── setupIdleDetection
+│   └── startSessionAssistPolling
+├── sessionGeo
+│   ├── loadGeoLocationData
+│   ├── refreshGeoLocationData
+│   └── refreshCustomerZoom
+├── sessionCookies
+├── sessionMakeCookies
+├── sessionAuth
+│   ├── authenticateCustomer
+│   ├── evaluateUser
+│   └── handleSuccessfulAuthentication
+└── sessionEnd
+    └── handleLogout
+
+ui.js
+├── Sets Up Event Listeners for:
+│   ├── Login Button → Opens Modal
+│   ├── Close Modal Button → Closes Modal
+│   ├── Clicking Outside Modal → Closes Modal
+│   ├── Toggle Password Visibility
+│   ├── Auth Button → authenticateCustomerHandler → sessionAuth.authFunctions.authenticateCustomer
+│   ├── Logout Button → handleLogoutHandler → sessionEnd.handleLogout
+│   ├── Refresh Geo Button → sessionGeo.geoFunctions.refreshGeoLocationData
+│   └── Refresh CustomerZoom Button → sessionGeo.refreshCustomerZoom

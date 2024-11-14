@@ -1,0 +1,16 @@
+Module	Responsibility
+sessionInit.js	Initialize session data, load from localStorage, set default states.
+sessionMeta.js	Manage metadata related to the session.
+sessionIAM.js	Handle Identity and Access Management functionalities.
+sessionPageLo.js	Manage page load-related session functionalities.
+sessionPageLoEl.js	Handle specific elements related to page load within the session.
+sessionEnrich.js	Enrich session data with additional information.
+sessionTimer.js	Manage session timing, idle detection, and session assist polling.
+sessionGeo.js	Handle geolocation data within the session.
+sessionCookies.js	Manage cookie-related functionalities.
+sessionMakeCookies.js	Handle the creation and setting of new cookies.
+sessionAuth.js	Manage authentication processes, including login and handling auth states.
+sessionEnd.js	Handle session termination, logout processes, and sending session webhooks.
+sessionFC.js	Initialize and manage the FC (FoxyCart) library, set up event listeners, load scripts.
+sessionWebhook.js	Send session data to a designated webhook URL during session termination or other events.
+sessionUtils.js	Centralize utility functions used across session modules.
