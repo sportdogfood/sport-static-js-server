@@ -1,0 +1,1269 @@
+/* Last Updated: November 12, 2024, 11:48 AM EDT 1007 */
+
+// ============================
+// Global Variable Declarations
+// ============================
+window.userMeta = {};
+window.userState = { state: 'visitor', subState: '' };
+window.userSession = {
+    sessionState: {
+        timeStarted: getLastUpdated(),
+        secondsSpent: 0
+    }
+};
+window.userAuth = "";
+window.geoDataFetched = false;
+window.customerZoomInitialized = false;
+
+let sessionAssistIntervalId = null;
+let idleTimeoutId = null;
+let lastActivityTime = Date.now();
+const idleLimit = 10 * 60 * 1000; // 10 minutes (in milliseconds)
+let idleCheckInterval;
+let loggedOut = false; // Flag to indicate if the user has been logged out
+
+// ============================
+// Logging Utility
+// ============================
+const logger = {
+    info: (msg, ...args) => console.info(`[INFO] ${msg}`, ...args),
+    warn: (msg, ...args) => console.warn(`[WARN] ${msg}`, ...args),
+    error: (msg, ...args) => console.error(`[ERROR] ${msg}`, ...args),
+    debug: (msg, ...args) => {
+        if (window.debugMode) console.debug(`[DEBUG] ${msg}`, ...args);
+    }
+};
+
+// ============================
+// Utility Functions
+// ============================
+
+/**
+ * Debounce function to limit the rate at which a function can fire.
+ * @param {Function} func - The function to debounce.
+ * @param {number} delay - The debounce delay in milliseconds.
+ * @returns {Function} - The debounced function.
+ */
+function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+        const context = this, args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
+}
+
+/**
+ * Centralized cookie management utility.
+ * @param {string} action - The action to perform: 'set', 'get', or 'delete'.
+ * @param {string} name - The name of the cookie.
+ * @param {string} [value] - The value to set (required for 'set' action).
+ * @param {number} [days] - The number of days until the cookie expires (optional for 'set').
+ * @returns {string|undefined} - Returns the cookie value for 'get' action, otherwise undefined.
+ */
+function manageCookies(action, name, value = '', days = 0) {
+    if (action === 'set') {
+        const expires = days ? `; expires=${new Date(Date.now() + days * 864e5).toUTCString()}` : '';
+        document.cookie = `${name}=${encodeURIComponent(value)}${expires}; path=/; Secure; SameSite=Strict`;
+        logger.info(`Cookie set: ${name}=${value}; expires=${expires}`);
+    } else if (action === 'delete') {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; Secure; SameSite=Strict`;
+        logger.info(`Cookie deleted: ${name}`);
+    } else if (action === 'get') {
+        const cookieValue = document.cookie.split('; ').find(row => row.startsWith(name + '='))?.split('=')[1] || '';
+        logger.debug(`Cookie retrieved: ${name}=${decodeURIComponent(cookieValue)}`);
+        return decodeURIComponent(cookieValue);
+    }
+}
+
+/**
+ * Fetch with retry logic.
+ * @param {string} url - The URL to fetch.
+ * @param {Object} options - Fetch options.
+ * @param {number} retries - Number of retry attempts.
+ * @param {number} backoff - Backoff delay in milliseconds.
+ * @returns {Promise<Object|null>} - The fetched data or null if all retries fail.
+ */
+async function fetchWithRetry(url, options, retries = 3, backoff = 300) {
+    for (let i = 0; i < retries; i++) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) throw new Error(`Attempt ${i + 1}: ${response.statusText}`);
+            return await response.json();
+        } catch (error) {
+            logger.warn(`Fetch attempt ${i + 1} failed: ${error.message}`);
+            if (i < retries - 1) {
+                await new Promise(res => setTimeout(res, backoff));
+            } else {
+                logger.error(`All ${retries} fetch attempts failed for URL: ${url}`);
+                return null;
+            }
+        }
+    }
+}
+
+/**
+ * Generate a random 4-digit number as a string.
+ * @returns {string} - A 4-digit random number.
+ */
+function generateRandom4DigitNumber() {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+}
+
+/**
+ * Get the current date and time in a friendly format.
+ * @returns {string} - The formatted date and time.
+ */
+function getFriendlyDateTime() {
+    return new Date().toLocaleString('en-US', {
+        timeZone: 'America/New_York',
+        hour12: false
+    });
+}
+
+/**
+ * Update the userMeta object and save to localStorage.
+ * @param {Object} updates - Key-value pairs to update in userMeta.
+ */
+function updateUserMeta(updates) {
+    window.userMeta = { ...window.userMeta, ...updates };
+    saveToLocalStorage();
+}
+
+/**
+ * Update the userSession object and save to localStorage.
+ * @param {Object} updates - Key-value pairs to update in userSession.
+ */
+function updateUserSession(updates) {
+    window.userSession = { ...window.userSession, ...updates };
+    saveToLocalStorage();
+}
+
+/**
+ * Save relevant user data to localStorage.
+ */
+function saveToLocalStorage() {
+    localStorage.setItem('userMeta', JSON.stringify(window.userMeta));
+    localStorage.setItem('userState', JSON.stringify(window.userState));
+    localStorage.setItem('userSession', JSON.stringify(window.userSession));
+    localStorage.setItem('fx_customerId', window.fx_customerId || '');
+    localStorage.setItem('fx_customer_em', window.fx_customer_em || '');
+    logger.debug("State saved to localStorage:", {
+        userMeta: window.userMeta,
+        userState: window.userState,
+        userSession: window.userSession,
+        fx_customerId: window.fx_customerId,
+        fx_customer_em: window.fx_customer_em
+    });
+}
+
+/**
+ * Get the last updated timestamp.
+ * @returns {string} - The formatted last updated date and time.
+ */
+function getLastUpdated() {
+    return getFriendlyDateTime();
+}
+
+// ============================
+// Authentication Functions
+// ============================
+
+/**
+ * Handle successful customer authentication.
+ * @param {Object} responseData - The response data from the authentication API.
+ * @param {string} email - The customer's email.
+ */
+function handleSuccessfulAuthentication(responseData, email) {
+    logger.info('Authentication successful. Processing response data.');
+
+    // Step 1: Extract relevant data from authentication response
+    const { fc_customer_id, jwt, session_token, expires_in, sso, fc_auth_token } = responseData;
+
+    // Step 2: Update global variables and user session data
+    window.fx_customerId = fc_customer_id;
+    window.jwt = jwt; // If needed globally
+    window.session_token = session_token; // If needed globally
+
+    // Update userMeta
+    updateUserMeta({
+        fx_customerId: fc_customer_id,
+        jwt: jwt,
+        sessionToken: session_token,
+        authTokenExpiration: new Date(Date.now() + expires_in * 1000), // Calculate expiration time
+    });
+
+    // Log the updated values for debugging
+    logger.debug('Updated userMeta after authentication:', window.userMeta);
+
+    // Step 3: Update Local Storage
+    saveToLocalStorage();
+
+    // Step 4: Dispatch custom event indicating user has been authenticated
+    const authEvent = new CustomEvent('userAuthenticated', { detail: { fx_customerId: fc_customer_id } });
+    window.dispatchEvent(authEvent);
+
+    // Step 5: Initialize or Update User Session
+    if (!window.userSession) {
+        initializeUserSession();
+    } else {
+        updateUserSession({ lastUpdated: getFriendlyDateTime() });
+    }
+
+    // Step 6: Set Cookies with Authentication Data
+    manageCookies('set', 'fx_customer', fc_auth_token, 180);
+    manageCookies('set', 'fx_customerId', fc_customer_id, 180);
+    manageCookies('set', 'fx_customer_em', email, 180);
+    manageCookies('set', 'fx_customer_jwt', jwt, 180);
+    manageCookies('set', 'fx_customer_sso', sso, 180);
+    logger.info("Cookies set successfully.");
+
+    // Step 7: Read the updated cookies
+    const cookies = getCookies();
+    logger.debug('Updated cookies:', cookies);
+
+    // Step 8: Update userMeta with new data from cookies
+    updateUserMeta({
+        fx_customerId: cookies['fx_customerId'] || null,
+        fx_customer_em: cookies['fx_customer_em'] || null,
+        // ... other userMeta properties
+    });
+
+    // Step 9: Re-evaluate user state based on updated cookies
+    evaluateUser(cookies, window.userMeta.geoData);
+
+    // Step 10: Update UI elements
+    const modalOverlay = document.getElementById('modal-overlay');
+    const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
+
+    if (modalOverlay) modalOverlay.classList.remove('active');
+    if (loginButton) loginButton.style.display = 'none';
+    if (logoutButton) logoutButton.style.display = 'inline';
+
+    updateStatusDiv();
+    updateUserStateAfterAuth(true);
+}
+
+/**
+ * Authenticate the customer with provided email and password.
+ * @param {Event} event - The form submission event.
+ */
+async function authenticateCustomer(event) {
+    event.preventDefault();
+    const email = document.getElementById('em')?.value;
+    const password = document.getElementById('passwordInput')?.value;
+
+    if (!email || !password) {
+        displayAuthResult("Please provide both email and password.");
+        return;
+    }
+
+    try {
+        const response = await fetchWithRetry('https://sportcorsproxy.herokuapp.com/foxycart/customer/authenticate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        }, 3, 500);
+
+        if (!response || !response.session_token || !response.fc_customer_id) {
+            displayAuthResult("Authentication failed: Missing session_token or customer ID.");
+            return;
+        }
+
+        handleSuccessfulAuthentication(response, email);
+    } catch (error) {
+        logger.error('Error during customer authentication:', error);
+        displayAuthResult(`Error: ${error.message}`);
+    }
+}
+
+// ============================
+// User Evaluation Functions
+// ============================
+
+/**
+ * Evaluate the user's state based on cookies and geolocation data.
+ * @param {Object} cookies - The cookies object.
+ * @param {Object} geoData - The geolocation data object.
+ */
+function evaluateUser(cookies, geoData) {
+    logger.info('Evaluating user...');
+
+    // Update window.userMeta with data from cookies
+    updateUserMeta({
+        lastUpdated: getLastUpdated(),
+        fx_customerId: cookies['fx_customerId'] || null,
+        fx_customer_em: cookies['fx_customer_em'] || null,
+        // Add other cookie data as needed
+    });
+
+    // Update window.userMeta with geolocation data
+    if (geoData) {
+        updateUserMeta({ geoData: geoData });
+    }
+
+    // Determine user authentication status
+    if (cookies['fx_customer_sso'] && cookies['fx_customerId']) {
+        window.userAuth = 'authenticated';
+        window.userState.state = 'customer';
+        window.userState.subState = 'user-logged-in';
+    } else {
+        window.userAuth = '';
+        window.userState.state = 'visitor';
+        window.userState.subState = '';
+    }
+
+    // Dispatch userStateChanged event
+    const event = new CustomEvent('userStateChanged', { detail: window.userState });
+    window.dispatchEvent(event);
+
+    logger.info('User evaluation completed:', window.userState, window.userAuth);
+}
+
+/**
+ * Perform actions based on the evaluated user state.
+ */
+function performUserStateActions() {
+    if (window.userState.state === 'customer') {
+        logger.info('Performing actions for authenticated user...');
+        // Logic for authenticated/returning customer
+    } else if (window.userState.state === 'visitor') {
+        logger.info('Performing actions for visitor...');
+        // Logic for new/anonymous visitor
+    }
+}
+
+/**
+ * Session-first evaluation to determine user type.
+ */
+function sessionFirstEvaluate() {
+    logger.info('Session-first evaluation started at:', getFriendlyDateTime());
+
+    if (window.userMeta.fx_customerId) {
+        // Returning customer logic
+        window.userState.state = 'customer';
+        window.userState.subState = 'returning';
+        logger.info('Returning customer detected:', window.userMeta.fx_customerId);
+
+        // Trigger actions specific to returning customers
+        handleReturningCustomer();
+
+    } else if (window.userMeta.geoData && window.userMeta.geoData.country) {
+        // New user or visitor logic, can use geo data to personalize
+        window.userState.state = 'visitor';
+        window.userState.subState = 'new';
+        logger.info('New visitor detected based on geo data:', window.userMeta.geoData);
+
+        // Trigger actions for new visitors, like a welcome message or promotional offer
+        handleNewVisitor();
+
+    } else {
+        // If no identifiable customer or geo data is found, treat as an anonymous visitor
+        window.userState.state = 'visitor';
+        window.userState.subState = 'anonymous';
+        logger.info('Anonymous visitor detected.');
+    }
+
+    // Log the final user state
+    logger.info('User state after first evaluation:', window.userState);
+
+    // Perform actions based on user state
+    performUserStateActions();
+}
+
+/**
+ * Handle actions specific to returning customers.
+ */
+function handleReturningCustomer() {
+    // Implement logic for returning customers, such as:
+    // - Showing personalized content
+    // - Providing access to order history, favorites, etc.
+    logger.info('Executing logic for returning customer...');
+}
+
+/**
+ * Handle actions specific to new visitors.
+ */
+function handleNewVisitor() {
+    // Implement logic for new visitors, such as:
+    // - Offering promotions
+    // - Showing a welcome message
+    logger.info('Executing logic for new visitor...');
+}
+
+/**
+ * Update the user state after authentication.
+ * @param {boolean} success - Whether authentication was successful.
+ */
+function updateUserStateAfterAuth(success) {
+    if (success) {
+        window.userState.state = 'customer';
+        window.userState.subState = 'user-logged-in';
+        window.userAuth = 'authenticated';
+        pushPagesense('user-auth', window.fx_customerId || "");
+    } else {
+        window.userState.state = 'visitor';
+        window.userState.subState = '';
+        window.userAuth = '';
+    }
+
+    const event = new CustomEvent('userStateChanged', { detail: window.userState });
+    window.dispatchEvent(event);
+
+    saveToLocalStorage();
+
+    logger.info('User State Updated after authentication:', window.userState);
+
+    updateButtonState();
+    updateStatusDiv();
+}
+
+// ============================
+// Session Management Functions
+// ============================
+
+let sessionTimer;
+let idleTimer;
+
+/**
+ * Start tracking session time.
+ */
+function startSessionTimer() {
+    if (sessionTimer) {
+        clearInterval(sessionTimer); // Clear any existing timer
+    }
+
+    // Start a new session timer to track time spent
+    sessionTimer = setInterval(() => {
+        // Increment the time spent on the session
+        const currentTimeSpent = window.userSession.sessionState.secondsSpent || 0;
+        window.userSession.sessionState.secondsSpent = currentTimeSpent + 1;
+
+        // Update session state in sessionStorage
+        sessionStorage.setItem('userSession', JSON.stringify(window.userSession));
+
+        // Log the updated time spent for debugging
+        logger.debug('Time spent on session:', window.userSession.sessionState.secondsSpent);
+    }, 1000); // Update every second
+}
+
+/**
+ * Start tracking idle time.
+ */
+function startIdleTimer() {
+    // Clear any existing idle timer
+    if (idleTimer) {
+        clearTimeout(idleTimer);
+    }
+
+    // Set the idle timer to trigger after the specified idle limit
+    idleTimer = setTimeout(() => {
+        handleIdleTimeout();
+    }, idleLimit); // 10 minutes of inactivity
+}
+
+/**
+ * Reset the idle timer on user interaction.
+ */
+const resetIdleTimerDebounced = debounce(() => {
+    if (!loggedOut) {
+        startIdleTimer(); // Restart idle timer
+        lastActivityTime = Date.now();
+        logger.debug('Idle timer reset.');
+    }
+}, 200); // 200ms debounce delay
+
+/**
+ * Handle idle timeout (e.g., log out user or show a prompt).
+ */
+function handleIdleTimeout() {
+    logger.warn('User has been idle for too long, logging out...');
+    handleLogout(); // Trigger logout function
+}
+
+/**
+ * Initialize session and idle timers.
+ */
+function initializeTimers() {
+    startSessionTimer();
+    startIdleTimer();
+}
+
+/**
+ * Check if the user is idle based on last activity time.
+ */
+function checkIdleTime() {
+    if (loggedOut) return; // Do not check idle time if the user has been logged out
+
+    const currentTime = Date.now();
+    if (currentTime - lastActivityTime >= idleLimit) {
+        logger.warn('User has been idle for too long. Logging out.');
+        handleLogout(); // Log the user out after being idle
+        stopSessionAssistPolling(); // Stop polling after logout
+        loggedOut = true; // Set the flag to indicate the user is logged out
+        clearInterval(idleCheckInterval); // Stop the idle check interval
+    } else {
+        // Schedule the next idle check in 1 minute
+        setTimeout(checkIdleTime, 60 * 1000);
+    }
+}
+
+/**
+ * Setup idle detection by adding event listeners.
+ */
+function setupIdleDetection() {
+    const events = ['mousemove', 'keydown', 'scroll', 'click'];
+    const debouncedReset = debounce(resetIdleTimerDebounced, 200);
+
+    events.forEach(event => {
+        document.addEventListener(event, debouncedReset);
+    });
+
+    // Handle page visibility change
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+            logger.info('Page is visible. Resetting idle timer.');
+            resetIdleTimerDebounced();
+        }
+    });
+
+    // Handle window focus and blur
+    window.addEventListener('focus', () => {
+        logger.info('Window focused. Resetting idle timer.');
+        resetIdleTimerDebounced();
+    });
+    window.addEventListener('blur', () => {
+        logger.info('Window blurred.');
+    });
+
+    // Start the idle time checks
+    checkIdleTime();
+}
+
+/**
+ * Stop session assist polling.
+ */
+function stopSessionAssistPolling() {
+    if (sessionAssistIntervalId !== null) {
+        clearInterval(sessionAssistIntervalId);
+        sessionAssistIntervalId = null;
+        logger.info('Session assist polling stopped.');
+    }
+}
+
+// ============================
+// Session Assist Functions
+// ============================
+
+/**
+ * Refresh geolocation data.
+ */
+async function refreshGeoLocationData() {
+    window.geoDataFetched = false; // Reset the flag
+    const geoData = await loadGeoLocationData();
+    if (geoData) {
+        logger.info("Geolocation data refreshed:", geoData);
+        window.userMeta.geoData = geoData;
+        saveToLocalStorage();
+    }
+}
+
+/**
+ * Perform session assist operations.
+ */
+async function performSessionAssist() {
+    logger.info('Performing session assist operations...');
+    const lastUpdated = getLastUpdated();
+    logger.info(`Session Assist Last Updated: ${lastUpdated}`);
+
+    // Update landingPage in userMeta
+    updateUserMeta({
+        landingPage: window.location.href,
+        lastUpdated: getLastUpdated(),
+        friendlyLastUpdated: getLastUpdated(),
+    });
+
+    // Update session duration
+    if (window.userSession.sessionState.timeStarted) {
+        const startTime = new Date(window.userSession.sessionState.timeStarted).getTime();
+        const currentTime = new Date().getTime();
+        window.userSession.sessionState.secondsSpent = Math.floor((currentTime - startTime) / 1000);
+    }
+
+    // Save to localStorage
+    saveToLocalStorage();
+
+    logger.debug("Final userMeta before updating state:", window.userMeta);
+
+    // Load geolocation data
+    const geoData = await loadGeoLocationData();
+
+    // Get cookies
+    const cookies = getCookies();
+
+    // Evaluate User
+    evaluateUser(cookies, geoData);
+
+    // Fire session start and update session state
+    fireSessionStart();
+    updateSessionState(window.userMeta);
+
+    logger.info('Session assist operations completed.');
+}
+
+/**
+ * Perform session assist operations at regular intervals.
+ */
+function startSessionAssistPolling() {
+    if (sessionAssistIntervalId !== null) {
+        clearInterval(sessionAssistIntervalId);
+    }
+    sessionAssistIntervalId = setInterval(() => {
+        performSessionAssist();
+        // Optional: Add additional checks if needed
+    }, 300000); // 5 minutes
+}
+
+// ============================
+// Geolocation Functions
+// ============================
+
+/**
+ * Load geolocation data.
+ * @returns {Object|null} - The geolocation data or null if failed.
+ */
+async function loadGeoLocationData() {
+    // Check if geolocation data is already fetched and available in userMeta
+    if (window.geoDataFetched && window.userMeta?.geoData) {
+        logger.debug("Geolocation data already fetched.");
+        return window.userMeta.geoData; // Return cached geoData
+    }
+
+    try {
+        const geoData = await fetchWithRetry('https://ipv4.geojs.io/v1/ip/geo.json');
+        if (geoData) {
+            logger.info("Geolocation data fetched successfully:", geoData);
+
+            // Construct geoData object with the necessary fields
+            const formattedGeoData = {
+                ip: geoData.ip,
+                country: geoData.country,
+                region: geoData.region,
+                city: geoData.city,
+                timezone: geoData.timezone,
+            };
+
+            // Update userMeta and flags
+            updateUserMeta({ geoData: formattedGeoData });
+            window.geoDataFetched = true; // Update the flag
+
+            return formattedGeoData;
+        } else {
+            logger.error("Failed to fetch geolocation data.");
+            return null;
+        }
+    } catch (error) {
+        logger.error("Geolocation fetch failed:", error);
+        return null;
+    }
+}
+
+// ============================
+// Session Initialization
+// ============================
+
+/**
+ * Initialize user session.
+ */
+function initializeUserSession() {
+    window.userSession = {
+        sessionState: {
+            timeStarted: getLastUpdated(),
+            secondsSpent: 0
+        }
+    };
+    saveToLocalStorage();
+}
+
+/**
+ * Initialize user data and session.
+ */
+function initializeUserData() {
+    logger.info('User data initialization started at:', getFriendlyDateTime());
+
+    // This function is called when the FoxyCart library is loaded
+    FC.onLoad = function () {
+        // Wait until the FoxyCart client is ready
+        FC.client.on('ready.done', async function () {
+            logger.info('FoxyCart client is ready.');
+
+            // Step 1: Get fcsid from FoxyCart session
+            const fcsid = FC.json?.session_id;
+            if (fcsid) {
+                logger.info('Successfully retrieved fcsid:', fcsid);
+                manageCookies('set', 'fcsid', fcsid, 180);
+            } else {
+                logger.error('Failed to retrieve fcsid. FC.json.session_id is not available.');
+                return; // Exit if fcsid could not be retrieved
+            }
+
+            // Step 2: Load Geolocation Data
+            const geoData = await loadGeoLocationData();
+            logger.info('Geolocation data retrieved:', geoData);
+
+            // Step 3: Get Cookies
+            const cookies = getCookies();
+            logger.info('Cookies retrieved:', cookies);
+
+            // Step 4: Check Local Storage and Window Location
+            const initialLandingPage = window.location.href;
+            logger.info('Initial landing page:', initialLandingPage);
+
+            const localStorageData = localStorage.getItem('userSession') ? JSON.parse(localStorage.getItem('userSession')) : null;
+            logger.debug('Local storage data retrieved:', localStorageData);
+
+            // Step 5: Initialize User State, User Meta, and User Session
+            updateUserMeta({
+                lastUpdated: getFriendlyDateTime(),
+                friendlyLastUpdated: getFriendlyDateTime(),
+                fx_customerId: cookies['fx_customerId'] || null,
+                fx_customer_em: cookies['fx_customer_em'] || null,
+                geoData: geoData,
+                initialLandingPage: initialLandingPage,
+                // ... [other fx_customer variables]
+            });
+
+            window.userSession = {
+                ...window.userSession,
+                lastUpdated: getFriendlyDateTime(),
+                sessionId: cookies['fcsid'] || 'anon',
+                sessionState: {
+                    ...window.userSession?.sessionState,
+                    timeStarted: window.userSession?.sessionState?.timeStarted || getFriendlyDateTime(),
+                    secondsSpent: window.userSession?.sessionState?.secondsSpent || 0,
+                }
+            };
+
+            window.userState = {
+                state: cookies['fx_customerId'] ? 'customer' : 'visitor',
+                subState: '',
+            };
+
+            // Save to localStorage
+            saveToLocalStorage();
+
+            logger.debug("Final userMeta before updating state at:", getFriendlyDateTime(), window.userMeta);
+
+            // Fire session start and update session state
+            fireSessionStart();
+            updateSessionState(window.userMeta);
+
+            // Start session timer to track time spent
+            startSessionTimer();
+
+            // Start idle timer to track inactivity
+            startIdleTimer();
+
+            // Perform session assist polling
+            startSessionAssistPolling();
+
+            // Setup idle detection event listeners
+            setupIdleDetection();
+
+            logger.info('User data initialization completed at:', getFriendlyDateTime());
+
+            // Perform initial user evaluation
+            sessionFirstEvaluate();
+        });
+    };
+}
+
+// ============================
+// Session First Evaluation
+// ============================
+
+/**
+ * Handle user logout and clear session data.
+ */
+async function handleLogout() {
+    logger.info('Logging out user and clearing session data.');
+
+    // Capture the required data before clearing
+    const customerEmail = window.fx_customer_em;
+    const customerId = window.fx_customerId;
+
+    // Send session data via webhook before clearing authentication data
+    await sendSessionWebhook();
+
+    // Clear session data from sessionStorage and localStorage
+    sessionStorage.removeItem('fcsid');
+    sessionStorage.removeItem('userSession');
+    sessionStorage.removeItem('userMeta');
+    sessionStorage.removeItem('geoFetched');
+    sessionStorage.removeItem('cookiesFetched');
+
+    // Clear session-related flags and global variables
+    window.userSession = {};
+    window.userMeta = {};
+    window.userState = { state: 'visitor', subState: '' };
+    window.userAuth = "";
+
+    // Clear idle and session timers
+    clearInterval(sessionTimer); // Stop session timer
+    clearTimeout(idleTimer); // Stop idle timer
+
+    // Clear authentication cookies and set a new sporturl
+    clearAuthenticationData(); // Clear existing cookies including 'sporturl'
+    createNewSporturl(customerEmail, customerId); // Create new 'sporturl' cookie with updated timestamp and expiration
+
+    // Update user state after authentication
+    updateUserStateAfterAuth(false);
+
+    // Optionally, redirect the user or show a confirmation message
+    window.location.href = '/'; // Redirect to home page or login page after logout
+
+    logger.info('Session data cleared, user logged out.');
+}
+
+/**
+ * Handle session termination.
+ */
+function endSession() {
+    logger.info('Session has ended due to inactivity or logout.');
+
+    // Clear all session-related data
+    handleLogout();
+
+    // Trigger any necessary actions (e.g., tracking session end)
+    fireSessionEnd(); // Example: trigger session end event for analytics
+}
+
+/**
+ * Handle idle session timeout.
+ */
+function startIdleSessionTimeout() {
+    setTimeout(() => {
+        endSession(); // End the session after the idle timeout
+    }, idleLimit); // Idle limit from previous stages
+}
+
+/**
+ * Fire session start event.
+ */
+function fireSessionStart() {
+    logger.info('Session Started');
+}
+
+/**
+ * Fire session end event.
+ */
+function fireSessionEnd() {
+    logger.info('Session Ended');
+}
+
+/**
+ * Update session state.
+ * @param {Object} userMeta - The userMeta object.
+ */
+function updateSessionState(userMeta) {
+    logger.info('Session State Updated with userMeta:', userMeta);
+}
+
+/**
+ * Update the UI buttons based on authentication state.
+ */
+function updateButtonState() {
+    const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
+
+    if (window.userAuth === 'authenticated') {
+        if (loginButton) loginButton.style.display = 'none';
+        if (logoutButton) logoutButton.style.display = 'inline';
+    } else {
+        if (loginButton) loginButton.style.display = 'inline';
+        if (logoutButton) logoutButton.style.display = 'none';
+    }
+}
+
+/**
+ * Update the status div with the current user state.
+ */
+function updateStatusDiv() {
+    const statusDiv = document.getElementById('status-div');
+    if (!statusDiv) {
+        logger.warn('Status div not found.');
+        return;
+    }
+    statusDiv.innerHTML = `User State: ${window.userState.state}, SubState: ${window.userState.subState}`;
+}
+
+// ============================
+// Authentication Data Management
+// ============================
+
+/**
+ * Generate a sporturl with customer information.
+ * @param {string} customerEmail - The customer's email.
+ * @param {string} customerId - The customer's ID.
+ * @returns {string} - The generated sporturl.
+ */
+function generateSporturl(customerEmail, customerId) {
+    const randomPin = generateRandom4DigitNumber();
+    const currentTimestamp = Date.now().toString();
+    return `https://www.sportdogfood.com/login?em=${encodeURIComponent(customerEmail)}&cid=${encodeURIComponent(customerId)}&pn=${encodeURIComponent(randomPin)}&ts=${encodeURIComponent(currentTimestamp)}`;
+}
+
+/**
+ * Set a cookie with the specified name, value, and expiration days.
+ * @param {string} name - The cookie name.
+ * @param {string} value - The cookie value.
+ * @param {number} days - Days until the cookie expires.
+ */
+function setCookie(name, value, days) {
+    manageCookies('set', name, value, days);
+}
+
+/**
+ * Create a new sporturl cookie before logout.
+ * @param {string} customerEmail - The customer's email.
+ * @param {string} customerId - The customer's ID.
+ */
+function createNewSporturl(customerEmail, customerId) {
+    if (customerEmail && customerId) {
+        const sporturl = generateSporturl(customerEmail, customerId);
+        const encodedSporturl = encodeURIComponent(sporturl); // Single encoding
+        setCookie('sporturl', encodedSporturl, 180);
+        updateUserMeta({ sporturl: encodedSporturl });
+
+        logger.info('New sporturl cookie created before logout.');
+    } else {
+        logger.warn('No sporturl created: customerEmail or customerId not defined.');
+    }
+}
+
+/**
+ * Clear authentication data by removing relevant cookies and localStorage items.
+ */
+function clearAuthenticationData() {
+    const cookiesToRemove = [
+        'fx_customer', 'fx_customerId', 'fx_customer_em', 'fx_customer_jwt', 'fx_customer_sso',
+        'sporturl', 'fx_customerPin', 'fx_customerLastVisit', 'fx_customerEm',
+        'fx_customerEmail', 'fc_customer_id', 'fc_auth_token'
+    ];
+    
+    cookiesToRemove.forEach((cookieName) => {
+        manageCookies('delete', cookieName);
+    });
+
+    const localStorageItems = [
+        'fx_customerEmail', 'fx_customerId', 'userAttributesProcessed',
+        'userZoom', 'userTransactions', 'userSubscriptions',
+        'userState', 'userMeta', 'userSession'
+    ];
+
+    localStorageItems.forEach(item => {
+        localStorage.removeItem(item);
+        logger.info(`Removed localStorage item: ${item}`);
+    });
+
+    // Clear global variables
+    window.fx_customerId = null;
+    window.fx_customer_em = null;
+    window.fx_customerEmail = null;
+    window.fx_customerEm = null;
+    
+    // Clear userMeta and userSession
+    window.userMeta = {};
+    window.userSession = {};
+
+    logger.info('Authentication data cleared.');
+}
+
+// ============================
+// Webhook Functions
+// ============================
+
+/**
+ * Send session data via webhook before logout.
+ */
+async function sendSessionWebhook() {
+    // Only proceed if user is authenticated
+    if (window.userAuth !== 'authenticated') {
+        logger.info('[SessionManager] User is not authenticated. Skipping webhook.');
+        return;
+    }
+
+    try {
+        // Retrieve the user session data
+        const sessionObject = window.userSession || {};
+        const fx_customerEmail = window.fx_customer_em || localStorage.getItem('fx_customerEmail');
+        const fx_customerId = window.fx_customerId || localStorage.getItem('fx_customerId');
+        const logoutDate = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false });
+
+        // Construct the payload for the webhook
+        const payload = {
+            ...sessionObject,
+            logoutDate,
+            fx_customerEmail,
+            fx_customerId,
+        };
+
+        logger.info('[SessionManager] Logging out with payload:', payload);
+
+        // Send the payload to the webhook URL
+        const response = await fetchWithRetry('https://cat-heroku-proxy-51e72e8e9b26.herokuapp.com/proxy/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        }, 3, 500);
+
+        if (response) {
+            logger.info('[SessionManager] Webhook response:', response);
+        }
+    } catch (error) {
+        logger.error('[SessionManager] Failed to send webhook:', error);
+    }
+}
+
+// ============================
+// Script Loading Functions
+// ============================
+
+/**
+ * Lazy load an external script.
+ * @param {string} scriptId - The ID to assign to the script element.
+ * @param {string} src - The source URL of the script.
+ * @param {Function} onLoadCallback - Callback function upon successful load.
+ */
+function lazyLoadScript(scriptId, src, onLoadCallback) {
+    if (!document.getElementById(scriptId)) {
+        const scriptElement = document.createElement('script');
+        scriptElement.id = scriptId;
+        scriptElement.src = src;
+        scriptElement.async = true;
+        scriptElement.onload = onLoadCallback;
+        scriptElement.onerror = () => logger.error(`Failed to load script: ${src}`);
+        document.body.appendChild(scriptElement);
+        logger.info(`Attempting to load script dynamically: ${src}`);
+    } else {
+        logger.info(`Script with ID ${scriptId} is already loaded or loading.`);
+    }
+}
+
+/**
+ * Load the EvaluateCustomerState script dynamically.
+ */
+function loadEvaluateCustomerStateScript() {
+    lazyLoadScript('evaluatecustomerstate-script', 'https://sportdogfood.github.io/sport-static-js-server/evaluatecustomerstate.js', () => {
+        logger.info("EvaluateCustomerState script loaded successfully.");
+        window.evaluateCustomerStateLoaded = true; // Flag to indicate the script has been loaded
+    });
+}
+
+/**
+ * Load the PageSense script dynamically.
+ */
+function loadPageSenseScript() {
+    lazyLoadScript('pagesense-script', 'https://sportdogfood.github.io/sport-static-js-server/session-pagesense.js', () => {
+        logger.info("PageSense script loaded successfully from session-pagesense.js.");
+        window.pagesenseScriptLoaded = true; // Flag to indicate the script has been loaded
+    });
+}
+
+/**
+ * Evaluate customer when the script is ready.
+ * @param {string} fx_customerId - The customer's ID.
+ * @param {Object} sessionState - The session state object.
+ * @param {Object} userMeta - The userMeta object.
+ */
+function evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta) {
+    if (window.evaluateCustomerStateLoaded) {
+        evaluateCustomerState(fx_customerId, sessionState, userMeta);
+    } else {
+        // Retry after a short delay if script is not yet loaded
+        logger.warn("EvaluateCustomerState script not yet loaded. Retrying shortly...");
+        setTimeout(() => evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta), 100); // Retry in 100ms
+    }
+}
+
+// ============================
+// User Interaction Functions
+// ============================
+
+/**
+ * Handle user interactions.
+ */
+function onUserInteraction() {
+    const fx_customerId = window.fx_customerId || null;
+    const sessionState = {
+        secondsSpent: window.userSession?.sessionState?.secondsSpent || 0
+    };
+    const userMeta = {
+        landingPage: window.userMeta?.landingPage || '',
+        geoData: {
+            region: window.userMeta?.geoData?.region || ''
+        }
+    };
+
+    evaluateCustomerWhenScriptReady(fx_customerId, sessionState, userMeta);
+}
+
+// ============================
+// Initialization and Event Binding
+// ============================
+
+/**
+ * Initialize the entire session management system.
+ */
+function initializeSessionManagement() {
+    initializeUserData();
+    setupIdleDetection();
+    loadEvaluateCustomerStateScript();
+    loadPageSenseScript();
+}
+
+// ============================
+// Helper Functions
+// ============================
+
+/**
+ * Get all cookies as an object.
+ * @returns {Object} - An object containing all cookies.
+ */
+function getCookies() {
+    const cookies = {};
+    document.cookie.split('; ').forEach(cookie => {
+        const [name, ...rest] = cookie.split('=');
+        const value = rest.join('=');
+        cookies[name] = decodeURIComponent(value);
+    });
+    return cookies;
+}
+
+/**
+ * Display authentication results to the user.
+ * @param {string} message - The message to display.
+ */
+function displayAuthResult(message) {
+    const authResultDiv = document.getElementById('auth-result');
+    if (authResultDiv) {
+        authResultDiv.innerText = message;
+    } else {
+        logger.warn('Auth result div not found.');
+    }
+}
+
+/**
+ * Push data to PageSense (assuming pushPagesense is defined).
+ * @param {string} event - The event name.
+ * @param {string} data - The associated data.
+ */
+function pushPagesense(event, data) {
+    if (typeof PageSense !== 'undefined' && PageSense.track) {
+        PageSense.track(event, data);
+    } else {
+        logger.warn('PageSense is not defined.');
+    }
+}
+
+/**
+ * Handle session events based on user state.
+ * @param {Object} userState - The user state object.
+ */
+function handleSessionEvents(userState) {
+    if (window.userAuth === 'authenticated') {
+        logger.info('User is authenticated, loading additional data.');
+        loadAuthenticatedUserScripts();
+    } else {
+        logger.info('User is not authenticated. Not loading authenticated scripts.');
+        // Optionally, unload scripts if needed
+    }
+}
+
+/**
+ * Load authenticated user scripts.
+ */
+function loadAuthenticatedUserScripts() {
+    // Implement loading of authenticated user-specific scripts
+    logger.info('Loading authenticated user scripts...');
+    // Example: lazyLoadScript('auth-script', 'https://example.com/auth-script.js', () => { /* Callback */ });
+}
+
+/**
+ * Post-authentication workflow.
+ */
+function postAuthenticationWorkflow() {
+    // Implement post-authentication workflows
+    logger.info('Executing post-authentication workflows...');
+}
+
+/**
+ * Initialize user session if not already initialized.
+ */
+function initializeUserSessionIfNeeded() {
+    if (!window.userSession) {
+        initializeUserSession();
+    }
+}
+
+/**
+ * Handle session assist.
+ */
+function handleSessionAssist() {
+    performSessionAssist();
+    startSessionAssistPolling();
+}
+
+// ============================
+// Script Execution
+// ============================
+
+// Initialize session management when the script loads
+initializeSessionManagement();
+
+// ============================
+// Additional Functions (Placeholders)
+// ============================
+
+/**
+ * Placeholder function for firing session end event.
+ * Implement this based on your analytics or tracking requirements.
+ */
+function fireSessionEnd() {
+    logger.info('Session Ended');
+    // Example: Analytics.track('SessionEnd');
+}
+
+/**
+ * Placeholder function for evaluating customer state.
+ * This should be defined in the evaluatecustomerstate.js script.
+ * @param {string} fx_customerId 
+ * @param {Object} sessionState 
+ * @param {Object} userMeta 
+ */
+function evaluateCustomerState(fx_customerId, sessionState, userMeta) {
+    // Implement the evaluation logic as per your requirements
+    logger.info('Evaluating customer state with:', fx_customerId, sessionState, userMeta);
+}
+
+/**
+ * Placeholder function for performing post-authentication workflows.
+ * Implement this based on your application's needs.
+ */
+function postAuthenticationWorkflow() {
+    // Implement post-authentication workflows here
+    logger.info('Executing post-authentication workflows...');
+}
+
+/**
+ * Placeholder function for loading authenticated user scripts.
+ * Implement script loading as necessary.
+ */
+function loadAuthenticatedUserScripts() {
+    // Implement script loading for authenticated users
+    logger.info('Loading authenticated user scripts...');
+}
+

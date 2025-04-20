@@ -325,9 +325,18 @@ initializeUserData = function () {
 }
 
 //step4
-// Function to handle logout and clear session data
+/**
+ * Handle user logout and clear session data
+ */
 function handleLogout() {
     console.log('Logging out user and clearing session data.');
+
+    // Capture the required data before clearing
+    const customerEmail = window.fx_customer_em;
+    const customerId = window.fx_customerId;
+
+    // Send session data via webhook before clearing authentication data
+    sendSessionWebhook();
 
     // Clear session data from sessionStorage and localStorage
     sessionStorage.removeItem('fcsid');
@@ -335,7 +344,7 @@ function handleLogout() {
     sessionStorage.removeItem('userMeta');
     sessionStorage.removeItem('geoFetched');
     sessionStorage.removeItem('cookiesFetched');
-    
+
     // Clear session-related flags
     window.userSession = {};
     window.userMeta = {};
@@ -345,11 +354,19 @@ function handleLogout() {
     clearInterval(sessionTimer); // Stop session timer
     clearTimeout(idleTimer); // Stop idle timer
 
+    // Clear authentication cookies and set a new sporturl
+    clearAuthenticationData(); // Clear existing cookies including 'sporturl'
+    createNewSporturl(customerEmail, customerId); // Create new 'sporturl' cookie with updated timestamp and expiration
+
+    // Update user state after authentication
+    updateUserStateAfterAuth(false);
+
     // Optionally, redirect the user or show a confirmation message
-    window.location.href = '/logout'; // Example: redirect to a logout confirmation page
+    window.location.href = '/'; // Redirect to home page or login page after logout
 
     console.log('Session data cleared, user logged out.');
 }
+
 
 // Function to handle session termination
 function endSession() {
@@ -574,30 +591,8 @@ function createNewSporturl(customerEmail, customerId) {
 }
 
 
-/**
- * Handle user logout process
- */
-function handleLogout() {
-    // Capture the required data before clearing
-    const customerEmail = window.fx_customer_em;
-    const customerId = window.fx_customerId;
 
-    // Send session data via webhook before clearing authentication data
-    sendSessionWebhook();
 
-    clearAuthenticationData(); // Clear existing cookies including 'sporturl'
-
-    // Use captured data to create new sport URL
-    createNewSporturl(customerEmail, customerId); // Create new 'sporturl' cookie with updated timestamp and expiration
-
-    updateUserStateAfterAuth(false);
-
-    if (typeof window.sessionAssist === 'function') {
-        window.sessionAssist();
-    }
-
-    window.location.href = '/';
-}
 
 /**
  * Update user state after authentication attempt
