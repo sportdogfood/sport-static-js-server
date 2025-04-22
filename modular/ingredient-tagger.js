@@ -1,12 +1,8 @@
 // ingredient-tagger.js
-// Core ingredient tagging engine with Fuse, Compromise, Natural, and Lodash
+import Fuse from 'https://cdn.skypack.dev/fuse.js';
+import nlp from 'https://cdn.skypack.dev/compromise';
+import _ from 'https://cdn.skypack.dev/lodash-es';
 
-import Fuse from 'fuse.js';
-import nlp from 'compromise';
-import _ from 'lodash';
-// Note: 'natural' is Node-focused and not browser-native; include only if server-side
-
-// === Example tag dictionaries ===
 export const ingredientTags = {
   poultry: ["chicken", "turkey", "duck", "chicken fat", "natural chicken flavor"],
   fish: ["salmon", "whitefish", "anchovy", "menhaden fish oil"],
@@ -18,22 +14,18 @@ export const ingredientTags = {
   fruitAndVeg: ["apple", "carrot", "sweet potato", "pumpkin", "spinach"]
 };
 
-// === Create Fuse.js instances per tag ===
 const fuseMaps = {};
 Object.entries(ingredientTags).forEach(([tag, terms]) => {
   fuseMaps[tag] = new Fuse(terms, {
     includeScore: true,
-    threshold: 0.3 // adjust for sensitivity
+    threshold: 0.3
   });
 });
 
-// === Tag ingredients based on fuzzy matching ===
 export function tagIngredients(rawIngredients) {
   const tags = new Set();
-
   rawIngredients.forEach(raw => {
     const ing = raw.toLowerCase();
-
     for (const [tag, fuse] of Object.entries(fuseMaps)) {
       const result = fuse.search(ing);
       if (result.length > 0 && result[0].score < 0.3) {
@@ -41,17 +33,14 @@ export function tagIngredients(rawIngredients) {
       }
     }
   });
-
   return Array.from(tags);
 }
 
-// === NLP-based parsing (Compromise) ===
 export function extractNouns(ingredientLine) {
   const doc = nlp(ingredientLine);
   return doc.nouns().out('array');
 }
 
-// === Lodash utility examples ===
 export function groupFormulasByTag(formulas, tag) {
   return _.groupBy(formulas, f => f.tags.includes(tag));
 }
@@ -63,7 +52,3 @@ export function filterFormulas(formulas, requiredTags = [], excludedTags = []) {
     return hasRequired && !hasExcluded;
   });
 }
-
-// === Example usage ===
-// const tags = tagIngredients(["Chicken Fat", "Salmon Oil", "Sweet Potato"]);
-// const formula = { id: 'f001', ingredients: [...], tags };
