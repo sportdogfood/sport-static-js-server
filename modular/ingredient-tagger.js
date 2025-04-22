@@ -1,4 +1,3 @@
-// ingredient-tagger.js
 import Fuse from 'https://cdn.skypack.dev/fuse.js';
 import nlp from 'https://cdn.skypack.dev/compromise';
 import _ from 'https://cdn.skypack.dev/lodash-es';
