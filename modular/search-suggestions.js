@@ -1,5 +1,6 @@
 import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.esm.js";
 
+
 const prompts = [
   "Where is my order?",
   "What is your return policy?",
