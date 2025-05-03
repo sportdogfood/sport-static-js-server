@@ -1,5 +1,4 @@
-import Fuse from "https://cdn.skypack.dev/fuse.js";
-
+import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.esm.js";
 import { faqData } from './faq-data.js';
 
 export function initSearchSuggestions() {
