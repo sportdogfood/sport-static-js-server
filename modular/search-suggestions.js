@@ -1,4 +1,4 @@
-import Fuse from "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.esm.js";
+import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.mjs';
 import { faqData } from './faq-data.js';
 
 export function initSearchSuggestions() {
