@@ -1,6 +1,8 @@
 /* search-suggestions.js  */
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { faqData } from './faq-data.js';
+import { faqData }          from './faq-data.js';
+import { productSpecs }     from './product-specs.js';
+import { doesNotContain }   from './doesNotContain.js';
 
 /**
  * Initialize type-ahead suggestions for a specific FAQ category.
@@ -16,14 +18,60 @@ export function initSearchSuggestions(faqType) {
     return console.warn('❗ Missing search-suggestion nodes');
   }
 
-  // ─── filter down to just the category you want ────────────────────
+  // ── Gather all FAQ entries for the current type ───────────────
   const activeFaqs = faqData.filter(item => item.faqType === faqType);
-  // ────────────────────────────────────────────────────────────────
 
-  const fuse = new Fuse(activeFaqs, {
-    keys:      ['question', 'keywords'],
+  // ── Find the product for this type, if applicable ─────────────
+  const thisProduct = productSpecs.find(p => p.faqType === faqType);
+
+  // ── Compose dynamic Q&As for 'Does X contain Y?' ──────────────
+  const dynamicEntries = [];
+  if (thisProduct) {
+    // 1. Ingredients it DOES contain
+    thisProduct.contains.forEach(ing => {
+      dynamicEntries.push({
+        question: `Does ${thisProduct.name} contain ${ing.name}?`,
+        answer: `${thisProduct.name} contains ${ing.name}.`,
+        keywords: [
+          ...thisProduct.keywords,
+          ...ing.keywords,
+          ing.name.toLowerCase(),
+          ing.slug
+        ],
+        faqType,
+        type: 'ingredient-contains'
+      });
+    });
+
+    // 2. Ingredients it does NOT contain
+    doesNotContain.forEach(ing => {
+      dynamicEntries.push({
+        question: `Does ${thisProduct.name} contain ${ing.name}?`,
+        answer: `No, ${thisProduct.name} does not contain ${ing.name}.`,
+        keywords: [
+          ...thisProduct.keywords,
+          ing.name.toLowerCase(),
+          ...(ing.masterMatch || []),
+          ...(ing.alternates || []),
+          ing.slug
+        ],
+        faqType,
+        type: 'ingredient-not-contains'
+      });
+    });
+  }
+
+  // Merge all together for search
+  const allSuggestions = [
+    ...activeFaqs,
+    ...dynamicEntries
+  ];
+
+  // ─── Fuse.js setup ────────────────────────────────────────────
+  const fuse = new Fuse(allSuggestions, {
+    keys: ['question', 'keywords'],
     threshold: 0.4,
-    distance:  60
+    distance: 60
   });
 
   /* helper: build “No results” LI */
@@ -57,6 +105,8 @@ export function initSearchSuggestions(faqType) {
           input.value = item.question;
           sendBtn.style.display  = clearBtn.style.display = 'block';
           list.style.display = 'none';
+          // Optionally show answer immediately:
+          // if (item.answer) alert(item.answer);
         });
         list.appendChild(li);
       });
