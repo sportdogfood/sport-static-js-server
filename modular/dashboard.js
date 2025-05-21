@@ -22,7 +22,7 @@ export function initDashboard() {
     distance: 48
   });
 
-  // Pills
+  // Pills: only fill input (do not show answer yet)
   function renderStarterPills() {
     starter.innerHTML = '';
     TASKS.forEach(task => {
@@ -35,7 +35,10 @@ export function initDashboard() {
       `;
       pill.addEventListener('click', e => {
         e.preventDefault();
-        showTaskAnswer(task);
+        input.value = task.question;
+        send.style.display = clear.style.display = 'block';
+        list.style.display = 'none';
+        // No answer revealed here!
       });
       starter.appendChild(pill);
     });
@@ -43,6 +46,61 @@ export function initDashboard() {
   }
   renderStarterPills();
 
+  // Typeahead (suggestion list): only fill input (do not show answer yet)
+  input.addEventListener('input', () => {
+    const q = input.value.trim();
+    list.innerHTML = '';
+    list.style.display = 'none';
+    send.style.display = clear.style.display = q ? 'block' : 'none';
+    if (!q) { starter.style.display = 'flex'; return; }
+    const results = fuse.search(q).slice(0, 5);
+    if (!results.length) {
+      const li = document.createElement('li');
+      li.className = 'no-results';
+      li.textContent = 'No results found';
+      list.appendChild(li);
+    } else {
+      results.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r.item.question;
+        li.onclick = () => {
+          input.value = r.item.question;
+          send.style.display = clear.style.display = 'block';
+          list.style.display = 'none';
+          // No answer revealed here!
+        };
+        list.appendChild(li);
+      });
+    }
+    list.style.display = 'block';
+    starter.style.display = 'none';
+  });
+
+  // Send/Enter triggers answer (Typed.js)
+  send.onclick = function() {
+    const q = input.value.trim();
+    if (!q) return;
+    const res = fuse.search(q);
+    if (res.length) return showTaskAnswer(res[0].item);
+    txt.textContent = '';
+    box.style.display = 'block';
+    starter.style.display = 'none';
+    list.style.display = 'none';
+    new window.Typed(txt, { strings: ["Sorry, I couldn't find that task."], typeSpeed: 20, showCursor: false });
+  };
+
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') send.click(); });
+
+  // Clear button and close answer
+  clear.onclick = x.onclick = function() {
+    input.value = '';
+    box.style.display = 'none';
+    txt.textContent = '';
+    list.style.display = 'none';
+    starter.style.display = 'flex';
+  };
+
+  // Answer/Typed and Modal logic unchanged
   function showTaskAnswer(task) {
     txt.textContent = '';
     box.style.display = 'block';
@@ -83,53 +141,4 @@ export function initDashboard() {
       };
     }
   }
-
-  // Typeahead
-  input.addEventListener('input', () => {
-    const q = input.value.trim();
-    list.innerHTML = '';
-    list.style.display = 'none';
-    send.style.display = clear.style.display = q ? 'block' : 'none';
-    if (!q) { starter.style.display = 'flex'; return; }
-    const results = fuse.search(q).slice(0, 5);
-    if (!results.length) {
-      const li = document.createElement('li');
-      li.className = 'no-results';
-      li.textContent = 'No results found';
-      list.appendChild(li);
-    } else {
-      results.forEach(r => {
-        const li = document.createElement('li');
-        li.textContent = r.item.question;
-        li.onclick = () => {
-          input.value = r.item.question;
-          showTaskAnswer(r.item);
-          list.style.display = 'none';
-        };
-        list.appendChild(li);
-      });
-    }
-    list.style.display = 'block';
-    starter.style.display = 'none';
-  });
-
-  send.onclick = function() {
-    const q = input.value.trim();
-    if (!q) return;
-    const res = fuse.search(q);
-    if (res.length) return showTaskAnswer(res[0].item);
-    txt.textContent = '';
-    box.style.display = 'block';
-    starter.style.display = 'none';
-    list.style.display = 'none';
-    new window.Typed(txt, { strings: ["Sorry, I couldn't find that task."], typeSpeed: 20, showCursor: false });
-  };
-  clear.onclick = x.onclick = function() {
-    input.value = '';
-    box.style.display = 'none';
-    txt.textContent = '';
-    list.style.display = 'none';
-    starter.style.display = 'flex';
-  };
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') send.click(); });
 }
