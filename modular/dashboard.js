@@ -1,135 +1,196 @@
-// dashboard.js
-
+// dashboard.js (FAQ-style, standalone)
 const TASKS = [
   {
     key: "update-billing",
-    label: "Update Billing Address",
-    desc: "Change your billing address for future orders.",
+    question: "How do I update my billing address?",
+    trigger: ["update billing address", "change billing", "edit billing"],
     icon: "🏠",
-    formFields: [
-      { label: "Street Address", name: "billing_address", type: "text", required: true },
-      { label: "City", name: "billing_city", type: "text", required: true },
-      { label: "State", name: "billing_state", type: "text", required: true },
-      { label: "ZIP", name: "billing_zip", type: "text", required: true }
-    ],
-    apiAction: "updateBillingAddress"
+    answer: "To update your billing address, <a href='#' class='pwr-action-link' data-action='update-billing'>click here</a>.",
+    form: `
+      <h3>Update Billing Address</h3>
+      <form id="pwr-form-billing">
+        <label>Street Address<input name="address" required></label>
+        <label>City<input name="city" required></label>
+        <label>State<input name="state" required></label>
+        <label>ZIP<input name="zip" required></label>
+        <button type="submit" class="pwr-suggestion-pill" style="margin-top:1em;">Update Now</button>
+      </form>
+      <div id="pwr-form-status"></div>
+    `
   },
   {
     key: "update-shipping",
-    label: "Update Shipping Address",
-    desc: "Edit your default shipping address.",
+    question: "How do I update my shipping address?",
+    trigger: ["update shipping", "edit shipping", "change shipping address"],
     icon: "🚚",
-    formFields: [
-      { label: "Street Address", name: "shipping_address", type: "text", required: true },
-      { label: "City", name: "shipping_city", type: "text", required: true },
-      { label: "State", name: "shipping_state", type: "text", required: true },
-      { label: "ZIP", name: "shipping_zip", type: "text", required: true }
-    ],
-    apiAction: "updateShippingAddress"
+    answer: "To update your shipping address, <a href='#' class='pwr-action-link' data-action='update-shipping'>click here</a>.",
+    form: `
+      <h3>Update Shipping Address</h3>
+      <form id="pwr-form-shipping">
+        <label>Street Address<input name="address" required></label>
+        <label>City<input name="city" required></label>
+        <label>State<input name="state" required></label>
+        <label>ZIP<input name="zip" required></label>
+        <button type="submit" class="pwr-suggestion-pill" style="margin-top:1em;">Update Now</button>
+      </form>
+      <div id="pwr-form-status"></div>
+    `
   },
   {
     key: "update-payment",
-    label: "Update Payment Method",
-    desc: "Change your saved card for upcoming charges.",
+    question: "How do I update my payment method?",
+    trigger: ["update payment", "change card", "edit payment method"],
     icon: "💳",
-    formFields: [
-      { label: "Card Number", name: "card_number", type: "text", required: true },
-      { label: "Expiration Date", name: "card_exp", type: "text", required: true },
-      { label: "CVV", name: "card_cvv", type: "password", required: true }
-    ],
-    apiAction: "updatePayment"
+    answer: "To update your payment method, <a href='#' class='pwr-action-link' data-action='update-payment'>click here</a>.",
+    form: `
+      <h3>Update Payment Method</h3>
+      <form id="pwr-form-payment">
+        <label>Card Number<input name="card_number" required></label>
+        <label>Expiration Date<input name="exp" required></label>
+        <label>CVV<input name="cvv" required></label>
+        <button type="submit" class="pwr-suggestion-pill" style="margin-top:1em;">Update Now</button>
+      </form>
+      <div id="pwr-form-status"></div>
+    `
   },
-  // ...add more tasks like Order Again, Track Order, etc
+  // Add more tasks as needed...
 ];
 
-// Main entry point: call this after DOM loaded
-export function initDashboard(targetId = 'pwr-dashboard-container') {
-  const root = document.getElementById(targetId);
-  if (!root) return;
+// Utility: Fuzzy search on questions and triggers
+const fuse = new window.Fuse(TASKS, {
+  keys: ['question', 'trigger'],
+  threshold: 0.36,
+  distance: 48
+});
 
-  root.innerHTML = `
-    <div class="pwr-dashboard-panel">
-      <h2 class="pwr-dashboard-title">Manage Your Account</h2>
-      <div class="pwr-dashboard-pills">
-        ${TASKS.map(task => `
-          <button class="pwr-dashboard-pill" data-key="${task.key}">
-            <span class="pwr-dashboard-pill-icon">${task.icon}</span>
-            <span>
-              <span class="pwr-dashboard-pill-label">${task.label}</span>
-              <span class="pwr-dashboard-pill-desc">${task.desc}</span>
-            </span>
-          </button>
-        `).join('')}
-      </div>
-      <div id="pwr-dashboard-taskbox" class="pwr-dashboard-taskbox"></div>
-    </div>
-  `;
+// DOM refs
+const input   = document.getElementById('pwr-prompt-input');
+const send    = document.getElementById('pwr-send-button');
+const clear   = document.getElementById('pwr-clear-button');
+const list    = document.getElementById('pwr-suggestion-list');
+const box     = document.getElementById('pwr-answer-output');
+const txt     = document.getElementById('pwr-answer-text');
+const x       = box.querySelector('.pwr-answer-close');
+const starter = document.getElementById('pwr-initial-suggestions');
 
-  // Handler: Click a pill, show its form
-  root.querySelectorAll('.pwr-dashboard-pill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const key = btn.getAttribute('data-key');
-      const task = TASKS.find(t => t.key === key);
-      if (task) showTaskForm(task, root.querySelector('#pwr-dashboard-taskbox'));
+// Modal
+const modalOverlay = document.getElementById('pwr-modal-overlay');
+const modalClose   = document.getElementById('pwr-modal-close');
+const modalContent = document.getElementById('pwr-modal-content');
+
+// Show pills for each task
+function renderStarterPills() {
+  starter.innerHTML = '';
+  TASKS.forEach(task => {
+    const pill = document.createElement('a');
+    pill.href = '#';
+    pill.className = 'pwr-suggestion-pill';
+    pill.innerHTML = `
+      <span class="pwr-pill-icon">${task.icon}</span>
+      <span class="pwr-pill-content">
+        <span class="pwr-pill-title">${task.question}</span>
+      </span>
+    `;
+    pill.addEventListener('click', e => {
+      e.preventDefault();
+      showTaskAnswer(task);
     });
+    starter.appendChild(pill);
+  });
+  starter.style.display = 'flex';
+}
+renderStarterPills();
+
+function showTaskAnswer(task) {
+  txt.textContent = '';
+  box.style.display = 'block';
+  starter.style.display = 'none';
+  list.style.display = 'none';
+  new window.Typed(txt, {
+    strings: [task.answer],
+    typeSpeed: 19,
+    showCursor: false,
+    contentType: 'html',
+    onComplete: () => {
+      // Attach modal action handler
+      const link = box.querySelector('.pwr-action-link');
+      if (link) {
+        link.onclick = (e) => {
+          e.preventDefault();
+          showTaskModal(task);
+        };
+      }
+    }
   });
 }
 
-// Show the form for a selected task
-function showTaskForm(task, container, userData = {}) {
-  container.innerHTML = `
-    <form id="pwr-dashboard-form" class="pwr-task-form" autocomplete="off">
-      <h3 class="pwr-task-form-title">${task.label}</h3>
-      <div class="pwr-task-fields">
-        ${task.formFields.map(field => `
-          <label class="pwr-task-label">
-            <span>${field.label}</span>
-            <input class="pwr-task-input"
-                   type="${field.type}"
-                   name="${field.name}"
-                   required="${field.required ? 'required' : ''}"
-                   value="${userData[field.name] || ''}">
-          </label>
-        `).join('')}
-      </div>
-      <button type="submit" class="pwr-suggestion-pill pwr-task-submit-btn">Update Now</button>
-      <button type="button" id="pwr-dashboard-task-cancel" class="pwr-answer-close" style="position:absolute;top:.7rem;right:1.2rem;">&times;</button>
-      <div id="pwr-task-form-status" class="pwr-task-form-status"></div>
-      <div class="pwr-support-fallback" style="margin-top:.9em">
-        <a href="/support" class="pwr-link">Contact Support</a>
-      </div>
-    </form>
-  `;
-
-  container.style.display = 'block';
-
-  // Cancel button
-  container.querySelector('#pwr-dashboard-task-cancel').onclick = () => {
-    container.innerHTML = '';
+function showTaskModal(task) {
+  modalContent.innerHTML = task.form;
+  modalOverlay.style.display = 'flex';
+  // Bind close
+  modalClose.onclick = () => {
+    modalOverlay.style.display = 'none';
+    modalContent.innerHTML = '';
   };
-
-  // Form submission
-  const form = container.querySelector('#pwr-dashboard-form');
+  // Example handler (fake success)
+  const form = modalContent.querySelector('form');
   if (form) {
     form.onsubmit = function(e) {
       e.preventDefault();
-      const status = container.querySelector('#pwr-task-form-status');
+      const status = modalContent.querySelector('#pwr-form-status');
       status.textContent = "Updating...";
-      status.style.opacity = 1;
-
-      // Gather form data
-      const data = {};
-      task.formFields.forEach(field => {
-        data[field.name] = form.elements[field.name].value;
-      });
-
-      // TODO: Replace below with real API POST to your proxy
       setTimeout(() => {
         status.textContent = "✅ Update successful!";
-        status.style.opacity = 1;
-        status.style.color = "#69e5ff";
-        setTimeout(() => { status.style.opacity = 0; }, 2000);
-      }, 900);
+      }, 1000);
     };
   }
 }
+
+// Typeahead search
+input.addEventListener('input', () => {
+  const q = input.value.trim();
+  list.innerHTML = '';
+  list.style.display = 'none';
+  send.style.display = clear.style.display = q ? 'block' : 'none';
+  if (!q) { starter.style.display = 'flex'; return; }
+  const results = fuse.search(q).slice(0, 5);
+  if (!results.length) {
+    const li = document.createElement('li');
+    li.className = 'no-results';
+    li.textContent = 'No results found';
+    list.appendChild(li);
+  } else {
+    results.forEach(r => {
+      const li = document.createElement('li');
+      li.textContent = r.item.question;
+      li.onclick = () => {
+        input.value = r.item.question;
+        showTaskAnswer(r.item);
+        list.style.display = 'none';
+      };
+      list.appendChild(li);
+    });
+  }
+  list.style.display = 'block';
+  starter.style.display = 'none';
+});
+
+send.onclick = function() {
+  const q = input.value.trim();
+  if (!q) return;
+  const res = fuse.search(q);
+  if (res.length) return showTaskAnswer(res[0].item);
+  txt.textContent = '';
+  box.style.display = 'block';
+  starter.style.display = 'none';
+  list.style.display = 'none';
+  new window.Typed(txt, { strings: ["Sorry, I couldn't find that task."], typeSpeed: 20, showCursor: false });
+};
+clear.onclick = x.onclick = function() {
+  input.value = '';
+  box.style.display = 'none';
+  txt.textContent = '';
+  list.style.display = 'none';
+  starter.style.display = 'flex';
+};
+input.addEventListener('keydown', e => { if (e.key === 'Enter') send.click(); });
