@@ -100,29 +100,60 @@ export function initDashboard() {
     starter.style.display = 'flex';
   };
 
-  // Answer/Typed and Modal logic unchanged
-  function showTaskAnswer(task) {
-    txt.textContent = '';
-    box.style.display = 'block';
-    starter.style.display = 'none';
-    list.style.display = 'none';
-    new window.Typed(txt, {
-      strings: [task.answer],
-      typeSpeed: 19,
-      showCursor: false,
-      contentType: 'html',
-      onComplete: () => {
-        // Modal link
-        const link = box.querySelector('.pwr-action-link');
-        if (link) {
-          link.onclick = (e) => {
-            e.preventDefault();
-            showTaskModal(task);
-          };
+ function showTaskModal(task) {
+  const modalOverlay = document.getElementById('pwr-modal-overlay');
+  const modalContent = document.getElementById('pwr-modal-content');
+  const modalClose   = document.getElementById('pwr-modal-close');
+  modalOverlay.style.display = 'flex';
+  modalContent.innerHTML = task.form;
+
+  // --- 1. Get user data (customerId required!) ---
+  const customerId = window.userData && window.userData.customerId;
+  if (customerId && task.endpoint) {
+    // 2. Fetch endpoint and pre-fill fields (support different forms by key)
+    fetch(task.endpoint.replace('{customerId}', customerId))
+      .then(r => r.json())
+      .then(data => {
+        // Now map Foxy API fields to your form field names
+        if (task.key === "update-billing") {
+          modalContent.querySelector('[name="address"]').value = data.address1 || '';
+          modalContent.querySelector('[name="city"]').value    = data.city     || '';
+          modalContent.querySelector('[name="state"]').value   = data.region   || '';
+          modalContent.querySelector('[name="zip"]').value     = data.postal_code || '';
+        } else if (task.key === "update-shipping") {
+          modalContent.querySelector('[name="address"]').value = data.address1 || '';
+          modalContent.querySelector('[name="city"]').value    = data.city     || '';
+          modalContent.querySelector('[name="state"]').value   = data.region   || '';
+          modalContent.querySelector('[name="zip"]').value     = data.postal_code || '';
         }
-      }
-    });
+        // Add similar mapping for payment, etc, if endpoint returns those
+      })
+      .catch(() => {
+        const status = modalContent.querySelector('#pwr-form-status');
+        if (status) status.textContent = "Could not fetch current info. Please try again.";
+      });
   }
+
+  // --- 3. Modal close handler ---
+  modalClose.onclick = () => {
+    modalOverlay.style.display = 'none';
+    modalContent.innerHTML = '';
+  };
+
+  // --- 4. Submit handler (leave as is, or integrate with Webflow/Zoho Flow) ---
+  const form = modalContent.querySelector('form');
+  if (form) {
+    form.onsubmit = function(e) {
+      e.preventDefault();
+      // You can post/patch to Webflow, Zoho Flow, or Foxy proxy here
+      // For now, just show fake success
+      const status = modalContent.querySelector('#pwr-form-status');
+      status.textContent = "Updating...";
+      setTimeout(() => { status.textContent = "✅ Update successful!"; }, 1000);
+    };
+  }
+}
+
 
   function showTaskModal(task) {
     modalContent.innerHTML = task.form;
