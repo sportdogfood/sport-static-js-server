@@ -2,7 +2,8 @@
 import Fuse from 'https://cdn.skypack.dev/fuse.js';
 import nlp  from 'https://cdn.skypack.dev/compromise';
 import _    from 'https://cdn.skypack.dev/lodash-es';
-import { ingredientAlternates } from './ingredient-alternates.js';
+import { ingredientAlternates } from 'https://git.sportdogfood.com/modular/ingredient-alternates.js';
+
 
 // 1) Build alternates Fuse index for normalization
 const altIndex = [];
