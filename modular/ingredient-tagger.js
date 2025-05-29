@@ -18,13 +18,18 @@ const altFuse = new Fuse(altIndex, {
   includeScore: true
 });
 
-// 2) Your existing category → keyword lists
+// 2) Your existing category → keyword lists (fully expanded)
 export const ingredientTags = {
-  poultry: [...],
-  fish:    [...],
-  grain:   [...],
-  // etc
+  poultry:      ["chicken", "turkey", "duck", "chicken fat", "natural chicken flavor"],
+  fish:         ["salmon", "whitefish", "anchovy", "menhaden fish oil"],
+  grain:        ["rice", "barley", "sorghum", "corn gluten meal"],
+  legumes:      ["peas", "lentils", "chickpeas", "soy"],
+  fatsAndOils:  ["chicken fat", "salmon oil", "canola oil"],
+  protein:      ["beef", "lamb", "bison", "egg", "rabbit"],
+  contentious:  ["pea protein", "corn", "soy", "by-product"],
+  fruitAndVeg:  ["apple", "carrot", "sweet potato", "pumpkin", "spinach"]
 };
+
 // Build category Fuse maps
 const fuseMaps = {};
 Object.entries(ingredientTags).forEach(([tag, terms]) => {
@@ -32,8 +37,8 @@ Object.entries(ingredientTags).forEach(([tag, terms]) => {
 });
 
 /**
- * Normalize each raw ingredient string against ingredientAlternates.
- * Returns the slug if matched, otherwise rawLine.
+ * Normalize a single raw ingredient line against ingredientAlternates.
+ * Returns the slug if matched, otherwise the trimmed rawLine.
  */
 export function normalizeIngredient(rawLine) {
   const lookup = rawLine.toLowerCase();
@@ -45,17 +50,18 @@ export function normalizeIngredient(rawLine) {
 }
 
 /**
- * Given an array of raw ingredient lines:
- * - Returns { recognized: [...], unrecognized: [...] }
- * - recognized: normalized slugs
- * - unrecognized: original lines with no match
+ * Normalize an array of raw ingredients.
+ * Returns an object with:
+ *   recognized: [<slug>, …]
+ *   unrecognized: [<originalRaw>, …]
  */
 export function normalizeIngredients(rawIngredients) {
-  const recognized = [];
+  const recognized   = [];
   const unrecognized = [];
 
   rawIngredients.forEach(raw => {
     const norm = normalizeIngredient(raw);
+    // If norm matches one of our alternates’ slugs, consider recognized
     if (ingredientAlternates.some(i => i.slug === norm)) {
       recognized.push(norm);
     } else {
@@ -67,10 +73,11 @@ export function normalizeIngredients(rawIngredients) {
 }
 
 /**
- * Tag recognized ingredients by category
+ * Tag only the recognized ingredients by category.
+ * Returns an array of category keys.
  */
 export function tagIngredients(rawIngredients) {
-  // First normalize all
+  // First normalize
   const { recognized } = normalizeIngredients(rawIngredients);
   const tags = new Set();
 
@@ -86,11 +93,13 @@ export function tagIngredients(rawIngredients) {
   return Array.from(tags);
 }
 
+// Optional NLP helper
 export function extractNouns(ingredientLine) {
   const doc = nlp(ingredientLine);
   return doc.nouns().out('array');
 }
 
+// Group/filter helpers
 export function groupFormulasByTag(formulas, tag) {
   return _.groupBy(formulas, f => f.tags.includes(tag));
 }
