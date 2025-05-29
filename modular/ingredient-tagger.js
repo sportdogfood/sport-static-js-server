@@ -1,37 +1,88 @@
+// ingredient-tagger.js
 import Fuse from 'https://cdn.skypack.dev/fuse.js';
-import nlp from 'https://cdn.skypack.dev/compromise';
-import _ from 'https://cdn.skypack.dev/lodash-es';
+import nlp  from 'https://cdn.skypack.dev/compromise';
+import _    from 'https://cdn.skypack.dev/lodash-es';
+import { ingredientAlternates } from './ingredient-alternates.js';
 
-export const ingredientTags = {
-  poultry: ["chicken", "turkey", "duck", "chicken fat", "natural chicken flavor"],
-  fish: ["salmon", "whitefish", "anchovy", "menhaden fish oil"],
-  grain: ["rice", "barley", "sorghum", "corn gluten meal"],
-  legumes: ["peas", "lentils", "chickpeas", "soy"],
-  fatsAndOils: ["chicken fat", "salmon oil", "canola oil"],
-  protein: ["beef", "lamb", "bison", "egg", "rabbit"],
-  contentious: ["pea protein", "corn", "soy", "by-product"],
-  fruitAndVeg: ["apple", "carrot", "sweet potato", "pumpkin", "spinach"]
-};
-
-const fuseMaps = {};
-Object.entries(ingredientTags).forEach(([tag, terms]) => {
-  fuseMaps[tag] = new Fuse(terms, {
-    includeScore: true,
-    threshold: 0.3
+// 1) Build alternates Fuse index for normalization
+const altIndex = [];
+ingredientAlternates.forEach(item => {
+  item.masterMatch.forEach(mterm => {
+    altIndex.push({ term: mterm.toLowerCase(), slug: item.slug, name: item.name });
   });
 });
+const altFuse = new Fuse(altIndex, {
+  keys: ['term'],
+  threshold: 0.2,
+  ignoreLocation: true,
+  includeScore: true
+});
 
-export function tagIngredients(rawIngredients) {
-  const tags = new Set();
+// 2) Your existing category → keyword lists
+export const ingredientTags = {
+  poultry: [...],
+  fish:    [...],
+  grain:   [...],
+  // etc
+};
+// Build category Fuse maps
+const fuseMaps = {};
+Object.entries(ingredientTags).forEach(([tag, terms]) => {
+  fuseMaps[tag] = new Fuse(terms, { includeScore: true, threshold: 0.3 });
+});
+
+/**
+ * Normalize each raw ingredient string against ingredientAlternates.
+ * Returns the slug if matched, otherwise rawLine.
+ */
+export function normalizeIngredient(rawLine) {
+  const lookup = rawLine.toLowerCase();
+  const results = altFuse.search(lookup);
+  if (results.length && results[0].score < 0.2) {
+    return results[0].item.slug;
+  }
+  return rawLine.trim();
+}
+
+/**
+ * Given an array of raw ingredient lines:
+ * - Returns { recognized: [...], unrecognized: [...] }
+ * - recognized: normalized slugs
+ * - unrecognized: original lines with no match
+ */
+export function normalizeIngredients(rawIngredients) {
+  const recognized = [];
+  const unrecognized = [];
+
   rawIngredients.forEach(raw => {
-    const ing = raw.toLowerCase();
+    const norm = normalizeIngredient(raw);
+    if (ingredientAlternates.some(i => i.slug === norm)) {
+      recognized.push(norm);
+    } else {
+      unrecognized.push(raw.trim());
+    }
+  });
+
+  return { recognized, unrecognized };
+}
+
+/**
+ * Tag recognized ingredients by category
+ */
+export function tagIngredients(rawIngredients) {
+  // First normalize all
+  const { recognized } = normalizeIngredients(rawIngredients);
+  const tags = new Set();
+
+  recognized.forEach(norm => {
     for (const [tag, fuse] of Object.entries(fuseMaps)) {
-      const result = fuse.search(ing);
-      if (result.length > 0 && result[0].score < 0.3) {
+      const result = fuse.search(norm);
+      if (result.length && result[0].score < 0.3) {
         tags.add(tag);
       }
     }
   });
+
   return Array.from(tags);
 }
 
@@ -46,8 +97,8 @@ export function groupFormulasByTag(formulas, tag) {
 
 export function filterFormulas(formulas, requiredTags = [], excludedTags = []) {
   return formulas.filter(f => {
-    const hasRequired = requiredTags.every(tag => f.tags.includes(tag));
-    const hasExcluded = excludedTags.some(tag => f.tags.includes(tag));
+    const hasRequired = requiredTags.every(t => f.tags.includes(t));
+    const hasExcluded = excludedTags.some(t => f.tags.includes(t));
     return hasRequired && !hasExcluded;
   });
 }
