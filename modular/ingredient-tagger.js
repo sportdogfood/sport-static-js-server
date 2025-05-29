@@ -29,7 +29,6 @@ export const ingredientTags = {
   contentious:  ["pea protein", "corn", "soy", "by-product"],
   fruitAndVeg:  ["apple", "carrot", "sweet potato", "pumpkin", "spinach"]
 };
-
 // Build category Fuse maps
 const fuseMaps = {};
 Object.entries(ingredientTags).forEach(([tag, terms]) => {
