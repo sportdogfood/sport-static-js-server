@@ -1,0 +1,205 @@
+<style>
+/* --- Dropup/dropdown menu --- */
+.pwr-tools-dropup {
+  position: absolute;
+  left: 0;
+  min-width: 190px;
+  z-index: 99;
+  background: #23272f;
+  border-radius: 1.2rem;
+  box-shadow: 0 6px 32px rgba(24,24,36,0.18);
+  padding: 0.5rem 0;
+  animation: fadeIn 0.16s;
+  bottom: 110%;    /* Default: dropup */
+  top: auto;
+}
+.pwr-tools-dropup.dropdown-open {
+  bottom: auto;
+  top: 110%;
+}
+.pwr-tools-dropup[hidden] { display: none; }
+.pwr-tools-dropup-wrapper {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.pwr-dropup-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pwr-dropup-list li {
+  padding: 0.85rem 1.2rem;
+  color: #fff;
+  font-size: 1.06rem;
+  cursor: pointer;
+  border-radius: 0.75rem;
+  transition: background 0.16s, color 0.16s;
+  font-weight: 500;
+  background: transparent;
+}
+.pwr-dropup-list li:hover,
+.pwr-dropup-list li.active {
+  background: #15171d;
+  color: #69e5ff;
+}
+
+/* --- Search input row --- */
+.pwr-search-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+  font-family: system-ui, sans-serif;
+}
+.pwr-search-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  position: relative;
+}
+.pwr-search-input-wrapper {
+  position: relative;
+  flex: 1;
+  margin: 1rem 0;
+}
+.pwr-search-input {
+  width: 100%;
+  padding: .75rem 3rem .75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: .5rem;
+}
+#pwr-send-button, #pwr-clear-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: none; /* Show via JS as needed */
+}
+#pwr-send-button { right: 2.5rem; width: 40px; height: 25px; padding: 0; }
+#pwr-clear-button { right: .75rem; color: #888; font-size: 1.25rem; }
+
+/* --- Initial suggestions: subtle transparent pills, animated --- */
+#pwr-initial-suggestions,
+.pwr-starter-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 0.6rem 0 0 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.pwr-suggestion-pill {
+  background: rgba(36, 39, 46, 0.06);
+  color: #23272f;
+  border-radius: 1.2rem;
+  padding: 0.62em 1.1em;
+  font-size: 1.04rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  box-shadow: none;
+  opacity: 0;
+  animation: pwrFadeIn 0.6s forwards;
+  transition: background 0.16s, color 0.16s;
+}
+.pwr-suggestion-pill:hover,
+.pwr-suggestion-pill:focus {
+  background: rgba(50, 230, 255, 0.09);
+  color: #08537d;
+}
+
+/* --- Live suggestion dropdown: subtle/transparent, animated --- */
+#pwr-suggestion-list {
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  top: 105%;
+  left: 0;
+  z-index: 9;
+  border-radius: 1.1rem;
+  background: transparent !important;
+  box-shadow: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  display: none;
+}
+#pwr-suggestion-list li {
+  background: rgba(36, 39, 46, 0.08);
+  color: #23272f;
+  border-radius: 1.1rem;
+  padding: 0.68em 1.1em;
+  font-size: 1.04rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 0.19em;
+  opacity: 0;
+  animation: pwrFadeIn 0.38s forwards;
+  transition: background 0.15s, color 0.14s;
+}
+#pwr-suggestion-list li:last-child { margin-bottom: 0; }
+#pwr-suggestion-list li:hover,
+#pwr-suggestion-list li:focus {
+  background: rgba(50, 230, 255, 0.13);
+  color: #08537d;
+}
+#pwr-suggestion-list .no-results {
+  background: transparent;
+  color: #949ba7;
+  cursor: default;
+  font-style: italic;
+}
+
+/* --- Answer output, matches pills/list --- */
+.pwr-answer-output,
+#pwr-answer-output {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 100%; 
+  background: #23272f;
+  color: #fff;
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 28px rgba(24,24,36,0.15);
+  padding: 1.4rem 1.5rem 1.4rem 2.1rem;
+  z-index: 20;
+  font-size: 1.08rem;
+  font-weight: 500;
+  line-height: 1.6;
+   display: none;
+  animation: fadeIn 0.18s;
+  min-height: 3.5rem;
+  margin-top: 1rem;
+}
+.pwr-answer-output .pwr-answer-close,
+#pwr-answer-clear {
+  position: absolute;
+  top: 0.7rem;
+  right: 1.2rem;
+  background: none;
+  border: none;
+  color: #bfc3cb;
+  font-size: 1.5rem;
+  cursor: pointer;
+  opacity: 0.78;
+  transition: opacity 0.18s;
+}
+.pwr-answer-output .pwr-answer-close:hover,
+#pwr-answer-clear:hover {
+  opacity: 1;
+  color: #69e5ff;
+}
+
+/* --- Fade-in Animation for Pills and Suggestions --- */
+@keyframes pwrFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+
+</style>
