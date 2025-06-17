@@ -10,6 +10,10 @@
     },
     "Item ID": "6844a7800fefebdd76a521ed",
     "calcSlug": "farmina-nd-ancestral-grain-lamb",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "105269",
     "itemName": "Farmina Nd Ancestral Grain Lamb",
     "item-subtitle": "",
@@ -67,7 +71,7 @@
       "rosemary-extract",
       "mixed-tocopherols"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 1,
     "data-diet": "Grain",
     "data-one": "Nd Ancestral Grain Lamb",
@@ -111,6 +115,10 @@
     },
     "Item ID": "6844a780f2d2d049077b5267",
     "calcSlug": "purina-pro-plan-adult-shredded-blend",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "114025",
     "itemName": "Purina Pro Plan Adult Shredded Blend",
     "item-subtitle": "",
@@ -135,13 +143,11 @@
       "soybean-oil",
       "salt",
       "potassium-chloride",
-      "minerals-[zinc-proteinate",
       "ferrous-sulfate",
       "manganese-proteinate",
       "copper-proteinate",
       "calcium-iodate",
       "sodium-selenite",
-      "vitamins-[vitamin-e-supplement",
       "niacin",
       "vitamin-a-supplement",
       "thiamine-mononitrate",
@@ -155,11 +161,9 @@
       "vitamin-d3-supplement",
       "choline-chloride",
       "dried-bacillus-coagulans-fermentation-product",
-      "l-ascorbyl-2-polyphosphate-(vitamin-c)",
-      "l-lysine-monohydrochloride",
-      "garlic-oil.-e449223"
+      "l-lysine-monohydrochloride"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 2,
     "data-diet": "Grain",
     "data-one": "Adult Shredded Blend",
@@ -203,6 +207,10 @@
     },
     "Item ID": "6844a780bb4b55c6a7bdd58b",
     "calcSlug": "dr-tims-weight-management-metabolite",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "119068",
     "itemName": "Dr Tims Weight Management Metabolite",
     "item-subtitle": "",
@@ -221,7 +229,6 @@
       "natural-flavors",
       "flaxseed",
       "calcium-carbonate",
-      "vitamins-(vitamin-e-supplement",
       "l-ascorbyl-2-polyphosphate",
       "biotin",
       "niacin",
@@ -240,7 +247,6 @@
       "choline-chloride",
       "kelp",
       "l-lysine",
-      "minerals-(zinc-methionine-complex",
       "zinc-sulfate",
       "iron-proteinate",
       "ferrous-sulfate",
@@ -250,7 +256,6 @@
       "manganese-proteinate",
       "sodium-selenite",
       "manganous-oxide",
-      "calcium-iodate)",
       "taurine",
       "chicory-root",
       "potassium-chloride",
@@ -266,7 +271,7 @@
       "l-carnitine",
       "dried-bacillus-coagulans-fermentation-product"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 3,
     "data-diet": "Grain",
     "data-one": "Weight Management Metabolite",
@@ -310,6 +315,10 @@
     },
     "Item ID": "6844a7809c270652d7a81cf9",
     "calcSlug": "victor-select-lamb-meal-brown-rice",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "120680",
     "itemName": "Victor Select Lamb Meal Brown Rice",
     "item-subtitle": "",
@@ -335,7 +344,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -370,7 +378,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 4,
     "data-diet": "Grain",
     "data-one": "Select Lamb Meal Brown Rice",
@@ -414,6 +422,10 @@
     },
     "Item ID": "6844a780a7b546547d24d75a",
     "calcSlug": "victor-purpose-performance-formula",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "120684",
     "itemName": "Victor Purpose Performance Formula",
     "item-subtitle": "",
@@ -440,7 +452,6 @@
       "zinc-methionine-complex",
       "glucosamine-hydrochloride",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "chondroitin-sulfate",
@@ -476,7 +487,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 5,
     "data-diet": "Grain",
     "data-one": "Purpose Performance Formula",
@@ -520,6 +531,10 @@
     },
     "Item ID": "6844a7815ab150cfbcac8594",
     "calcSlug": "victor-purpose-active-dog-puppy",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "120700",
     "itemName": "Victor Purpose Active Dog Puppy",
     "item-subtitle": "",
@@ -545,7 +560,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -577,7 +591,7 @@
       "dried-bacillus-coagulans-fermentation-product",
       "bacillus-subtilis-fermentation"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 6,
     "data-diet": "Grain-Free",
     "data-one": "Purpose Active Dog Puppy",
@@ -597,7 +611,7 @@
     "ga_kcals_per_kg": 3614,
     "ga_kcals_per_cup": 384,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Meat",
     "specs_bag-size_lbs": 30,
@@ -621,6 +635,10 @@
     },
     "Item ID": "6844a78034eee4f54e37e243",
     "calcSlug": "victor-purpose-hero-grain-free-dry",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "120702",
     "itemName": "Victor Purpose Hero Grain Free Dry",
     "item-subtitle": "",
@@ -648,7 +666,6 @@
       "zinc-methionine-complex",
       "glucosamine-hydrochloride",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "chondroitin-sulfate",
@@ -684,7 +701,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 7,
     "data-diet": "Grain-Free",
     "data-one": "Purpose Hero Grain Free Dry",
@@ -704,7 +721,7 @@
     "ga_kcals_per_kg": 3614,
     "ga_kcals_per_cup": 384,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Meat",
     "specs_bag-size_lbs": 30,
@@ -728,6 +745,10 @@
     },
     "Item ID": "6844a780b534d9b058da272c",
     "calcSlug": "victor-select-yukon-river-canine",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "120706",
     "itemName": "Victor Select Yukon River Canine",
     "item-subtitle": "",
@@ -753,7 +774,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -788,7 +808,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 8,
     "data-diet": "Grain-Free",
     "data-one": "Select Yukon River Canine",
@@ -808,7 +828,7 @@
     "ga_kcals_per_kg": 3666,
     "ga_kcals_per_cup": 390,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Fish",
     "specs_bag-size_lbs": 30,
@@ -832,6 +852,10 @@
     },
     "Item ID": "6844a781319a5aab0fcd1689",
     "calcSlug": "victor-purpose-ultra-pro-grain-free",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "120708",
     "itemName": "Victor Purpose Ultra Pro Grain Free",
     "item-subtitle": "",
@@ -858,7 +882,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -893,7 +916,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 9,
     "data-diet": "Grain-Free",
     "data-one": "Purpose Ultra Pro Grain Free",
@@ -913,7 +936,7 @@
     "ga_kcals_per_kg": 3890,
     "ga_kcals_per_cup": 414,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Poultry",
     "specs_bag-size_lbs": 30,
@@ -937,6 +960,10 @@
     },
     "Item ID": "6844a781bb11284b09124f4f",
     "calcSlug": "victor-select-chicken-meal-sweet",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "120711",
     "itemName": "Victor Select Chicken Meal Sweet",
     "item-subtitle": "",
@@ -962,7 +989,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -997,7 +1023,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 10,
     "data-diet": "Grain-Free",
     "data-one": "Select Chicken Meal Sweet",
@@ -1017,7 +1043,7 @@
     "ga_kcals_per_kg": 3744,
     "ga_kcals_per_cup": 398,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Poultry",
     "specs_bag-size_lbs": 30,
@@ -1041,6 +1067,10 @@
     },
     "Item ID": "6844a7812da81548f63e88e5",
     "calcSlug": "victor-purpose-nutra-pro-dry-dog-food",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "129281",
     "itemName": "Victor Purpose Nutra Pro Dry Dog Food",
     "item-subtitle": "",
@@ -1066,7 +1096,6 @@
       "calcium-stearate",
       "zinc-methionine-complex",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "manganese-amino-acids-complex",
@@ -1101,7 +1130,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 11,
     "data-diet": "Grain",
     "data-one": "Purpose Nutra Pro Dry Dog Food",
@@ -1145,6 +1174,10 @@
     },
     "Item ID": "6844a78190772361803ac75c",
     "calcSlug": "farmina-nd-ancestral-grain-chicken",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "202214",
     "itemName": "Farmina Nd Ancestral Grain Chicken",
     "item-subtitle": "",
@@ -1202,7 +1235,7 @@
       "rosemary-extract",
       "mixed-tocopherols"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 12,
     "data-diet": "Grain",
     "data-one": "Nd Ancestral Grain Chicken",
@@ -1246,6 +1279,10 @@
     },
     "Item ID": "6844a7810fefebdd76a5236a",
     "calcSlug": "farmina-nd-ancestral-grain-lamb",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "234247",
     "itemName": "Farmina Nd Ancestral Grain Lamb",
     "item-subtitle": "",
@@ -1301,7 +1338,7 @@
       "rosemary-extract",
       "mixed-tocopherols"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 13,
     "data-diet": "Grain",
     "data-one": "Nd Ancestral Grain Lamb",
@@ -1345,6 +1382,10 @@
     },
     "Item ID": "6844a78193726ed1bc52d05b",
     "calcSlug": "victor-realtree-max-5-pro-dry-dog",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "279306",
     "itemName": "Victor Realtree Max 5 Pro Dry Dog",
     "item-subtitle": "",
@@ -1371,7 +1412,6 @@
       "zinc-methionine-complex",
       "glucosamine-hydrochloride",
       "vitamin-e-supplement",
-      "dl-methionine",
       "iron-amino-acids-complex",
       "hydrolyzed-yeast",
       "cranberry-powder",
@@ -1409,7 +1449,7 @@
       "lecithin",
       "folic-acid"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 14,
     "data-diet": "Grain",
     "data-one": "Realtree Max 5 Pro Dry Dog",
@@ -1453,6 +1493,10 @@
     },
     "Item ID": "6844a7816fec0964ccfcfa93",
     "calcSlug": "acana-singles-limited-ingredient-diet",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free"
+    ],
     "itemId": "285973",
     "itemName": "Acana Singles Limited Ingredient Diet",
     "item-subtitle": "",
@@ -1495,7 +1539,7 @@
       "bifidobacterium-animalis-fermentation",
       "lactobacillus-casei-fermentation"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 15,
     "data-diet": "Grain-Free",
     "data-one": "Singles Limited Ingredient Diet",
@@ -1515,7 +1559,7 @@
     "ga_kcals_per_kg": 3405,
     "ga_kcals_per_cup": 388,
     "diets_multiselect": [
-      "Grain-Free"
+      "Grain Free"
     ],
     "specs_primary_flavor": "Meat",
     "specs_bag-size_lbs": 22.5,
@@ -1539,6 +1583,10 @@
     },
     "Item ID": "6844a7819c270652d7a81d3f",
     "calcSlug": "purina-pro-plan-specialized-beef-rice",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "298045",
     "itemName": "Purina Pro Plan Specialized Beef Rice",
     "item-subtitle": "",
@@ -1564,7 +1612,6 @@
       "salt",
       "mono-and-dicalcium-phosphate",
       "potassium-citrate",
-      "vitamins-[vitamin-e-supplement",
       "niacin",
       "vitamin-a-supplement",
       "calcium-pantothenate",
@@ -1577,7 +1624,6 @@
       "vitamin-d3-supplement",
       "biotin",
       "choline-chloride",
-      "minerals-[zinc-sulfate",
       "ferrous-sulfate",
       "manganese-sulfate",
       "copper-sulfate",
@@ -1585,12 +1631,10 @@
       "sodium-selenite",
       "glucosamine-hydrochloride",
       "taurine",
-      "l-ascorbyl-2-polyphosphate-(vitamin-c)",
       "dried-bacillus-coagulans-fermentation-product",
-      "l-lysine-monohydrochloride",
-      "garlic-oil.-b440823"
+      "l-lysine-monohydrochloride"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 16,
     "data-diet": "Grain",
     "data-one": "Specialized Beef Rice",
@@ -1634,6 +1678,10 @@
     },
     "Item ID": "6844a77f22684ab14fd4ae63",
     "calcSlug": "dr-tims-active-dog-pursuit-formula",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "37811",
     "itemName": "Dr Tims Active Dog Pursuit Formula",
     "item-subtitle": "",
@@ -1653,7 +1701,6 @@
       "natural-flavors",
       "porcine-plasma",
       "salmon-meal",
-      "vitamins-(vitamin-e-supplement",
       "l-ascorbyl-2-polyphosphate",
       "biotin",
       "niacin",
@@ -1669,7 +1716,6 @@
       "lecithin",
       "dl-methionine",
       "l-lysine",
-      "minerals-(zinc-methionine-complex",
       "zinc-sulfate",
       "iron-proteinate",
       "ferrous-sulfate",
@@ -1679,7 +1725,6 @@
       "manganese-proteinate",
       "sodium-selenite",
       "manganous-oxide",
-      "calcium-iodate)",
       "kelp",
       "salt",
       "chicory-root",
@@ -1690,7 +1735,7 @@
       "l-carnitine",
       "dried-bacillus-coagulans-fermentation-product"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 17,
     "data-diet": "Grain",
     "data-one": "Active Dog Pursuit Formula",
@@ -1734,6 +1779,10 @@
     },
     "Item ID": "6844a780edf22a5c4a7f1122",
     "calcSlug": "purina-pro-plan-high-protein-chicken",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "52423",
     "itemName": "Purina Pro Plan High Protein Chicken",
     "item-subtitle": "",
@@ -1759,13 +1808,11 @@
       "potassium-citrate",
       "choline-chloride",
       "l-lysine-monohydrochloride",
-      "minerals-[zinc-sulfate",
       "ferrous-sulfate",
       "manganese-sulfate",
       "copper-sulfate",
       "calcium-iodate",
       "sodium-selenite",
-      "vitamins-[vitamin-e-supplement",
       "niacin",
       "vitamin-a-supplement",
       "calcium-pantothenate",
@@ -1779,7 +1826,7 @@
       "biotin",
       "garlic-oil"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 18,
     "data-diet": "Grain",
     "data-one": "High Protein Chicken",
@@ -1823,6 +1870,10 @@
     },
     "Item ID": "6844a7801e484e2da49d8ddc",
     "calcSlug": "purina-pro-plan-high-protein-shredded",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "52445",
     "itemName": "Purina Pro Plan High Protein Shredded",
     "item-subtitle": "",
@@ -1867,11 +1918,9 @@
       "vitamin-d3-supplement",
       "choline-chloride",
       "dried-bacillus-coagulans-fermentation-product",
-      "l-ascorbyl-2-polyphosphate-(vitamin-c)",
-      "l-lysine-monohydrochloride",
-      "garlic-oil.-a445523"
+      "l-lysine-monohydrochloride"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 19,
     "data-diet": "Grain",
     "data-one": "High Protein Shredded",
@@ -1915,6 +1964,10 @@
     },
     "Item ID": "6844a7819aba47e523965ce6",
     "calcSlug": "eukanuba-adult-large-breed-dry-dog",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "552422",
     "itemName": "Eukanuba Adult Large Breed Dry Dog",
     "item-subtitle": "",
@@ -1936,7 +1989,6 @@
       "fructooligosaccharides",
       "fish-oil",
       "choline-chloride",
-      "vitamins-[dl-alpha-tocopherol-acetate-(source-of-vitamin-e)",
       "biotin",
       "d-calcium-pantothenate",
       "vitamin-a-acetate",
@@ -1949,17 +2001,15 @@
       "folic-acid",
       "dl-methionine",
       "glucosamine-hydrochloride",
-      "trace-minerals-[zinc-oxide",
       "ferrous-sulfate",
       "copper-sulfate",
       "sodium-selenite",
-      "calcium-iodate]",
       "manganous-oxide",
       "chondroitin-sulfate",
       "rosemary-extract",
       "preserved-with-mixed-tocopherols-and-citric-acid."
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 20,
     "data-diet": "Grain",
     "data-one": " Adult Large Breed Dry Dog",
@@ -2003,6 +2053,10 @@
     },
     "Item ID": "6844a7802f97b02373abb75e",
     "calcSlug": "farmina-nd-ancestral-grain-chicken",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "55909",
     "itemName": "Farmina Nd Ancestral Grain Chicken",
     "item-subtitle": "",
@@ -2060,7 +2114,7 @@
       "rosemary-extract",
       "mixed-tocopherols"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 21,
     "data-diet": "Grain",
     "data-one": "Nd Ancestral Grain Chicken",
@@ -2104,6 +2158,10 @@
     },
     "Item ID": "6844a77fb97bea2686617764",
     "calcSlug": "farmina-nd-ocean-codfish-orange",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "55911",
     "itemName": "Farmina Nd Ocean Codfish Orange",
     "item-subtitle": "",
@@ -2157,7 +2215,7 @@
       "rosemary-extract",
       "mixed-tocopherols"
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 22,
     "data-diet": "Grain",
     "data-one": "Nd Ocean Codfish Orange",
@@ -2201,6 +2259,10 @@
     },
     "Item ID": "6844a781faabc6e39ed1d7b9",
     "calcSlug": "solid-gold-nutrient-boost-wolf-king",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive"
+    ],
     "itemId": "841846",
     "itemName": "Solid Gold Nutrient Boost Wolf King",
     "item-subtitle": "",
@@ -2223,7 +2285,6 @@
       "salmon-oil",
       "carrots",
       "pumpkin",
-      "minerals-(zinc-sulfate",
       "ferrous-sulfate",
       "copper-sulfate",
       "manganese-sulfate",
@@ -2231,9 +2292,6 @@
       "manganese-proteinate",
       "copper-proteinate",
       "sodium-selenite",
-      "calcium-iodate)",
-      "vitamins-(vitamin-e-supplement",
-      "l-ascorbyl-2-polyphosphate-(source-of-vitamin-c)",
       "niacin",
       "calcium-pantothenate",
       "riboflavin",
@@ -2247,13 +2305,12 @@
       "blueberries",
       "cranberries",
       "choline-chloride",
-      "dl-methionine",
       "chicory-root",
       "taurine",
       "rosemary-extract",
       "dried-bacillus-coagulans-fermentation-product."
     ],
-    "data-faqType": "ci",
+    "data-faqType": "",
     "data-sort": 23,
     "data-diet": "Grain",
     "data-one": "Nutrient Boost Wolf King",
