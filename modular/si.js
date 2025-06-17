@@ -1,4 +1,3 @@
-
 [
   {
     "Name": "Cub Puppy",
@@ -6,6 +5,12 @@
     "canonical": "premium-cub-puppy-peas-free-dog-food",
     "Collection ID": "647ddb9037101ce399b33184",
     "Item ID": "64790371013993450",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive",
+      "legumes-free",
+      "poultry-free"
+    ],
     "calcSlug": "cub-puppy",
     "itemId": 29280,
     "itemName": "Cub Puppy Grain Inclusive, Poultry Free, Active Dog and Puppy",
@@ -61,7 +66,7 @@
       "lactobacillus-acidophilus-fermentation",
       "lactobacillus-casei-fermentation"
     ],
-    "data-faqType": "cub.json",
+    "data-faqType": "",
     "data-sort": 1,
     "data-diet": "Grain",
     "data-one": "Cub",
@@ -102,6 +107,12 @@
     "canonical": "premium-dock-dog-peas-free-dog-food",
     "Collection ID": "647ddb9037101ce399b33184",
     "Item ID": "64790371013993440",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-inclusive",
+      "legumes-free",
+      "poultry-free"
+    ],
     "calcSlug": "dock-dog",
     "itemId": 29099,
     "itemName": "Dock Dog Grain Inclusive, Poultry Free, Buffalo and Oatmeal",
@@ -157,7 +168,7 @@
       "lactobacillus-acidophilus-fermentation",
       "lactobacillus-casei-fermentation"
     ],
-    "data-faqType": "dock.json ",
+    "data-faqType": "",
     "data-sort": 2,
     "data-diet": "Grain",
     "data-one": "Dock",
@@ -198,6 +209,12 @@
     "canonical": "premium-herding-dog-peas-free-dog-food",
     "Collection ID": "647ddb9037101ce399b33184",
     "Item ID": "64790371013993450",
+    "typed_intro": "",
+    "diets_slugs": [
+      "grain-free",
+      "legumes-free",
+      "poultry-free"
+    ],
     "calcSlug": "herding-dog",
     "itemId": 28979,
     "itemName": "Herding Dog Grain Free, Poultry Free, Buffalo and Sweet Potato",
@@ -253,7 +270,7 @@
       "lactobacillus-acidophilus-fermentation",
       "lactobacillus-casei-fermentation"
     ],
-    "data-faqType": "herding.json ",
+    "data-faqType": "",
     "data-sort": 3,
     "data-diet": "Grain Free",
     "data-one": "Herding",
