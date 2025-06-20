@@ -7,11 +7,7 @@
     "Item ID": "6852de7f658b1a34dd9e184e",
     "canonical": "",
     "recordId": "recnjNROXG4zCbjVq",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "anchovy",
     "ingredientTerm": "Anchovy",
@@ -40,14 +36,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recQXaH3kvqPAFTmm",
-      "name": "Anchovy"
-    },
-    "groupWith": {
-      "id": "recDmPN8HkIswdBNc",
-      "name": "Anchovy"
-    },
+    "displayAs": "Anchovy",
+    "groupWith": "Anchovy",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -89,11 +79,7 @@
     "Item ID": "6852de7fcd3d9af3da82af86",
     "canonical": "",
     "recordId": "reccIiDZBtwO4Riow",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "anchovy-meal",
     "ingredientTerm": "Anchovy Meal",
@@ -122,14 +108,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rech9molgPZfRhqeM",
-      "name": "Anchovy Meal"
-    },
-    "groupWith": {
-      "id": "recDmPN8HkIswdBNc",
-      "name": "Anchovy"
-    },
+    "displayAs": "Anchovy Meal",
+    "groupWith": "Anchovy",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -171,11 +151,7 @@
     "Item ID": "6852de7f2efa99a9c34464d0",
     "canonical": "",
     "recordId": "recYOh7W4VMMFiVTY",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "animal-fat",
     "ingredientTerm": "Animal Fat",
@@ -204,14 +180,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recDNI0PKiyQdHZHG",
-      "name": "Animal Fat"
-    },
-    "groupWith": {
-      "id": "recebpzIWlJvtQCbT",
-      "name": "Unnamed Meat"
-    },
+    "displayAs": "Animal Fat",
+    "groupWith": "Unnamed Meat",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -253,11 +223,7 @@
     "Item ID": "6852de80d8f89ad1bf170f79",
     "canonical": "",
     "recordId": "recjCrvQptkgFlmra",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "beef",
     "ingredientTerm": "Beef",
@@ -292,14 +258,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recy4L5xvr5v5NIIB",
-      "name": "Beef"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -341,11 +301,7 @@
     "Item ID": "6852de806541d2e3ca483e8e",
     "canonical": "",
     "recordId": "recTtnjESSdpaRhpV",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "beef-fat",
     "ingredientTerm": "Beef Fat",
@@ -374,14 +330,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recmsh30bywjMwOOC",
-      "name": "Beef Fat"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef Fat",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -423,11 +373,7 @@
     "Item ID": "6852de80c0559ffc73d6cac4",
     "canonical": "",
     "recordId": "rectZTVg8uD1cqcMt",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "beef-liver",
     "ingredientTerm": "Beef Liver",
@@ -456,14 +402,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recv9SgZg8QG0aY6G",
-      "name": "Beef Liver"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef Liver",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -505,11 +445,7 @@
     "Item ID": "6852de804c6e8de1b4f5d93f",
     "canonical": "",
     "recordId": "recCF5lETccFgSJWC",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "beef-meal",
     "ingredientTerm": "Beef Meal",
@@ -549,14 +485,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recRgFKz16a8OJB3F",
-      "name": "Beef Meal"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef Meal",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -598,11 +528,7 @@
     "Item ID": "6852de805b5126b6a541c1d2",
     "canonical": "",
     "recordId": "recfmDhkFfwiBsarH",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "beef-tripe",
     "ingredientTerm": "Beef Tripe",
@@ -631,14 +557,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recQbzjhJFsxQr5ma",
-      "name": "Beef Tripe"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef Tripe",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -680,11 +600,7 @@
     "Item ID": "6852de80da4204dffff7c682",
     "canonical": "",
     "recordId": "recl4jLV40Uu2NZMY",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "bison",
     "ingredientTerm": "Bison",
@@ -713,14 +629,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectfxsGDN6wNmDBw",
-      "name": "Bison"
-    },
-    "groupWith": {
-      "id": "recgWWqqPlf4HgqDv",
-      "name": "Bison"
-    },
+    "displayAs": "Bison",
+    "groupWith": "Bison",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -762,11 +672,7 @@
     "Item ID": "6852de80e9e9ac066570162a",
     "canonical": "",
     "recordId": "rec6PLLyVrCwRUMCD",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "bison-meal",
     "ingredientTerm": "Bison Meal",
@@ -795,14 +701,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recUcJfbc55ePSlhx",
-      "name": "Bison Meal"
-    },
-    "groupWith": {
-      "id": "recgWWqqPlf4HgqDv",
-      "name": "Bison"
-    },
+    "displayAs": "Bison Meal",
+    "groupWith": "Bison",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -844,11 +744,7 @@
     "Item ID": "6852de8040aea4b9368e03cb",
     "canonical": "",
     "recordId": "reckbvabf0ScLcaLn",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "blood-meal",
     "ingredientTerm": "Blood Meal",
@@ -877,14 +773,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recyxY8oDmVglaGmz",
-      "name": "Blood Meal"
-    },
-    "groupWith": {
-      "id": "recorQoARjk4iOSM9",
-      "name": "Blood Meal"
-    },
+    "displayAs": "Blood Meal",
+    "groupWith": "Blood Meal",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -926,11 +816,7 @@
     "Item ID": "6852de8054be47b3634db61e",
     "canonical": "",
     "recordId": "recJjzJbrUlKcboFC",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "boar",
     "ingredientTerm": "Boar",
@@ -959,14 +845,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recKLwvUTUY2kBUpi",
-      "name": "Boar"
-    },
-    "groupWith": {
-      "id": "recZfc1V1IAb9mjVi",
-      "name": "Boar"
-    },
+    "displayAs": "Boar",
+    "groupWith": "Boar",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -1008,11 +888,7 @@
     "Item ID": "6852de802f777cac8dd14da2",
     "canonical": "",
     "recordId": "reccgN42QtpFf1Qed",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "buffalo",
     "ingredientTerm": "Buffalo",
@@ -1041,14 +917,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recmSvL8pKrlTEPbP",
-      "name": "Buffalo"
-    },
-    "groupWith": {
-      "id": "recMnaiBEBRxlHFSU",
-      "name": "Buffalo"
-    },
+    "displayAs": "Buffalo",
+    "groupWith": "Buffalo",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -1090,11 +960,7 @@
     "Item ID": "6852de80df88e934f3d0dec8",
     "canonical": "",
     "recordId": "recOq1QyzaEuC6hrl",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "buffalo-meal",
     "ingredientTerm": "Buffalo Meal",
@@ -1162,14 +1028,8 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "rec0orUsDhRsYsuJb",
-      "name": "Buffalo Meal"
-    },
-    "groupWith": {
-      "id": "recMnaiBEBRxlHFSU",
-      "name": "Buffalo"
-    },
+    "displayAs": "Buffalo Meal",
+    "groupWith": "Buffalo",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -1211,11 +1071,7 @@
     "Item ID": "6852de80ff16d5b99cc6b697",
     "canonical": "",
     "recordId": "reccOVa2IqBXzvHnd",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "catfish",
     "ingredientTerm": "Catfish",
@@ -1244,14 +1100,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGUCZNCoGCc2ZhF",
-      "name": "Catfish"
-    },
-    "groupWith": {
-      "id": "recRZr0Oi4ZNynIH0",
-      "name": "Catfish"
-    },
+    "displayAs": "Catfish",
+    "groupWith": "Catfish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -1293,11 +1143,7 @@
     "Item ID": "6852de81177a809793700a23",
     "canonical": "",
     "recordId": "recqKD8lE5D9u9eu7",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "catfish-meal",
     "ingredientTerm": "Catfish Meal",
@@ -1353,14 +1199,8 @@
       "HKAHU",
       "UTHHC"
     ],
-    "displayAs": {
-      "id": "recMTOwE8SzL7IMsk",
-      "name": "Catfish Meal"
-    },
-    "groupWith": {
-      "id": "recRZr0Oi4ZNynIH0",
-      "name": "Catfish"
-    },
+    "displayAs": "Catfish Meal",
+    "groupWith": "Catfish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -1402,11 +1242,7 @@
     "Item ID": "6852de80ac6fa9f95e16b705",
     "canonical": "",
     "recordId": "recgSBXNAZhWiUlX1",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken",
     "ingredientTerm": "Chicken",
@@ -1444,14 +1280,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFjHA4i2NFovlnb",
-      "name": "Chicken"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1493,11 +1323,7 @@
     "Item ID": "6852de80fe8485223231a36e",
     "canonical": "",
     "recordId": "recWNbBIcWfgIQeva",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken-by-product",
     "ingredientTerm": "Chicken By-Product",
@@ -1526,14 +1352,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwZNVz9yeqJl3eq",
-      "name": "Chicken By-Product"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken By-Product",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1575,11 +1395,7 @@
     "Item ID": "6852de80a33a5dda9cd2a49a",
     "canonical": "",
     "recordId": "recaedTI7sR6i1fXe",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken-by-product-meal",
     "ingredientTerm": "Chicken By-Product Meal",
@@ -1612,14 +1428,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recS2dLsjNmXRqyXD",
-      "name": "Chicken By-Product Meal"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken By-Product Meal",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1661,11 +1471,7 @@
     "Item ID": "6852de81bccb89cd2af82878",
     "canonical": "",
     "recordId": "recFJ3FczgCPXMhnc",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken-cartilage",
     "ingredientTerm": "Chicken Cartilage",
@@ -1694,14 +1500,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recozYSwdi6Gn9fcp",
-      "name": "Chicken Cartilage"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken Cartilage",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1743,11 +1543,7 @@
     "Item ID": "6852de81d1f5ed49431a2c28",
     "canonical": "",
     "recordId": "recKZXK3xpD5VuyIW",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken-fat",
     "ingredientTerm": "Chicken Fat",
@@ -1823,14 +1619,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recYMvhcOEVdoXQCt",
-      "name": "Chicken Fat"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken Fat",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1872,11 +1662,7 @@
     "Item ID": "6852de81fe8485223231a385",
     "canonical": "",
     "recordId": "recafGf3T3bbcEVBh",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "chicken-meal",
     "ingredientTerm": "Chicken Meal",
@@ -1915,14 +1701,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recmODsJi2ZVn3JD7",
-      "name": "Chicken Meal"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken Meal",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -1964,11 +1744,7 @@
     "Item ID": "6852de834bc548a8fc543989",
     "canonical": "",
     "recordId": "reczECJSnoXKJrLXe",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "cod",
     "ingredientTerm": "Cod",
@@ -1997,14 +1773,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTrHX9ZWUyBdz05",
-      "name": "Cod"
-    },
-    "groupWith": {
-      "id": "recq9pD0ZAqxYJKj4",
-      "name": "Cod"
-    },
+    "displayAs": "Cod",
+    "groupWith": "Cod",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -2046,11 +1816,7 @@
     "Item ID": "6852de81452add3a87f5e08e",
     "canonical": "",
     "recordId": "rec1AsvYGr8soExO1",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "deboned-chicken",
     "ingredientTerm": "Deboned Chicken",
@@ -2079,14 +1845,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFjHA4i2NFovlnb",
-      "name": "Chicken"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2125,11 +1885,7 @@
     "Item ID": "6852de8146cca9732acbb97d",
     "canonical": "",
     "recordId": "rec4Rk4w0l4IGaMg6",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dehydrated-chicken",
     "ingredientTerm": "Dehydrated Chicken",
@@ -2158,14 +1914,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFjHA4i2NFovlnb",
-      "name": "Chicken"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Chicken",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2204,11 +1954,7 @@
     "Item ID": "6852de818f755aa128f0689d",
     "canonical": "",
     "recordId": "recwqB40ynKJCiPvY",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dehydrated-cod",
     "ingredientTerm": "Dehydrated Cod",
@@ -2237,14 +1983,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTrHX9ZWUyBdz05",
-      "name": "Cod"
-    },
-    "groupWith": {
-      "id": "recq9pD0ZAqxYJKj4",
-      "name": "Cod"
-    },
+    "displayAs": "Cod",
+    "groupWith": "Cod",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -2283,11 +2023,7 @@
     "Item ID": "6852de817105bdb22590abf8",
     "canonical": "",
     "recordId": "recUQKB6V7Vbht5Zk",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dehydrated-herring",
     "ingredientTerm": "Dehydrated Herring",
@@ -2319,14 +2055,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec74rElsayhPtVge",
-      "name": "Herring"
-    },
-    "groupWith": {
-      "id": "recb5Bd62l9P20yzu",
-      "name": "Herring"
-    },
+    "displayAs": "Herring",
+    "groupWith": "Herring",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -2365,11 +2095,7 @@
     "Item ID": "6852de814c6e8de1b4f5d9b2",
     "canonical": "",
     "recordId": "rec58z09I3VuC2Twm",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dehydrated-lamb",
     "ingredientTerm": "Dehydrated Lamb",
@@ -2398,14 +2124,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recrrnieGs4E5Nd67",
-      "name": "Lamb"
-    },
-    "groupWith": {
-      "id": "rec6nSmcsHoRQalEL",
-      "name": "Lamb"
-    },
+    "displayAs": "Lamb",
+    "groupWith": "Lamb",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -2444,11 +2164,7 @@
     "Item ID": "6852de81474f1527f4ea8b3f",
     "canonical": "",
     "recordId": "recfKBt6SlROy7oDL",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dehydrated-salmon",
     "ingredientTerm": "Dehydrated Salmon",
@@ -2477,14 +2193,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHU1hr9DvZs421L",
-      "name": "Salmon"
-    },
-    "groupWith": {
-      "id": "recjohaQcyUj66e76",
-      "name": "Salmon"
-    },
+    "displayAs": "Salmon",
+    "groupWith": "Salmon",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -2523,11 +2233,7 @@
     "Item ID": "6852de83a539d1ef8293d1c6",
     "canonical": "",
     "recordId": "recnVKZRfaHY8KbDy",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dried-egg-product",
     "ingredientTerm": "Dried Egg Product",
@@ -2561,14 +2267,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNDvgaAH2VB9E2V",
-      "name": "Egg Product"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Egg Product",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2607,11 +2307,7 @@
     "Item ID": "6852de81552bb514abb3d75d",
     "canonical": "",
     "recordId": "receQz3L6eNL8AlHU",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dried-eggs",
     "ingredientTerm": "Dried Eggs",
@@ -2640,14 +2336,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recSSN6WANyaoODLA",
-      "name": "Eggs"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Eggs",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2686,11 +2376,7 @@
     "Item ID": "6852de8162e5adb31be1a820",
     "canonical": "",
     "recordId": "recVut6bM0IzShJRO",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dried-porcine-plasma",
     "ingredientTerm": "Dried Porcine Plasma",
@@ -2722,14 +2408,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recWpBeavcZyyaikd",
-      "name": "Porcine Plasma"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Plasma",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -2768,11 +2448,7 @@
     "Item ID": "6852de82297ed262c29588bd",
     "canonical": "",
     "recordId": "recDQOs9iqe6xc0bR",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "dried-whole-eggs",
     "ingredientTerm": "Dried Whole Eggs",
@@ -2804,14 +2480,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recSSN6WANyaoODLA",
-      "name": "Eggs"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Eggs",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2850,11 +2520,7 @@
     "Item ID": "6852de82bccb89cd2af828fc",
     "canonical": "",
     "recordId": "recB6u81JbJhH8Hep",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "duck",
     "ingredientTerm": "Duck",
@@ -2883,14 +2549,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recZcHjl4B0srnfNh",
-      "name": "Duck"
-    },
-    "groupWith": {
-      "id": "rec6nTTRPc1cvrD6O",
-      "name": "Duck"
-    },
+    "displayAs": "Duck",
+    "groupWith": "Duck",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -2932,11 +2592,7 @@
     "Item ID": "6852de82e212a57cd53a0144",
     "canonical": "",
     "recordId": "recl4d5TTyBZWSbE2",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "duck-fat",
     "ingredientTerm": "Duck Fat",
@@ -2965,14 +2621,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reczxXfLi5tAR8ikU",
-      "name": "Duck Fat"
-    },
-    "groupWith": {
-      "id": "rec6nTTRPc1cvrD6O",
-      "name": "Duck"
-    },
+    "displayAs": "Duck Fat",
+    "groupWith": "Duck",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -3014,11 +2664,7 @@
     "Item ID": "6852de82cd3d9af3da82b09e",
     "canonical": "",
     "recordId": "recAsQ6RKCmFdH0D2",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "duck-meal",
     "ingredientTerm": "Duck Meal",
@@ -3047,14 +2693,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recB2FMXovU9lLguR",
-      "name": "Duck Meal"
-    },
-    "groupWith": {
-      "id": "rec6nTTRPc1cvrD6O",
-      "name": "Duck"
-    },
+    "displayAs": "Duck Meal",
+    "groupWith": "Duck",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -3096,11 +2736,7 @@
     "Item ID": "6852de826174e2b3a5c59859",
     "canonical": "",
     "recordId": "rec0EgKIOrWtZ1Dxf",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "egg",
     "ingredientTerm": "Egg",
@@ -3129,14 +2765,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recSSN6WANyaoODLA",
-      "name": "Eggs"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Eggs",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -3175,11 +2805,7 @@
     "Item ID": "6852de823bdbf08255c5f81d",
     "canonical": "",
     "recordId": "recRVPKUDqm7zTMyl",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "egg-product",
     "ingredientTerm": "Egg Product",
@@ -3217,14 +2843,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNDvgaAH2VB9E2V",
-      "name": "Egg Product"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Egg Product",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -3266,11 +2886,7 @@
     "Item ID": "6852de83cf96ccbaafb941a2",
     "canonical": "",
     "recordId": "recyJP5YGXre8otuY",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "eggs",
     "ingredientTerm": "Eggs",
@@ -3299,14 +2915,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recSSN6WANyaoODLA",
-      "name": "Eggs"
-    },
-    "groupWith": {
-      "id": "recaoRG4NaX6V9UEE",
-      "name": "Eggs"
-    },
+    "displayAs": "Eggs",
+    "groupWith": "Eggs",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -3348,11 +2958,7 @@
     "Item ID": "6852de82bccb89cd2af82934",
     "canonical": "",
     "recordId": "recYkS5jyCW9Sz9o3",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "fish-meal",
     "ingredientTerm": "Fish Meal",
@@ -3396,14 +3002,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recA6TNR45VIT73bR",
-      "name": "Unnamed Fish Meal"
-    },
-    "groupWith": {
-      "id": "recj2OXy7A4kWrkQb",
-      "name": "Unnamed Fish"
-    },
+    "displayAs": "Unnamed Fish Meal",
+    "groupWith": "Unnamed Fish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3442,11 +3042,7 @@
     "Item ID": "6852de82800623f710b6dd9d",
     "canonical": "",
     "recordId": "reci5cw8ywJzrD1WV",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "fish-oil",
     "ingredientTerm": "Fish Oil",
@@ -3494,14 +3090,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recddtXsL23zYvw4R",
-      "name": "Unnamed Fish Oil"
-    },
-    "groupWith": {
-      "id": "recj2OXy7A4kWrkQb",
-      "name": "Unnamed Fish"
-    },
+    "displayAs": "Unnamed Fish Oil",
+    "groupWith": "Unnamed Fish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3543,11 +3133,7 @@
     "Item ID": "6852de833d00756cc8fef743",
     "canonical": "",
     "recordId": "recbqO6SbDg6GzjhS",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "freeze-dried-beef",
     "ingredientTerm": "Freeze-Dried Beef",
@@ -3576,14 +3162,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recy4L5xvr5v5NIIB",
-      "name": "Beef"
-    },
-    "groupWith": {
-      "id": "recAfrwq3SoNrnJpR",
-      "name": "Beef"
-    },
+    "displayAs": "Beef",
+    "groupWith": "Beef",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -3622,11 +3202,7 @@
     "Item ID": "6852de8323305c4696eb3968",
     "canonical": "",
     "recordId": "recP17R84Ic3Z7Z8a",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "fresh-herring",
     "ingredientTerm": "Fresh Herring",
@@ -3658,14 +3234,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec74rElsayhPtVge",
-      "name": "Herring"
-    },
-    "groupWith": {
-      "id": "recb5Bd62l9P20yzu",
-      "name": "Herring"
-    },
+    "displayAs": "Herring",
+    "groupWith": "Herring",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3704,11 +3274,7 @@
     "Item ID": "6852de8399d5e8c2baef0c94",
     "canonical": "",
     "recordId": "recTRqI61zYauNeJr",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "haddock",
     "ingredientTerm": "Haddock",
@@ -3737,14 +3303,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recLuWveH1Aso3SVF",
-      "name": "Haddock"
-    },
-    "groupWith": {
-      "id": "rec8gHrwbbw99gSEI",
-      "name": "Haddock"
-    },
+    "displayAs": "Haddock",
+    "groupWith": "Haddock",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3786,11 +3346,7 @@
     "Item ID": "6852de83cd193310c85ff1bc",
     "canonical": "",
     "recordId": "recXdG81lgzkguYlG",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "herring",
     "ingredientTerm": "Herring",
@@ -3819,14 +3375,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec74rElsayhPtVge",
-      "name": "Herring"
-    },
-    "groupWith": {
-      "id": "recb5Bd62l9P20yzu",
-      "name": "Herring"
-    },
+    "displayAs": "Herring",
+    "groupWith": "Herring",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3868,11 +3418,7 @@
     "Item ID": "6852de83eafb2cb04c538191",
     "canonical": "",
     "recordId": "recs9JWmVIFfbcPgm",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "herring-meal",
     "ingredientTerm": "Herring Meal",
@@ -3901,14 +3447,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recpjhrC0A4ZBptrw",
-      "name": "Herring Meal"
-    },
-    "groupWith": {
-      "id": "recb5Bd62l9P20yzu",
-      "name": "Herring"
-    },
+    "displayAs": "Herring Meal",
+    "groupWith": "Herring",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -3950,11 +3490,7 @@
     "Item ID": "6852de833bdbf08255c5f8b8",
     "canonical": "",
     "recordId": "recHa7dugdariQTt3",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "herring-oil",
     "ingredientTerm": "Herring Oil",
@@ -3995,14 +3531,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqEoOsH6IylK6gO",
-      "name": "Herring Oil"
-    },
-    "groupWith": {
-      "id": "reco54oT4qd31atmi",
-      "name": "Herring"
-    },
+    "displayAs": "Herring Oil",
+    "groupWith": "Herring",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -4044,11 +3574,7 @@
     "Item ID": "6852de83958330e979ace329",
     "canonical": "",
     "recordId": "recORxIjG2E4gHqd5",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-porcine",
     "ingredientTerm": "Hydrolyzed Porcine",
@@ -4077,14 +3603,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recjN3NeWi3uauCrO",
-      "name": "Hydrolyzed Porcine"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Hydrolyzed Porcine",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4126,11 +3646,7 @@
     "Item ID": "6852de834c6e8de1b4f5daab",
     "canonical": "",
     "recordId": "recDb4l0dfTT7SziB",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "lamb",
     "ingredientTerm": "Lamb",
@@ -4159,14 +3675,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recrrnieGs4E5Nd67",
-      "name": "Lamb"
-    },
-    "groupWith": {
-      "id": "rec6nSmcsHoRQalEL",
-      "name": "Lamb"
-    },
+    "displayAs": "Lamb",
+    "groupWith": "Lamb",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4208,11 +3718,7 @@
     "Item ID": "6852de83318abe1736c15922",
     "canonical": "",
     "recordId": "recFIIO2YD1kb9rzp",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "lamb-meal",
     "ingredientTerm": "Lamb Meal",
@@ -4241,14 +3747,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recw8LmMBo34vWBDj",
-      "name": "Lamb Meal"
-    },
-    "groupWith": {
-      "id": "rec6nSmcsHoRQalEL",
-      "name": "Lamb"
-    },
+    "displayAs": "Lamb Meal",
+    "groupWith": "Lamb",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4290,11 +3790,7 @@
     "Item ID": "6852de835b5126b6a541c3a9",
     "canonical": "",
     "recordId": "recqWw4bw6JRDJlBw",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "mackerel",
     "ingredientTerm": "Mackerel",
@@ -4323,14 +3819,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec45GG0MXMsmir5z",
-      "name": "Mackerel"
-    },
-    "groupWith": {
-      "id": "reczRIw07QQgwaYjW",
-      "name": "Mackerel"
-    },
+    "displayAs": "Mackerel",
+    "groupWith": "Mackerel",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -4372,11 +3862,7 @@
     "Item ID": "6852de83a33a5dda9cd2a6ee",
     "canonical": "",
     "recordId": "recIYmIGXmHUqgLwj",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "meat-by-product",
     "ingredientTerm": "Meat by Product",
@@ -4405,14 +3891,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGEi7Iex4BencJY",
-      "name": "Meat by Product"
-    },
-    "groupWith": {
-      "id": "recebpzIWlJvtQCbT",
-      "name": "Unnamed Meat"
-    },
+    "displayAs": "Meat by Product",
+    "groupWith": "Unnamed Meat",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4454,11 +3934,7 @@
     "Item ID": "6852de84711e882169b313e6",
     "canonical": "",
     "recordId": "recY3Ki30lRmLIlLF",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "meat-by-product-meal",
     "ingredientTerm": "Meat by Product Meal",
@@ -4487,14 +3963,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recy9X5Npj8y4vuCv",
-      "name": "Meat by Product Meal"
-    },
-    "groupWith": {
-      "id": "recebpzIWlJvtQCbT",
-      "name": "Unnamed Meat"
-    },
+    "displayAs": "Meat by Product Meal",
+    "groupWith": "Unnamed Meat",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4536,11 +4006,7 @@
     "Item ID": "6852de8431bfa227152726a8",
     "canonical": "",
     "recordId": "recFaXBEOp5yZI96x",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "meat-parts",
     "ingredientTerm": "Meat Parts",
@@ -4569,14 +4035,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recsN2BU2T5ebyHQ7",
-      "name": "Meat Parts"
-    },
-    "groupWith": {
-      "id": "recebpzIWlJvtQCbT",
-      "name": "Unnamed Meat"
-    },
+    "displayAs": "Meat Parts",
+    "groupWith": "Unnamed Meat",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -4618,11 +4078,7 @@
     "Item ID": "6852de8417864da6bb020f56",
     "canonical": "",
     "recordId": "rec8ShKzHygtMEEDO",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "menhaden",
     "ingredientTerm": "Menhaden",
@@ -4651,14 +4107,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec69P8vI9gDmnNs7",
-      "name": "Menhaden"
-    },
-    "groupWith": {
-      "id": "rec5tgZ9qj4WDEvlR",
-      "name": "Menhaden"
-    },
+    "displayAs": "Menhaden",
+    "groupWith": "Menhaden",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -4700,11 +4150,7 @@
     "Item ID": "6852de84cf96ccbaafb94260",
     "canonical": "",
     "recordId": "recNRdKtvTZRLnUmu",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "menhaden-fish-meal",
     "ingredientTerm": "Menhaden Fish Meal",
@@ -4745,14 +4191,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recY2qSC0IOLN8F51",
-      "name": "Menhaden Meal"
-    },
-    "groupWith": {
-      "id": "rec5tgZ9qj4WDEvlR",
-      "name": "Menhaden"
-    },
+    "displayAs": "Menhaden Meal",
+    "groupWith": "Menhaden",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -4791,11 +4231,7 @@
     "Item ID": "6852de84a13eec1cc2934564",
     "canonical": "",
     "recordId": "recbGq1Y5dKOhqgYf",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "menhaden-fish-oil",
     "ingredientTerm": "Menhaden Fish Oil",
@@ -4824,14 +4260,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec5nkhIJnI9QVvEe",
-      "name": "Menhaden Oil"
-    },
-    "groupWith": {
-      "id": "rec5tgZ9qj4WDEvlR",
-      "name": "Menhaden"
-    },
+    "displayAs": "Menhaden Oil",
+    "groupWith": "Menhaden",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -4870,11 +4300,7 @@
     "Item ID": "6852de8498a022ae6b0364c7",
     "canonical": "",
     "recordId": "recN16uaktgMyXPAm",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "menhaden-meal",
     "ingredientTerm": "Menhaden Meal",
@@ -4903,14 +4329,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recY2qSC0IOLN8F51",
-      "name": "Menhaden Meal"
-    },
-    "groupWith": {
-      "id": "rec5tgZ9qj4WDEvlR",
-      "name": "Menhaden"
-    },
+    "displayAs": "Menhaden Meal",
+    "groupWith": "Menhaden",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": {
@@ -4946,11 +4366,7 @@
     "Item ID": "6852de845b5126b6a541c3fa",
     "canonical": "",
     "recordId": "recgcv9Kato8sasQ6",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "menhaden-oil",
     "ingredientTerm": "Menhaden Oil",
@@ -4979,14 +4395,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec5nkhIJnI9QVvEe",
-      "name": "Menhaden Oil"
-    },
-    "groupWith": {
-      "id": "recVCdr5gIOXlBWK9",
-      "name": "uncategorized"
-    },
+    "displayAs": "Menhaden Oil",
+    "groupWith": "uncategorized",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": {
@@ -5022,11 +4432,7 @@
     "Item ID": "6852de85bc5b69faef8b7e39",
     "canonical": "",
     "recordId": "recQ5EXRHQ9F4T3Ai",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "mussel",
     "ingredientTerm": "Mussel",
@@ -5055,14 +4461,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reczp8dGkvuduscuF",
-      "name": "Mussel"
-    },
-    "groupWith": {
-      "id": "recG04Oes966AJ6YD",
-      "name": "Mussel"
-    },
+    "displayAs": "Mussel",
+    "groupWith": "Mussel",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -5104,11 +4504,7 @@
     "Item ID": "6852de84487fccfc68cbfef2",
     "canonical": "",
     "recordId": "recxhAjRnD12fU4by",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "oceanfish",
     "ingredientTerm": "Oceanfish",
@@ -5137,14 +4533,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recrLNszMOZWD9KOB",
-      "name": "Oceanfish"
-    },
-    "groupWith": {
-      "id": "recsoRsiEN8pSpXUk",
-      "name": "Oceanfish"
-    },
+    "displayAs": "Oceanfish",
+    "groupWith": "Oceanfish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -5186,11 +4576,7 @@
     "Item ID": "6852de847105bdb22590ad7a",
     "canonical": "",
     "recordId": "recJdiYv0KbHPzN5Y",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "oceanfish-meal",
     "ingredientTerm": "Oceanfish Meal",
@@ -5219,14 +4605,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rechJRg3gCe3kn1C3",
-      "name": "Oceanfish Meal"
-    },
-    "groupWith": {
-      "id": "recsoRsiEN8pSpXUk",
-      "name": "Oceanfish"
-    },
+    "displayAs": "Oceanfish Meal",
+    "groupWith": "Oceanfish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -5268,11 +4648,7 @@
     "Item ID": "6852de843873479f9e2f5900",
     "canonical": "",
     "recordId": "recEPnelbcqSGMEkJ",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "pollock",
     "ingredientTerm": "Pollock",
@@ -5301,14 +4677,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recZ4jOSQJwspagef",
-      "name": "Pollock"
-    },
-    "groupWith": {
-      "id": "rechhQ4GTyEAO3Vsb",
-      "name": "Pollock"
-    },
+    "displayAs": "Pollock",
+    "groupWith": "Pollock",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -5350,11 +4720,7 @@
     "Item ID": "6852de8405e0765e29b202c1",
     "canonical": "",
     "recordId": "recb78n26Q6STb00X",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "pollock-oil",
     "ingredientTerm": "Pollock Oil",
@@ -5383,14 +4749,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec895R4h5KoVcx78",
-      "name": "Pollock Oil"
-    },
-    "groupWith": {
-      "id": "rechhQ4GTyEAO3Vsb",
-      "name": "Pollock"
-    },
+    "displayAs": "Pollock Oil",
+    "groupWith": "Pollock",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -5432,11 +4792,7 @@
     "Item ID": "6852de84e9e9ac0665701db4",
     "canonical": "",
     "recordId": "recpGI7Rz3uAzUjdk",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-fat",
     "ingredientTerm": "Porcine Fat",
@@ -5465,14 +4821,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectwK9tKpKiibsUk",
-      "name": "Porcine Fat"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Fat",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -5514,11 +4864,7 @@
     "Item ID": "6852de8588eecb81ffb6ab4d",
     "canonical": "",
     "recordId": "recUiUCR2842FKp0A",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-gelatin",
     "ingredientTerm": "Porcine Gelatin",
@@ -5547,14 +4893,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recgjt4gjeTaPRowv",
-      "name": "Porcine Gelatin"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Gelatin",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -5596,11 +4936,7 @@
     "Item ID": "6852de85d44b1ff14365dd01",
     "canonical": "",
     "recordId": "recMOyJvxxijr8oPc",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-meal",
     "ingredientTerm": "Porcine Meal",
@@ -5629,14 +4965,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFCbyqIt1eN4Drq",
-      "name": "Porcine Meal"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Meal",
+    "groupWith": "Porcine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": {
@@ -5672,11 +5002,7 @@
     "Item ID": "6852de85d44b1ff14365dd01",
     "canonical": "",
     "recordId": "recejcJjllY5qYxqO",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-meal",
     "ingredientTerm": "Porcine Meal ",
@@ -5705,14 +5031,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFCbyqIt1eN4Drq",
-      "name": "Porcine Meal"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Meal",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -5751,11 +5071,7 @@
     "Item ID": "6852de85ac6fa9f95e16b908",
     "canonical": "",
     "recordId": "recXcnFBVZeeNcE9F",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-plasma",
     "ingredientTerm": "Porcine Plasma",
@@ -5790,14 +5106,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recWpBeavcZyyaikd",
-      "name": "Porcine Plasma"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine Plasma",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -5810,10 +5120,7 @@
       "id": "rech9ytnG2bOalK6z",
       "name": "Porcine Plasma"
     },
-    "supplementalType": {
-      "id": "recQ1c1whvzfHETDC",
-      "name": "Protein"
-    },
+    "supplementalType": "Protein",
     "supplementalAssist": "",
     "supplementalFacts": "",
     "plantType": "",
@@ -5842,11 +5149,7 @@
     "Item ID": "6852de857b7df7787faede7c",
     "canonical": "",
     "recordId": "recrNB58VVfgc6L27",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-protein",
     "ingredientTerm": "Porcine Protein",
@@ -5875,14 +5178,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recoUlW1sJpgviksZ",
-      "name": "Porcine-Protein"
-    },
-    "groupWith": {
-      "id": "recw7ZnJtvEHhPwfz",
-      "name": "Porcine"
-    },
+    "displayAs": "Porcine-Protein",
+    "groupWith": "Porcine",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -5921,11 +5218,7 @@
     "Item ID": "6852de854505b86da8a232f3",
     "canonical": "",
     "recordId": "reccb3pU3zZl3yg7d",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "porcine-protein",
     "ingredientTerm": "Porcine Protein",
@@ -5954,14 +5247,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recoUlW1sJpgviksZ",
-      "name": "Porcine-Protein"
-    },
-    "groupWith": {
-      "id": "recVCdr5gIOXlBWK9",
-      "name": "uncategorized"
-    },
+    "displayAs": "Porcine-Protein",
+    "groupWith": "uncategorized",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": {
@@ -5997,11 +5284,7 @@
     "Item ID": "6852de85a33a5dda9cd2a79b",
     "canonical": "",
     "recordId": "recgPK8eFVpPh80rE",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "pork",
     "ingredientTerm": "Pork",
@@ -6030,14 +5313,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNbhQ8IIsn99ULM",
-      "name": "Pork"
-    },
-    "groupWith": {
-      "id": "recI7U6j4rg3ruNr7",
-      "name": "Pork"
-    },
+    "displayAs": "Pork",
+    "groupWith": "Pork",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -6079,11 +5356,7 @@
     "Item ID": "6852de857b7df7787faede99",
     "canonical": "",
     "recordId": "recpTA17YbhdFObgf",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "pork-fat",
     "ingredientTerm": "Pork Fat",
@@ -6112,14 +5385,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec7T6P6b0qXrUc28",
-      "name": "Pork Fat"
-    },
-    "groupWith": {
-      "id": "recI7U6j4rg3ruNr7",
-      "name": "Pork"
-    },
+    "displayAs": "Pork Fat",
+    "groupWith": "Pork",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -6161,11 +5428,7 @@
     "Item ID": "6852de85f16d0de462c04873",
     "canonical": "",
     "recordId": "recffVZxGjQCH0nsG",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "pork-meal",
     "ingredientTerm": "Pork Meal",
@@ -6237,14 +5500,8 @@
       "OP4RY",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "rec8gW5ZIedSoUjtL",
-      "name": "Pork Meal"
-    },
-    "groupWith": {
-      "id": "recI7U6j4rg3ruNr7",
-      "name": "Pork"
-    },
+    "displayAs": "Pork Meal",
+    "groupWith": "Pork",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -6286,11 +5543,7 @@
     "Item ID": "6852de85e212a57cd53a0288",
     "canonical": "",
     "recordId": "rec5vIhHI1HJplmtN",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry",
     "ingredientTerm": "Poultry",
@@ -6319,14 +5572,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recXXH3A4VgWknnBI",
-      "name": "Poultry"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6368,11 +5615,7 @@
     "Item ID": "6852de85b4e222956b26d58f",
     "canonical": "",
     "recordId": "reccki7VBE3ZMYrTC",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry-by-product",
     "ingredientTerm": "Poultry by Product",
@@ -6401,14 +5644,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recMDQcBaAUfDG5R0",
-      "name": "Poultry by Product"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry by Product",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6450,11 +5687,7 @@
     "Item ID": "6852de85687b1db71e773769",
     "canonical": "",
     "recordId": "recSGlOPaIjTpd7TZ",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry-by-product-meal",
     "ingredientTerm": "Poultry by Product Meal",
@@ -6483,14 +5716,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recE9FDYAfC4qKjdh",
-      "name": "Poultry by Product Meal"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry by Product Meal",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6532,11 +5759,7 @@
     "Item ID": "6852de85dca15ae03e037f64",
     "canonical": "",
     "recordId": "rec3rfoLHx04M1LGj",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry-by-product",
     "ingredientTerm": "Poultry By-Product",
@@ -6565,14 +5788,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckF9a6q4sNqQDKv",
-      "name": "Poultry By-Product"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry By-Product",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6614,11 +5831,7 @@
     "Item ID": "6852de86eafb2cb04c538244",
     "canonical": "",
     "recordId": "recR9j3rzuhmQhDuj",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry-by-product-meal",
     "ingredientTerm": "Poultry By-Product Meal",
@@ -6662,14 +5875,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwVQk1uapgLvl16",
-      "name": "Poultry By-Product Meal"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry By-Product Meal",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6708,11 +5915,7 @@
     "Item ID": "6852de86710ffb3af6eb52f2",
     "canonical": "",
     "recordId": "recMkfLCzGs2QElps",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "poultry-parts",
     "ingredientTerm": "Poultry Parts",
@@ -6741,14 +5944,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recWgg8o6TtJlOKvR",
-      "name": "Poultry Parts"
-    },
-    "groupWith": {
-      "id": "recEjtMGWekniQ6fS",
-      "name": "Poultry"
-    },
+    "displayAs": "Poultry Parts",
+    "groupWith": "Poultry",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6790,11 +5987,7 @@
     "Item ID": "6852de86c0392f7d793b2687",
     "canonical": "",
     "recordId": "recVLew2b5ENOF1iY",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "rabbit",
     "ingredientTerm": "Rabbit",
@@ -6823,14 +6016,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNuLJafKTFiedIv",
-      "name": "Rabbit"
-    },
-    "groupWith": {
-      "id": "recImDi784X6wRebK",
-      "name": "Rabbit"
-    },
+    "displayAs": "Rabbit",
+    "groupWith": "Rabbit",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -6872,11 +6059,7 @@
     "Item ID": "6852de86294d2ba1f1907f7f",
     "canonical": "",
     "recordId": "recl5jep8PXXthzVq",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "salmon",
     "ingredientTerm": "Salmon",
@@ -6905,14 +6088,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHU1hr9DvZs421L",
-      "name": "Salmon"
-    },
-    "groupWith": {
-      "id": "recjohaQcyUj66e76",
-      "name": "Salmon"
-    },
+    "displayAs": "Salmon",
+    "groupWith": "Salmon",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -6954,11 +6131,7 @@
     "Item ID": "6852de8684075d207ff1ceac",
     "canonical": "",
     "recordId": "reco3Bjr59nlLhlHB",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "salmon-meal",
     "ingredientTerm": "Salmon Meal",
@@ -6990,14 +6163,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recp5ywLkjB6gCurU",
-      "name": "Salmon Meal"
-    },
-    "groupWith": {
-      "id": "recjohaQcyUj66e76",
-      "name": "Salmon"
-    },
+    "displayAs": "Salmon Meal",
+    "groupWith": "Salmon",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7039,11 +6206,7 @@
     "Item ID": "6852de8646cca9732acbba9e",
     "canonical": "",
     "recordId": "reccvsggDI4Wowc0W",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "salmon-oil",
     "ingredientTerm": "Salmon Oil",
@@ -7097,14 +6260,8 @@
       "OP4RY",
       "MNLTS"
     ],
-    "displayAs": {
-      "id": "recqQCEK8qk8LR5hC",
-      "name": "Salmon Oil"
-    },
-    "groupWith": {
-      "id": "recjohaQcyUj66e76",
-      "name": "Salmon"
-    },
+    "displayAs": "Salmon Oil",
+    "groupWith": "Salmon",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7146,11 +6303,7 @@
     "Item ID": "6852de867105bdb22590aee1",
     "canonical": "",
     "recordId": "recdpQUaMuBTZcsMT",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "sardine",
     "ingredientTerm": "Sardine",
@@ -7179,14 +6332,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recd0gc8OSlUPknUt",
-      "name": "Sardine"
-    },
-    "groupWith": {
-      "id": "recAJK4BaAgB169f0",
-      "name": "Sardine"
-    },
+    "displayAs": "Sardine",
+    "groupWith": "Sardine",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7228,11 +6375,7 @@
     "Item ID": "6852de863e6843326ff45373",
     "canonical": "",
     "recordId": "recJV6cO34wA6INDn",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "sardine-meal",
     "ingredientTerm": "Sardine Meal",
@@ -7261,14 +6404,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recLFXVa28NGHqBie",
-      "name": "Sardine Meal"
-    },
-    "groupWith": {
-      "id": "recAJK4BaAgB169f0",
-      "name": "Sardine"
-    },
+    "displayAs": "Sardine Meal",
+    "groupWith": "Sardine",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7310,11 +6447,7 @@
     "Item ID": "6852de86f1dd682a4e7ea57a",
     "canonical": "",
     "recordId": "recpg7Qn2oUJ36uoN",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "trout",
     "ingredientTerm": "Trout",
@@ -7343,14 +6476,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recegyZ743jHcpiWh",
-      "name": "Trout"
-    },
-    "groupWith": {
-      "id": "reces7hvDDDgjfuwN",
-      "name": "Trout"
-    },
+    "displayAs": "Trout",
+    "groupWith": "Trout",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7392,11 +6519,7 @@
     "Item ID": "6852de8723305c4696eb3cd4",
     "canonical": "",
     "recordId": "recrClAHUzaLY3ETC",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "trout-meal",
     "ingredientTerm": "Trout Meal",
@@ -7425,14 +6548,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recsf79mdNxHjVjoJ",
-      "name": "Trout Meal"
-    },
-    "groupWith": {
-      "id": "reces7hvDDDgjfuwN",
-      "name": "Trout"
-    },
+    "displayAs": "Trout Meal",
+    "groupWith": "Trout",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7474,11 +6591,7 @@
     "Item ID": "6852de86cf96ccbaafb9437d",
     "canonical": "",
     "recordId": "recT3XV0zNzqUngGH",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "turkey",
     "ingredientTerm": "Turkey",
@@ -7507,14 +6620,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recrRBrTi836wA4bH",
-      "name": "Turkey"
-    },
-    "groupWith": {
-      "id": "recvoBRYUFrScss3G",
-      "name": "Turkey"
-    },
+    "displayAs": "Turkey",
+    "groupWith": "Turkey",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -7556,11 +6663,7 @@
     "Item ID": "6852de86958330e979ace451",
     "canonical": "",
     "recordId": "reczvwsqcIM8NZA1U",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "turkey-meal",
     "ingredientTerm": "Turkey Meal",
@@ -7589,14 +6692,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reccbG0wPX7Zi1YGP",
-      "name": "Turkey Meal"
-    },
-    "groupWith": {
-      "id": "recvoBRYUFrScss3G",
-      "name": "Turkey"
-    },
+    "displayAs": "Turkey Meal",
+    "groupWith": "Turkey",
     "animalType": {
       "id": "recKo2FuZbw1bGwjg",
       "name": "Poultry"
@@ -7638,11 +6735,7 @@
     "Item ID": "6852de86f16d0de462c04949",
     "canonical": "",
     "recordId": "recGCjgS7HlBfEBfL",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "venison",
     "ingredientTerm": "Venison",
@@ -7671,14 +6764,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recd61Zz8Mtp71s81",
-      "name": "Venison"
-    },
-    "groupWith": {
-      "id": "recwV7sRd17AnzKfp",
-      "name": "Venison"
-    },
+    "displayAs": "Venison",
+    "groupWith": "Venison",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -7720,11 +6807,7 @@
     "Item ID": "6852de873e19af1818752496",
     "canonical": "",
     "recordId": "recwaT0Y6eYy9dX7S",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "venison-meal",
     "ingredientTerm": "Venison Meal",
@@ -7753,14 +6836,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reco1nnyTYvlKTxo0",
-      "name": "Venison Meal"
-    },
-    "groupWith": {
-      "id": "recwV7sRd17AnzKfp",
-      "name": "Venison"
-    },
+    "displayAs": "Venison Meal",
+    "groupWith": "Venison",
     "animalType": {
       "id": "reccc9du93UjX2tCr",
       "name": "Meat"
@@ -7802,11 +6879,7 @@
     "Item ID": "6852de87f3133625036563f0",
     "canonical": "",
     "recordId": "rec50ID8hOMj0uppm",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "whitefish",
     "ingredientTerm": "Whitefish",
@@ -7835,14 +6908,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recoSMbGta2gpWgKA",
-      "name": "Whitefish"
-    },
-    "groupWith": {
-      "id": "reccUSVshCBHnGUDF",
-      "name": "Whitefish"
-    },
+    "displayAs": "Whitefish",
+    "groupWith": "Whitefish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
@@ -7884,11 +6951,7 @@
     "Item ID": "6852de87a33a5dda9cd2a871",
     "canonical": "",
     "recordId": "recVtnXJV8GxPdJ3U",
-    "recordType": {
-      "id": "selI04ddNasf9DYuB",
-      "name": "Animal",
-      "color": "greenLight2"
-    },
+    "recordType": "Animal",
     "recordStatus": "",
     "calcSlug": "whitefish-meal",
     "ingredientTerm": "Whitefish Meal",
@@ -7917,14 +6980,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "receGC7TU1nGH8O7b",
-      "name": "Whitefish Meal"
-    },
-    "groupWith": {
-      "id": "reccUSVshCBHnGUDF",
-      "name": "Whitefish"
-    },
+    "displayAs": "Whitefish Meal",
+    "groupWith": "Whitefish",
     "animalType": {
       "id": "recYZHux9AGAdsRhu",
       "name": "Fish"
