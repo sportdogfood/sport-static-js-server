@@ -7,9 +7,10 @@
     "Item ID": "647ddb9037101ce399b344e9",
     "canonical": "alternative-to-sport-dog-food",
     "recordId": "recao7fahUye64b6M",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "sport-dog-food",
     "brandName": "Sport Dog Food",
-    "recordStatus": "",
     "data-five": "1000",
     "data-sort": 1,
     "data-one": "sport",
@@ -17,6 +18,7 @@
     "brandId": "1000",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -33,10 +35,20 @@
       "Dock Dog",
       "Herding Dog"
     ],
-    "ing-data-fives": "",
-    "ing-cont-data-fives": "",
-    "cf-data-fives": "",
-    "ci-data-fives": ""
+    "ing-data-fives": [],
+    "cont-data-fives": [],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
+    "sf-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
+    "ci-data-fives": [],
+    "cf-data-fives": []
   },
   {
     "Name": "Blue Buffalo",
@@ -45,9 +57,10 @@
     "Item ID": "6851fd40a044a7623d9a019e",
     "canonical": "alternative-to-blue-buffalo-dog-food",
     "recordId": "recLjhZ5fL70NyuKP",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "blue-buffalo",
     "brandName": "Blue Buffalo",
-    "recordStatus": "",
     "data-five": "6526",
     "data-sort": 12,
     "data-one": "blue",
@@ -55,6 +68,7 @@
     "brandId": "6526",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -66,11 +80,13 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "383368",
-    "img-data-fives": "",
-    "ing-data-fives": "",
-    "ing-cont-data-fives": "",
-    "cf-data-fives": "",
-    "ci-data-fives": ""
+    "img-data-fives": [],
+    "ing-data-fives": [],
+    "cont-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [],
+    "cf-data-fives": []
   },
   {
     "Name": "Dr Tims",
@@ -79,9 +95,10 @@
     "Item ID": "6851fd40c832bba3986afaa0",
     "canonical": "alternative-to-dr-tims-dog-food",
     "recordId": "recQo3fvuovVubA1W",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "dr-tims",
     "brandName": "Dr Tims",
-    "recordStatus": "",
     "data-five": "6697",
     "data-sort": 4,
     "data-one": "drtims",
@@ -89,6 +106,7 @@
     "brandId": "6697",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/47313fba4e5c590be4bb982ce5f2791570cb6?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -167,7 +185,7 @@
       "BCPGM",
       "U9EU7"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "72Y0R",
       "LJBTO",
       "9FK4M",
@@ -180,14 +198,13 @@
       "HDFQP",
       "1JDZJ"
     ],
-    "cf-data-fives": [
-      119068,
-      37811
-    ],
+    "si-data-fives": [],
+    "sf-data-fives": [],
     "ci-data-fives": [
       "119068",
       "37811"
-    ]
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Eukanuba",
@@ -196,9 +213,10 @@
     "Item ID": "6851fd4081ba945ec9233e0c",
     "canonical": "alternative-to-eukanuba-dog-food",
     "recordId": "rec288JkLV66Bf5z4",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "eukanuba",
     "brandName": "Eukanuba",
-    "recordStatus": "",
     "data-five": "6734",
     "data-sort": 8,
     "data-one": "eukanuba",
@@ -206,6 +224,7 @@
     "brandId": "6734",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9x439c2566aba841b68d82073c26688034?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -217,7 +236,9 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "552422",
-    "img-data-fives": "552422",
+    "img-data-fives": [
+      "552422"
+    ],
     "ing-data-fives": [
       "IULX1",
       "MDIZK",
@@ -258,7 +279,7 @@
       "L5O6A",
       "ONAQC"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "MDIZK",
       "I1FXE",
       "JGOFI",
@@ -267,8 +288,12 @@
       "TDEIO",
       "RD1WV"
     ],
-    "cf-data-fives": 552422,
-    "ci-data-fives": "552422"
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [
+      "552422"
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Farmina",
@@ -277,9 +302,10 @@
     "Item ID": "6851fd4008ecc5d50fedf4ad",
     "canonical": "alternative-to-farmina-dog-food",
     "recordId": "recpakb7zx8rorCpE",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "farmina",
     "brandName": "Farmina",
-    "recordStatus": "",
     "data-five": "6749",
     "data-sort": 5,
     "data-one": "farmina",
@@ -287,6 +313,7 @@
     "brandId": "6749",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/473133c1341cf43ea4d198d4e3de201225bfa?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -365,7 +392,7 @@
       "J3VWG",
       "V43XM"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "QVQOL",
       "72Y0R",
       "VUYIW",
@@ -375,16 +402,14 @@
       "3HWIO",
       "JUDBS"
     ],
-    "cf-data-fives": [
-      105269,
-      202214,
-      55911
-    ],
+    "si-data-fives": [],
+    "sf-data-fives": [],
     "ci-data-fives": [
       "105269",
       "202214",
       "55911"
-    ]
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Nutro",
@@ -393,9 +418,10 @@
     "Item ID": "6851fd40322fb2fd16f0f7d3",
     "canonical": "alternative-to-nutro-dog-food",
     "recordId": "recuP07TR6YoUwAkZ",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "nutro",
     "brandName": "Nutro",
-    "recordStatus": "",
     "data-five": "7138",
     "data-sort": 9,
     "data-one": "nutro",
@@ -403,6 +429,7 @@
     "brandId": "7138",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -414,11 +441,13 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "",
-    "img-data-fives": "",
-    "ing-data-fives": "",
-    "ing-cont-data-fives": "",
-    "cf-data-fives": "",
-    "ci-data-fives": ""
+    "img-data-fives": [],
+    "ing-data-fives": [],
+    "cont-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [],
+    "cf-data-fives": []
   },
   {
     "Name": "Purina Pro Plan",
@@ -427,9 +456,10 @@
     "Item ID": "6852015fb2bcb307a5d8d835",
     "canonical": "alternative-to-purina-pro-plan-dog-food",
     "recordId": "rec3hVRKT7Ylerk5J",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "purina-pro-plan",
     "brandName": "Purina Pro Plan",
-    "recordStatus": "",
     "data-five": "7434",
     "data-sort": 2,
     "data-one": "purina",
@@ -437,6 +467,7 @@
     "brandId": "7434",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9xcc58fac5e0664d969a12cdaa8c2063da?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -512,7 +543,7 @@
       "WHF79",
       "ZPGID"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "CDQCK",
       "JGOFI",
       "QHDUJ",
@@ -529,18 +560,15 @@
       "HWIWE",
       "WHF79"
     ],
-    "cf-data-fives": [
-      114025,
-      298045,
-      52423,
-      52445
-    ],
+    "si-data-fives": [],
+    "sf-data-fives": [],
     "ci-data-fives": [
       "114025",
       "298045",
       "52423",
       "52445"
-    ]
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Royal Canin",
@@ -549,9 +577,10 @@
     "Item ID": "6851fd40b2bcb307a5d72f1b",
     "canonical": "alternative-to-royal-canin-dog-food",
     "recordId": "recZD5twvKGDD6vl0",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "royal-canin",
     "brandName": "Royal Canin",
-    "recordStatus": "",
     "data-five": "7487",
     "data-sort": 10,
     "data-one": "royal",
@@ -559,6 +588,7 @@
     "brandId": "7487",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -570,11 +600,13 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "",
-    "img-data-fives": "",
-    "ing-data-fives": "",
-    "ing-cont-data-fives": "",
-    "cf-data-fives": "",
-    "ci-data-fives": ""
+    "img-data-fives": [],
+    "ing-data-fives": [],
+    "cont-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [],
+    "cf-data-fives": []
   },
   {
     "Name": "Solid Gold",
@@ -583,9 +615,10 @@
     "Item ID": "6851fd40c46cf117a17dce80",
     "canonical": "alternative-to-solid-gold-dog-food",
     "recordId": "recwt16fDtdyOFJUR",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "solid-gold",
     "brandName": "Solid Gold",
-    "recordStatus": "",
     "data-five": "7536",
     "data-sort": 7,
     "data-one": "solid",
@@ -593,6 +626,7 @@
     "brandId": "7536",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9xc275aeaaead6465abf3987c34513b166?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -604,7 +638,9 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "841846",
-    "img-data-fives": "841846",
+    "img-data-fives": [
+      "841846"
+    ],
     "ing-data-fives": [
       "2NZMY",
       "HHOUF",
@@ -653,7 +689,7 @@
       "L5O6A",
       "4GGMJ"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "VFUPE",
       "5KHTT",
       "LJBTO",
@@ -661,8 +697,12 @@
       "BSL2E",
       "VUYIW"
     ],
-    "cf-data-fives": 841846,
-    "ci-data-fives": "841846"
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [
+      "841846"
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Victor",
@@ -671,9 +711,10 @@
     "Item ID": "6851fd406b23e78d87cfccb6",
     "canonical": "alternative-to-victor-dog-food",
     "recordId": "recSJYWkocDyf0cMi",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "victor",
     "brandName": "Victor",
-    "recordStatus": "",
     "data-five": "7682",
     "data-sort": 6,
     "data-one": "victor",
@@ -681,6 +722,7 @@
     "brandId": "7682",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/47313974dbedb88c3499bb3770ed53a26bfac?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -777,7 +819,7 @@
       "CSYLS",
       "U3RU8"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "VUYIW",
       "LJBTO",
       "LCALN",
@@ -789,17 +831,8 @@
       "G2YVH",
       "LNUMU"
     ],
-    "cf-data-fives": [
-      120680,
-      120684,
-      120700,
-      120702,
-      120706,
-      120708,
-      120711,
-      129281,
-      279306
-    ],
+    "si-data-fives": [],
+    "sf-data-fives": [],
     "ci-data-fives": [
       "120680",
       "120684",
@@ -810,7 +843,8 @@
       "120711",
       "129281",
       "279306"
-    ]
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Acana",
@@ -819,9 +853,10 @@
     "Item ID": "6851fd40e1d1e7b519d90274",
     "canonical": "alternative-to-acana-dog-food",
     "recordId": "recksMWzYkPoF9lO3",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "acana",
     "brandName": "Acana",
-    "recordStatus": "",
     "data-five": "8755",
     "data-sort": 3,
     "data-one": "acana",
@@ -829,6 +864,7 @@
     "brandId": "8755",
     "previewengine": "https://previewengine-accl.zoho.com/image/WD/473133da27f6ef89f47309fdd379884287a5b?version=1.0&width=2046&height=1536",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -840,7 +876,9 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "285973",
-    "img-data-fives": "285973",
+    "img-data-fives": [
+      "285973"
+    ],
     "ing-data-fives": [
       "FLMRA",
       "GSJWC",
@@ -880,15 +918,19 @@
       "K8DK5",
       "HD7AX"
     ],
-    "ing-cont-data-fives": [
+    "cont-data-fives": [
       "5KHTT",
       "XJAAA",
       "RD1WV",
       "SYGQB",
       "KE2JS"
     ],
-    "cf-data-fives": 285973,
-    "ci-data-fives": "285973"
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [
+      "285973"
+    ],
+    "cf-data-fives": []
   },
   {
     "Name": "Orijen",
@@ -897,9 +939,10 @@
     "Item ID": "6851fd4036a23a7789e5efd8",
     "canonical": "alternative-to-orijen-dog-food",
     "recordId": "recZao9PG7Whx62FE",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "orijen",
     "brandName": "Orijen",
-    "recordStatus": "",
     "data-five": "8819",
     "data-sort": 11,
     "data-one": "orijen",
@@ -907,6 +950,7 @@
     "brandId": "8819",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "br",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -918,10 +962,12 @@
     "section-prompt": "",
     "persona_context": "",
     "img-data-five": "",
-    "img-data-fives": "",
-    "ing-data-fives": "",
-    "ing-cont-data-fives": "",
-    "cf-data-fives": "",
-    "ci-data-fives": ""
+    "img-data-fives": [],
+    "ing-data-fives": [],
+    "cont-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "ci-data-fives": [],
+    "cf-data-fives": []
   }
 ]
