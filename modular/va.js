@@ -7,14 +7,16 @@
     "Item ID": "6852c5f145136c964c6524fa",
     "canonical": "calorie-dense-dry-dog-food",
     "recordId": "recQfn6qgHGxVYspn",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Calorie Dense",
-    "recordStatus": "",
     "data-five": "VYSPN",
     "data-sort": 1,
     "data-one": "calories",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -29,15 +31,28 @@
       "C6HRL",
       "NVHW0"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "KCDKK",
+      "EP5IL",
+      "9V6Z8",
+      "MM5SK",
+      "OSXWL",
+      "B5JOI",
+      "SOG9C",
+      "PEG2O",
+      "MNLTS",
+      "HKAHU",
+      "CSIRP"
     ]
   },
   {
@@ -47,14 +62,16 @@
     "Item ID": "6852c5f1a40f61a2f41b9b81",
     "canonical": "high-energy-dry-dog-food",
     "recordId": "recIOo1CWqg5NG6TL",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "High Energy",
-    "recordStatus": "",
     "data-five": "NG6TL",
     "data-sort": 2,
     "data-one": "energy",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -78,15 +95,35 @@
       "ABJVI",
       "81XCU"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "GAQ7O",
+      "EP5IL",
+      "WBT8X",
+      "LCCV8",
+      "MM5SK",
+      "OSXWL",
+      "SOG9C",
+      "LESYJ",
+      "N6M4B",
+      "KC9UL",
+      "HWZH0",
+      "TQ87J",
+      "UT6SQ",
+      "GVJDB",
+      "VMXSF",
+      "EA62U",
+      "9CDZC",
+      "J5GHM"
     ]
   },
   {
@@ -96,14 +133,16 @@
     "Item ID": "6852c5f1362af349d6d17581",
     "canonical": "high-fat-dry-dog-food",
     "recordId": "recfavtINYZsTQrae",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "High Fat",
-    "recordStatus": "",
     "data-five": "TQRAE",
     "data-sort": 3,
     "data-one": "fat",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -118,15 +157,19 @@
       "OWC0W",
       "NVHW0"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "9V6Z8",
+      "CEZHB"
     ]
   },
   {
@@ -136,14 +179,16 @@
     "Item ID": "6852c5f174b391ba4c49dbb0",
     "canonical": "highly-digestible-dry-dog-food",
     "recordId": "reccQ4fsCPYdSkyQa",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Highly Digestible",
-    "recordStatus": "",
     "data-five": "SKYQA",
     "data-sort": 4,
     "data-one": "digestible",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -166,15 +211,29 @@
       "RUAPK",
       "UQHTP"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "KCDKK",
+      "5PFWE",
+      "WBT8X",
+      "Y6PGF",
+      "LCCV8",
+      "OP4RY",
+      "HKAHU",
+      "UTHHC",
+      "LESYJ",
+      "N6M4B",
+      "HWZH0",
+      "CEZHB"
     ]
   },
   {
@@ -184,14 +243,16 @@
     "Item ID": "6852c5f256d9af76dc9ac275",
     "canonical": "legumes-free-dry-dog-food",
     "recordId": "recnTjjHDOotZiFvt",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Legumes Free",
-    "recordStatus": "",
     "data-five": "ZIFVT",
     "data-sort": 5,
     "data-one": "legumes-free",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -202,17 +263,18 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
-    "ing-data-fives": "",
+    "ing-data-fives": [],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "dog-data-fives": ""
   },
   {
     "Name": "Poultry Free",
@@ -221,14 +283,16 @@
     "Item ID": "6852c5f2fe3cb8e054c438c7",
     "canonical": "poultry-free-dry-dog-food",
     "recordId": "rectV2Yy6Cf7f2O7T",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Poultry Free",
-    "recordStatus": "",
     "data-five": "F2O7T",
     "data-sort": 6,
     "data-one": "poultry-free",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -239,17 +303,18 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
-    "ing-data-fives": "",
+    "ing-data-fives": [],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "dog-data-fives": ""
   },
   {
     "Name": "Allergy Relief",
@@ -258,14 +323,16 @@
     "Item ID": "6852c5f2953555bd342aa82a",
     "canonical": "premium-dog-food-for-allergy-relief",
     "recordId": "recmYvVCvOPM1UH7O",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Allergy Relief",
-    "recordStatus": "",
     "data-five": "1UH7O",
     "data-sort": 7,
     "data-one": "allergy",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -283,16 +350,17 @@
       "OWC0W",
       "4CQVY"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "dog-data-fives": "OP4RY"
   },
   {
     "Name": "Balanced Nutrition",
@@ -301,14 +369,16 @@
     "Item ID": "6852c5f22feae61b10b78904",
     "canonical": "premium-dog-food-for-balanced-nutrition",
     "recordId": "rec6X7GHmvXeMxqV1",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Balanced Nutrition",
-    "recordStatus": "",
     "data-five": "MXQV1",
     "data-sort": 8,
     "data-one": "balanced",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -325,15 +395,37 @@
       "UQ30T",
       "UDMZM"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "KCDKK",
+      "GAQ7O",
+      "5PFWE",
+      "WBT8X",
+      "OSXWL",
+      "PEG2O",
+      "OP4RY",
+      "HKAHU",
+      "UTHHC",
+      "LESYJ",
+      "KC9UL",
+      "HWZH0",
+      "TQ87J",
+      "UT6SQ",
+      "GVJDB",
+      "VMXSF",
+      "CEZHB",
+      "EA62U",
+      "9CDZC",
+      "J5GHM"
     ]
   },
   {
@@ -343,14 +435,16 @@
     "Item ID": "6852c5f15554b3b3ad185abb",
     "canonical": "premium-dog-food-for-healthy-skin-and-coat",
     "recordId": "recxYVtefKYaJDrWK",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Healthy Skin and Coat",
-    "recordStatus": "",
     "data-five": "JDRWK",
     "data-sort": 9,
     "data-one": "skincoat",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -369,15 +463,21 @@
       "YD8CG",
       "XGD4Z"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "EP5IL",
+      "N6M4B",
+      "HWZH0",
+      "UT6SQ"
     ]
   },
   {
@@ -387,14 +487,16 @@
     "Item ID": "6852c5f21771c456280d7ce2",
     "canonical": "premium-dog-food-for-sensitive-stomachs",
     "recordId": "recudqLfYraQmBuVJ",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Sensitive Stomachs",
-    "recordStatus": "",
     "data-five": "MBUVJ",
     "data-sort": 10,
     "data-one": "sensitive",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -416,16 +518,17 @@
       "RUAPK",
       "UQHTP"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "dog-data-fives": "OP4RY"
   },
   {
     "Name": "Natural Antioxidants",
@@ -434,14 +537,16 @@
     "Item ID": "6852c5f2b0683e7055faffbf",
     "canonical": "premium-dog-food-with-natural-antioxidants",
     "recordId": "recuO0ZYQNjJVFKR6",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Natural Antioxidants",
-    "recordStatus": "",
     "data-five": "VFKR6",
     "data-sort": 11,
     "data-one": "antioxidants",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -463,15 +568,22 @@
       "AGJPT",
       "XV780"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "LCCV8",
+      "MNLTS",
+      "KC9UL",
+      "UT6SQ",
+      "J5GHM"
     ]
   },
   {
@@ -481,14 +593,16 @@
     "Item ID": "6852c5f2f4067a1fbef30c91",
     "canonical": "premium-dog-food-with-performance-minerals",
     "recordId": "recTWktGF6EoKJcYZ",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Performance Minerals",
-    "recordStatus": "",
     "data-five": "KJCYZ",
     "data-sort": 12,
     "data-one": "minerals",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -507,15 +621,32 @@
       "J76F7",
       "XV780"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "KCDKK",
+      "EP5IL",
+      "WBT8X",
+      "9V6Z8",
+      "MM5SK",
+      "B5JOI",
+      "SOG9C",
+      "CSIRP",
+      "LESYJ",
+      "KC9UL",
+      "TQ87J",
+      "GVJDB",
+      "VMXSF",
+      "CEZHB",
+      "EA62U"
     ]
   },
   {
@@ -525,14 +656,16 @@
     "Item ID": "6852c5f2d159789b09ea5a83",
     "canonical": "premium-dog-food-with-probiotics-added",
     "recordId": "rec3XPgfMFKCgkJx3",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Probiotics Added",
-    "recordStatus": "",
     "data-five": "GKJX3",
     "data-sort": 13,
     "data-one": "probiotics",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -550,15 +683,31 @@
       "RUAPK",
       "UQHTP"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "KCDKK",
+      "GAQ7O",
+      "5PFWE",
+      "EP5IL",
+      "Y6PGF",
+      "PEG2O",
+      "OP4RY",
+      "HKAHU",
+      "UTHHC",
+      "CSIRP",
+      "TQ87J",
+      "VMXSF",
+      "9CDZC",
+      "J5GHM"
     ]
   },
   {
@@ -568,14 +717,16 @@
     "Item ID": "6852c5f2eab59a30c363cc05",
     "canonical": "premium-dog-food-with-upgraded-vitamins",
     "recordId": "recW9nf4O63p9QHMw",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "",
     "vaName": "Upgraded Vitamins",
-    "recordStatus": "",
     "data-five": "9QHMW",
     "data-sort": 14,
     "data-one": "vitamins",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -607,15 +758,26 @@
       "81XCU",
       "XGD4Z"
     ],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+    "dog-data-fives": [
+      "GAQ7O",
+      "Y6PGF",
+      "B5JOI",
+      "MNLTS",
+      "UTHHC",
+      "N6M4B",
+      "GVJDB",
+      "EA62U",
+      "9CDZC"
     ]
   }
 ]
