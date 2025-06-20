@@ -1,3 +1,4 @@
+
 [
   {
     "Name": "Grain Free",
@@ -6,14 +7,16 @@
     "Item ID": "647ddb9037101ce399b3456d",
     "canonical": "grain-free-dry-dog-food",
     "recordId": "recqkI0RDTCm3A9NE",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "grain-free",
     "sdName": "",
-    "recordStatus": "",
     "data-five": "3A9NE",
     "data-sort": 1,
     "data-one": "grain-free",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "sd",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -24,6 +27,12 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
+    "si-data-fives": [
+      "28979"
+    ],
+    "sf-data-fives": [
+      "28979"
+    ],
     "ci-data-fives": [
       "120700",
       "120702",
@@ -39,9 +48,7 @@
       "120708",
       "120711",
       "285973"
-    ],
-    "sf-data-fives": "28979",
-    "si-data-fives": "28979"
+    ]
   },
   {
     "Name": "Grain Inclusive",
@@ -50,14 +57,16 @@
     "Item ID": "647ddb9037101ce399b3447c",
     "canonical": "grain-inclusive-dry-dog-food",
     "recordId": "recufDQgjdB4yoipL",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "grain-inclusive",
     "sdName": "",
-    "recordStatus": "",
     "data-five": "YOIPL",
     "data-sort": 2,
     "data-one": "grain",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "sd",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -68,6 +77,14 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
+    "si-data-fives": [
+      "29280",
+      "29099"
+    ],
+    "sf-data-fives": [
+      "29280",
+      "29099"
+    ],
     "ci-data-fives": [
       "105269",
       "114025",
@@ -101,14 +118,6 @@
       "552422",
       "55911",
       "841846"
-    ],
-    "sf-data-fives": [
-      "29280",
-      "29099"
-    ],
-    "si-data-fives": [
-      "29280",
-      "29099"
     ]
   },
   {
@@ -118,14 +127,16 @@
     "Item ID": "647ddb9037101ce399b3456a",
     "canonical": "legumes-free-dry-dog-food",
     "recordId": "reclurkbX9zcDNXWw",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "legumes-free",
     "sdName": "",
-    "recordStatus": "",
     "data-five": "DNXWW",
     "data-sort": 3,
     "data-one": "legumes-free",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "sd",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -136,18 +147,18 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
-    "ci-data-fives": "",
-    "cf-data-fives": "",
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "ci-data-fives": [],
+    "cf-data-fives": []
   },
   {
     "Name": "Poultry Free",
@@ -156,14 +167,16 @@
     "Item ID": "647ddb9037101ce399b3456c",
     "canonical": "poultry-free-dry-dog-food",
     "recordId": "recUgPYIyBdJ71q6z",
+    "recordType": "",
+    "recordStatus": "",
     "calcSlug": "poultry-free",
     "sdName": "",
-    "recordStatus": "",
     "data-five": "71Q6Z",
     "data-sort": 4,
     "data-one": "poultry-free",
     "previewengine": "",
     "previewAlttag": "",
+    "cf_description": "",
     "data-faqType": "sd",
     "typed_intro": "",
     "manual_faq_enabled": "",
@@ -174,17 +187,17 @@
     "section-p": "",
     "section-prompt": "",
     "persona_context": "",
-    "ci-data-fives": "",
-    "cf-data-fives": "",
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "sf-data-fives": [
       "29280",
       "29099",
       "28979"
     ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ]
+    "ci-data-fives": [],
+    "cf-data-fives": []
   }
 ]
