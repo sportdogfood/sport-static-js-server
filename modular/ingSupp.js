@@ -7,11 +7,7 @@
     "Item ID": "6852de700b37ff6b91efb640",
     "canonical": "",
     "recordId": "recoZv7blS1VkSouf",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-sulfate",
     "ingredientTerm": "Zinc Sulfate",
@@ -51,29 +47,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recVNdNZalW2ei5Dn",
-      "name": "Zinc Sulfate"
-    },
-    "groupWith": {
-      "id": "reci4lFDkPEVY42ZH",
-      "name": "Zinc"
-    },
+    "displayAs": "Zinc Sulfate",
+    "groupWith": "Zinc",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "rec1gSJP718olGQdD",
-      "name": "Zinc Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Zinc Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -89,7 +70,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Zinc",
+    "termDescription": "Zinc source for skin, coat, immune health."
   },
   {
     "Name": "Zinc Proteinate",
@@ -98,11 +81,7 @@
     "Item ID": "6852de71cf96ccbaafb93b9a",
     "canonical": "",
     "recordId": "recLUyPXg4JvZPgID",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-proteinate",
     "ingredientTerm": "Zinc Proteinate",
@@ -140,29 +119,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec1u3UA8SnNKTdfg",
-      "name": "Zinc Proteinate"
-    },
-    "groupWith": {
-      "id": "reci4lFDkPEVY42ZH",
-      "name": "Zinc"
-    },
+    "displayAs": "Zinc Proteinate",
+    "groupWith": "Zinc",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "recSHUf1qOKUlq2Lx",
-      "name": "Zinc Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Zinc Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -178,7 +142,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Zinc",
+    "termDescription": "Highly bioavailable zinc for better absorption."
   },
   {
     "Name": "Zinc Amino Acids Complex",
@@ -187,11 +153,7 @@
     "Item ID": "6852de70e3447ed9c7fd5aee",
     "canonical": "",
     "recordId": "recwTVt7g1Fepn28c",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acids-complex",
     "ingredientTerm": "Zinc Amino Acids Complex",
@@ -256,29 +218,14 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recq31gGgiCnvxfI9",
-      "name": "Zinc Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "rec87leMkns0EKchk",
-      "name": "Zinc Amino Acids"
-    },
+    "displayAs": "Zinc Amino Acids Complex",
+    "groupWith": "Zinc Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
-    "supplementalFacts": {
-      "id": "recn0ul3CTHWgnKMB",
-      "name": "Zinc Amino Acids Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
+    "supplementalFacts": "Zinc Amino Acids Complex",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -294,7 +241,9 @@
     "va-cf-description": "Easily absorbed zinc for skin & immunity",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Zinc",
+    "termDescription": "Zinc bound for absorption; supports immunity and skin."
   },
   {
     "Name": "Zinc Amino Acids Chelate",
@@ -303,11 +252,7 @@
     "Item ID": "6852de706541d2e3ca483901",
     "canonical": "",
     "recordId": "recR9d6hrgMgm5pNo",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acids-chelate",
     "ingredientTerm": "Zinc Amino Acids Chelate",
@@ -336,29 +281,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqob0DjRgoBm3gE",
-      "name": "Zinc Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "rec87leMkns0EKchk",
-      "name": "Zinc Amino Acids"
-    },
+    "displayAs": "Zinc Amino Acids Chelate",
+    "groupWith": "Zinc Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
-    "supplementalFacts": {
-      "id": "recjZU9MWOsFZa9VI",
-      "name": "Zinc Amino Acids Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
+    "supplementalFacts": "Zinc Amino Acids Chelate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -374,7 +304,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Zinc",
+    "termDescription": "Chelated zinc; high absorption, skin and immune support."
   },
   {
     "Name": "Yeast Extracts",
@@ -383,11 +315,7 @@
     "Item ID": "6852de6f294d2ba1f190756c",
     "canonical": "",
     "recordId": "rec3t2edOSubxzBdL",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "yeast-extracts",
     "ingredientTerm": "Yeast Extracts",
@@ -416,29 +344,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnd6SNYftS4lud2",
-      "name": "Yeast Extracts"
-    },
-    "groupWith": {
-      "id": "recV0hBbx5aYGRl3L",
-      "name": "Yeast Extracts"
-    },
+    "displayAs": "Yeast Extracts",
+    "groupWith": "Yeast Extracts",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalFacts": {
-      "id": "reckvwc1FUqBXHjWN",
-      "name": "Yeast Extracts"
-    },
+    "supplementalType": "Yeast",
+    "supplementalAssist": "Yeast",
+    "supplementalFacts": "Yeast Extracts",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -454,7 +367,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Flavoring made from yeast; used to enhance palatability, but may cause sensitivities in some dogs and offers minimal nutritional value.",
     "cont-cf-explain-contentious": "Flavoring made from yeast; used to enhance palatability, but may cause sensitivities in some dogs and offers minimal nutritional value.",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B-vitamins",
+    "termDescription": "Flavor and protein enhancer from yeast; palatability."
   },
   {
     "Name": "Yeast Cultures",
@@ -463,11 +378,7 @@
     "Item ID": "6852de70bc5b69faef8b717c",
     "canonical": "",
     "recordId": "recJXAFxL1zimDI1T",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "yeast-cultures",
     "ingredientTerm": "Yeast Cultures",
@@ -504,29 +415,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNDKvWTu1NWlUWS",
-      "name": "Yeast Cultures"
-    },
-    "groupWith": {
-      "id": "recHfdOc7jmK5gHE5",
-      "name": "Yeast Cultures"
-    },
+    "displayAs": "Yeast Cultures",
+    "groupWith": "Yeast Cultures",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalFacts": {
-      "id": "rec2qSS9CtSFwMLTP",
-      "name": "Yeast Cultures"
-    },
+    "supplementalType": "Yeast",
+    "supplementalAssist": "Yeast",
+    "supplementalFacts": "Yeast Cultures",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -542,7 +438,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic/prebiotic, supports gut health, palatability."
   },
   {
     "Name": "Vitamin K",
@@ -551,11 +449,7 @@
     "Item ID": "6852de6f40aea4b9368df8a0",
     "canonical": "",
     "recordId": "recPRWNgw9E5egJ3G",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-k",
     "ingredientTerm": "Vitamin K",
@@ -584,29 +478,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recB2PZkHZxVAaFpr",
-      "name": "Vitamin K"
-    },
-    "groupWith": {
-      "id": "recP9SHt7NGSG4ymz",
-      "name": "Vitamin K"
-    },
+    "displayAs": "Vitamin K",
+    "groupWith": "Vitamin K",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recCdSYLJBVMt2831",
-      "name": "Vitamin K"
-    },
-    "supplementalFacts": {
-      "id": "recEqfwz7DqGxGzxs",
-      "name": "Vitamin K"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin K",
+    "supplementalFacts": "Vitamin K",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -622,7 +501,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin K",
+    "termDescription": "Blood clotting, bone health."
   },
   {
     "Name": "Vitamin E",
@@ -631,11 +512,7 @@
     "Item ID": "6852de6f70337747f7385e7d",
     "canonical": "",
     "recordId": "recBSlOQC0wIEK1nu",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-e",
     "ingredientTerm": "Vitamin E",
@@ -689,29 +566,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "rec4dIlh9Ah8iiMaa",
-      "name": "Vitamin E"
-    },
-    "groupWith": {
-      "id": "recEXg0qEG1nJQisr",
-      "name": "Vitamin E"
-    },
+    "displayAs": "Vitamin E",
+    "groupWith": "Vitamin E",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recd93Coj6vI9K6G4",
-      "name": "Vitamin E"
-    },
-    "supplementalFacts": {
-      "id": "recZpc3hEnq02njs0",
-      "name": "Vitamin E"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin E",
+    "supplementalFacts": "Vitamin E",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -727,7 +589,9 @@
     "va-cf-description": "Natural vitamin E for immune system",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin E",
+    "termDescription": "Antioxidant; skin, coat, cellular protection."
   },
   {
     "Name": "Vitamin D3",
@@ -736,11 +600,7 @@
     "Item ID": "6852de6fb6bbe50d0b621647",
     "canonical": "",
     "recordId": "recY45pmCqw0UdMzm",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-d3",
     "ingredientTerm": "Vitamin D3",
@@ -805,29 +665,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recuzScigwp1gSmBf",
-      "name": "Vitamin D3"
-    },
-    "groupWith": {
-      "id": "rec2w3TStHW2hUroO",
-      "name": "Vitamin D3"
-    },
+    "displayAs": "Vitamin D3",
+    "groupWith": "Vitamin D3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec7zLc6ggcPdlnwG",
-      "name": "Vitamin D3"
-    },
-    "supplementalFacts": {
-      "id": "reco7Sgbef2LgwLp5",
-      "name": "Vitamin D3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin D3",
+    "supplementalFacts": "Vitamin D3",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -843,7 +688,9 @@
     "va-cf-description": "Strong bones & teeth with vitamin D3",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin D3",
+    "termDescription": "Active vitamin D; calcium balance, immune health."
   },
   {
     "Name": "Vitamin D",
@@ -852,11 +699,7 @@
     "Item ID": "6852de6f40bc172cdf9ef720",
     "canonical": "",
     "recordId": "recvREL8FE7P4blZB",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-d",
     "ingredientTerm": "Vitamin D",
@@ -885,29 +728,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recZmmve4HuwK5GcJ",
-      "name": "Vitamin D"
-    },
-    "groupWith": {
-      "id": "recltNSEnDsOTw4HX",
-      "name": "Vitamin D"
-    },
+    "displayAs": "Vitamin D",
+    "groupWith": "Vitamin D",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recO6tezbHgdGK8jo",
-      "name": "Vitamin D"
-    },
-    "supplementalFacts": {
-      "id": "recNgKtD6nHrRitbO",
-      "name": "Vitamin D"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin D",
+    "supplementalFacts": "Vitamin D",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -923,7 +751,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin D",
+    "termDescription": "Bone growth, immune function."
   },
   {
     "Name": "Vitamin C",
@@ -932,11 +762,7 @@
     "Item ID": "6852de6e020130ff0f4ea132",
     "canonical": "",
     "recordId": "recwEYuZoJs7S50Xy",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-c",
     "ingredientTerm": "Vitamin C",
@@ -965,29 +791,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recd9ZUe9hLtoOEvt",
-      "name": "Vitamin C"
-    },
-    "groupWith": {
-      "id": "rec1OYb2a7qBE7SQD",
-      "name": "Vitamin C"
-    },
+    "displayAs": "Vitamin C",
+    "groupWith": "Vitamin C",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recaOjvdR0uckEmT4",
-      "name": "Vitamin C"
-    },
-    "supplementalFacts": {
-      "id": "recBlTGMeDB6VOK4r",
-      "name": "Vitamin C"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin C",
+    "supplementalFacts": "Vitamin C",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1003,7 +814,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin C",
+    "termDescription": "Ascorbic acid; antioxidant, immune support."
   },
   {
     "Name": "Vitamin B12",
@@ -1012,11 +825,7 @@
     "Item ID": "6852de6f297ed262c2957803",
     "canonical": "",
     "recordId": "recvJ0WpHJ5kzAPVO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b12",
     "ingredientTerm": "Vitamin B12",
@@ -1079,29 +888,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recHCYGlkt97aFo8R",
-      "name": "Vitamin B12"
-    },
-    "groupWith": {
-      "id": "reclw0dwbuoFjiJQY",
-      "name": "Vitamin B12"
-    },
+    "displayAs": "Vitamin B12",
+    "groupWith": "Vitamin B12",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec5epmDddSkYz7zT",
-      "name": "Vitamin B12"
-    },
-    "supplementalFacts": {
-      "id": "recYvJaz8zyBP2I4k",
-      "name": "Vitamin B12"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B12",
+    "supplementalFacts": "Vitamin B12",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1117,7 +911,9 @@
     "va-cf-description": "Boosts energy and healthy nerves",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B12",
+    "termDescription": "Cobalamin; nervous system and red blood cells."
   },
   {
     "Name": "Vitamin B9",
@@ -1126,11 +922,7 @@
     "Item ID": "6852de6ee1e8249a5238d7cb",
     "canonical": "",
     "recordId": "recPzj4B7u8GjYSyg",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b9",
     "ingredientTerm": "Vitamin B9",
@@ -1159,29 +951,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recheDZmWua0eOMvk",
-      "name": "Vitamin B9"
-    },
-    "groupWith": {
-      "id": "recKaiAPLHXwuFr2M",
-      "name": "Vitamin B9"
-    },
+    "displayAs": "Vitamin B9",
+    "groupWith": "Vitamin B9",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "receHeFMUjuoW8Tli",
-      "name": "Vitamin B9"
-    },
-    "supplementalFacts": {
-      "id": "recGYaMGOONBZ2e2S",
-      "name": "Vitamin B9"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B9",
+    "supplementalFacts": "Vitamin B9",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1197,7 +974,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B9",
+    "termDescription": "Folic acid; cell growth and metabolism."
   },
   {
     "Name": "Vitamin B8",
@@ -1206,11 +985,7 @@
     "Item ID": "6852de6ee7f3b203b501a128",
     "canonical": "",
     "recordId": "receltTeDAocqpLje",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b8",
     "ingredientTerm": "Vitamin B8",
@@ -1239,29 +1014,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec63XNRNMg4Nk34A",
-      "name": "Vitamin B8"
-    },
-    "groupWith": {
-      "id": "recO6E9aw1wfm0yH3",
-      "name": "Vitamin B8"
-    },
+    "displayAs": "Vitamin B8",
+    "groupWith": "Vitamin B8",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recs5WxJizFHdMVVf",
-      "name": "Vitamin B8"
-    },
-    "supplementalFacts": {
-      "id": "recj6YXbUM5ITusD1",
-      "name": "Vitamin B8"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B8",
+    "supplementalFacts": "Vitamin B8",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1277,7 +1037,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B8",
+    "termDescription": "Inositol; cell membrane health."
   },
   {
     "Name": "Vitamin B7",
@@ -1286,11 +1048,7 @@
     "Item ID": "6852de6ef0589dda767b4381",
     "canonical": "",
     "recordId": "rec3DyJpojItky9KL",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b7",
     "ingredientTerm": "Vitamin B7",
@@ -1319,29 +1077,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectt25B3fCXoUsgR",
-      "name": "Vitamin B7"
-    },
-    "groupWith": {
-      "id": "rechuch3f0yhAI7k3",
-      "name": "Vitamin B7"
-    },
+    "displayAs": "Vitamin B7",
+    "groupWith": "Vitamin B7",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recjqDGE3Pdg0rhI9",
-      "name": "Vitamin B7"
-    },
-    "supplementalFacts": {
-      "id": "recQbvDwN2ZGhPiym",
-      "name": "Vitamin B7"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B7",
+    "supplementalFacts": "Vitamin B7",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1357,7 +1100,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B7",
+    "termDescription": "Biotin; skin, coat, energy."
   },
   {
     "Name": "Vitamin B6",
@@ -1366,11 +1111,7 @@
     "Item ID": "6852de6e9538b573e40834b1",
     "canonical": "",
     "recordId": "recwn4ceQ7ald6BTd",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b6",
     "ingredientTerm": "Vitamin B6",
@@ -1399,29 +1140,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwQ08JmhcWjcasr",
-      "name": "Vitamin B6"
-    },
-    "groupWith": {
-      "id": "recQNnwaogHl9404X",
-      "name": "Vitamin B6"
-    },
+    "displayAs": "Vitamin B6",
+    "groupWith": "Vitamin B6",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
-    "supplementalFacts": {
-      "id": "recT4CnZ2e25YBdBu",
-      "name": "Vitamin B6"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
+    "supplementalFacts": "Vitamin B6",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1437,7 +1163,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B6",
+    "termDescription": "Pyridoxine; metabolism and blood health."
   },
   {
     "Name": "Vitamin B5",
@@ -1446,11 +1174,7 @@
     "Item ID": "6852de6e98a022ae6b035a64",
     "canonical": "",
     "recordId": "recNWFIIMPQxZv6KQ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b5",
     "ingredientTerm": "Vitamin B5",
@@ -1479,29 +1203,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recM9813sE8UYDCH6",
-      "name": "Vitamin B5"
-    },
-    "groupWith": {
-      "id": "rec1u3o4UvP8XST8v",
-      "name": "Vitamin B5"
-    },
+    "displayAs": "Vitamin B5",
+    "groupWith": "Vitamin B5",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
-    "supplementalFacts": {
-      "id": "recNqhV9vvU13EOnC",
-      "name": "Vitamin B5"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
+    "supplementalFacts": "Vitamin B5",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1517,7 +1226,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B5",
+    "termDescription": "Pantothenic acid; energy metabolism."
   },
   {
     "Name": "Vitamin B3",
@@ -1526,11 +1237,7 @@
     "Item ID": "6852de6ec3427cd8c526fccc",
     "canonical": "",
     "recordId": "reck9fdYKvIUp0lJ3",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b3",
     "ingredientTerm": "Vitamin B3",
@@ -1559,29 +1266,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recn1tI43sOGQnZV6",
-      "name": "Vitamin B3"
-    },
-    "groupWith": {
-      "id": "recsSgwPJoFtz0MPN",
-      "name": "Vitamin B3"
-    },
+    "displayAs": "Vitamin B3",
+    "groupWith": "Vitamin B3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
-    "supplementalFacts": {
-      "id": "recwicVWcGccDz2ec",
-      "name": "Vitamin B3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
+    "supplementalFacts": "Vitamin B3",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1597,7 +1289,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B3",
+    "termDescription": "Niacin; metabolism, skin, coat."
   },
   {
     "Name": "Vitamin B2",
@@ -1606,11 +1300,7 @@
     "Item ID": "6852de6d297ed262c2957579",
     "canonical": "",
     "recordId": "recJITYkFi9vEZIa4",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b2",
     "ingredientTerm": "Vitamin B2",
@@ -1639,29 +1329,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recE67SBhnBgY7gsR",
-      "name": "Vitamin B2"
-    },
-    "groupWith": {
-      "id": "recD0LPYbMjv42dDZ",
-      "name": "Vitamin B2"
-    },
+    "displayAs": "Vitamin B2",
+    "groupWith": "Vitamin B2",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
-    "supplementalFacts": {
-      "id": "recIkZqvJtIt6KJ9M",
-      "name": "Vitamin B2"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
+    "supplementalFacts": "Vitamin B2",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1677,7 +1352,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B2",
+    "termDescription": "Riboflavin; cellular function and growth."
   },
   {
     "Name": "Vitamin B1",
@@ -1686,11 +1363,7 @@
     "Item ID": "6852de6d4505b86da8a225ea",
     "canonical": "",
     "recordId": "recALujlsv0MhKofV",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b1",
     "ingredientTerm": "Vitamin B1",
@@ -1719,29 +1392,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqO3wcFGLBD5CN2",
-      "name": "Vitamin B1"
-    },
-    "groupWith": {
-      "id": "recqKUhSC3Httwe4L",
-      "name": "Vitamin B1"
-    },
+    "displayAs": "Vitamin B1",
+    "groupWith": "Vitamin B1",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec0Rtb722efOEjDR",
-      "name": "Vitamin B1"
-    },
-    "supplementalFacts": {
-      "id": "rec5DB1BONjHg9kRy",
-      "name": "Vitamin B1"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B1",
+    "supplementalFacts": "Vitamin B1",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1757,7 +1415,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B1",
+    "termDescription": "Thiamine; metabolism and nervous system support."
   },
   {
     "Name": "Vitamin B",
@@ -1766,11 +1426,7 @@
     "Item ID": "6852de6c8b7de73b6e79e166",
     "canonical": "",
     "recordId": "reclWWICppVc72xqk",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b",
     "ingredientTerm": "Vitamin B",
@@ -1799,29 +1455,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectZ0mEJKhfTGmQ3",
-      "name": "Vitamin B"
-    },
-    "groupWith": {
-      "id": "recsqNQxUfqNPhYEm",
-      "name": "Vitamin B"
-    },
+    "displayAs": "Vitamin B",
+    "groupWith": "Vitamin B",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recnZRxvUM2iCCS43",
-      "name": "Vitamin B"
-    },
-    "supplementalFacts": {
-      "id": "recn70bGMwLwgnzet",
-      "name": "Vitamin B"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B",
+    "supplementalFacts": "Vitamin B",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1837,7 +1478,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B-complex",
+    "termDescription": "General group; support metabolism, growth, energy."
   },
   {
     "Name": "Vitamin A Acetate",
@@ -1846,11 +1489,7 @@
     "Item ID": "6852de6b7586b8e43234529c",
     "canonical": "",
     "recordId": "recGYIbAQ0iXhBtua",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-a-acetate",
     "ingredientTerm": "Vitamin A Acetate",
@@ -1879,29 +1518,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recswHjLeG0xKYt3b",
-      "name": "Vitamin A Acetate"
-    },
-    "groupWith": {
-      "id": "recCKXScwXFdmWYag",
-      "name": "Vitamin A"
-    },
+    "displayAs": "Vitamin A Acetate",
+    "groupWith": "Vitamin A",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recNJnCkXV0XWpmNR",
-      "name": "Vitamin A"
-    },
-    "supplementalFacts": {
-      "id": "recoLSB5Apqu0PpIF",
-      "name": "Vitamin A Acetate"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin A",
+    "supplementalFacts": "Vitamin A Acetate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -1917,7 +1541,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin A",
+    "termDescription": "Synthetic vitamin A; vision, immune, and skin health."
   },
   {
     "Name": "Vitamin A",
@@ -1926,11 +1552,7 @@
     "Item ID": "6852de6bd18cbc5d6307b901",
     "canonical": "",
     "recordId": "receZDVGom9BXGd4z",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-a",
     "ingredientTerm": "Vitamin A",
@@ -1983,29 +1605,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recvkrWLatop8qUK9",
-      "name": "Vitamin A"
-    },
-    "groupWith": {
-      "id": "recCKXScwXFdmWYag",
-      "name": "Vitamin A"
-    },
+    "displayAs": "Vitamin A",
+    "groupWith": "Vitamin A",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recNJnCkXV0XWpmNR",
-      "name": "Vitamin A"
-    },
-    "supplementalFacts": {
-      "id": "rectaqKddHO767GKv",
-      "name": "Vitamin A"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin A",
+    "supplementalFacts": "Vitamin A",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2021,7 +1628,9 @@
     "va-cf-description": "Supports eyesight, immunity, healthy coat",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin A",
+    "termDescription": "Supports vision, growth, immune system."
   },
   {
     "Name": "Turmeric",
@@ -2030,11 +1639,7 @@
     "Item ID": "6852de6bb6bbe50d0b6212f7",
     "canonical": "",
     "recordId": "recS93P1IaKyW0hAM",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "turmeric",
     "ingredientTerm": "Turmeric",
@@ -2071,23 +1676,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recXAuO11f6bBnJV5",
-      "name": "Turmeric"
-    },
-    "groupWith": {
-      "id": "recR72rJXXxu90das",
-      "name": "Turmeric"
-    },
+    "displayAs": "Turmeric",
+    "groupWith": "Turmeric",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recD1pgnGYmlLatQr",
-      "name": "Turmeric"
-    },
+    "supplementalFacts": "Turmeric",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2103,7 +1699,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Curcumin",
+    "termDescription": "Botanical; provides antioxidant and anti-inflammatory effects."
   },
   {
     "Name": "Thiamine Mononitrate",
@@ -2112,11 +1710,7 @@
     "Item ID": "6852de6b4bc548a8fc542995",
     "canonical": "",
     "recordId": "reck3MYQRaXqYHgzY",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "thiamine-mononitrate",
     "ingredientTerm": "Thiamine Mononitrate",
@@ -2168,29 +1762,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recrBge6MnZKCe0GM",
-      "name": "Thiamine Mononitrate"
-    },
-    "groupWith": {
-      "id": "reclMMcL8cg8JJuMd",
-      "name": "Thiamine"
-    },
+    "displayAs": "Thiamine Mononitrate",
+    "groupWith": "Thiamine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec0Rtb722efOEjDR",
-      "name": "Vitamin B1"
-    },
-    "supplementalFacts": {
-      "id": "recVTEJnNNFzOPMrb",
-      "name": "Thiamine Mononitrate"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B1",
+    "supplementalFacts": "Thiamine Mononitrate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2206,7 +1785,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B1",
+    "termDescription": "Synthetic B1; supplemental for nervous system and digestion."
   },
   {
     "Name": "Thiamine",
@@ -2215,11 +1796,7 @@
     "Item ID": "6852de6bd8f89ad1bf170009",
     "canonical": "",
     "recordId": "recZnSOfCJdV5eLBD",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "thiamine",
     "ingredientTerm": "Thiamine",
@@ -2282,29 +1859,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recksnnjQsdPt4A9v",
-      "name": "Thiamine"
-    },
-    "groupWith": {
-      "id": "reclMMcL8cg8JJuMd",
-      "name": "Thiamine"
-    },
+    "displayAs": "Thiamine",
+    "groupWith": "Thiamine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec0Rtb722efOEjDR",
-      "name": "Vitamin B1"
-    },
-    "supplementalFacts": {
-      "id": "recyNGlPEdZlnxkq9",
-      "name": "Thiamine"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B1",
+    "supplementalFacts": "Thiamine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2320,7 +1882,9 @@
     "va-cf-description": "Turns food into energy for active dogs",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B1",
+    "termDescription": "B-vitamin; aids carbohydrate metabolism, nervous system."
   },
   {
     "Name": "Taurine",
@@ -2329,11 +1893,7 @@
     "Item ID": "6852de6b8375ea222df27952",
     "canonical": "",
     "recordId": "recbakX933ZHM0bM4",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "taurine",
     "ingredientTerm": "Taurine",
@@ -2387,29 +1947,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTzE5AurufqCJQd",
-      "name": "Taurine"
-    },
-    "groupWith": {
-      "id": "recLIETmD46V4fikN",
-      "name": "Taurine"
-    },
+    "displayAs": "Taurine",
+    "groupWith": "Taurine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recKxoeFKAnxfz6gQ",
-      "name": "Amino Acid"
-    },
-    "supplementalAssist": {
-      "id": "recKxoeFKAnxfz6gQ",
-      "name": "Amino Acid"
-    },
-    "supplementalFacts": {
-      "id": "recxeTo6IZublevx9",
-      "name": "Taurine"
-    },
+    "supplementalType": "Amino Acid",
+    "supplementalAssist": "Amino Acid",
+    "supplementalFacts": "Taurine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2425,7 +1970,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Amino acid for heart health and vision; especially important in some dog breeds."
   },
   {
     "Name": "Sodium Selenite",
@@ -2434,11 +1981,7 @@
     "Item ID": "6852de6b4677eabbbbc687dc",
     "canonical": "",
     "recordId": "recKPJ22edILoqE8v",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "sodium-selenite",
     "ingredientTerm": "Sodium Selenite",
@@ -2476,26 +2019,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recoQltqI4VwFmboK",
-      "name": "Sodium Selenite"
-    },
-    "groupWith": {
-      "id": "rectoMzUqAfK4elh6",
-      "name": "Sodium"
-    },
+    "displayAs": "Sodium Selenite",
+    "groupWith": "Sodium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
+    "supplementalType": "Mineral",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recE52P4MvYPPysIW",
-      "name": "Sodium Selenite"
-    },
+    "supplementalFacts": "Sodium Selenite",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2511,7 +2042,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Selenium",
+    "termDescription": "Inorganic selenium; antioxidant, immune function."
   },
   {
     "Name": "Sodium Hex",
@@ -2520,11 +2053,7 @@
     "Item ID": "6852de6c9954dd1860c0ff02",
     "canonical": "",
     "recordId": "recddCMDiUtkxvc1b",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "sodium-hex",
     "ingredientTerm": "Sodium Hex",
@@ -2553,29 +2082,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGcJKB00Z0iDpIl",
-      "name": "Sodium Hex"
-    },
-    "groupWith": {
-      "id": "rectoMzUqAfK4elh6",
-      "name": "Sodium"
-    },
+    "displayAs": "Sodium Hex",
+    "groupWith": "Sodium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
-    "supplementalAssist": {
-      "id": "rec1zXonD4XCXEFfp",
-      "name": "Preservative"
-    },
-    "supplementalFacts": {
-      "id": "recYqHdbFEyb6HqUD",
-      "name": "Sodium Hex"
-    },
+    "supplementalType": "Mineral",
+    "supplementalAssist": "Preservative",
+    "supplementalFacts": "Sodium Hex",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2591,7 +2105,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Sodium",
+    "termDescription": "Sodium salt; supports electrolyte balance."
   },
   {
     "Name": "Selenium Yeast",
@@ -2600,11 +2116,7 @@
     "Item ID": "6852de6bfed2b7b17391af3f",
     "canonical": "",
     "recordId": "recMgT2KT6wRxv780",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "selenium-yeast",
     "ingredientTerm": "Selenium Yeast",
@@ -2680,26 +2192,14 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recuuHRrQkq5VJqvT",
-      "name": "Selenium Yeast"
-    },
-    "groupWith": {
-      "id": "rechOXh7HTKlG9t1C",
-      "name": "Selenium"
-    },
+    "displayAs": "Selenium Yeast",
+    "groupWith": "Selenium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
+    "supplementalType": "Mineral",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recU54ypoPo3Q5sCD",
-      "name": "Selenium Yeast"
-    },
+    "supplementalFacts": "Selenium Yeast",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2715,7 +2215,9 @@
     "va-cf-description": "Powerful antioxidants for well-being",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Selenium",
+    "termDescription": "Selenium bound to yeast; highly bioavailable."
   },
   {
     "Name": "Selenium",
@@ -2724,11 +2226,7 @@
     "Item ID": "6852de6b36e743bf29bfaad4",
     "canonical": "",
     "recordId": "recwdxMBMra2sfo7X",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "selenium",
     "ingredientTerm": "Selenium",
@@ -2757,26 +2255,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recxwkOeBHH6Jh8tH",
-      "name": "Selenium"
-    },
-    "groupWith": {
-      "id": "rechOXh7HTKlG9t1C",
-      "name": "Selenium"
-    },
+    "displayAs": "Selenium",
+    "groupWith": "Selenium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
+    "supplementalType": "Mineral",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recVzKmUCkbzowuiN",
-      "name": "Selenium"
-    },
+    "supplementalFacts": "Selenium",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2792,7 +2278,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Selenium",
+    "termDescription": "Trace mineral for antioxidant protection and immune function."
   },
   {
     "Name": "Salt",
@@ -2801,11 +2289,7 @@
     "Item ID": "6852de6a31bfa2271527170f",
     "canonical": "",
     "recordId": "recyPLyfoqLr9umlW",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "salt",
     "ingredientTerm": "Salt",
@@ -2870,26 +2354,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recgJGeHGhbmEZxDc",
-      "name": "Salt"
-    },
-    "groupWith": {
-      "id": "recG7WxXXRUlwWuxe",
-      "name": "Salt"
-    },
+    "displayAs": "Salt",
+    "groupWith": "Salt",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
+    "supplementalType": "Minerals",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recmPoQfwj6ICjgHn",
-      "name": "Salt"
-    },
+    "supplementalFacts": "Salt",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -2905,7 +2377,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Sodium",
+    "termDescription": "Sodium chloride; essential electrolyte and flavor enhancer."
   },
   {
     "Name": "Rosemary Extract",
@@ -2914,11 +2388,7 @@
     "Item ID": "6852de6ae1e8249a5238d641",
     "canonical": "",
     "recordId": "reckI9buDeSLL5O6A",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "rosemary-extract",
     "ingredientTerm": "Rosemary Extract",
@@ -2983,29 +2453,14 @@
       "LCCV8",
       "MNLTS"
     ],
-    "displayAs": {
-      "id": "recMJB7wrWHjI5XPS",
-      "name": "Rosemary Extract"
-    },
-    "groupWith": {
-      "id": "recyENGssTG3ydHek",
-      "name": "Rosemary Extract"
-    },
+    "displayAs": "Rosemary Extract",
+    "groupWith": "Rosemary Extract",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec6wOF5fkXok9MWC",
-      "name": "Preservative"
-    },
-    "supplementalAssist": {
-      "id": "rec6wOF5fkXok9MWC",
-      "name": "Preservative"
-    },
-    "supplementalFacts": {
-      "id": "recHz6wECDTBnaUrJ",
-      "name": "Rosemary Extract"
-    },
+    "supplementalType": "Preservative",
+    "supplementalAssist": "Preservative",
+    "supplementalFacts": "Rosemary Extract",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3021,7 +2476,9 @@
     "va-cf-description": "Preserved naturally for taste & health",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Natural antioxidant; acts as preservative and flavor."
   },
   {
     "Name": "Riboflavin Supplement",
@@ -3030,11 +2487,7 @@
     "Item ID": "6852de6a01816eca45c106d4",
     "canonical": "",
     "recordId": "recnMBvrQBKKcOvuX",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "riboflavin-supplement",
     "ingredientTerm": "Riboflavin Supplement",
@@ -3080,29 +2533,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHC4VhvHEVuRFUG",
-      "name": "Riboflavin Supplement"
-    },
-    "groupWith": {
-      "id": "recyg9kvqS6k7CkZh",
-      "name": "Riboflavin"
-    },
+    "displayAs": "Riboflavin Supplement",
+    "groupWith": "Riboflavin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
-    "supplementalFacts": {
-      "id": "recrfyz1mMlFucqoB",
-      "name": "Riboflavin Supplement"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
+    "supplementalFacts": "Riboflavin Supplement",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3118,7 +2556,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B2",
+    "termDescription": "Supplemental B2 for growth and energy."
   },
   {
     "Name": "Riboflavin",
@@ -3127,11 +2567,7 @@
     "Item ID": "6852de6a6efaf46f1ed19c2b",
     "canonical": "",
     "recordId": "recuySB55h5f81XCu",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "riboflavin",
     "ingredientTerm": "Riboflavin",
@@ -3204,29 +2640,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recKVOnrH4UJrMuOp",
-      "name": "Riboflavin"
-    },
-    "groupWith": {
-      "id": "recyg9kvqS6k7CkZh",
-      "name": "Riboflavin"
-    },
+    "displayAs": "Riboflavin",
+    "groupWith": "Riboflavin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
-    "supplementalFacts": {
-      "id": "recpnYGSQzRW8IWO0",
-      "name": "Riboflavin"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
+    "supplementalFacts": "Riboflavin",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3242,7 +2663,9 @@
     "va-cf-description": "Helps use nutrients for energy",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B2",
+    "termDescription": "B-vitamin; necessary for energy and cellular function."
   },
   {
     "Name": "Pyridoxine Hydrochloride",
@@ -3251,11 +2674,7 @@
     "Item ID": "6852de6a658b1a34dd9e0caa",
     "canonical": "",
     "recordId": "recSzrBEzLZOmlAa7",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "pyridoxine-hydrochloride",
     "ingredientTerm": "Pyridoxine Hydrochloride",
@@ -3307,29 +2726,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recD9mCWZjQOSUvtB",
-      "name": "Pyridoxine Hydrochloride"
-    },
-    "groupWith": {
-      "id": "recPj36zaKsM5fMsg",
-      "name": "Pyridoxine"
-    },
+    "displayAs": "Pyridoxine Hydrochloride",
+    "groupWith": "Pyridoxine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
-    "supplementalFacts": {
-      "id": "recr1sKQMbpnPZmuV",
-      "name": "Pyridoxine Hydrochloride"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
+    "supplementalFacts": "Pyridoxine Hydrochloride",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3345,7 +2749,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B6",
+    "termDescription": "Supplemental B6 for metabolism and energy production."
   },
   {
     "Name": "Pyridoxine",
@@ -3354,11 +2760,7 @@
     "Item ID": "6852de6a971699cadf9e6a04",
     "canonical": "",
     "recordId": "recSoSkOZKkMaBJvi",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "pyridoxine",
     "ingredientTerm": "Pyridoxine",
@@ -3421,29 +2823,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recshubihWTv5GCnw",
-      "name": "Pyridoxine"
-    },
-    "groupWith": {
-      "id": "recPj36zaKsM5fMsg",
-      "name": "Pyridoxine"
-    },
+    "displayAs": "Pyridoxine",
+    "groupWith": "Pyridoxine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
-    "supplementalFacts": {
-      "id": "recTlbi5RIqNcaPLm",
-      "name": "Pyridoxine"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
+    "supplementalFacts": "Pyridoxine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3459,7 +2846,9 @@
     "va-cf-description": "Essential for protein use and energy",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B6",
+    "termDescription": "B-vitamin; involved in protein metabolism and red blood cell formation."
   },
   {
     "Name": "Powdered Cellulose",
@@ -3468,11 +2857,7 @@
     "Item ID": "6852de6ae45a5650e3c55370",
     "canonical": "",
     "recordId": "recjbEC87b3r9fk4M",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "powdered-cellulose",
     "ingredientTerm": "Powdered Cellulose",
@@ -3505,26 +2890,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFIVxKZWsTL2eW5",
-      "name": "Powdered Cellulose"
-    },
-    "groupWith": {
-      "id": "rec2gY24KyhQdVJiW",
-      "name": "Powdered Cellulose"
-    },
+    "displayAs": "Powdered Cellulose",
+    "groupWith": "Powdered Cellulose",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recCy5jfO4FUhFYAK",
-      "name": "Fiber"
-    },
-    "supplementalFacts": {
-      "id": "recMN8OHgYzidBKOQ",
-      "name": "Powdered Cellulose"
-    },
+    "supplementalAssist": "Fiber",
+    "supplementalFacts": "Powdered Cellulose",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3540,7 +2913,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Highly refined plant fiber used as a bulking agent; offers no nutritional value and may decrease digestibility when overused.",
     "cont-cf-explain-contentious": "Sawdust-like filler, no nutrition",
-    "cont-cf-why-least": "Same as above; used as a cheap fiber/filler"
+    "cont-cf-why-least": "Same as above; used as a cheap fiber/filler",
+    "vitamins_derived": "",
+    "termDescription": "Plant-based fiber; improves stool quality, gut health."
   },
   {
     "Name": "Potassium Iodide",
@@ -3549,11 +2924,7 @@
     "Item ID": "6852de6ae212a57cd539f5ea",
     "canonical": "",
     "recordId": "recDHIVneh5KmVxmr",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "potassium-iodide",
     "ingredientTerm": "Potassium Iodide",
@@ -3582,29 +2953,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recBLPXEfXY1bulou",
-      "name": "Potassium Iodide"
-    },
-    "groupWith": {
-      "id": "reccoLGd3CgqLhJz0",
-      "name": "Potassium"
-    },
+    "displayAs": "Potassium Iodide",
+    "groupWith": "Potassium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
-    "supplementalAssist": {
-      "id": "rec1cGE7EAaoJE9Vp",
-      "name": "Iodide"
-    },
-    "supplementalFacts": {
-      "id": "recR17YJhK9Xvnqjs",
-      "name": "Potassium Iodide"
-    },
+    "supplementalType": "Mineral",
+    "supplementalAssist": "Iodide",
+    "supplementalFacts": "Potassium Iodide",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3620,7 +2976,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iodine",
+    "termDescription": "Iodine source for thyroid support."
   },
   {
     "Name": "Potassium Citrate",
@@ -3629,11 +2987,7 @@
     "Item ID": "6852de6af16d0de462c036bb",
     "canonical": "",
     "recordId": "recG1KqAaDiM5s0xF",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "potassium-citrate",
     "ingredientTerm": "Potassium Citrate",
@@ -3665,29 +3019,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec3c3JsFuNb6MXFM",
-      "name": "Potassium Citrate"
-    },
-    "groupWith": {
-      "id": "reccoLGd3CgqLhJz0",
-      "name": "Potassium"
-    },
+    "displayAs": "Potassium Citrate",
+    "groupWith": "Potassium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
-    "supplementalAssist": {
-      "id": "recdaaGAwbS7l9DDs",
-      "name": "Citrate"
-    },
-    "supplementalFacts": {
-      "id": "rec5yL6IKw1ZPS4zX",
-      "name": "Potassium Citrate"
-    },
+    "supplementalType": "Mineral",
+    "supplementalAssist": "Citrate",
+    "supplementalFacts": "Potassium Citrate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3703,7 +3042,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Potassium",
+    "termDescription": "Potassium supplement; supports urinary tract health."
   },
   {
     "Name": "Potassium Chloride",
@@ -3712,11 +3053,7 @@
     "Item ID": "6852de6aa3f5816b08574a40",
     "canonical": "",
     "recordId": "recmJ80yciUFAH4gG",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "potassium-chloride",
     "ingredientTerm": "Potassium Chloride",
@@ -3775,29 +3112,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recRc2Ah53njyc0if",
-      "name": "Potassium Chloride"
-    },
-    "groupWith": {
-      "id": "reccoLGd3CgqLhJz0",
-      "name": "Potassium"
-    },
+    "displayAs": "Potassium Chloride",
+    "groupWith": "Potassium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
-    "supplementalAssist": {
-      "id": "recAwlongIZ4BSeBS",
-      "name": "Chloride"
-    },
-    "supplementalFacts": {
-      "id": "recyZQy6hKsRmvatb",
-      "name": "Potassium Chloride"
-    },
+    "supplementalType": "Mineral",
+    "supplementalAssist": "Chloride",
+    "supplementalFacts": "Potassium Chloride",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3813,7 +3135,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Potassium",
+    "termDescription": "Potassium and chloride source; electrolyte balance."
   },
   {
     "Name": "Potassium",
@@ -3822,11 +3146,7 @@
     "Item ID": "6852de6a710ffb3af6eb4062",
     "canonical": "",
     "recordId": "recqfxUEkmOe17zqk",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "potassium",
     "ingredientTerm": "Potassium",
@@ -3855,26 +3175,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recr1zRjxBV4teCV2",
-      "name": "Potassium"
-    },
-    "groupWith": {
-      "id": "reccoLGd3CgqLhJz0",
-      "name": "Potassium"
-    },
+    "displayAs": "Potassium",
+    "groupWith": "Potassium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
+    "supplementalType": "Mineral",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "rec6ltkQPWupCSC1m",
-      "name": "Potassium"
-    },
+    "supplementalFacts": "Potassium",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3890,7 +3198,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Potassium",
+    "termDescription": "Essential mineral for nerve/muscle health."
   },
   {
     "Name": "Niacin Supplement",
@@ -3899,11 +3209,7 @@
     "Item ID": "6852de6a7586b8e432345243",
     "canonical": "",
     "recordId": "recosVMzjLpk8lGUT",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "niacin-supplement",
     "ingredientTerm": "Niacin Supplement",
@@ -3949,29 +3255,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recuqdtiwmGBVO5Rn",
-      "name": "Niacin Supplement"
-    },
-    "groupWith": {
-      "id": "recyAFB3AnvoWDIJC",
-      "name": "Niacin"
-    },
+    "displayAs": "Niacin Supplement",
+    "groupWith": "Niacin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
-    "supplementalFacts": {
-      "id": "recxbu978fSVki82t",
-      "name": "Niacin Supplement"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
+    "supplementalFacts": "Niacin Supplement",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -3987,7 +3278,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B3",
+    "termDescription": "Supplemental niacin for metabolism and overall health."
   },
   {
     "Name": "Niacin",
@@ -3996,11 +3289,7 @@
     "Item ID": "6852de69266cc7da733b96bf",
     "canonical": "",
     "recordId": "rec4IPWnV6PKYrwGG",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "niacin",
     "ingredientTerm": "Niacin",
@@ -4073,29 +3362,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recvzp7rcOL5ELCKy",
-      "name": "Niacin"
-    },
-    "groupWith": {
-      "id": "recyAFB3AnvoWDIJC",
-      "name": "Niacin"
-    },
+    "displayAs": "Niacin",
+    "groupWith": "Niacin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
-    "supplementalFacts": {
-      "id": "recVyZw12ljWn7dYn",
-      "name": "Niacin"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
+    "supplementalFacts": "Niacin",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4111,7 +3385,9 @@
     "va-cf-description": "Supports metabolism and active lifestyle",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B3",
+    "termDescription": "B-vitamin, supports energy metabolism, skin/coat."
   },
   {
     "Name": "Natural Flavors",
@@ -4120,11 +3396,7 @@
     "Item ID": "6852de69c7b8d18606b6b0d3",
     "canonical": "",
     "recordId": "recGTsSruZCrz9I0H",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "natural-flavors",
     "ingredientTerm": "Natural Flavors",
@@ -4165,26 +3437,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recPlOLpw0YVDhj9V",
-      "name": "Natural Flavors"
-    },
-    "groupWith": {
-      "id": "recoI0Cp09NjqVAle",
-      "name": "Natural Flavors"
-    },
+    "displayAs": "Natural Flavors",
+    "groupWith": "Natural Flavors",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec6wOF5fkXok9MWC",
-      "name": "Preservative"
-    },
+    "supplementalType": "Preservative",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recwW60qgxECrz7mF",
-      "name": "Natural Flavors"
-    },
+    "supplementalFacts": "Natural Flavors",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4200,7 +3460,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Vague term for flavor additives; source and quality often not specified or regulated.",
     "cont-cf-explain-contentious": "Could be anything, not a real food ingredient",
-    "cont-cf-why-least": "Unspecified, could mask poor ingredients; lack of transparency"
+    "cont-cf-why-least": "Unspecified, could mask poor ingredients; lack of transparency",
+    "vitamins_derived": "",
+    "termDescription": "Palatants/flavor enhancers; improve kibble palatability."
   },
   {
     "Name": "Monosodium Glutamate",
@@ -4209,11 +3471,7 @@
     "Item ID": "6852de698c25f9fd772f3498",
     "canonical": "",
     "recordId": "rec5jdNXyBWzoweo0",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "monosodium-glutamate",
     "ingredientTerm": "Monosodium Glutamate",
@@ -4242,29 +3500,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recliVnOpwhCM5VFO",
-      "name": "Monosodium Glutamate"
-    },
-    "groupWith": {
-      "id": "recnecJhEPlcNuBtp",
-      "name": "Monosodium Glutamate"
-    },
+    "displayAs": "Monosodium Glutamate",
+    "groupWith": "Monosodium Glutamate",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recICxKA50pXoLq4q",
-      "name": "Flavor Enhancer"
-    },
-    "supplementalAssist": {
-      "id": "recICxKA50pXoLq4q",
-      "name": "Flavor Enhancer"
-    },
-    "supplementalFacts": {
-      "id": "rec1iGu0WmrSDLeAJ",
-      "name": "Monosodium Glutamate"
-    },
+    "supplementalType": "Flavor Enhancer",
+    "supplementalAssist": "Flavor Enhancer",
+    "supplementalFacts": "Monosodium Glutamate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4280,7 +3523,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Flavor enhancer (MSG) used to improve palatability; provides no nutrition and may cause sensitivities in some pets.",
     "cont-cf-explain-contentious": "Flavor enhancer (MSG) used to improve palatability; provides no nutrition and may cause sensitivities in some pets.",
-    "cont-cf-why-least": "Flavor enhancer (MSG); some public concern over use in pet food"
+    "cont-cf-why-least": "Flavor enhancer (MSG); some public concern over use in pet food",
+    "vitamins_derived": "",
+    "termDescription": "Flavor enhancer; increases taste appeal of kibble."
   },
   {
     "Name": "Monopotassium Glutamate",
@@ -4289,11 +3534,7 @@
     "Item ID": "6852de6901816eca45c1052a",
     "canonical": "",
     "recordId": "recpnrk5y3Ou759sv",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "monopotassium-glutamate",
     "ingredientTerm": "Monopotassium Glutamate",
@@ -4322,29 +3563,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recLCG6o7xvC3UfcR",
-      "name": "Monopotassium Glutamate"
-    },
-    "groupWith": {
-      "id": "recTkqOhv1wJ9EwIu",
-      "name": "Monopotassium Glutamate"
-    },
+    "displayAs": "Monopotassium Glutamate",
+    "groupWith": "Monopotassium Glutamate",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recICxKA50pXoLq4q",
-      "name": "Flavor Enhancer"
-    },
-    "supplementalAssist": {
-      "id": "recICxKA50pXoLq4q",
-      "name": "Flavor Enhancer"
-    },
-    "supplementalFacts": {
-      "id": "recJAhxb9MAskhLAK",
-      "name": "Monopotassium Glutamate"
-    },
+    "supplementalType": "Flavor Enhancer",
+    "supplementalAssist": "Flavor Enhancer",
+    "supplementalFacts": "Monopotassium Glutamate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4360,7 +3586,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Flavor enhancer sometimes used in pet foods; provides no nutritional value and is generally unnecessary in high-quality diets.",
     "cont-cf-explain-contentious": "Flavor enhancer sometimes used in pet foods; provides no nutritional value and is generally unnecessary in high-quality diets.",
-    "cont-cf-why-least": "Similar to MSG; flavor enhancer; avoided by some consumers"
+    "cont-cf-why-least": "Similar to MSG; flavor enhancer; avoided by some consumers",
+    "vitamins_derived": "",
+    "termDescription": "Flavor enhancer; palatability for kibble."
   },
   {
     "Name": "Mixed Tocopherols",
@@ -4369,11 +3597,7 @@
     "Item ID": "6852de69800623f710b6cb70",
     "canonical": "",
     "recordId": "recCoE5LyWDrAgjPt",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "mixed-tocopherols",
     "ingredientTerm": "Mixed Tocopherols",
@@ -4416,23 +3640,14 @@
       "LCCV8",
       "MNLTS"
     ],
-    "displayAs": {
-      "id": "recdaVIRGOt801Pfo",
-      "name": "Mixed Tocopherols"
-    },
-    "groupWith": {
-      "id": "recEmEqbrhpZ1zBkJ",
-      "name": "Mixed Tocopherols"
-    },
+    "displayAs": "Mixed Tocopherols",
+    "groupWith": "Mixed Tocopherols",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "reciy0a6OqzbTStMo",
-      "name": "Mixed Tocopherols"
-    },
+    "supplementalFacts": "Mixed Tocopherols",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4448,7 +3663,9 @@
     "va-cf-description": "Keeps food fresh with vitamin E",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin E",
+    "termDescription": "Antioxidant (Vitamin E family); natural preservative in kibble."
   },
   {
     "Name": "Manganese Sulfate",
@@ -4457,11 +3674,7 @@
     "Item ID": "6852de69318abe1736c12c5d",
     "canonical": "",
     "recordId": "rec7DBHa9w0bnRX8Q",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese-sulfate",
     "ingredientTerm": "Manganese Sulfate",
@@ -4497,29 +3710,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec4jujhLA47OHRut",
-      "name": "Manganese Sulfate"
-    },
-    "groupWith": {
-      "id": "recxoIpLn254kf59a",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese Sulfate",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "recMVBhqkJYHPqWVg",
-      "name": "Manganese Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Manganese Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4535,7 +3733,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Manganese",
+    "termDescription": "Standard manganese source; supports metabolism."
   },
   {
     "Name": "Manganese Proteinate",
@@ -4544,11 +3744,7 @@
     "Item ID": "6852de69452add3a87f5d06a",
     "canonical": "",
     "recordId": "reclcXMkGezzBwnCe",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese-proteinate",
     "ingredientTerm": "Manganese Proteinate",
@@ -4587,29 +3783,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckOvPw3TjCgXx59",
-      "name": "Manganese Proteinate"
-    },
-    "groupWith": {
-      "id": "recxoIpLn254kf59a",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese Proteinate",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "recSKjk1c56hScwEP",
-      "name": "Manganese Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Manganese Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4625,7 +3806,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Manganese",
+    "termDescription": "Manganese bound for absorption; bone/joint health."
   },
   {
     "Name": "Manganese Amino Acids Complex",
@@ -4634,11 +3817,7 @@
     "Item ID": "6852de69bb962f7d2fd9a575",
     "canonical": "",
     "recordId": "recAFucBnAJgmrstt",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acids-complex",
     "ingredientTerm": "Manganese Amino Acids Complex",
@@ -4700,29 +3879,14 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recpARERgXCewaeDG",
-      "name": "Manganese Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "recf7xf47UsigQ4YY",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese Amino Acids Complex",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
-    "supplementalFacts": {
-      "id": "recdEOFWCOPM5U3PN",
-      "name": "Manganese Amino Acids Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
+    "supplementalFacts": "Manganese Amino Acids Complex",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4738,7 +3902,9 @@
     "va-cf-description": "Bioavailable for bones & joints",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Manganese",
+    "termDescription": "Manganese bound for better absorption; joint, enzyme support."
   },
   {
     "Name": "Manganese Amino Acids Chelate",
@@ -4747,11 +3913,7 @@
     "Item ID": "6852de6a9954dd1860c0fccc",
     "canonical": "",
     "recordId": "recGXAcQCAiwt8qHb",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acids-chelate",
     "ingredientTerm": "Manganese Amino Acids Chelate",
@@ -4780,29 +3942,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reciOntlSHYGjzOXi",
-      "name": "Manganese Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recf7xf47UsigQ4YY",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese Amino Acids Chelate",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
-    "supplementalFacts": {
-      "id": "receMrVyDjNGPBZ6j",
-      "name": "Manganese Amino Acids Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
+    "supplementalFacts": "Manganese Amino Acids Chelate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4818,7 +3965,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Manganese",
+    "termDescription": "Highly bioavailable manganese; bone and joint health."
   },
   {
     "Name": "Magnesium Sulfate",
@@ -4827,11 +3976,7 @@
     "Item ID": "6852de68a33a5dda9cd2965b",
     "canonical": "",
     "recordId": "recKW7QRsYaotrfpO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "magnesium-sulfate",
     "ingredientTerm": "Magnesium Sulfate",
@@ -4860,29 +4005,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec7iot55u7XwlJhh",
-      "name": "Magnesium Sulfate"
-    },
-    "groupWith": {
-      "id": "recFMhBQfVOL6Id5j",
-      "name": "Magnesium"
-    },
+    "displayAs": "Magnesium Sulfate",
+    "groupWith": "Magnesium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "recEamLB4G9KucWYY",
-      "name": "Magnesium Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Magnesium Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4898,7 +4028,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Magnesium",
+    "termDescription": "Magnesium source for bone/nerve health."
   },
   {
     "Name": "Magnesium Proteinate",
@@ -4907,11 +4039,7 @@
     "Item ID": "6852de683e19af18187517fc",
     "canonical": "",
     "recordId": "rec0RVmAW6P0JzhrB",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "magnesium-proteinate",
     "ingredientTerm": "Magnesium Proteinate",
@@ -4940,29 +4068,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recU7Q1y7xsNtiHB1",
-      "name": "Magnesium Proteinate"
-    },
-    "groupWith": {
-      "id": "recFMhBQfVOL6Id5j",
-      "name": "Magnesium"
-    },
+    "displayAs": "Magnesium Proteinate",
+    "groupWith": "Magnesium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "rec8IytujcUqf8jp6",
-      "name": "Magnesium Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Magnesium Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -4978,7 +4091,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Magnesium",
+    "termDescription": "Highly available magnesium; better absorption."
   },
   {
     "Name": "Lactobacillus Plantarum Fermentation",
@@ -4987,11 +4102,7 @@
     "Item ID": "6852de68b87446e60974a658",
     "canonical": "",
     "recordId": "recBnebv9qM4ag2D0",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "lactobacillus-plantarum-fermentation",
     "ingredientTerm": "Lactobacillus Plantarum Fermentation",
@@ -5020,29 +4131,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recD9AuRayNunSBwE",
-      "name": "Lactobacillus Plantarum Fermentation"
-    },
-    "groupWith": {
-      "id": "recNtNcqw2YnLSl7P",
-      "name": "Lactobacillus Plantarum Fermentation"
-    },
+    "displayAs": "Lactobacillus Plantarum Fermentation",
+    "groupWith": "Lactobacillus Plantarum Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
-    "supplementalFacts": {
-      "id": "recSRfGAnABKsEVWL",
-      "name": "Lactobacillus Plantarum Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
+    "supplementalFacts": "Lactobacillus Plantarum Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5058,7 +4154,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; digestive and immune health."
   },
   {
     "Name": "Lactobacillus Casei Fermentation",
@@ -5067,11 +4165,7 @@
     "Item ID": "6852de68294d2ba1f19071cd",
     "canonical": "",
     "recordId": "recY6CpZjLb7uQhtp",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "lactobacillus-casei-fermentation",
     "ingredientTerm": "Lactobacillus Casei Fermentation",
@@ -5133,29 +4227,14 @@
       "UTHHC",
       "CSIRP"
     ],
-    "displayAs": {
-      "id": "recfuHcWCVnSaO4xY",
-      "name": "Lactobacillus Casei Fermentation"
-    },
-    "groupWith": {
-      "id": "recoV67Ums1s9WZym",
-      "name": "Lactobacillus Casei Fermentation"
-    },
+    "displayAs": "Lactobacillus Casei Fermentation",
+    "groupWith": "Lactobacillus Casei Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
-    "supplementalFacts": {
-      "id": "recVFofsAE0EQfpXR",
-      "name": "Lactobacillus Casei Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
+    "supplementalFacts": "Lactobacillus Casei Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5171,7 +4250,9 @@
     "va-cf-description": "Immune-boosting probiotics for gut health",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; aids digestion and immune response."
   },
   {
     "Name": "Lactobacillus Acidophilus Fermentation",
@@ -5180,11 +4261,7 @@
     "Item ID": "6852de68710ffb3af6eb401e",
     "canonical": "",
     "recordId": "recbpR8lWmI3rUapK",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "lactobacillus-acidophilus-fermentation",
     "ingredientTerm": "Lactobacillus Acidophilus Fermentation",
@@ -5246,29 +4323,14 @@
       "UTHHC",
       "CSIRP"
     ],
-    "displayAs": {
-      "id": "recY6d6RwCN6iOxiR",
-      "name": "Lactobacillus Acidophilus Fermentation"
-    },
-    "groupWith": {
-      "id": "recuPZNpBxibs2oXg",
-      "name": "Lactobacillus Acidophilus Fermentation"
-    },
+    "displayAs": "Lactobacillus Acidophilus Fermentation",
+    "groupWith": "Lactobacillus Acidophilus Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
-    "supplementalFacts": {
-      "id": "rec3njYi52C2by8iW",
-      "name": "Lactobacillus Acidophilus Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
+    "supplementalFacts": "Lactobacillus Acidophilus Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5284,7 +4346,9 @@
     "va-cf-description": "Digestive support for happy, healthy pup",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; promotes healthy gut bacteria."
   },
   {
     "Name": "L-Lysine",
@@ -5293,11 +4357,7 @@
     "Item ID": "6852de68c0559ffc73d6b70b",
     "canonical": "",
     "recordId": "recfgE7xoXpeKzyKM",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "l-lysine",
     "ingredientTerm": "L-Lysine",
@@ -5329,23 +4389,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recXGqOu3ylxTGVrA",
-      "name": "L-Lysine"
-    },
-    "groupWith": {
-      "id": "recI2Nl9x4of3eAJH",
-      "name": "L-Lysine"
-    },
+    "displayAs": "L-Lysine",
+    "groupWith": "L-Lysine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recDrA9Ec8LMqiHVc",
-      "name": "L-Lysine"
-    },
+    "supplementalFacts": "L-Lysine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5361,7 +4412,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Essential amino acid; supports muscle development and immune function."
   },
   {
     "Name": "L-carnitine",
@@ -5370,11 +4423,7 @@
     "Item ID": "6852de68295f4c148cf5431b",
     "canonical": "",
     "recordId": "rec2UzvsrfNW3U0K4",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "l-carnitine",
     "ingredientTerm": "L-carnitine",
@@ -5411,23 +4460,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recxPa5YOFaU86PPX",
-      "name": "L-carnitine"
-    },
-    "groupWith": {
-      "id": "recP1SUYVAdVhnD77",
-      "name": "L-carnitine"
-    },
+    "displayAs": "L-carnitine",
+    "groupWith": "L-carnitine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recshcTstUY1zqTS7",
-      "name": "L-carnitine"
-    },
+    "supplementalFacts": "L-carnitine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5443,7 +4483,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Amino acid-like compound; supports energy/fat metabolism in active dogs."
   },
   {
     "Name": "Iron Sulfate",
@@ -5452,11 +4494,7 @@
     "Item ID": "6852de68cd06eb51c74fda15",
     "canonical": "",
     "recordId": "recdl1E0i6ZnayYHz",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-sulfate",
     "ingredientTerm": "Iron Sulfate",
@@ -5493,29 +4531,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckTyrnv89Xx9SIR",
-      "name": "Iron Sulfate"
-    },
-    "groupWith": {
-      "id": "rec1zuH3OZpIW5u5j",
-      "name": "Iron"
-    },
+    "displayAs": "Iron Sulfate",
+    "groupWith": "Iron",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "recb2AYrYpkm9362x",
-      "name": "Iron Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Iron Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5531,7 +4554,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Standard iron source in pet food; supports blood formation."
   },
   {
     "Name": "Iron Proteinate",
@@ -5540,11 +4565,7 @@
     "Item ID": "6852de68b6bbe50d0b620d88",
     "canonical": "",
     "recordId": "recNdCco4XXmeClSm",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-proteinate",
     "ingredientTerm": "Iron Proteinate",
@@ -5576,29 +4597,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recJ9biJ0twKrt63v",
-      "name": "Iron Proteinate"
-    },
-    "groupWith": {
-      "id": "rec1zuH3OZpIW5u5j",
-      "name": "Iron"
-    },
+    "displayAs": "Iron Proteinate",
+    "groupWith": "Iron",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "recfKcWWofl3NzWmP",
-      "name": "Iron Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Iron Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5614,7 +4620,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Iron bound to protein; increases absorption for blood health."
   },
   {
     "Name": "Iron Amino Acids Complex",
@@ -5623,11 +4631,7 @@
     "Item ID": "6852de6790366403689fdd24",
     "canonical": "",
     "recordId": "rec1sIqGt0OXJebp3",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-amino-acids-complex",
     "ingredientTerm": "Iron Amino Acids Complex",
@@ -5695,29 +4699,14 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "rec7qMCZER9CH6TdG",
-      "name": "Iron Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "recIHQkhARxfNlxan",
-      "name": "Iron Amino Acids"
-    },
+    "displayAs": "Iron Amino Acids Complex",
+    "groupWith": "Iron Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
-    "supplementalFacts": {
-      "id": "recswFkGok3SC9t9O",
-      "name": "Iron Amino Acids Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
+    "supplementalFacts": "Iron Amino Acids Complex",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5733,7 +4722,9 @@
     "va-cf-description": "Vital iron for energy and healthy blood",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Iron supplement; more bioavailable form."
   },
   {
     "Name": "Iron Amino Acids Chelate",
@@ -5742,11 +4733,7 @@
     "Item ID": "6852de6777a123d992198236",
     "canonical": "",
     "recordId": "recctZE7IwwowddhT",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-amino-acids-chelate",
     "ingredientTerm": "Iron Amino Acids Chelate",
@@ -5775,29 +4762,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnzx4n59f5lf80G",
-      "name": "Iron Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recIHQkhARxfNlxan",
-      "name": "Iron Amino Acids"
-    },
+    "displayAs": "Iron Amino Acids Chelate",
+    "groupWith": "Iron Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
-    "supplementalFacts": {
-      "id": "recePRWX0hsOmVaDg",
-      "name": "Iron Amino Acids Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
+    "supplementalFacts": "Iron Amino Acids Chelate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5813,7 +4785,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Iron chelated with amino acids for improved absorption."
   },
   {
     "Name": "Inulin",
@@ -5822,11 +4796,7 @@
     "Item ID": "6852de67d44b1ff14365c787",
     "canonical": "",
     "recordId": "reckPKAXS2Om90DOH",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "inulin",
     "ingredientTerm": "Inulin",
@@ -5871,26 +4841,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwm69DNyr3Z6FF0",
-      "name": "Inulin"
-    },
-    "groupWith": {
-      "id": "recvvjEDh2qqiTgTz",
-      "name": "Inulin"
-    },
+    "displayAs": "Inulin",
+    "groupWith": "Inulin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recKcOPzXnUtwRtaT",
-      "name": "Prebiotic Fiber"
-    },
-    "supplementalFacts": {
-      "id": "recdNwQjozAbabQg2",
-      "name": "Inulin"
-    },
+    "supplementalAssist": "Prebiotic Fiber",
+    "supplementalFacts": "Inulin",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -5906,7 +4864,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Prebiotic fiber from chicory; supports healthy gut flora."
   },
   {
     "Name": "Hydrolyzed Yeast",
@@ -5915,11 +4875,7 @@
     "Item ID": "6852de67b866499c5c77faaa",
     "canonical": "",
     "recordId": "rectkwBDjzdzpg8TP",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-yeast",
     "ingredientTerm": "Hydrolyzed Yeast",
@@ -5978,26 +4934,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recx0najISPOXLe28",
-      "name": "Hydrolyzed Yeast"
-    },
-    "groupWith": {
-      "id": "recDuDoSi45TREsQI",
-      "name": "Hydrolyzed"
-    },
+    "displayAs": "Hydrolyzed Yeast",
+    "groupWith": "Hydrolyzed",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recQx37UyIUqfMU3L",
-      "name": "Yeast Derivative"
-    },
-    "supplementalFacts": {
-      "id": "recR6suKYSykj5Rkw",
-      "name": "Hydrolyzed Yeast"
-    },
+    "supplementalAssist": "Yeast Derivative",
+    "supplementalFacts": "Hydrolyzed Yeast",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6013,7 +4957,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Yeast broken down for flavor or palatability; highly processed and may cause sensitivities in some dogs.",
     "cont-cf-explain-contentious": "Yeast broken down for flavor or palatability; highly processed and may cause sensitivities in some dogs.",
-    "cont-cf-why-least": "Highly processed, rarely flagged but not “whole food”"
+    "cont-cf-why-least": "Highly processed, rarely flagged but not “whole food”",
+    "vitamins_derived": "",
+    "termDescription": "Broken down yeast; flavor, palatability, prebiotic."
   },
   {
     "Name": "Hydrolyzed Protein",
@@ -6022,11 +4968,7 @@
     "Item ID": "6852de6722513658079e0bd0",
     "canonical": "",
     "recordId": "recqIKKO3aBNQt1fj",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-protein",
     "ingredientTerm": "Hydrolyzed Protein",
@@ -6055,26 +4997,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recMv4JGsrBDRJztY",
-      "name": "Hydrolyzed Protein"
-    },
-    "groupWith": {
-      "id": "recDuDoSi45TREsQI",
-      "name": "Hydrolyzed"
-    },
+    "displayAs": "Hydrolyzed Protein",
+    "groupWith": "Hydrolyzed",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recJAJWCriSghgvpX",
-      "name": "Protein Hydrolysate"
-    },
-    "supplementalFacts": {
-      "id": "recWpbyvoNlT1LvQQ",
-      "name": "Hydrolyzed Protein"
-    },
+    "supplementalAssist": "Protein Hydrolysate",
+    "supplementalFacts": "Hydrolyzed Protein",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6090,7 +5020,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Protein broken down into smaller components for digestibility; highly processed and less preferred by some due to processing methods.",
     "cont-cf-explain-contentious": "Protein broken down into smaller components for digestibility; highly processed and less preferred by some due to processing methods.",
-    "cont-cf-why-least": "Highly processed; only needed for allergies, sometimes used as protein filler"
+    "cont-cf-why-least": "Highly processed; only needed for allergies, sometimes used as protein filler",
+    "vitamins_derived": "",
+    "termDescription": "Proteins broken down; used for hypoallergenic diets."
   },
   {
     "Name": "Glucosamine Hydrochloride",
@@ -6099,11 +5031,7 @@
     "Item ID": "6852de66c0559ffc73d6b687",
     "canonical": "",
     "recordId": "recsDvnheIyqv43xM",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "glucosamine-hydrochloride",
     "ingredientTerm": "Glucosamine Hydrochloride",
@@ -6144,26 +5072,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recONv6nZ4iwn2VYX",
-      "name": "Glucosamine Hydrochloride"
-    },
-    "groupWith": {
-      "id": "rech9gBHfhaQGx0xH",
-      "name": "Glucosamine"
-    },
+    "displayAs": "Glucosamine Hydrochloride",
+    "groupWith": "Glucosamine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
+    "supplementalType": "Minerals",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recXQ7WaTynhrBMjA",
-      "name": "Glucosamine Hydrochloride"
-    },
+    "supplementalFacts": "Glucosamine Hydrochloride",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6179,7 +5095,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Stabilized glucosamine; more bioavailable."
   },
   {
     "Name": "Glucosamine",
@@ -6188,11 +5106,7 @@
     "Item ID": "6852de66dca15ae03e036c31",
     "canonical": "",
     "recordId": "recArlto0WaoiPptH",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "glucosamine",
     "ingredientTerm": "Glucosamine",
@@ -6224,26 +5138,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rece66Wshgk0n7wCc",
-      "name": "Glucosamine"
-    },
-    "groupWith": {
-      "id": "rech9gBHfhaQGx0xH",
-      "name": "Glucosamine"
-    },
+    "displayAs": "Glucosamine",
+    "groupWith": "Glucosamine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
+    "supplementalType": "Minerals",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recSOIOLwB1x1V8X9",
-      "name": "Glucosamine"
-    },
+    "supplementalFacts": "Glucosamine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6259,7 +5161,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Joint health supplement; supports cartilage, mobility."
   },
   {
     "Name": "Fructooligosaccharide",
@@ -6268,11 +5172,7 @@
     "Item ID": "6852de669cc8ccb5011c548f",
     "canonical": "",
     "recordId": "recHBAZm0eAp4GUVa",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "fructooligosaccharides",
     "ingredientTerm": "Fructooligosaccharides",
@@ -6308,23 +5208,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recWtfZUXhL3GEIM7",
-      "name": "Fructooligosaccharide"
-    },
-    "groupWith": {
-      "id": "recPPEwbr4wSA5t9G",
-      "name": "Fructooligosaccharides"
-    },
+    "displayAs": "Fructooligosaccharide",
+    "groupWith": "Fructooligosaccharides",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "rec3pdPWfqJqK0oMR",
-      "name": "Fructooligosaccharides"
-    },
+    "supplementalFacts": "Fructooligosaccharides",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6340,7 +5231,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Prebiotic fiber; gut health, digestion."
   },
   {
     "Name": "Folic Acid",
@@ -6349,11 +5242,7 @@
     "Item ID": "6852de663e6843326ff443d0",
     "canonical": "",
     "recordId": "recAK1yEKecUMbfOa",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "folic-acid",
     "ingredientTerm": "Folic Acid",
@@ -6426,29 +5315,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "rec0Gi7bZ77Yr2sqX",
-      "name": "Folic Acid"
-    },
-    "groupWith": {
-      "id": "recY1Il4sozaELuUA",
-      "name": "Folic Acid"
-    },
+    "displayAs": "Folic Acid",
+    "groupWith": "Folic Acid",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "receHeFMUjuoW8Tli",
-      "name": "Vitamin B9"
-    },
-    "supplementalFacts": {
-      "id": "recY5m2of92Iv4yW1",
-      "name": "Folic Acid"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B9",
+    "supplementalFacts": "Folic Acid",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6464,7 +5338,9 @@
     "va-cf-description": "Promotes growth & healthy metabolism",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B9",
+    "termDescription": "B-vitamin; important for cell growth and metabolism."
   },
   {
     "Name": "Ferrous Sulfate",
@@ -6473,11 +5349,7 @@
     "Item ID": "6852de669cc8ccb5011c5479",
     "canonical": "",
     "recordId": "rec9aDEoQkcABOL4j",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "ferrous-sulfate",
     "ingredientTerm": "Ferrous Sulfate",
@@ -6528,29 +5400,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec70K36m9evmQnWm",
-      "name": "Ferrous Sulfate"
-    },
-    "groupWith": {
-      "id": "rec7cj0mqQ24kUIHt",
-      "name": "Ferrous"
-    },
+    "displayAs": "Ferrous Sulfate",
+    "groupWith": "Ferrous",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "rechooxq5FAKqz9nM",
-      "name": "Ferrous Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Ferrous Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6566,7 +5423,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Iron supplement; supports red blood cell production."
   },
   {
     "Name": "Ferrous Proteinate",
@@ -6575,11 +5434,7 @@
     "Item ID": "6852de665b5126b6a541b62a",
     "canonical": "",
     "recordId": "recssaBSTXFOrSkUH",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "ferrous-proteinate",
     "ingredientTerm": "Ferrous Proteinate",
@@ -6608,29 +5463,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recb9c8o9JVxXuiVO",
-      "name": "Ferrous Proteinate"
-    },
-    "groupWith": {
-      "id": "rec7cj0mqQ24kUIHt",
-      "name": "Ferrous"
-    },
+    "displayAs": "Ferrous Proteinate",
+    "groupWith": "Ferrous",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "recF0Z0i64XjzfgZa",
-      "name": "Ferrous Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Ferrous Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6646,7 +5486,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Highly absorbable iron supplement."
   },
   {
     "Name": "Ferrous Glycine",
@@ -6655,11 +5497,7 @@
     "Item ID": "6852de66bc674662de8bdc42",
     "canonical": "",
     "recordId": "rec7jUaTxQKDcAird",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "ferrous-glycine",
     "ingredientTerm": "Ferrous Glycine",
@@ -6692,29 +5530,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTU0XGOfE3yIxuX",
-      "name": "Ferrous Glycine"
-    },
-    "groupWith": {
-      "id": "recTWKvTxyLF0OyGj",
-      "name": "Ferrous"
-    },
+    "displayAs": "Ferrous Glycine",
+    "groupWith": "Ferrous",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recrGM4l41AMX9pQC",
-      "name": "Glycine"
-    },
-    "supplementalFacts": {
-      "id": "reckxiLRz4bmCra24",
-      "name": "Ferrous Glycine"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Glycine",
+    "supplementalFacts": "Ferrous Glycine",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6730,7 +5553,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iron",
+    "termDescription": "Iron chelate; highly bioavailable for blood support."
   },
   {
     "Name": "Enterococcus Faecium Fermentation",
@@ -6739,11 +5564,7 @@
     "Item ID": "6852de654b98576e8eb1fcd1",
     "canonical": "",
     "recordId": "recKT0Irj8P6hFcYr",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "enterococcus-faecium-fermentation",
     "ingredientTerm": "Enterococcus Faecium Fermentation",
@@ -6805,29 +5626,14 @@
       "UTHHC",
       "CSIRP"
     ],
-    "displayAs": {
-      "id": "recDimATSHX1TTBYt",
-      "name": "Enterococcus Faecium Fermentation"
-    },
-    "groupWith": {
-      "id": "recWDufLDDynt8GWL",
-      "name": "Enterococcus Faecium Fermentation"
-    },
+    "displayAs": "Enterococcus Faecium Fermentation",
+    "groupWith": "Enterococcus Faecium Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
-    "supplementalFacts": {
-      "id": "recrOWhlUYknIcfvn",
-      "name": "Enterococcus Faecium Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
+    "supplementalFacts": "Enterococcus Faecium Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6843,7 +5649,9 @@
     "va-cf-description": "Supports healthy digestion & immunity",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; aids digestion and supports immune function."
   },
   {
     "Name": "D-calcium Pantothenate",
@@ -6852,11 +5660,7 @@
     "Item ID": "6852de6498a022ae6b035660",
     "canonical": "",
     "recordId": "recVIU1tGVeJsq0xJ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "d-calcium-pantothenate",
     "ingredientTerm": "D-calcium Pantothenate",
@@ -6919,29 +5723,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recwbKDIQ8nwyLVUC",
-      "name": "D-calcium Pantothenate"
-    },
-    "groupWith": {
-      "id": "rec2UhiMlmDzj0gQA",
-      "name": "D-calcium Pantothenate"
-    },
+    "displayAs": "D-calcium Pantothenate",
+    "groupWith": "D-calcium Pantothenate",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
-    "supplementalFacts": {
-      "id": "recWyWDvG0n3eRetr",
-      "name": "D-calcium Pantothenate"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
+    "supplementalFacts": "D-calcium Pantothenate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -6957,7 +5746,9 @@
     "va-cf-description": "Supports healthy metabolism & vitality",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B5",
+    "termDescription": "B-vitamin; supports metabolism, energy production."
   },
   {
     "Name": "Copper Sulfate",
@@ -6966,11 +5757,7 @@
     "Item ID": "6852de645da6b3b7223ea746",
     "canonical": "",
     "recordId": "recqiQF92glP555iX",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-sulfate",
     "ingredientTerm": "Copper Sulfate",
@@ -7021,29 +5808,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnDFBEwM0yHzyKX",
-      "name": "Copper Sulfate"
-    },
-    "groupWith": {
-      "id": "recw0pTZdFG3M9VSr",
-      "name": "Copper"
-    },
+    "displayAs": "Copper Sulfate",
+    "groupWith": "Copper",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "rec1Mj5qi6glhluoP",
-      "name": "Sulfate"
-    },
-    "supplementalFacts": {
-      "id": "recAnkQV4dwyTXcas",
-      "name": "Copper Sulfate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Sulfate",
+    "supplementalFacts": "Copper Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7059,7 +5831,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Copper",
+    "termDescription": "Inorganic copper; standard trace mineral."
   },
   {
     "Name": "Copper Proteinate",
@@ -7068,11 +5842,7 @@
     "Item ID": "6852de64297ed262c29563d3",
     "canonical": "",
     "recordId": "rec7zgb2TCUxK3wTW",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-proteinate",
     "ingredientTerm": "Copper Proteinate",
@@ -7113,29 +5883,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recykCGYbXv4ctdra",
-      "name": "Copper Proteinate"
-    },
-    "groupWith": {
-      "id": "recw0pTZdFG3M9VSr",
-      "name": "Copper"
-    },
+    "displayAs": "Copper Proteinate",
+    "groupWith": "Copper",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recSwvU5ucONhrxm0",
-      "name": "Proteinate"
-    },
-    "supplementalFacts": {
-      "id": "rec0f4LWQxk3GCHnf",
-      "name": "Copper Proteinate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Proteinate",
+    "supplementalFacts": "Copper Proteinate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7151,7 +5906,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Copper",
+    "termDescription": "Copper bound for absorption; blood, coat, immune."
   },
   {
     "Name": "Copper Amino Acids Complex",
@@ -7160,11 +5917,7 @@
     "Item ID": "6852de64800623f710b6c840",
     "canonical": "",
     "recordId": "reckhdIUDttqJ76f7",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-amino-acids-complex",
     "ingredientTerm": "Copper Amino Acids Complex",
@@ -7226,29 +5979,14 @@
       "CSIRP",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recNfloiUVYEpWSo6",
-      "name": "Copper Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "recZSz7ifJW5lBMye",
-      "name": "Copper Amino Acids"
-    },
+    "displayAs": "Copper Amino Acids Complex",
+    "groupWith": "Copper Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
-    "supplementalFacts": {
-      "id": "recUYL6NMOQnj3jfJ",
-      "name": "Copper Amino Acids Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
+    "supplementalFacts": "Copper Amino Acids Complex",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7264,7 +6002,9 @@
     "va-cf-description": "Copper for immune/connective tissue",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Copper",
+    "termDescription": "Bioavailable copper supplement; supports blood, bones, coat."
   },
   {
     "Name": "Copper Amino Acids Chelate",
@@ -7273,11 +6013,7 @@
     "Item ID": "6852de64394736d0de22c609",
     "canonical": "",
     "recordId": "recTLJhoDvE97tIg4",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-amino-acids-chelate",
     "ingredientTerm": "Copper Amino Acids Chelate",
@@ -7306,29 +6042,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "receTbVJKBgTvZzXT",
-      "name": "Copper Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recZSz7ifJW5lBMye",
-      "name": "Copper Amino Acids"
-    },
+    "displayAs": "Copper Amino Acids Chelate",
+    "groupWith": "Copper Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
-    "supplementalFacts": {
-      "id": "recGlk1LftrLu6SFJ",
-      "name": "Copper Amino Acids Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
+    "supplementalFacts": "Copper Amino Acids Chelate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7344,7 +6065,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Copper",
+    "termDescription": "Highly absorbable copper bound to amino acids."
   },
   {
     "Name": "Citric Acid",
@@ -7353,11 +6076,7 @@
     "Item ID": "6852de649d363835607c4655",
     "canonical": "",
     "recordId": "recdux3U38bUKe2JS",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "citric-acid",
     "ingredientTerm": "Citric Acid",
@@ -7386,29 +6105,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recIieFxTonv62HkK",
-      "name": "Citric Acid"
-    },
-    "groupWith": {
-      "id": "recdO1En67pVTgrvh",
-      "name": "Citric Acid"
-    },
+    "displayAs": "Citric Acid",
+    "groupWith": "Citric Acid",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recs62jhEw7A4hFMt",
-      "name": "Preservative"
-    },
-    "supplementalAssist": {
-      "id": "recs62jhEw7A4hFMt",
-      "name": "Preservative"
-    },
-    "supplementalFacts": {
-      "id": "rec4Njx9uS3oU69cu",
-      "name": "Citric Acid"
-    },
+    "supplementalType": "Preservative",
+    "supplementalAssist": "Preservative",
+    "supplementalFacts": "Citric Acid",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7424,7 +6128,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Added as a preservative or flavor enhancer; generally safe, but some owners prefer fewer synthetic additives.",
     "cont-cf-explain-contentious": "Added as a preservative or flavor enhancer; generally safe, but some owners prefer fewer synthetic additives.",
-    "cont-cf-why-least": "Preservative; controversial only for bloat risk in large dogs if moistened"
+    "cont-cf-why-least": "Preservative; controversial only for bloat risk in large dogs if moistened",
+    "vitamins_derived": "",
+    "termDescription": "Natural preservative; extends shelf life."
   },
   {
     "Name": "Chondroitin Sulfate",
@@ -7433,11 +6139,7 @@
     "Item ID": "6852de64d8f89ad1bf16f95e",
     "canonical": "",
     "recordId": "recnSvurvrGW9WqMn",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "chondroitin-sulfate",
     "ingredientTerm": "Chondroitin Sulfate",
@@ -7478,23 +6180,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec1gBu4pd09Y1Kvh",
-      "name": "Chondroitin Sulfate"
-    },
-    "groupWith": {
-      "id": "recEn16jcf8xcdwEs",
-      "name": "Chondroitin"
-    },
+    "displayAs": "Chondroitin Sulfate",
+    "groupWith": "Chondroitin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "recKMUS77SIR8F7iL",
-      "name": "Chondroitin Sulfate"
-    },
+    "supplementalFacts": "Chondroitin Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7510,7 +6203,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Sulfated form; more bioavailable joint support."
   },
   {
     "Name": "Chondroitin",
@@ -7519,11 +6214,7 @@
     "Item ID": "6852de64c0559ffc73d6b542",
     "canonical": "",
     "recordId": "rec3gBrZm4AfXQLsB",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "chondroitin",
     "ingredientTerm": "Chondroitin",
@@ -7552,23 +6243,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckQvYkUsy4sluoI",
-      "name": "Chondroitin"
-    },
-    "groupWith": {
-      "id": "recEn16jcf8xcdwEs",
-      "name": "Chondroitin"
-    },
+    "displayAs": "Chondroitin",
+    "groupWith": "Chondroitin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "reczfATrAdJo5HPfO",
-      "name": "Chondroitin"
-    },
+    "supplementalFacts": "Chondroitin",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7584,7 +6266,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Joint supplement; supports cartilage and mobility."
   },
   {
     "Name": "Choline Chloride",
@@ -7593,11 +6277,7 @@
     "Item ID": "6852de64a84d5630e776131c",
     "canonical": "",
     "recordId": "recUAB8cDPzMQkPny",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "choline-chloride",
     "ingredientTerm": "Choline Chloride",
@@ -7664,29 +6344,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recaNLAMBTLhkJUQl",
-      "name": "Choline Chloride"
-    },
-    "groupWith": {
-      "id": "recGzMIrOw4AqIbzw",
-      "name": "Choline"
-    },
+    "displayAs": "Choline Chloride",
+    "groupWith": "Choline",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recKAP8Set4FbHeaP",
-      "name": "Nutrient"
-    },
-    "supplementalAssist": {
-      "id": "recAwlongIZ4BSeBS",
-      "name": "Chloride"
-    },
-    "supplementalFacts": {
-      "id": "rec92t5pWhkqjJvxq",
-      "name": "Choline Chloride"
-    },
+    "supplementalType": "Nutrient",
+    "supplementalAssist": "Chloride",
+    "supplementalFacts": "Choline Chloride",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7702,7 +6367,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Choline",
+    "termDescription": "Synthetic form of choline; aids metabolism and nervous system."
   },
   {
     "Name": "Choline",
@@ -7711,11 +6378,7 @@
     "Item ID": "6852de63a33a5dda9cd29434",
     "canonical": "",
     "recordId": "recQlwVwCFTxgJdKZ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "choline",
     "ingredientTerm": "Choline",
@@ -7744,29 +6407,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec6pCaDFPaCpAtJC",
-      "name": "Choline"
-    },
-    "groupWith": {
-      "id": "recGzMIrOw4AqIbzw",
-      "name": "Choline"
-    },
+    "displayAs": "Choline",
+    "groupWith": "Choline",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recKAP8Set4FbHeaP",
-      "name": "Nutrient"
-    },
-    "supplementalAssist": {
-      "id": "recAwlongIZ4BSeBS",
-      "name": "Chloride"
-    },
-    "supplementalFacts": {
-      "id": "recNJ5WYNT78wqGoY",
-      "name": "Choline"
-    },
+    "supplementalType": "Nutrient",
+    "supplementalAssist": "Chloride",
+    "supplementalFacts": "Choline",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7782,7 +6430,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Choline",
+    "termDescription": "Essential nutrient for nerve and brain function."
   },
   {
     "Name": "Cellulose",
@@ -7791,11 +6441,7 @@
     "Item ID": "6852de633873479f9e2f4308",
     "canonical": "",
     "recordId": "recrRBFGotdqWjehA",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "cellulose",
     "ingredientTerm": "Cellulose",
@@ -7824,26 +6470,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec4pa6ffnmbSdS9T",
-      "name": "Cellulose"
-    },
-    "groupWith": {
-      "id": "recGvnxTD6ixDpUSC",
-      "name": "Cellulose"
-    },
+    "displayAs": "Cellulose",
+    "groupWith": "Cellulose",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recCy5jfO4FUhFYAK",
-      "name": "Fiber"
-    },
-    "supplementalFacts": {
-      "id": "recnM1ajf3Sp8Z9R3",
-      "name": "Cellulose"
-    },
+    "supplementalAssist": "Fiber",
+    "supplementalFacts": "Cellulose",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7859,7 +6493,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Plant fiber, often used as a bulking agent; adds little nutritional value and may reduce digestibility if used in excess.",
     "cont-cf-explain-contentious": "Sawdust-like filler, no nutrition",
-    "cont-cf-why-least": "Filler from wood pulp; no nutrition; considered “sawdust” by critics"
+    "cont-cf-why-least": "Filler from wood pulp; no nutrition; considered “sawdust” by critics",
+    "vitamins_derived": "",
+    "termDescription": "Plant fiber; aids digestion and stool formation."
   },
   {
     "Name": "Caramel",
@@ -7868,11 +6504,7 @@
     "Item ID": "6852de636efaf46f1ed19398",
     "canonical": "",
     "recordId": "recEBcjtE0mztnj5k",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "caramel",
     "ingredientTerm": "Caramel",
@@ -7901,29 +6533,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec87o6W52C5BepvK",
-      "name": "Caramel"
-    },
-    "groupWith": {
-      "id": "recwKOqzcY2tqa6eN",
-      "name": "Caramel"
-    },
+    "displayAs": "Caramel",
+    "groupWith": "Caramel",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recp210AxbOXFZolv",
-      "name": "Colorant"
-    },
-    "supplementalAssist": {
-      "id": "recp210AxbOXFZolv",
-      "name": "Colorant"
-    },
-    "supplementalFacts": {
-      "id": "rec2BA4zcASXs2kHi",
-      "name": "Caramel"
-    },
+    "supplementalType": "Colorant",
+    "supplementalAssist": "Colorant",
+    "supplementalFacts": "Caramel",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -7939,7 +6556,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Used as a colorant, does not add nutritional value and may be considered unnecessary.\n(Duplicate) Used as a colorant; provides no nutritional benefit and sometimes seen as unnecessary.",
     "cont-cf-explain-contentious": "Just for color, adds nothing for your dog",
-    "cont-cf-why-least": "Artificial color, no nutritional value"
+    "cont-cf-why-least": "Artificial color, no nutritional value",
+    "vitamins_derived": "",
+    "termDescription": "Natural coloring for kibble; improves appearance."
   },
   {
     "Name": "Calcium Sulfate",
@@ -7948,11 +6567,7 @@
     "Item ID": "6852de64f0589dda767b3e64",
     "canonical": "",
     "recordId": "recyDWHVmU0gxrOAQ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-sulfate",
     "ingredientTerm": "Calcium Sulfate",
@@ -7981,29 +6596,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recYOzx52chJql8Oi",
-      "name": "Calcium Sulfate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Sulfate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec1zXonD4XCXEFfp",
-      "name": "Preservative"
-    },
-    "supplementalAssist": {
-      "id": "recbi6aLSvK9IpL5s",
-      "name": "Propionate"
-    },
-    "supplementalFacts": {
-      "id": "recMFjMZOAslLiU74",
-      "name": "Calcium Sulfate"
-    },
+    "supplementalType": "Preservative",
+    "supplementalAssist": "Propionate",
+    "supplementalFacts": "Calcium Sulfate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8019,7 +6619,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Calcium",
+    "termDescription": "Source of calcium; used for bone health and nutrition."
   },
   {
     "Name": "Calcium Stearate",
@@ -8028,11 +6630,7 @@
     "Item ID": "6852de63d8f89ad1bf16f93b",
     "canonical": "",
     "recordId": "recrurtDHURkMiCcw",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-stearate",
     "ingredientTerm": "Calcium Stearate",
@@ -8071,26 +6669,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGvSNvcSy0nxUah",
-      "name": "Calcium Stearate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Stearate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recetvfXNI2MJZvEX",
-      "name": "Stearate"
-    },
-    "supplementalFacts": {
-      "id": "recgeNsC5e3GQMnXV",
-      "name": "Calcium Stearate"
-    },
+    "supplementalAssist": "Stearate",
+    "supplementalFacts": "Calcium Stearate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8106,7 +6692,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Calcium",
+    "termDescription": "Flow agent; improves ingredient mixing in kibble."
   },
   {
     "Name": "Calcium Propionate",
@@ -8115,11 +6703,7 @@
     "Item ID": "6852de63e10896bbb7d676b4",
     "canonical": "",
     "recordId": "recW7aBSzbGn8CbAD",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-propionate",
     "ingredientTerm": "Calcium Propionate",
@@ -8156,29 +6740,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recFqIsLrX1cJYbK9",
-      "name": "Calcium Propionate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Propionate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec1zXonD4XCXEFfp",
-      "name": "Preservative"
-    },
-    "supplementalAssist": {
-      "id": "recbi6aLSvK9IpL5s",
-      "name": "Propionate"
-    },
-    "supplementalFacts": {
-      "id": "rec6wHmXQYCwf5mya",
-      "name": "Calcium Propionate"
-    },
+    "supplementalType": "Preservative",
+    "supplementalAssist": "Propionate",
+    "supplementalFacts": "Calcium Propionate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8194,7 +6763,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Calcium",
+    "termDescription": "Preservative; prevents mold and spoilage in kibble."
   },
   {
     "Name": "Calcium Pantothenate",
@@ -8203,11 +6774,7 @@
     "Item ID": "6852de633c7ff6d7508adf8c",
     "canonical": "",
     "recordId": "recfR1Qy8IZ4UIc8H",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-pantothenate",
     "ingredientTerm": "Calcium Pantothenate",
@@ -8246,29 +6813,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec87LPly96ODSdYR",
-      "name": "Calcium Pantothenate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Pantothenate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
-    "supplementalAssist": {
-      "id": "recr1Egpj4jr2eyPH",
-      "name": "Pantothenate"
-    },
-    "supplementalFacts": {
-      "id": "rec0hTxhCLxEzDu8U",
-      "name": "Calcium Pantothenate"
-    },
+    "supplementalType": "Vitamin B5",
+    "supplementalAssist": "Pantothenate",
+    "supplementalFacts": "Calcium Pantothenate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8284,7 +6836,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B5",
+    "termDescription": "B5 vitamin; metabolism, energy."
   },
   {
     "Name": "Calcium Iodate",
@@ -8293,11 +6847,7 @@
     "Item ID": "6852de63e1e8249a5238d0a3",
     "canonical": "",
     "recordId": "recRDOiSWeW5awE1M",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-iodate",
     "ingredientTerm": "Calcium Iodate",
@@ -8343,26 +6893,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec5G2PMv2Obcqc5g",
-      "name": "Calcium Iodate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Iodate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recMqToiPfrLMjk1s",
-      "name": "Iodate"
-    },
-    "supplementalFacts": {
-      "id": "recnTPshtI9GcBwWa",
-      "name": "Calcium Iodate"
-    },
+    "supplementalAssist": "Iodate",
+    "supplementalFacts": "Calcium Iodate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8378,7 +6916,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Iodine",
+    "termDescription": "Iodine supplement; supports thyroid function."
   },
   {
     "Name": "Calcium Carbonate",
@@ -8387,11 +6927,7 @@
     "Item ID": "6852de63b4e222956b26bf30",
     "canonical": "",
     "recordId": "rec3aBgkSyNZkZc6H",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "calcium-carbonate",
     "ingredientTerm": "Calcium Carbonate",
@@ -8441,26 +6977,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recA41KJXXk7oOQnE",
-      "name": "Calcium Carbonate"
-    },
-    "groupWith": {
-      "id": "recz0N7Lyp9MVM8Pz",
-      "name": "Calcium"
-    },
+    "displayAs": "Calcium Carbonate",
+    "groupWith": "Calcium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "recMzfkyN2kk23Yyx",
-      "name": "Carbonate"
-    },
-    "supplementalFacts": {
-      "id": "rec7gUVhaaNtQh28F",
-      "name": "Calcium Carbonate"
-    },
+    "supplementalAssist": "Carbonate",
+    "supplementalFacts": "Calcium Carbonate",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8476,7 +7000,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Calcium",
+    "termDescription": "Calcium source; bone health, mineral balance."
   },
   {
     "Name": "Brewers Yeast",
@@ -8485,11 +7011,7 @@
     "Item ID": "6852de63ab84eeeb98ea5b11",
     "canonical": "",
     "recordId": "recLGQqUP8GIgl5KA",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "brewers-yeast",
     "ingredientTerm": "Brewers Yeast",
@@ -8518,26 +7040,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec2zP7iJBoudbod1",
-      "name": "Brewers Yeast"
-    },
-    "groupWith": {
-      "id": "rec0XgayekEC8LAxC",
-      "name": "Brewers Yeast"
-    },
+    "displayAs": "Brewers Yeast",
+    "groupWith": "Brewers Yeast",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalFacts": {
-      "id": "recORBFixrJw81cIt",
-      "name": "Brewers Yeast"
-    },
+    "supplementalAssist": "Yeast",
+    "supplementalFacts": "Brewers Yeast",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8553,7 +7063,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B-vitamins",
+    "termDescription": "Nutritional yeast; source of B-vitamins, protein, flavor."
   },
   {
     "Name": "Brewers Dried Yeast",
@@ -8562,11 +7074,7 @@
     "Item ID": "6852de631c3923f51f2407a8",
     "canonical": "",
     "recordId": "recoXfaQdwVMlnDrx",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "brewers-dried-yeast",
     "ingredientTerm": "Brewers Dried Yeast",
@@ -8611,26 +7119,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqvFDIFtvs8Q2PB",
-      "name": "Brewers Dried Yeast"
-    },
-    "groupWith": {
-      "id": "rec0XgayekEC8LAxC",
-      "name": "Brewers Yeast"
-    },
+    "displayAs": "Brewers Dried Yeast",
+    "groupWith": "Brewers Yeast",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
     "supplementalType": "",
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalFacts": {
-      "id": "recAgUsdYGfC7mjvl",
-      "name": "Brewers Dried Yeast"
-    },
+    "supplementalAssist": "Yeast",
+    "supplementalFacts": "Brewers Dried Yeast",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8646,7 +7142,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B-vitamins",
+    "termDescription": "Dried yeast; palatability and B-vitamin source."
   },
   {
     "Name": "Biotin",
@@ -8655,11 +7153,7 @@
     "Item ID": "6852de63b6bbe50d0b620a91",
     "canonical": "",
     "recordId": "rec80Xq1OPX9yd8cG",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "biotin",
     "ingredientTerm": "Biotin",
@@ -8735,29 +7229,14 @@
       "UTHHC",
       "EA62U"
     ],
-    "displayAs": {
-      "id": "recaGA3tY8AXQAyZx",
-      "name": "Biotin"
-    },
-    "groupWith": {
-      "id": "recmSVPYAsqtnAQzo",
-      "name": "Biotin"
-    },
+    "displayAs": "Biotin",
+    "groupWith": "Biotin",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recjqDGE3Pdg0rhI9",
-      "name": "Vitamin B7"
-    },
-    "supplementalFacts": {
-      "id": "recY040OnBxVtAKxl",
-      "name": "Biotin"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B7",
+    "supplementalFacts": "Biotin",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8773,7 +7252,9 @@
     "va-cf-description": "Healthy skin and shiny coat",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin B7",
+    "termDescription": "B-vitamin, supports skin/coat health and metabolism."
   },
   {
     "Name": "Bacillus Subtilis Fermentation",
@@ -8782,11 +7263,7 @@
     "Item ID": "6852de62f313362503655377",
     "canonical": "",
     "recordId": "recrarl1XW7TpsCog",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "bacillus-subtilis-fermentation",
     "ingredientTerm": "Bacillus Subtilis Fermentation",
@@ -8815,29 +7292,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckKMOOE9OXzxL2L",
-      "name": "Bacillus Subtilis Fermentation"
-    },
-    "groupWith": {
-      "id": "recVE2OJKSmjN1GA1",
-      "name": "Bacillus Subtilis Fermentation"
-    },
+    "displayAs": "Bacillus Subtilis Fermentation",
+    "groupWith": "Bacillus Subtilis Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
-    "supplementalFacts": {
-      "id": "recon4EaKJxGlCdwv",
-      "name": "Bacillus Subtilis Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
+    "supplementalFacts": "Bacillus Subtilis Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8853,7 +7315,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; supports digestion, immune function."
   },
   {
     "Name": "Bacillus Coagulans Fermentation",
@@ -8862,11 +7326,7 @@
     "Item ID": "6852de63f16d0de462c02d56",
     "canonical": "",
     "recordId": "recjZ6uGL512eS2bJ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "bacillus-coagulans-fermentation",
     "ingredientTerm": "Bacillus Coagulans Fermentation",
@@ -8895,26 +7355,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTCeBgmMT2HoD0L",
-      "name": "Bacillus Coagulans Fermentation"
-    },
-    "groupWith": {
-      "id": "recTqNATyXqa479iT",
-      "name": "Bacillus Coagulans Fermentation"
-    },
+    "displayAs": "Bacillus Coagulans Fermentation",
+    "groupWith": "Bacillus Coagulans Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
+    "supplementalType": "Probiotics",
     "supplementalAssist": "",
-    "supplementalFacts": {
-      "id": "reckrxnEzJ8Safrpq",
-      "name": "Bacillus Coagulans Fermentation"
-    },
+    "supplementalFacts": "Bacillus Coagulans Fermentation",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -8930,7 +7378,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Probiotic; gut health, immune support."
   },
   {
     "Name": "Autolyzed Yeast",
@@ -8939,11 +7389,7 @@
     "Item ID": "6852de6204de8a81b60c1695",
     "canonical": "",
     "recordId": "recCLYKkvuY5QJO9S",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "autolyzed-yeast",
     "ingredientTerm": "Autolyzed Yeast",
@@ -8972,29 +7418,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnRiPWTAyTvG2mM",
-      "name": "Autolyzed Yeast"
-    },
-    "groupWith": {
-      "id": "rec4mnwxbvt29Ds5t",
-      "name": "Autolyzed Yeast"
-    },
+    "displayAs": "Autolyzed Yeast",
+    "groupWith": "Autolyzed Yeast",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recQx37UyIUqfMU3L",
-      "name": "Yeast Derivative"
-    },
-    "supplementalAssist": {
-      "id": "recQx37UyIUqfMU3L",
-      "name": "Yeast Derivative"
-    },
-    "supplementalFacts": {
-      "id": "recesdIF3xXVkm6R5",
-      "name": "Autolyzed Yeast"
-    },
+    "supplementalType": "Yeast Derivative",
+    "supplementalAssist": "Yeast Derivative",
+    "supplementalFacts": "Autolyzed Yeast",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -9010,7 +7441,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Flavor enhancer produced from yeast breakdown; may be used for palatability but can cause sensitivities in some dogs.",
     "cont-cf-explain-contentious": "Flavor enhancer produced from yeast breakdown; may be used for palatability but can cause sensitivities in some dogs.",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": "Yeast broken down for flavor, prebiotic effect."
   },
   {
     "Name": "Ascorbic Acid",
@@ -9019,11 +7452,7 @@
     "Item ID": "6852de627b7df7787faecc50",
     "canonical": "",
     "recordId": "recP1elPrzeljUDBS",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "ascorbic-acid",
     "ingredientTerm": "Ascorbic Acid",
@@ -9064,29 +7493,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recCW1XEcnlNeQ7Oq",
-      "name": "Ascorbic Acid"
-    },
-    "groupWith": {
-      "id": "recEjaZw8UPe3F5JZ",
-      "name": "Ascorbic Acid"
-    },
+    "displayAs": "Ascorbic Acid",
+    "groupWith": "Ascorbic Acid",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recaOjvdR0uckEmT4",
-      "name": "Vitamin C"
-    },
-    "supplementalFacts": {
-      "id": "rec2zXxaUi84gsft9",
-      "name": "Ascorbic Acid"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin C",
+    "supplementalFacts": "Ascorbic Acid",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -9102,7 +7516,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "A synthetic form of vitamin C; generally safe but sometimes included to boost nutrient claims rather than as a meaningful health benefit.",
     "cont-cf-explain-contentious": "A synthetic form of vitamin C; generally safe but sometimes included to boost nutrient claims rather than as a meaningful health benefit.",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "Vitamin C",
+    "termDescription": "Vitamin C; antioxidant and immune support."
   },
   {
     "Name": "Animal Digest",
@@ -9111,11 +7527,7 @@
     "Item ID": "6852de629422f8d80a9de4b4",
     "canonical": "",
     "recordId": "recfsWR8ZQBmTDpRO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "animal-digest",
     "ingredientTerm": "Animal Digest",
@@ -9144,29 +7556,14 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnQfjY3lUsRSGD5",
-      "name": "Animal Digest"
-    },
-    "groupWith": {
-      "id": "reclnBWl6Vyt8hyII",
-      "name": "Animal Digest"
-    },
+    "displayAs": "Animal Digest",
+    "groupWith": "Animal Digest",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recUJYVGGwxj4bXzO",
-      "name": "Digestive Enzyme"
-    },
-    "supplementalAssist": {
-      "id": "recUJYVGGwxj4bXzO",
-      "name": "Digestive Enzyme"
-    },
-    "supplementalFacts": {
-      "id": "rec4B8U5WCpq4uX8y",
-      "name": "Animal Digest"
-    },
+    "supplementalType": "Digestive Enzyme",
+    "supplementalAssist": "Digestive Enzyme",
+    "supplementalFacts": "Animal Digest",
     "plantType": "",
     "plantAssist": "",
     "plantFacts": "",
@@ -9182,7 +7579,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "Flavoring made from hydrolyzed animal tissue; may be less desirable due to lack of transparency regarding sources.",
     "cont-cf-explain-contentious": "Mystery animal ingredient, used for flavor not nutrition",
-    "cont-cf-why-least": "Vague/unidentified animal source; used as flavoring; low transparency"
+    "cont-cf-why-least": "Vague/unidentified animal source; used as flavoring; low transparency",
+    "vitamins_derived": "",
+    "termDescription": "Flavor enhancer from hydrolyzed animal tissues."
   },
   {
     "Name": "Copper Amino Acid Complex",
@@ -9191,11 +7590,7 @@
     "Item ID": "6852de643506891400c0f6ed",
     "canonical": "",
     "recordId": "recoYAQ8sCpmwoIoX",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-amino-acid-complex",
     "ingredientTerm": "Copper Amino Acid Complex",
@@ -9224,25 +7619,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNfloiUVYEpWSo6",
-      "name": "Copper Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "recZSz7ifJW5lBMye",
-      "name": "Copper Amino Acids"
-    },
+    "displayAs": "Copper Amino Acids Complex",
+    "groupWith": "Copper Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9259,7 +7642,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 5",
@@ -9268,11 +7653,7 @@
     "Item ID": "6852de6c7e3239d281e5520f",
     "canonical": "",
     "recordId": "recQzoJgEmRzIsoKh",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-5",
     "ingredientTerm": "Vitamin B 5",
@@ -9301,25 +7682,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recM9813sE8UYDCH6",
-      "name": "Vitamin B5"
-    },
-    "groupWith": {
-      "id": "rec1u3o4UvP8XST8v",
-      "name": "Vitamin B5"
-    },
+    "displayAs": "Vitamin B5",
+    "groupWith": "Vitamin B5",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9336,7 +7705,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 6",
@@ -9345,11 +7716,7 @@
     "Item ID": "6852de6c8375ea222df279d2",
     "canonical": "",
     "recordId": "recT9LVAl677uo3qV",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-6",
     "ingredientTerm": "Vitamin B 6",
@@ -9378,25 +7745,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwQ08JmhcWjcasr",
-      "name": "Vitamin B6"
-    },
-    "groupWith": {
-      "id": "recQNnwaogHl9404X",
-      "name": "Vitamin B6"
-    },
+    "displayAs": "Vitamin B6",
+    "groupWith": "Vitamin B6",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9413,7 +7768,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Mixed Tocopherol",
@@ -9422,11 +7779,7 @@
     "Item ID": "6852de694c6e8de1b4f5cfca",
     "canonical": "",
     "recordId": "recTn8h3a5A4ELK1I",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "mixed-tocopherol",
     "ingredientTerm": "Mixed Tocopherol",
@@ -9455,14 +7808,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recdaVIRGOt801Pfo",
-      "name": "Mixed Tocopherols"
-    },
-    "groupWith": {
-      "id": "recEmEqbrhpZ1zBkJ",
-      "name": "Mixed Tocopherols"
-    },
+    "displayAs": "Mixed Tocopherols",
+    "groupWith": "Mixed Tocopherols",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
@@ -9484,7 +7831,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 2",
@@ -9493,11 +7842,7 @@
     "Item ID": "6852de6ca33a5dda9cd29753",
     "canonical": "",
     "recordId": "recWKtLM0tvnogDuy",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-2",
     "ingredientTerm": "Vitamin B 2",
@@ -9526,25 +7871,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recE67SBhnBgY7gsR",
-      "name": "Vitamin B2"
-    },
-    "groupWith": {
-      "id": "recD0LPYbMjv42dDZ",
-      "name": "Vitamin B2"
-    },
+    "displayAs": "Vitamin B2",
+    "groupWith": "Vitamin B2",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9561,7 +7894,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 7",
@@ -9570,11 +7905,7 @@
     "Item ID": "6852de6ca13eec1cc2933905",
     "canonical": "",
     "recordId": "recZPe3cqeiB6AxPl",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-7",
     "ingredientTerm": "Vitamin B 7",
@@ -9603,25 +7934,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectt25B3fCXoUsgR",
-      "name": "Vitamin B7"
-    },
-    "groupWith": {
-      "id": "rechuch3f0yhAI7k3",
-      "name": "Vitamin B7"
-    },
+    "displayAs": "Vitamin B7",
+    "groupWith": "Vitamin B7",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recjqDGE3Pdg0rhI9",
-      "name": "Vitamin B7"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B7",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9638,7 +7957,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 3",
@@ -9647,11 +7968,7 @@
     "Item ID": "6852de6c04de8a81b60c1a73",
     "canonical": "",
     "recordId": "recqMRvShO9glBGOD",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-3",
     "ingredientTerm": "Vitamin B 3",
@@ -9680,25 +7997,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recn1tI43sOGQnZV6",
-      "name": "Vitamin B3"
-    },
-    "groupWith": {
-      "id": "recsSgwPJoFtz0MPN",
-      "name": "Vitamin B3"
-    },
+    "displayAs": "Vitamin B3",
+    "groupWith": "Vitamin B3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9715,7 +8020,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Bifido Bacterium Bifidium Fermentation",
@@ -9724,11 +8031,7 @@
     "Item ID": "6852de63601fb1748535d3b7",
     "canonical": "",
     "recordId": "recJfBgCr7ycJtsry",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "bifido-bacterium-bifidium-fermentation",
     "ingredientTerm": "Bifido Bacterium Bifidium Fermentation",
@@ -9790,25 +8093,13 @@
       "UTHHC",
       "CSIRP"
     ],
-    "displayAs": {
-      "id": "recieGNKSY4jddmWS",
-      "name": "Bifido Bacterium Bifidium Fermentation"
-    },
-    "groupWith": {
-      "id": "recMp3HP8p5AVPAkx",
-      "name": "Bifido Bacterium Bifidium Fermentation"
-    },
+    "displayAs": "Bifido Bacterium Bifidium Fermentation",
+    "groupWith": "Bifido Bacterium Bifidium Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9825,7 +8116,9 @@
     "va-cf-description": "Good bacteria for a healthy, balanced gut",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin A Supplement",
@@ -9834,11 +8127,7 @@
     "Item ID": "6852de6c143562f265773cc5",
     "canonical": "",
     "recordId": "recl0P42ZrrTeKBtq",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-a-supplement",
     "ingredientTerm": "Vitamin A Supplement",
@@ -9893,25 +8182,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNcbTenwvxAjJH3",
-      "name": "Vitamin A Supplement"
-    },
-    "groupWith": {
-      "id": "recCKXScwXFdmWYag",
-      "name": "Vitamin A"
-    },
+    "displayAs": "Vitamin A Supplement",
+    "groupWith": "Vitamin A",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recNJnCkXV0XWpmNR",
-      "name": "Vitamin A"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin A",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -9928,7 +8205,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Enterococcus Faecium Fermentation Product",
@@ -9937,11 +8216,7 @@
     "Item ID": "6852de651f3ceed11d406b06",
     "canonical": "",
     "recordId": "recUUQLqrH73RrO5G",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-enterococcus-faecium-fermentation-product",
     "ingredientTerm": "Dried Enterococcus Faecium Fermentation Product",
@@ -9979,25 +8254,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recDimATSHX1TTBYt",
-      "name": "Enterococcus Faecium Fermentation"
-    },
-    "groupWith": {
-      "id": "recWDufLDDynt8GWL",
-      "name": "Enterococcus Faecium Fermentation"
-    },
+    "displayAs": "Enterococcus Faecium Fermentation",
+    "groupWith": "Enterococcus Faecium Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10014,7 +8277,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Lactobacillus Acidophilus Fermentation Product",
@@ -10023,11 +8288,7 @@
     "Item ID": "6852de65f81517e0914d8ca6",
     "canonical": "",
     "recordId": "recVxAO3UhIoDq78w",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-acidophilus-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Acidophilus Fermentation Product",
@@ -10069,25 +8330,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recY6d6RwCN6iOxiR",
-      "name": "Lactobacillus Acidophilus Fermentation"
-    },
-    "groupWith": {
-      "id": "recuPZNpBxibs2oXg",
-      "name": "Lactobacillus Acidophilus Fermentation"
-    },
+    "displayAs": "Lactobacillus Acidophilus Fermentation",
+    "groupWith": "Lactobacillus Acidophilus Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10104,7 +8353,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin E Supplement",
@@ -10113,11 +8364,7 @@
     "Item ID": "6852de6fd7d96822de907d9e",
     "canonical": "",
     "recordId": "recvQuRAc5Sq04zOO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-e-supplement",
     "ingredientTerm": "Vitamin E Supplement",
@@ -10164,25 +8411,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recsDcEtYSpRilZN5",
-      "name": "Vitamin E Supplement"
-    },
-    "groupWith": {
-      "id": "recEXg0qEG1nJQisr",
-      "name": "Vitamin E"
-    },
+    "displayAs": "Vitamin E Supplement",
+    "groupWith": "Vitamin E",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recd93Coj6vI9K6G4",
-      "name": "Vitamin E"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin E",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10199,7 +8434,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Bacillus Subtilis Fermentation Product",
@@ -10208,11 +8445,7 @@
     "Item ID": "6852de654c6e8de1b4f5cc1c",
     "canonical": "",
     "recordId": "reczCW2tcvmg6Gx4D",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-subtilis-fermentation-product",
     "ingredientTerm": "Dried Bacillus Subtilis Fermentation Product",
@@ -10241,25 +8474,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckKMOOE9OXzxL2L",
-      "name": "Bacillus Subtilis Fermentation"
-    },
-    "groupWith": {
-      "id": "recVE2OJKSmjN1GA1",
-      "name": "Bacillus Subtilis Fermentation"
-    },
+    "displayAs": "Bacillus Subtilis Fermentation",
+    "groupWith": "Bacillus Subtilis Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10276,7 +8497,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Bifidobacterium Animalis Fermentation Product",
@@ -10285,11 +8508,7 @@
     "Item ID": "6852de65658b1a34dd9e0953",
     "canonical": "",
     "recordId": "recFVFZIIHeik8dK5",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-bifidobacterium-animalis-fermentation-product",
     "ingredientTerm": "Dried Bifidobacterium Animalis Fermentation Product",
@@ -10318,25 +8537,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHhV6tuPij7A2Cp",
-      "name": "Bifidobacterium Animalis Fermentation"
-    },
-    "groupWith": {
-      "id": "recJXISbtRcwcB2AO",
-      "name": "Bifidobacterium Animalis Fermentation"
-    },
+    "displayAs": "Bifidobacterium Animalis Fermentation",
+    "groupWith": "Bifidobacterium Animalis Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10353,7 +8560,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Lactobacillus Plantarum Fermentation Product",
@@ -10362,11 +8571,7 @@
     "Item ID": "6852de65f6dd445a4efbf95c",
     "canonical": "",
     "recordId": "recPBBlSn5iocofRg",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-plantarum-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Plantarum Fermentation Product",
@@ -10395,25 +8600,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recD9AuRayNunSBwE",
-      "name": "Lactobacillus Plantarum Fermentation"
-    },
-    "groupWith": {
-      "id": "recNtNcqw2YnLSl7P",
-      "name": "Lactobacillus Plantarum Fermentation"
-    },
+    "displayAs": "Lactobacillus Plantarum Fermentation",
+    "groupWith": "Lactobacillus Plantarum Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10430,7 +8623,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Iron Amino Acid Chelate",
@@ -10439,11 +8634,7 @@
     "Item ID": "6852de68b31e5c515c707b2e",
     "canonical": "",
     "recordId": "reczaEOd5THTTJl90",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-amino-acid-chelate",
     "ingredientTerm": "Iron Amino Acid Chelate",
@@ -10472,25 +8663,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnzx4n59f5lf80G",
-      "name": "Iron Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recIHQkhARxfNlxan",
-      "name": "Iron Amino Acids"
-    },
+    "displayAs": "Iron Amino Acids Chelate",
+    "groupWith": "Iron Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10507,7 +8686,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 8",
@@ -10516,11 +8697,7 @@
     "Item ID": "6852de6c0dff006f02e18f43",
     "canonical": "",
     "recordId": "reclJI50zk5wc09yO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-8",
     "ingredientTerm": "Vitamin B 8",
@@ -10549,25 +8726,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec63XNRNMg4Nk34A",
-      "name": "Vitamin B8"
-    },
-    "groupWith": {
-      "id": "recO6E9aw1wfm0yH3",
-      "name": "Vitamin B8"
-    },
+    "displayAs": "Vitamin B8",
+    "groupWith": "Vitamin B8",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recs5WxJizFHdMVVf",
-      "name": "Vitamin B8"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B8",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10584,7 +8749,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-12",
@@ -10593,11 +8760,7 @@
     "Item ID": "6852de6d7b7df7787faed1f7",
     "canonical": "",
     "recordId": "recqAz0t9NyrXPfOV",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-12",
     "ingredientTerm": "Vitamin B-12",
@@ -10626,25 +8789,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHCYGlkt97aFo8R",
-      "name": "Vitamin B12"
-    },
-    "groupWith": {
-      "id": "reclw0dwbuoFjiJQY",
-      "name": "Vitamin B12"
-    },
+    "displayAs": "Vitamin B12",
+    "groupWith": "Vitamin B12",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec5epmDddSkYz7zT",
-      "name": "Vitamin B12"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B12",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10661,7 +8812,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Bacillus Coagulans Fermentation Product",
@@ -10670,11 +8823,7 @@
     "Item ID": "6852de655b5126b6a541b460",
     "canonical": "",
     "recordId": "recSwSxMqkDI4GgMj",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-coagulans-fermentation-product",
     "ingredientTerm": "Dried Bacillus Coagulans Fermentation Product",
@@ -10714,25 +8863,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recTCeBgmMT2HoD0L",
-      "name": "Bacillus Coagulans Fermentation"
-    },
-    "groupWith": {
-      "id": "recTqNATyXqa479iT",
-      "name": "Bacillus Coagulans Fermentation"
-    },
+    "displayAs": "Bacillus Coagulans Fermentation",
+    "groupWith": "Bacillus Coagulans Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10749,7 +8886,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 12",
@@ -10758,11 +8897,7 @@
     "Item ID": "6852de6c22513658079e0e64",
     "canonical": "",
     "recordId": "recqDdChRcjIV4J22",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-12",
     "ingredientTerm": "Vitamin B 12",
@@ -10791,25 +8926,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHCYGlkt97aFo8R",
-      "name": "Vitamin B12"
-    },
-    "groupWith": {
-      "id": "reclw0dwbuoFjiJQY",
-      "name": "Vitamin B12"
-    },
+    "displayAs": "Vitamin B12",
+    "groupWith": "Vitamin B12",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec5epmDddSkYz7zT",
-      "name": "Vitamin B12"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B12",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10826,7 +8949,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Aspergillus Oryzae Fermentation Extract",
@@ -10835,11 +8960,7 @@
     "Item ID": "6852de64601fb1748535d583",
     "canonical": "",
     "recordId": "rec2FnirGkreqy3Ix",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-aspergillus-oryzae-fermentation-extract",
     "ingredientTerm": "Dried Aspergillus Oryzae Fermentation Extract",
@@ -10877,25 +8998,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recobp6XLXdodMXSQ",
-      "name": "Aspergillus Oryzae Fermentation"
-    },
-    "groupWith": {
-      "id": "recrg38PtzG9qoSVM",
-      "name": "Aspergillus Oryzae Fermentation"
-    },
+    "displayAs": "Aspergillus Oryzae Fermentation",
+    "groupWith": "Aspergillus Oryzae Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10912,7 +9021,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Bacillus Subtilis Fermentation Extract",
@@ -10921,11 +9032,7 @@
     "Item ID": "6852de650a063860be35dc45",
     "canonical": "",
     "recordId": "rechV78zJwvoYjslD",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-subtilis-fermentation-extract",
     "ingredientTerm": "Dried Bacillus Subtilis Fermentation Extract",
@@ -10963,25 +9070,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reckKMOOE9OXzxL2L",
-      "name": "Bacillus Subtilis Fermentation"
-    },
-    "groupWith": {
-      "id": "recVE2OJKSmjN1GA1",
-      "name": "Bacillus Subtilis Fermentation"
-    },
+    "displayAs": "Bacillus Subtilis Fermentation",
+    "groupWith": "Bacillus Subtilis Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -10998,7 +9093,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "L-Carnitine",
@@ -11007,11 +9104,7 @@
     "Item ID": "6852de68c0392f7d793b1224",
     "canonical": "",
     "recordId": "recJ48fG1s0wswMvA",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "l-carnitine",
     "ingredientTerm": "L-Carnitine",
@@ -11059,14 +9152,8 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recxPa5YOFaU86PPX",
-      "name": "L-carnitine"
-    },
-    "groupWith": {
-      "id": "recP1SUYVAdVhnD77",
-      "name": "L-carnitine"
-    },
+    "displayAs": "L-carnitine",
+    "groupWith": "L-carnitine",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
@@ -11088,7 +9175,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Yeast Extract",
@@ -11097,11 +9186,7 @@
     "Item ID": "6852de707586b8e4323455b4",
     "canonical": "",
     "recordId": "recVBaEI6TZwjJTVJ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "yeast-extract",
     "ingredientTerm": "Yeast Extract",
@@ -11134,25 +9219,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recnd6SNYftS4lud2",
-      "name": "Yeast Extracts"
-    },
-    "groupWith": {
-      "id": "recV0hBbx5aYGRl3L",
-      "name": "Yeast Extracts"
-    },
+    "displayAs": "Yeast Extracts",
+    "groupWith": "Yeast Extracts",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
+    "supplementalType": "Yeast",
+    "supplementalAssist": "Yeast",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11169,7 +9242,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "D-Calcium Pantothenate",
@@ -11178,11 +9253,7 @@
     "Item ID": "",
     "canonical": "",
     "recordId": "reccBa8FQOzu8Uwmc",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "d-calcium-pantothenate",
     "ingredientTerm": "D-Calcium Pantothenate",
@@ -11228,25 +9299,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwbKDIQ8nwyLVUC",
-      "name": "D-calcium Pantothenate"
-    },
-    "groupWith": {
-      "id": "rec2UhiMlmDzj0gQA",
-      "name": "D-calcium Pantothenate"
-    },
+    "displayAs": "D-calcium Pantothenate",
+    "groupWith": "D-calcium Pantothenate",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11263,7 +9322,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Lactobacillus Casei Fermentation Product",
@@ -11272,11 +9333,7 @@
     "Item ID": "6852de65474f1527f4ea7ed6",
     "canonical": "",
     "recordId": "recnbupAf3WmMuQqg",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-casei-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Casei Fermentation Product",
@@ -11305,25 +9362,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recfuHcWCVnSaO4xY",
-      "name": "Lactobacillus Casei Fermentation"
-    },
-    "groupWith": {
-      "id": "recoV67Ums1s9WZym",
-      "name": "Lactobacillus Casei Fermentation"
-    },
+    "displayAs": "Lactobacillus Casei Fermentation",
+    "groupWith": "Lactobacillus Casei Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11340,7 +9385,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-12 Supplement",
@@ -11349,11 +9396,7 @@
     "Item ID": "6852de6d8f755aa128f06114",
     "canonical": "",
     "recordId": "rec5dgJs7zJjqX1uz",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b12-supplement",
     "ingredientTerm": "Vitamin B12 Supplement",
@@ -11407,25 +9450,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHCYGlkt97aFo8R",
-      "name": "Vitamin B12"
-    },
-    "groupWith": {
-      "id": "reclw0dwbuoFjiJQY",
-      "name": "Vitamin B12"
-    },
+    "displayAs": "Vitamin B12",
+    "groupWith": "Vitamin B12",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec5epmDddSkYz7zT",
-      "name": "Vitamin B12"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B12",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11442,7 +9473,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin D-3 Supplement",
@@ -11451,11 +9484,7 @@
     "Item ID": "6852de6f90366403689fe187",
     "canonical": "",
     "recordId": "recbcSskzYnSCocpi",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-d3-supplement",
     "ingredientTerm": "Vitamin D3 Supplement",
@@ -11509,25 +9538,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recuzScigwp1gSmBf",
-      "name": "Vitamin D3"
-    },
-    "groupWith": {
-      "id": "rec2w3TStHW2hUroO",
-      "name": "Vitamin D3"
-    },
+    "displayAs": "Vitamin D3",
+    "groupWith": "Vitamin D3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec7zLc6ggcPdlnwG",
-      "name": "Vitamin D3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin D3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11544,7 +9561,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Yeast Culture",
@@ -11553,11 +9572,7 @@
     "Item ID": "6852de6f7d323a85db0be702",
     "canonical": "",
     "recordId": "recIegRUoTYFETXUl",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "yeast-culture",
     "ingredientTerm": "Yeast Culture",
@@ -11595,25 +9610,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNDKvWTu1NWlUWS",
-      "name": "Yeast Cultures"
-    },
-    "groupWith": {
-      "id": "recHfdOc7jmK5gHE5",
-      "name": "Yeast Cultures"
-    },
+    "displayAs": "Yeast Cultures",
+    "groupWith": "Yeast Cultures",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
-    "supplementalAssist": {
-      "id": "reczbVU3jsTJ5mFQ6",
-      "name": "Yeast"
-    },
+    "supplementalType": "Yeast",
+    "supplementalAssist": "Yeast",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11630,7 +9633,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Bifidobacterium Animalis Fermentation ",
@@ -11639,11 +9644,7 @@
     "Item ID": "6852de60e792df6febedb363",
     "canonical": "",
     "recordId": "recdgcN6x5A1T6w2r",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "bifidobacterium-animalis-fermentation",
     "ingredientTerm": "Bifidobacterium Animalis Fermentation ",
@@ -11672,25 +9673,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recHhV6tuPij7A2Cp",
-      "name": "Bifidobacterium Animalis Fermentation"
-    },
-    "groupWith": {
-      "id": "recJXISbtRcwcB2AO",
-      "name": "Bifidobacterium Animalis Fermentation"
-    },
+    "displayAs": "Bifidobacterium Animalis Fermentation",
+    "groupWith": "Bifidobacterium Animalis Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11707,7 +9696,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Lactobacillus Casei Fermentation",
@@ -11716,11 +9707,7 @@
     "Item ID": "6852de658f755aa128f0597b",
     "canonical": "",
     "recordId": "reckEbrSQYrbih84b",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-casei-fermentation",
     "ingredientTerm": "Dried Lactobacillus Casei Fermentation",
@@ -11749,25 +9736,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recfuHcWCVnSaO4xY",
-      "name": "Lactobacillus Casei Fermentation"
-    },
-    "groupWith": {
-      "id": "recoV67Ums1s9WZym",
-      "name": "Lactobacillus Casei Fermentation"
-    },
+    "displayAs": "Lactobacillus Casei Fermentation",
+    "groupWith": "Lactobacillus Casei Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11784,7 +9759,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin D 3",
@@ -11793,11 +9770,7 @@
     "Item ID": "6852de6e294d2ba1f1907509",
     "canonical": "",
     "recordId": "reczNinqDTAnRxpVM",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-d-3",
     "ingredientTerm": "Vitamin D 3",
@@ -11826,25 +9799,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recuzScigwp1gSmBf",
-      "name": "Vitamin D3"
-    },
-    "groupWith": {
-      "id": "rec2w3TStHW2hUroO",
-      "name": "Vitamin D3"
-    },
+    "displayAs": "Vitamin D3",
+    "groupWith": "Vitamin D3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec7zLc6ggcPdlnwG",
-      "name": "Vitamin D3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin D3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11861,7 +9822,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin D-3",
@@ -11870,11 +9833,7 @@
     "Item ID": "6852de6fcd3d9af3da82a8c0",
     "canonical": "",
     "recordId": "recCUgA9dguTJGiRZ",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-d-3",
     "ingredientTerm": "Vitamin D-3",
@@ -11903,25 +9862,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recuzScigwp1gSmBf",
-      "name": "Vitamin D3"
-    },
-    "groupWith": {
-      "id": "rec2w3TStHW2hUroO",
-      "name": "Vitamin D3"
-    },
+    "displayAs": "Vitamin D3",
+    "groupWith": "Vitamin D3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec7zLc6ggcPdlnwG",
-      "name": "Vitamin D3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin D3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -11938,7 +9885,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin K Supplement",
@@ -11947,11 +9896,7 @@
     "Item ID": "6852de6f7105bdb22590a381",
     "canonical": "",
     "recordId": "recP4QyGyWEXzAjPG",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-k-supplement",
     "ingredientTerm": "Vitamin K Supplement",
@@ -11980,25 +9925,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "receROL7IwoMCoAiL",
-      "name": "Vitamin K Supplement"
-    },
-    "groupWith": {
-      "id": "recP9SHt7NGSG4ymz",
-      "name": "Vitamin K"
-    },
+    "displayAs": "Vitamin K Supplement",
+    "groupWith": "Vitamin K",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recCdSYLJBVMt2831",
-      "name": "Vitamin K"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin K",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12015,7 +9948,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-6",
@@ -12024,11 +9959,7 @@
     "Item ID": "6852de6dbbeb6a54b5dffe1c",
     "canonical": "",
     "recordId": "rec0ainCnDX9WGo0k",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-6",
     "ingredientTerm": "Vitamin B-6",
@@ -12057,25 +9988,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recwQ08JmhcWjcasr",
-      "name": "Vitamin B6"
-    },
-    "groupWith": {
-      "id": "recQNnwaogHl9404X",
-      "name": "Vitamin B6"
-    },
+    "displayAs": "Vitamin B6",
+    "groupWith": "Vitamin B6",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12092,7 +10011,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-9",
@@ -12101,11 +10022,7 @@
     "Item ID": "6852de6d710ffb3af6eb412c",
     "canonical": "",
     "recordId": "rece2S9cZWVsiTrqE",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-9",
     "ingredientTerm": "Vitamin B-9",
@@ -12134,25 +10051,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recheDZmWua0eOMvk",
-      "name": "Vitamin B9"
-    },
-    "groupWith": {
-      "id": "recKaiAPLHXwuFr2M",
-      "name": "Vitamin B9"
-    },
+    "displayAs": "Vitamin B9",
+    "groupWith": "Vitamin B9",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "receHeFMUjuoW8Tli",
-      "name": "Vitamin B9"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B9",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12169,7 +10074,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B 9",
@@ -12178,11 +10085,7 @@
     "Item ID": "6852de6c6541d2e3ca483099",
     "canonical": "",
     "recordId": "rec9Xcd8PLy5YXCZK",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-9",
     "ingredientTerm": "Vitamin B 9",
@@ -12211,25 +10114,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recheDZmWua0eOMvk",
-      "name": "Vitamin B9"
-    },
-    "groupWith": {
-      "id": "recKaiAPLHXwuFr2M",
-      "name": "Vitamin B9"
-    },
+    "displayAs": "Vitamin B9",
+    "groupWith": "Vitamin B9",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "receHeFMUjuoW8Tli",
-      "name": "Vitamin B9"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B9",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12246,7 +10137,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B9 Supplement",
@@ -12255,11 +10148,7 @@
     "Item ID": "6852de6e3e19af1818751a36",
     "canonical": "",
     "recordId": "recIfuRzvHxGJK8kH",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b9-supplement",
     "ingredientTerm": "Vitamin B9 Supplement",
@@ -12288,25 +10177,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recozWsX6UBPXXQbp",
-      "name": "Vitamin B9 Supplement"
-    },
-    "groupWith": {
-      "id": "recKaiAPLHXwuFr2M",
-      "name": "Vitamin B9"
-    },
+    "displayAs": "Vitamin B9 Supplement",
+    "groupWith": "Vitamin B9",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "receHeFMUjuoW8Tli",
-      "name": "Vitamin B9"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B9",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12323,7 +10200,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-8",
@@ -12332,11 +10211,7 @@
     "Item ID": "6852de6d01816eca45c107d5",
     "canonical": "",
     "recordId": "recTArtObMFLmwALO",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-8",
     "ingredientTerm": "Vitamin B-8",
@@ -12365,25 +10240,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec63XNRNMg4Nk34A",
-      "name": "Vitamin B8"
-    },
-    "groupWith": {
-      "id": "recO6E9aw1wfm0yH3",
-      "name": "Vitamin B8"
-    },
+    "displayAs": "Vitamin B8",
+    "groupWith": "Vitamin B8",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recs5WxJizFHdMVVf",
-      "name": "Vitamin B8"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B8",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12400,7 +10263,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B8 Supplement",
@@ -12409,11 +10274,7 @@
     "Item ID": "6852de6e552bb514abb3caa1",
     "canonical": "",
     "recordId": "recE9xIOVulAVS7nc",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b8-supplement",
     "ingredientTerm": "Vitamin B8 Supplement",
@@ -12442,25 +10303,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recNHWSZYWyupMhR9",
-      "name": "Vitamin B8 Supplement"
-    },
-    "groupWith": {
-      "id": "recO6E9aw1wfm0yH3",
-      "name": "Vitamin B8"
-    },
+    "displayAs": "Vitamin B8 Supplement",
+    "groupWith": "Vitamin B8",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recs5WxJizFHdMVVf",
-      "name": "Vitamin B8"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B8",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12477,7 +10326,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-7",
@@ -12486,11 +10337,7 @@
     "Item ID": "6852de6d2ddb310aadd687a4",
     "canonical": "",
     "recordId": "recNlp04ZzJlsAVP3",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-7",
     "ingredientTerm": "Vitamin B-7",
@@ -12519,25 +10366,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rectt25B3fCXoUsgR",
-      "name": "Vitamin B7"
-    },
-    "groupWith": {
-      "id": "rechuch3f0yhAI7k3",
-      "name": "Vitamin B7"
-    },
+    "displayAs": "Vitamin B7",
+    "groupWith": "Vitamin B7",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recjqDGE3Pdg0rhI9",
-      "name": "Vitamin B7"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B7",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12554,7 +10389,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B7 Supplement",
@@ -12563,11 +10400,7 @@
     "Item ID": "6852de6e318abe1736c132e6",
     "canonical": "",
     "recordId": "recapWXFmFhiN9Buv",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b7-supplement",
     "ingredientTerm": "Vitamin B7 Supplement",
@@ -12596,25 +10429,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reciF8dJjVXBUK0cz",
-      "name": "Vitamin B7 Supplement"
-    },
-    "groupWith": {
-      "id": "rechuch3f0yhAI7k3",
-      "name": "Vitamin B7"
-    },
+    "displayAs": "Vitamin B7 Supplement",
+    "groupWith": "Vitamin B7",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recjqDGE3Pdg0rhI9",
-      "name": "Vitamin B7"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B7",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12631,7 +10452,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B6 Supplement",
@@ -12640,11 +10463,7 @@
     "Item ID": "6852de6edf88e934f3d0ccb7",
     "canonical": "",
     "recordId": "recUuGFzVvRoRlwjl",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b6-supplement",
     "ingredientTerm": "Vitamin B6 Supplement",
@@ -12673,25 +10492,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGfawISvpJWcNF5",
-      "name": "Vitamin B6 Supplement"
-    },
-    "groupWith": {
-      "id": "recQNnwaogHl9404X",
-      "name": "Vitamin B6"
-    },
+    "displayAs": "Vitamin B6 Supplement",
+    "groupWith": "Vitamin B6",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec6sAWAJTwbaACoZ",
-      "name": "Vitamin B6"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B6",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12708,7 +10515,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-5",
@@ -12717,11 +10526,7 @@
     "Item ID": "6852de6d958330e979acd818",
     "canonical": "",
     "recordId": "recWRzC4gj1SVVlXm",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-5",
     "ingredientTerm": "Vitamin B-5",
@@ -12750,25 +10555,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recM9813sE8UYDCH6",
-      "name": "Vitamin B5"
-    },
-    "groupWith": {
-      "id": "rec1u3o4UvP8XST8v",
-      "name": "Vitamin B5"
-    },
+    "displayAs": "Vitamin B5",
+    "groupWith": "Vitamin B5",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12785,7 +10578,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B5 Supplement",
@@ -12794,11 +10589,7 @@
     "Item ID": "6852de6ecd193310c85fe1a4",
     "canonical": "",
     "recordId": "recNKLtNAdX7MnSem",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b5-supplement",
     "ingredientTerm": "Vitamin B5 Supplement",
@@ -12827,25 +10618,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recOBaIjK9SgXJgJ3",
-      "name": "Vitamin B5 Supplement"
-    },
-    "groupWith": {
-      "id": "rec1u3o4UvP8XST8v",
-      "name": "Vitamin B5"
-    },
+    "displayAs": "Vitamin B5 Supplement",
+    "groupWith": "Vitamin B5",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recvEh2DjJvtdNHdk",
-      "name": "Vitamin B5"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B5",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12862,7 +10641,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-3",
@@ -12871,11 +10652,7 @@
     "Item ID": "6852de6c394736d0de22c9bb",
     "canonical": "",
     "recordId": "recSzBAtU1Jx2NESk",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-3",
     "ingredientTerm": "Vitamin B-3",
@@ -12904,25 +10681,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recn1tI43sOGQnZV6",
-      "name": "Vitamin B3"
-    },
-    "groupWith": {
-      "id": "recsSgwPJoFtz0MPN",
-      "name": "Vitamin B3"
-    },
+    "displayAs": "Vitamin B3",
+    "groupWith": "Vitamin B3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -12939,7 +10704,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B3 Supplement",
@@ -12948,11 +10715,7 @@
     "Item ID": "6852de6e177a8097936ff73b",
     "canonical": "",
     "recordId": "recJOIr54WtLngtFz",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b3-supplement",
     "ingredientTerm": "Vitamin B3 Supplement",
@@ -12981,25 +10744,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec1ce8visJS8IYm4",
-      "name": "Vitamin B3 Supplement"
-    },
-    "groupWith": {
-      "id": "recsSgwPJoFtz0MPN",
-      "name": "Vitamin B3"
-    },
+    "displayAs": "Vitamin B3 Supplement",
+    "groupWith": "Vitamin B3",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recFV05fsHMF5OfKz",
-      "name": "Vitamin B3"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B3",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13016,7 +10767,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-2",
@@ -13025,11 +10778,7 @@
     "Item ID": "6852de6cd44b1ff14365cb9e",
     "canonical": "",
     "recordId": "rec3cnmKPbOsuwf2r",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-2",
     "ingredientTerm": "Vitamin B-2",
@@ -13058,25 +10807,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recE67SBhnBgY7gsR",
-      "name": "Vitamin B2"
-    },
-    "groupWith": {
-      "id": "recD0LPYbMjv42dDZ",
-      "name": "Vitamin B2"
-    },
+    "displayAs": "Vitamin B2",
+    "groupWith": "Vitamin B2",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13093,7 +10830,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B2 Supplement",
@@ -13102,11 +10841,7 @@
     "Item ID": "6852de6d90366403689fe11c",
     "canonical": "",
     "recordId": "reclEH5UNxzGX5PS4",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b2-supplement",
     "ingredientTerm": "Vitamin B2 Supplement",
@@ -13135,25 +10870,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recSaqIrMk1KmEmet",
-      "name": "Vitamin B2 Supplement"
-    },
-    "groupWith": {
-      "id": "recD0LPYbMjv42dDZ",
-      "name": "Vitamin B2"
-    },
+    "displayAs": "Vitamin B2 Supplement",
+    "groupWith": "Vitamin B2",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recIHf71KU7HKYnOg",
-      "name": "Vitamin B2"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B2",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13170,7 +10893,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B-1",
@@ -13179,11 +10904,7 @@
     "Item ID": "6852de6cb6bbe50d0b6214f1",
     "canonical": "",
     "recordId": "recsG9iwVaWkz7yMP",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-1",
     "ingredientTerm": "Vitamin B-1",
@@ -13212,25 +10933,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqO3wcFGLBD5CN2",
-      "name": "Vitamin B1"
-    },
-    "groupWith": {
-      "id": "recqKUhSC3Httwe4L",
-      "name": "Vitamin B1"
-    },
+    "displayAs": "Vitamin B1",
+    "groupWith": "Vitamin B1",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec0Rtb722efOEjDR",
-      "name": "Vitamin B1"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B1",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13247,7 +10956,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B1 Supplement",
@@ -13256,11 +10967,7 @@
     "Item ID": "6852de6d5cbb76acbfd23133",
     "canonical": "",
     "recordId": "rec5j0QY1NKzkRZ9I",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b1-supplement",
     "ingredientTerm": "Vitamin B1 Supplement",
@@ -13289,25 +10996,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec7YCKQtJ6vRlF2N",
-      "name": "Vitamin B1 Supplement"
-    },
-    "groupWith": {
-      "id": "recqKUhSC3Httwe4L",
-      "name": "Vitamin B1"
-    },
+    "displayAs": "Vitamin B1 Supplement",
+    "groupWith": "Vitamin B1",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "rec0Rtb722efOEjDR",
-      "name": "Vitamin B1"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B1",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13324,7 +11019,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Vitamin B Supplement",
@@ -13333,11 +11030,7 @@
     "Item ID": "6852de6c958330e979acd7e7",
     "canonical": "",
     "recordId": "recTLLtiFANOy4ItI",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "vitamin-b-supplement",
     "ingredientTerm": "Vitamin B Supplement",
@@ -13366,25 +11059,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recpjIA9Tc4Ps1Ayr",
-      "name": "Vitamin B Supplement"
-    },
-    "groupWith": {
-      "id": "recsqNQxUfqNPhYEm",
-      "name": "Vitamin B"
-    },
+    "displayAs": "Vitamin B Supplement",
+    "groupWith": "Vitamin B",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recBJde09t8qgGaeM",
-      "name": "Vitamins"
-    },
-    "supplementalAssist": {
-      "id": "recnZRxvUM2iCCS43",
-      "name": "Vitamin B"
-    },
+    "supplementalType": "Vitamins",
+    "supplementalAssist": "Vitamin B",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13401,7 +11082,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Manganese Amino Acid Chelate",
@@ -13410,11 +11093,7 @@
     "Item ID": "6852de68bccb89cd2af81cf7",
     "canonical": "",
     "recordId": "rec3ryi3TGluIjbbW",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acid-chelate",
     "ingredientTerm": "Manganese Amino Acid Chelate",
@@ -13443,25 +11122,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "reciOntlSHYGjzOXi",
-      "name": "Manganese Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recf7xf47UsigQ4YY",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese Amino Acids Chelate",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13478,7 +11145,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Iron Amino Acid Complex",
@@ -13487,11 +11156,7 @@
     "Item ID": "6852de67f0589dda767b4025",
     "canonical": "",
     "recordId": "reckm3n6IfI6iDqas",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "iron-amino-acid-complex",
     "ingredientTerm": "Iron Amino Acid Complex",
@@ -13530,25 +11195,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "rec7qMCZER9CH6TdG",
-      "name": "Iron Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "recIHQkhARxfNlxan",
-      "name": "Iron Amino Acids"
-    },
+    "displayAs": "Iron Amino Acids Complex",
+    "groupWith": "Iron Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13565,7 +11218,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Copper Amino Acid Chelate",
@@ -13574,11 +11229,7 @@
     "Item ID": "6852de6740aea4b9368df5fd",
     "canonical": "",
     "recordId": "rec3O6zc8NrkxyXi3",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "copper-amino-acid-chelate",
     "ingredientTerm": "Copper Amino Acid Chelate",
@@ -13607,25 +11258,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "receTbVJKBgTvZzXT",
-      "name": "Copper Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "recZSz7ifJW5lBMye",
-      "name": "Copper Amino Acids"
-    },
+    "displayAs": "Copper Amino Acids Chelate",
+    "groupWith": "Copper Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13642,7 +11281,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Dried Bacterium Bifidium Fermentation Product",
@@ -13651,11 +11292,7 @@
     "Item ID": "6852de6617864da6bb0201b3",
     "canonical": "",
     "recordId": "rec8KDTsSsRwcTlAE",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "dried-bacterium-bifidium-fermentation-product",
     "ingredientTerm": "Dried Bacterium Bifidium Fermentation Product",
@@ -13684,25 +11321,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recieGNKSY4jddmWS",
-      "name": "Bifido Bacterium Bifidium Fermentation"
-    },
-    "groupWith": {
-      "id": "recMp3HP8p5AVPAkx",
-      "name": "Bifido Bacterium Bifidium Fermentation"
-    },
+    "displayAs": "Bifido Bacterium Bifidium Fermentation",
+    "groupWith": "Bifido Bacterium Bifidium Fermentation",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "rec4tjpkpkaA3rDkQ",
-      "name": "Probiotics"
-    },
-    "supplementalAssist": {
-      "id": "rec9tzv7pMdU9kHQz",
-      "name": "Fermentation"
-    },
+    "supplementalType": "Probiotics",
+    "supplementalAssist": "Fermentation",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13719,7 +11344,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Zinc Amino Acid Chelate",
@@ -13728,11 +11355,7 @@
     "Item ID": "6852de7040bc172cdf9ef73e",
     "canonical": "",
     "recordId": "rechSVgJvLqC2Ixn8",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acid-chelate",
     "ingredientTerm": "Zinc Amino Acid Chelate",
@@ -13761,25 +11384,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recqob0DjRgoBm3gE",
-      "name": "Zinc Amino Acids Chelate"
-    },
-    "groupWith": {
-      "id": "rec87leMkns0EKchk",
-      "name": "Zinc Amino Acids"
-    },
+    "displayAs": "Zinc Amino Acids Chelate",
+    "groupWith": "Zinc Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recAH2UmWRXGQSsDB",
-      "name": "Chelate"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Chelate",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13796,7 +11407,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Zinc Amino Acid Complex",
@@ -13805,11 +11418,7 @@
     "Item ID": "6852de708c25f9fd772f376c",
     "canonical": "",
     "recordId": "recKvArNBWVTz3xcg",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acid-complex",
     "ingredientTerm": "Zinc Amino Acid Complex",
@@ -13838,25 +11447,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recq31gGgiCnvxfI9",
-      "name": "Zinc Amino Acids Complex"
-    },
-    "groupWith": {
-      "id": "rec87leMkns0EKchk",
-      "name": "Zinc Amino Acids"
-    },
+    "displayAs": "Zinc Amino Acids Complex",
+    "groupWith": "Zinc Amino Acids",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
-    "supplementalAssist": {
-      "id": "recKwsIEic2XrI54K",
-      "name": "Complex"
-    },
+    "supplementalType": "Minerals",
+    "supplementalAssist": "Complex",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13873,7 +11470,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Sodium Hexametaphosphate",
@@ -13882,11 +11481,7 @@
     "Item ID": "6852de6bf1dd682a4e7e9562",
     "canonical": "",
     "recordId": "reclm3u2u03BGjA6Y",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "sodium-hexametaphosphate",
     "ingredientTerm": "Sodium Hexametaphosphate",
@@ -13915,25 +11510,13 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recGcJKB00Z0iDpIl",
-      "name": "Sodium Hex"
-    },
-    "groupWith": {
-      "id": "rectoMzUqAfK4elh6",
-      "name": "Sodium"
-    },
+    "displayAs": "Sodium Hex",
+    "groupWith": "Sodium",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recpQUyPWmQf28EvS",
-      "name": "Mineral"
-    },
-    "supplementalAssist": {
-      "id": "rec1zXonD4XCXEFfp",
-      "name": "Preservative"
-    },
+    "supplementalType": "Mineral",
+    "supplementalAssist": "Preservative",
     "supplementalFacts": "",
     "plantType": "",
     "plantAssist": "",
@@ -13950,7 +11533,9 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   },
   {
     "Name": "Manganese",
@@ -13959,11 +11544,7 @@
     "Item ID": "6852de68e10896bbb7d67947",
     "canonical": "",
     "recordId": "recbNSD7Qzo06LjTn",
-    "recordType": {
-      "id": "selC6paaYtKibIyTi",
-      "name": "Supplemental",
-      "color": "cyanLight2"
-    },
+    "recordType": "Supplemental",
     "recordStatus": "",
     "calcSlug": "manganese",
     "ingredientTerm": "Manganese",
@@ -13992,21 +11573,12 @@
     "cf-data-fives": [],
     "va-data-fives": "",
     "dog-data-fives": "",
-    "displayAs": {
-      "id": "recW5l5LJMUTWScuv",
-      "name": "Manganese"
-    },
-    "groupWith": {
-      "id": "recxoIpLn254kf59a",
-      "name": "Manganese"
-    },
+    "displayAs": "Manganese",
+    "groupWith": "Manganese",
     "animalType": "",
     "animalAssist": "",
     "animalFacts": "",
-    "supplementalType": {
-      "id": "recU9VDP7NMTRV3hI",
-      "name": "Minerals"
-    },
+    "supplementalType": "Minerals",
     "supplementalAssist": "",
     "supplementalFacts": "",
     "plantType": "",
@@ -14024,6 +11596,8 @@
     "va-cf-description": "",
     "cont-cf_why_less_desire": "",
     "cont-cf-explain-contentious": "",
-    "cont-cf-why-least": ""
+    "cont-cf-why-least": "",
+    "vitamins_derived": "",
+    "termDescription": ""
   }
 ]
