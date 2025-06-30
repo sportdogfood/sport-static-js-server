@@ -1,4 +1,3 @@
-
 [
   {
     "Name": "Cub Puppy",
@@ -501,7 +500,17 @@
     "ga_crude_fiber_%": 3.3,
     "ga_moisture_%": 8,
     "ga_kcals_per_kg": 3847.7000000000003,
-    "ga_kcals_per_cup": 526
+    "ga_kcals_per_cup": 526,
+    "ga_omega_6_fatty_acids_%": 3.39,
+    "ga_omega_3_fatty_acids_%": 0.46,
+    "ga_animal_protein_%": 86,
+    "ga_ash_%": 8,
+    "ga_calcium_%": 1.2,
+    "ga_vitamin_d3_ui_per_kg": 726,
+    "ga_vitamin_e_ui_per_kg": 143,
+    "ga_vitamin_b12_ui_per_kg": 0,
+    "aafco-options": "Formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for All Life Stages including puppies and pregnant or lactating female dogs.",
+    "aafco-short": "For all life stages"
   },
   {
     "Name": "Dock Dog",
@@ -1006,7 +1015,17 @@
     "ga_crude_fiber_%": 3.4,
     "ga_moisture_%": 8,
     "ga_kcals_per_kg": 3579,
-    "ga_kcals_per_cup": 460
+    "ga_kcals_per_cup": 460,
+    "ga_omega_6_fatty_acids_%": 3.36,
+    "ga_omega_3_fatty_acids_%": 0.39,
+    "ga_animal_protein_%": 85,
+    "ga_ash_%": 8,
+    "ga_calcium_%": 1.2,
+    "ga_vitamin_d3_ui_per_kg": 681,
+    "ga_vitamin_e_ui_per_kg": 134,
+    "ga_vitamin_b12_ui_per_kg": 0,
+    "aafco-options": "Formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for All Life Stages, including growth of large size dogs (70 lb. or more as an adult).",
+    "aafco-short": "For all life stages"
   },
   {
     "Name": "Herding Dog",
@@ -1515,6 +1534,16 @@
     "ga_crude_fiber_%": 3.3,
     "ga_moisture_%": 8,
     "ga_kcals_per_kg": 3603.0500000000006,
-    "ga_kcals_per_cup": 460
+    "ga_kcals_per_cup": 460,
+    "ga_omega_6_fatty_acids_%": 1.42,
+    "ga_omega_3_fatty_acids_%": 0.4,
+    "ga_animal_protein_%": 89,
+    "ga_ash_%": 8,
+    "ga_calcium_%": 1.2,
+    "ga_vitamin_d3_ui_per_kg": 681,
+    "ga_vitamin_e_ui_per_kg": 132,
+    "ga_vitamin_b12_ui_per_kg": 0,
+    "aafco-options": "Formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for All Life Stages, including growth of large size dogs (70 lb. or more as an adult).",
+    "aafco-short": "For all life stages"
   }
 ]
