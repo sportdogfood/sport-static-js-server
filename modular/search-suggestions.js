@@ -1,23 +1,14 @@
 /* search-suggestions.js */
-import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
+import Fuse        from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
+import { CI_DATA } from './ci.js';
+import { BRANDS }  from './br.js';
+import { SI_DATA } from './si.js';
+import { ING_ANIM }  from './ingAnim.js';
+import { ING_PLANT } from './ingPlant.js';
+import { ING_SUPP }  from './ingSupp.js';
 
-// Sport-FAQ sources (unchanged)
-import { faqData }        from './faq-data.js';
-import { productSpecs }   from './product-specs.js';
-import { doesNotContain } from './doesNotContain.js';
-
-// Compare-Item sources (new)
-import { CI_DATA }    from './ci.json';
-import { BRANDS }     from './br.js';
-import { ING_ANIM }   from './ingAnim.js';
-import { ING_PLANT }  from './ingPlant.js';
-import { ING_SUPP }   from './ingSupp.js';
-
-/**
- * Initialize or update type-ahead suggestions for a given filter context.
- * @param {string} faqType  e.g. 'all', 'support', 'cub', 'compare-cub-vs-dock', etc.
- */
 export function initSearchSuggestions(faqType = 'all') {
+  // ─── 0. Grab & reset UI nodes ───────────────────────────────
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
   const sendBtn  = document.getElementById('pwr-send-button');
@@ -25,7 +16,6 @@ export function initSearchSuggestions(faqType = 'all') {
   if (!input || !list || !sendBtn || !clearBtn) {
     return console.warn('❗ Missing search-suggestion nodes');
   }
-
   // Clear old listeners
   input.replaceWith(input.cloneNode(true));
   sendBtn.replaceWith(sendBtn.cloneNode(true));
@@ -34,146 +24,159 @@ export function initSearchSuggestions(faqType = 'all') {
   const freshSend  = document.getElementById('pwr-send-button');
   const freshClear = document.getElementById('pwr-clear-button');
 
-  let allSuggestions = [];
+  // ─── 1. Static trigger-word lists ────────────────────────────
+  const generalKeys = ["what","what's","is","how many","does","compare"];
+  const dietKeys    = ["grain-free","poultry-free","peas-free","legumes-free"];
+  const factKeys    = [
+    "protein","fat","fiber","moisture",
+    "kcals per cup","kcals per kg",
+    "omega 6 fatty acids","omega 3 fatty acids",
+    "animal protein","ash","calcium",
+    "vitamin d3","vitamin e","vitamin b12"
+  ];
+  const altAdj   = ["best","top","recommended","premium","customer favorite"];
+  const foodAlt  = ["kibble","dog food","dry dog food"];
+  const altVerb  = ["for","to","with","without"];
+  const freeKeys = ["free","free of","without","no"];
 
-  // --- SUPPORT or SPORT-FAQ contexts (unchanged) ---
-  if (faqType === 'all') {
-    allSuggestions = faqData;
-  } else if (faqType === 'support') {
-    allSuggestions = faqData.filter(item => item.faqType === 'support');
-  } else if (faqType === 'product-all') {
-    allSuggestions = faqData.filter(item => item.faqType !== 'support');
-  // Product-specific SPORT-FAQ
-  } else if (productSpecs.some(p => p.faqType === faqType)) {
-    const activeFaqs = faqData.filter(item => item.faqType === faqType);
-    const thisProduct = productSpecs.find(p => p.faqType === faqType);
-    const dynamicEntries = [];
-
-    if (thisProduct) {
-      // Ingredients it does contain
-      thisProduct.contains.forEach(ing => {
-        dynamicEntries.push({
-          question: `Does ${thisProduct.name} contain ${ing.name}?`,
-          answer:   `${thisProduct.name} contains ${ing.name}.`,
-          keywords: [ ...thisProduct.keywords, ...ing.keywords, ing.name.toLowerCase(), ing.slug ],
-          faqType,
-          type: 'ingredient-contains'
-        });
-      });
-      // Ingredients it does NOT contain
-      doesNotContain.forEach(ing => {
-        dynamicEntries.push({
-          question: `Does ${thisProduct.name} contain ${ing.name}?`,
-          answer:   `No, ${thisProduct.name} does not contain ${ing.name}.`,
-          keywords: [ ...thisProduct.keywords, ing.name.toLowerCase(), ...(ing.masterMatch||[]), ...(ing.alternates||[]), ing.slug ],
-          faqType,
-          type: 'ingredient-not-contains'
-        });
-      });
+  // ─── 2. Ingredient map helper ───────────────────────────────
+  const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+  function buildIngKeys(entry) {
+    const base = [entry.displayAs.toLowerCase()];
+    if (Array.isArray(entry.groupWith)) {
+      base.push(...entry.groupWith.map(g=>g.toLowerCase()));
     }
-    allSuggestions = [ ...activeFaqs, ...dynamicEntries ];
-
-  // --- COMPARE-ITEM context (new) ---
-  } else if (faqType.startsWith('compare-')) {
-    // Determine the two data-fives from the slug
-    // e.g. 'compare-cub-vs-dock' → ['cub','dock']
-    const [, pair] = faqType.split('compare-');
-    const [aKey, bKey] = pair.split('-vs-');
-    const rowA = CI_DATA.find(r => r['data-one'].toLowerCase() === aKey);
-    const rowB = CI_DATA.find(r => r['data-one'].toLowerCase() === bKey);
-    if (!rowA || !rowB) {
-      console.warn('Compare rows missing for', faqType);
-      allSuggestions = [];
-    } else {
-      // Build dynamic CI entries using your mad-lib templates
-      const dynamicEntries = [];
-
-      // Brand alternatives
-      dynamicEntries.push({
-        question: `Alternatives to ${rowA['data-brand']} ${rowA['data-one']}?`,
-        answer:   `Here are some alternatives: ` +
-                  CI_DATA
-                    .filter(r => r['data-brand'] === rowA['data-brand'] && r['data-one'] !== rowA['data-one'])
-                    .slice(0,3)
-                    .map(r => `${r['data-brand']} ${r['data-one']}`)
-                    .join(', ') + '.',
-        keywords: [ rowA['data-brand'].toLowerCase(), rowA['data-one'].toLowerCase() ],
-        faqType,
-        type: 'compare-alternatives'
-      });
-
-      // Free-of checks (diet)
-      [ 'legumes', 'poultry', 'grain' ].forEach(d => {
-        if (rowA[`data-${d}`]) {
-          dynamicEntries.push({
-            question: `Is ${rowA['data-brand']} ${rowA['data-one']} ${d}-free?`,
-            answer:   `Yes—${rowA['data-brand']} ${rowA['data-one']} is ${d}-free.`,
-            keywords: [ d, rowA['data-brand'].toLowerCase(), rowA['data-one'].toLowerCase() ],
-            faqType,
-            type: 'compare-free-of'
-          });
-        }
-      });
-
-      // Fact % and how-many kcals
-      [['protein','ga_crude_protein_%'], ['fat','ga_crude_fat_%']].forEach(([lbl, fld]) => {
-        dynamicEntries.push({
-          question: `${rowA['data-brand']} ${rowA['data-one']} ${lbl}%?`,
-          answer:   `${lbl.charAt(0).toUpperCase()+lbl.slice(1)} % for ${rowA['data-brand']} ${rowA['data-one']} is ${rowA[fld]}%.`,
-          keywords: [ lbl, rowA['data-brand'].toLowerCase(), rowA['data-one'].toLowerCase() ],
-          faqType,
-          type: 'compare-fact-pct'
-        });
-      });
-      dynamicEntries.push({
-        question: `How many kcals per cup in ${rowA['data-brand']} ${rowA['data-one']}?`,
-        answer:   `There are ${rowA['ga_kcals_per_cup']} kcal per cup in ${rowA['data-brand']} ${rowA['data-one']}.`,
-        keywords: [ 'kcals per cup', rowA['data-brand'].toLowerCase(), rowA['data-one'].toLowerCase() ],
-        faqType,
-        type: 'compare-kcals'
-      });
-
-      // Ingredient contains/free-of
-      const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
-      rowA['ing-data-fives'].forEach(d5 => {
-        const entry = ingMap[d5];
-        dynamicEntries.push({
-          question: `Does ${rowA['data-brand']} ${rowA['data-one']} contain ${entry.displayAs}?`,
-          answer:   `Yes, ${rowA['data-brand']} ${rowA['data-one']} contains ${entry.displayAs}.`,
-          keywords: [ entry.displayAs.toLowerCase(), ... (entry.groupWith||[]).map(g=>g.toLowerCase()) ],
-          faqType,
-          type: 'compare-ingredient'
-        });
-      });
-
-      // Direct compare of facts A vs B
-      ['protein','fat','kcals per cup'].forEach(fact => {
-        const mapField = { protein:'ga_crude_protein_%', fat:'ga_crude_fat_%', 'kcals per cup':'ga_kcals_per_cup'}[fact];
-        dynamicEntries.push({
-          question: `Compare ${rowA['data-brand']} ${rowA['data-one']} vs ${rowB['data-brand']} ${rowB['data-one']} ${fact}%?`,
-          answer:   `${rowA['data-one']}: ${rowA[mapField]}%, ${rowB['data-one']}: ${rowB[mapField]}%.`,
-          keywords: [ fact, rowA['data-one'].toLowerCase(), rowB['data-one'].toLowerCase() ],
-          faqType,
-          type: 'compare-direct'
-        });
-      });
-
-      allSuggestions = dynamicEntries;
-    }
-
-  } else {
-    // fallback: no suggestions
-    allSuggestions = [];
+    return Array.from(new Set(base));
   }
 
-  // Initialize Fuse on the chosen dataset
-  const fuse = new Fuse(allSuggestions, {
-    keys: ['question', 'keywords'],
-    threshold: 0.4,
-    distance: 60
+  // ─── 3. Define mad-lib templates ────────────────────────────
+  const CITemplates = [
+    { name:"brand",      slots:["general","dataBrand","dataOne"],            render:c=>`${c.general} ${c.dataBrand} ${c.dataOne}?` },
+    { name:"freeOf",     slots:["general","dataBrand","dataOne","diet"],     render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} ${c.diet}-free?` },
+    { name:"factPct",    slots:["dataBrand","dataOne","fact"],               render:c=>`${c.dataBrand} ${c.dataOne} ${c.fact}%?` },
+    { name:"factHowMany",slots:["general","factLabel","dataBrand","dataOne"],render:c=>`${c.general} How many ${c.factLabel} in ${c.dataBrand} ${c.dataOne}?` },
+    { name:"ingredient", slots:["general","dataBrand","dataOne","ingredient"],render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} contain ${c.ingredient}?` },
+    { name:"notContains",slots:["general","dataBrand","dataOne","sd"],        render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} without ${c.sd}?` },
+    { name:"compare",    slots:["general","dataBrandA","dataOneA","dataBrandB","dataOneB","fact"],
+      render:c=>`${c.general} Compare ${c.dataBrandA} ${c.dataOneA} vs ${c.dataBrandB} ${c.dataOneB} ${c.fact}%?`
+    }
+  ];
+
+  const SITemplates = [
+    // identical to CITemplates, just pulling from SI fields
+    ...CITemplates
+      .map(t => ({ ...t })) // reuse same patterns
+  ];
+
+  // ─── 4. Choose context & build slotKeys + templates ─────────
+  let templates = [], slotKeys = {}, baseData = null;
+
+  if (faqType === 'ci') {
+    // CI page: single formula
+    const five = document.getElementById('item-faq-five').value;
+    const row  = CI_DATA.find(r => r['data-five'] === five);
+    baseData    = row;
+    templates   = CITemplates;
+    slotKeys = {
+      general:   generalKeys,
+      dataBrand: [row['data-brand'].toLowerCase()],
+      dataOne:   [row['data-one'].toLowerCase()],
+      diet:      dietKeys.filter(d=>row['data-'+d.replace(/-/g,'')]),
+      fact:      factKeys,
+      factLabel: factKeys,
+      ingredient: row['ing-data-fives'].flatMap(d5=> buildIngKeys(ingMap[d5]||{})),
+      sd:         row['not-data-fives'].flatMap(d5=> buildIngKeys(ingMap[d5]||{})),
+      dataBrandA: [row['data-brand'].toLowerCase()],
+      dataOneA:   [row['data-one'].toLowerCase()],
+      dataBrandB: [],
+      dataOneB:   []
+    };
+  }
+  else if (faqType.startsWith('compare-')) {
+    // Compare page: two formulas
+    const [,, pair]  = faqType.split('compare-');
+    const [aKey,bKey]= pair.split('-vs-');
+    const rowA = CI_DATA.find(r=>r['data-one'].toLowerCase()===aKey);
+    const rowB = CI_DATA.find(r=>r['data-one'].toLowerCase()===bKey);
+    if (rowA && rowB) {
+      baseData  = rowA;
+      templates = CITemplates;
+      slotKeys  = {
+        general:   generalKeys,
+        dataBrandA:[rowA['data-brand'].toLowerCase()],
+        dataOneA:  [rowA['data-one'].toLowerCase()],
+        dataBrandB:[rowB['data-brand'].toLowerCase()],
+        dataOneB:  [rowB['data-one'].toLowerCase()],
+        fact:      factKeys
+      };
+    }
+  }
+  else if (SI_DATA.some(p=>p.faqType===faqType)) {
+    // SI page: sport-item
+    const row = SI_DATA.find(p=>p.faqType===faqType);
+    baseData    = row;
+    templates   = SITemplates;
+    slotKeys = {
+      general:    generalKeys,
+      dataBrand:  [row.brandDisplay.toLowerCase()],
+      dataOne:    [row['data-one'].toLowerCase()],
+      diet:       dietKeys.filter(d=>row['data-diet'].toLowerCase()===d),
+      fact:       factKeys,
+      factLabel:  factKeys,
+      ingredient: row['ing-data-fives'].flatMap(d5=> buildIngKeys(ingMap[d5]||{})),
+      sd:         row['not-data-fives'].flatMap(d5=> buildIngKeys(ingMap[d5]||{})),
+      // placeholders:
+      va:  (row['va-data-fives']||[]).map(_=>/* lookup in VA map */``),
+      breed:(row['dogBr-fives']||[]).map(_=>/* lookup in DOG map*/``),
+      dataBrandA:[row.brandDisplay.toLowerCase()],
+      dataOneA:  [row['data-one'].toLowerCase()],
+      dataBrandB:[],
+      dataOneB:  []
+    };
+  }
+  else {
+    // no Q&A here
+    templates = [];
+    slotKeys  = {};
+  }
+
+  // ─── 5. Build Fuse index ──────────────────────────────────────
+  const fuseIndex = [];
+  templates.forEach(t => {
+    t.slots.forEach(slot => {
+      fuseIndex.push({
+        template: t,
+        slot,
+        keys: slotKeys[slot] || []
+      });
+    });
+  });
+  const fuse = new Fuse(fuseIndex, {
+    keys: ["keys"],
+    threshold: 0.3,
+    minMatchCharLength: 2
   });
 
-  // Helper to build “No results” LI
+  // ─── 6. Suggestion engine ────────────────────────────────────
+  function suggestQuestions(txt) {
+    const q = txt.trim().toLowerCase();
+    let matches = fuseIndex.filter(e => e.keys.some(k=>q.includes(k)));
+    if (!matches.length) matches = fuse.search(q).map(r=>r.item);
+    const out = [];
+    templates.forEach(t => {
+      const ctx = {}, ok = t.slots.every(slot => {
+        if (slot === 'general') { ctx.general = "What"; return true; }
+        const m = matches.find(m=>m.template===t && m.slot===slot);
+        if (m) { ctx[slot] = m.keys.find(k=>q.includes(k)); return true; }
+        return false;
+      });
+      if (ok) out.push(t.render(ctx));
+    });
+    return out.length ? Array.from(new Set(out)).slice(0,3)
+                     : ["Sorry, try typing protein, fat, or peas."];
+  }
+
+  // ─── 7. Wire UI ───────────────────────────────────────────────
   const makeNoResults = () => {
     const li = document.createElement('li');
     li.className = 'no-results';
@@ -182,54 +185,49 @@ export function initSearchSuggestions(faqType = 'all') {
     return li;
   };
 
-  // UI reset
-  const clearUI = () => {
-    list.innerHTML = ''; list.style.display = 'none';
-    freshInput.value = '';
-    freshSend.style.display = freshClear.style.display = 'none';
-  };
-
-  // === Type-ahead listener ===
   freshInput.addEventListener('input', () => {
     const q = freshInput.value.trim();
-    list.innerHTML = ''; list.style.display = 'none';
+    list.innerHTML = '';
+    list.style.display = (q ? 'block' : 'none');
     freshSend.style.display = freshClear.style.display = q ? 'block' : 'none';
     if (!q) return;
-    const results = fuse.search(q).slice(0, 5);
-    if (!results.length) {
+
+    const suggestions = suggestQuestions(q);
+    if (suggestions[0].startsWith("Sorry")) {
       list.appendChild(makeNoResults());
     } else {
-      results.forEach(({ item }) => {
+      suggestions.forEach(text => {
         const li = document.createElement('li');
-        li.textContent = item.question;
+        li.textContent = text;
         li.addEventListener('click', () => {
-          freshInput.value = item.question;
-          freshSend.style.display = freshClear.style.display = 'block';
+          freshInput.value = text;
           list.style.display = 'none';
         });
         list.appendChild(li);
       });
     }
-    list.style.display = 'block';
   });
 
-  // === Clear ===
-  freshClear.addEventListener('click', clearUI);
+  freshClear.addEventListener('click', () => {
+    freshInput.value = '';
+    list.innerHTML = '';
+    list.style.display = 'none';
+    freshSend.style.display = freshClear.style.display = 'none';
+  });
 
-  // === Enter => Send ===
-  freshInput.addEventListener('keydown', e => { if (e.key === 'Enter') freshSend.click(); });
+  freshInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') freshSend.click();
+  });
 
-  // === Send (answer) ===
   freshSend.addEventListener('click', () => {
     const q = freshInput.value.trim();
     if (!q) return;
-    const matches = fuse.search(q);
-    if (matches.length) {
-      const ans = matches[0].item.answer || 'No answer available.';
-      // reuse your existing Typed.js logic to show it
-      showAns(ans);
-    } else {
-      showAns('Could not find an answer for that.');
+    const match = fuse.search(q)[0];
+    if (match) {
+      // dispatch to faq.js for answer building
+      document.dispatchEvent(
+        new CustomEvent('faq:suggestionSelected', { detail: match.item })
+      );
     }
   });
 }
