@@ -25,7 +25,7 @@ export function initSearchSuggestions(faqType = 'all') {
   const freshClear = document.getElementById('pwr-clear-button');
 
   // ─── 1. Static trigger-word lists ────────────────────────────
-  const generalKeys = ["what","what's","is","how many","does","compare"];
+  const generalKeys = ["what","what's","is","how many","does","compare","for","food for"];
   const dietKeys    = ["grain-free","poultry-free","peas-free","legumes-free"];
   const factKeys    = [
     "protein","fat","fiber","moisture",
@@ -35,9 +35,16 @@ export function initSearchSuggestions(faqType = 'all') {
     "vitamin d3","vitamin e","vitamin b12"
   ];
   const altAdj   = ["best","top","recommended","premium","customer favorite"];
-  const foodAlt  = ["kibble","dog food","dry dog food"];
-  const altVerb  = ["for","to","with","without"];
-  const freeKeys = ["free","free of","without","no"];
+  const foodAlt  = ["kibble","dog food","dry dog food","dry dog food with","dog food for","kibble for"];
+  const altVerb  = [
+    "for","to","with","without","contain","recommendations for","options for","vet recommended",
+    "veterinarian recommended","best","recommended for"
+];
+  const freeKeys = [
+    "free","free of","without","no", "excludes poultry","poultry free","free of poultry","with no poultry",
+    "without poultry","excludes peas","peas free","free of peas","with no peas","without peas","excludes legumes",
+    "legumes free","free of legumes","with no legumes","without legumes", "excludes lentils", "lentils free", 
+    "free of lentils", "with no lentils", "without lentils"];
 
   // ─── 2. Ingredient map helper ───────────────────────────────
   const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
