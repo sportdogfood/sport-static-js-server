@@ -1,3 +1,4 @@
+
 [
   {
     "Name": "Cub Puppy",
@@ -53,6 +54,9 @@
       "4TIL1",
       "IPVOO"
     ],
+    "dogKeys_ac": "Tracking, Agility, Dock Diving",
+    "dogKeys_gp": "K9 Dogs, Working Dogs, Active Dogs, Performance Dogs, Tracking Dogs, Agility Dogs",
+    "dogKeys_jb": "Patrol, Protection, Detection",
     "ing-data-fives": [
       "C6HRL",
       "KEB4Z",
@@ -484,7 +488,6 @@
       "ZIFVT",
       "F2O7T"
     ],
-    "dog-data-fives": "",
     "Product ID": "084282929280",
     "specs_in_stock": "",
     "Price": 98,
@@ -556,6 +559,9 @@
       "UQ7MN",
       "MOVBB"
     ],
+    "dogKeys_ac": "Field Trials, Tracking, Agility, Dock Diving",
+    "dogKeys_gp": "Field Dogs, Gun Dogs, Bird Dogs, Sporting Dogs, Active Dogs, Performance Dogs, Tracking Dogs, Agility Dogs, Working Dogs",
+    "dogKeys_jb": "Detection",
     "ing-data-fives": [
       "C6HRL",
       "KEB4Z",
@@ -987,7 +993,6 @@
       "ZIFVT",
       "F2O7T"
     ],
-    "dog-data-fives": "",
     "Product ID": "084282929099",
     "specs_in_stock": "",
     "Price": 98,
@@ -1064,6 +1069,9 @@
       "MOVBB",
       "IPVOO"
     ],
+    "dogKeys_ac": "Field Trials, Tracking, Agility, Dock Diving",
+    "dogKeys_gp": "Field Dogs, Gun Dogs, Bird Dogs, Sporting Dogs, Active Dogs, Performance Dogs, Tracking Dogs, Agility Dogs, K9 Dogs, Working Dogs",
+    "dogKeys_jb": "Detection, Patrol, Protection",
     "ing-data-fives": [
       "C6HRL",
       "K5VFA",
@@ -1494,7 +1502,6 @@
       "ZIFVT",
       "F2O7T"
     ],
-    "dog-data-fives": "KCDKK",
     "Product ID": "084282928979",
     "specs_in_stock": true,
     "Price": 98,
