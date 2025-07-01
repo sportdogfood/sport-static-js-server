@@ -1,4 +1,4 @@
-[
+export const CF_DATA = [
   {
     "Name": "Sport Dog Food Herding Dog Buffalo",
     "Slug": "",
@@ -1631,4 +1631,4 @@
     "based_on_highlyactive": 1790,
     "based_on_heavy_duty": 2984
   }
-]
+];
