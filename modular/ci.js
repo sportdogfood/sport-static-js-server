@@ -1,6 +1,6 @@
-
-[
+export const CI_DATA = [
   {
+
     "Name": "Eukanuba Adult Large Breed Dry Dog",
     "Slug": "compare-eukanuba-adult-large-breed-dry-dog-ingredients",
     "Collection ID": "647ddb9037101ce399b330b4",
@@ -2761,4 +2761,4 @@
     "ga_kcals_per_kg": 3847.7000000000003,
     "ga_kcals_per_cup": 526
   }
-]
+];
