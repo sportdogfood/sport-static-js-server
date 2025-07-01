@@ -1,5 +1,5 @@
 
-[
+export const VA_DATA = [ 
   {
     "Name": "Calorie Dense",
     "Slug": "calorie-dense-dry-dog-food",
@@ -780,4 +780,4 @@
       "9CDZC"
     ]
   }
-]
+];
