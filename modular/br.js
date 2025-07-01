@@ -1,6 +1,7 @@
-
-[
+// br.js
+export const BRANDS = [
   {
+
     "Name": "Sport Dog Food",
     "Slug": "premium-sport-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -1044,3 +1045,4 @@
     "cf-data-fives": []
   }
 ]
+];
