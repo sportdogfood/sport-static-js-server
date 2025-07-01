@@ -1,4 +1,4 @@
-[
+export const SF_DATA = [
   {
     "Name": "Cub Puppy",
     "Slug": "cub-puppy",
@@ -203,4 +203,4 @@
     "based_on_highlyactive": 1799,
     "based_on_heavy_duty": 2984
   }
-]
+];
