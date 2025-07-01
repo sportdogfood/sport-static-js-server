@@ -1,4 +1,4 @@
-[
+export const DOG_DATA = [
   {
     "Name": "Weimaraners",
     "Slug": "most-recommended-dog-food-for-weimaraners",
@@ -2752,4 +2752,4 @@
     "color_coat": "",
     "activity_level": ""
   }
-]
+];
