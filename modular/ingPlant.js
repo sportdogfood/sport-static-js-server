@@ -1,5 +1,5 @@
-
-[
+// ingPlant.js
+export const ING_PLANT = [ 
   {
     "Name": "Navy Beans",
     "Slug": "navy-beans",
@@ -13168,4 +13168,4 @@
     "vitamins_derived": "Saponins, Trace minerals",
     "termDescription": "Plant extract often used to reduce stool odor and aid digestion."
   }
-]
+];
