@@ -1044,5 +1044,4 @@ export const BRANDS = [
     "ci-data-fives": [],
     "cf-data-fives": []
   }
-]
 ];
