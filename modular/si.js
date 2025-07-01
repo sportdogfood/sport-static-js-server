@@ -1,4 +1,4 @@
-
+export const SI_DATA =
 [
   {
     "Name": "Cub Puppy",
@@ -1547,4 +1547,4 @@
     "aafco-options": "Formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for All Life Stages, including growth of large size dogs (70 lb. or more as an adult).",
     "aafco-short": "For all life stages"
   }
-]
+];
