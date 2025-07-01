@@ -1,4 +1,4 @@
-[
+export const ING_SUPP = [
   {
     "Name": "Ascorbic Acid",
     "Slug": "ascorbic-acid",
@@ -11627,4 +11627,4 @@
     "vitamins_derived": "Vitamin B-vitamins",
     "termDescription": "Flavor and protein enhancer from yeast; palatability."
   }
-]
+];
