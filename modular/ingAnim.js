@@ -1,4 +1,4 @@
-[
+export const ING_ANIM = [ 
   {
     "Name": "Anchovy",
     "Slug": "anchovy",
@@ -6186,4 +6186,4 @@
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Rendered, concentrated whitefish protein; animal protein and flavor."
   }
-]
+];
