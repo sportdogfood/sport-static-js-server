@@ -1,23 +1,22 @@
 /* search-suggestions.js */
 import Fuse        from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { faqData } from './faq-data.js';
-import { CI_DATA } from './ci.js';
-import { SI_DATA } from './si.js';
+import { CI_DATA } from './ci.js';     // CI vars: Slug, data-legumes, data-poultry, data-grain, data-five, data-one, data-brand, data-diet, specs_..., ga_...
+import { SI_DATA } from './si.js';     // SI vars: same + dogBr-fives, dogKeys_ac/gp/jb, va-data-fives, not-data-fives, ga_omega_..., etc.
 import { ING_ANIM  } from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
 import { ING_SUPP  } from './ingSupp.js';
 import { VA_DATA   } from './va.js';
 import { DOG_DATA  } from './dog.js';
 
-export function initSearchSuggestions(faqType = 'all') {
-  // ─── 0. UI hooks & clear old listeners ───────────────────────
+export function initSearchSuggestions(faqType = '') {
+  // ─── UI hooks & helper ────────────────────────────────────────
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
   const sendBtn  = document.getElementById('pwr-send-button');
   const clearBtn = document.getElementById('pwr-clear-button');
-  if (!input || !list || !sendBtn || !clearBtn) {
-    return console.warn('❗ Missing search-suggestion nodes');
-  }
+  if (!input || !list || !sendBtn || !clearBtn) return;
+
+  // clear old listeners
   input.replaceWith(input.cloneNode(true));
   sendBtn.replaceWith(sendBtn.cloneNode(true));
   clearBtn.replaceWith(clearBtn.cloneNode(true));
@@ -25,79 +24,6 @@ export function initSearchSuggestions(faqType = 'all') {
   const freshSend  = document.getElementById('pwr-send-button');
   const freshClear = document.getElementById('pwr-clear-button');
 
-  // ─── 1. Static trigger‐lists ─────────────────────────────────
-  const generalKeys = [
-    "what","what's","is","how many","does","compare",
-    "for","food for"
-  ];
-  const dietKeys = [
-    "grain-free","poultry-free","peas-free","legumes-free"
-  ];
-  const factKeys = [
-    "protein","fat","fiber","moisture",
-    "kcals per cup","kcals per kg",
-    "omega 6 fatty acids","omega 3 fatty acids",
-    "animal protein","ash","calcium",
-    "vitamin d3","vitamin e","vitamin b12"
-  ];
-  const altAdj = ["best","top","recommended","premium","customer favorite"];
-  const foodAlt = [
-    "kibble","dog food","dry dog food",
-    "dry dog food with","dog food for","kibble for"
-  ];
-  const altVerb = [
-    "for","to","with","without","contain",
-    "recommendations for","options for",
-    "vet recommended","veterinarian recommended",
-    "best","recommended for"
-  ];
-  const freeKeys = [
-    "free","free of","without","no",
-    "excludes poultry","poultry free","free of poultry","with no poultry","without poultry",
-    "excludes peas","peas free","free of peas","with no peas","without peas",
-    "excludes legumes","legumes free","free of legumes","with no legumes","without legumes",
-    "excludes lentils","lentils free","free of lentils","with no lentils","without lentils"
-  ];
-
-  // ─── 2. Ingredient key builder ───────────────────────────────
-  const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
-  function buildIngKeys(entry) {
-    const keys = [];
-    if (entry.displayAs) keys.push(entry.displayAs.toLowerCase());
-    if (Array.isArray(entry.groupWith)) {
-      entry.groupWith.forEach(g => keys.push(g.toLowerCase()));
-    }
-    return Array.from(new Set(keys));
-  }
-
-  // ─── 3. CI‐only templates (brand + ingredient) ───────────────
-  const CITemplates = [
-    {
-      type: "brand",
-      question: ctx => `Alternatives to ${ctx.dataBrand} ${ctx.dataOne}?`,
-      keywords: ctx => [ctx.dataBrand.toLowerCase(), ctx.dataOne.toLowerCase()]
-    },
-    {
-      type: "ingredient",
-      question: ctx => `Does ${ctx.dataBrand} ${ctx.dataOne} contain ${ctx.ingredient}?`,
-      keywords: ctx => [ctx.ingredient.toLowerCase()]
-    }
-  ];
-
-  // ─── 4. SI‐only mad-lib templates ─────────────────────────────
-  const SITemplates = [
-    { name:"factPct",     slots:["dataBrand","dataOne","fact"],               render:c=>`${c.dataBrand} ${c.dataOne} ${c.fact}%?` },
-    { name:"factHowMany", slots:["general","fact","dataBrand","dataOne"],      render:c=>`${c.general} How many ${c.fact} in ${c.dataBrand} ${c.dataOne}?` },
-    { name:"freeOf",      slots:["general","dataBrand","dataOne","diet"],      render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} ${c.diet}-free?` },
-    { name:"ingredient",  slots:["general","dataBrand","dataOne","ingredient"],render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} contain ${c.ingredient}?` },
-    { name:"valueAdd",    slots:["general","dataBrand","dataOne","va"],        render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} ${c.va}?` },
-    { name:"breedSuit",   slots:["general","dataBrand","dataOne","breed"],     render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} for ${c.breed}?` },
-    { name:"activitySuit",slots:["general","dataBrand","dataOne","activity"],  render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} for ${c.activity}?` },
-    { name:"groupSuit",   slots:["general","dataBrand","dataOne","group"],     render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} for ${c.group}?` },
-    { name:"jobSuit",     slots:["general","dataBrand","dataOne","job"],       render:c=>`${c.general} ${c.dataBrand} ${c.dataOne} for ${c.job}?` }
-  ];
-
-  // ─── 5. “No results” helper ───────────────────────────────────
   function makeNoResults() {
     const li = document.createElement('li');
     li.className   = 'no-results';
@@ -106,160 +32,202 @@ export function initSearchSuggestions(faqType = 'all') {
     return li;
   }
 
-  // ─── 6. SUPPORT contexts ─────────────────────────────────────
-  let fuse, allSuggestions = [];
-  if (faqType === 'all') {
-    allSuggestions = faqData;
-  }
-  else if (faqType === 'support') {
-    allSuggestions = faqData.filter(i => i.faqType === 'support');
-  }
-  else if (faqType === 'product-all') {
-    allSuggestions = faqData.filter(i => i.faqType !== 'support');
-  }
+  function bindFuse(suggestions) {
+    const fuse = new Fuse(suggestions, {
+      keys:      ['question','keywords'],
+      threshold: 0.4,
+      distance:  60
+    });
 
-  // ─── 7. CI pages ──────────────────────────────────────────────
-  if (faqType === 'ci') {
-    const five = document.getElementById('item-faq-five').value;
-    const row  = CI_DATA.find(r=>r['data-five']===five);
-    if (row) {
-      // Brand alternatives
-      allSuggestions.push({
-        question: CITemplates[0].question({ dataBrand:row['data-brand'], dataOne:row['data-one'] }),
-        keywords: CITemplates[0].keywords({ dataBrand:row['data-brand'], dataOne:row['data-one'] }),
-        type: 'brand', answer:''
-      });
-      // Ingredient checks
-      row['ing-data-fives'].forEach(d5 => {
-        const ing = ingMap[d5];
-        if (!ing) return;
-        buildIngKeys(ing).forEach(key => {
-          allSuggestions.push({
-            question: `Does ${row['data-brand']} ${row['data-one']} contain ${ing.displayAs}?`,
-            keywords: [key],
-            type: 'ingredient', answer:''
-          });
-        });
-      });
-    }
-  }
-
-  // ─── 8. Initialize CI/support Fuse & UI ──────────────────────
-  if (allSuggestions.length) {
-    fuse = new Fuse(allSuggestions, { keys:['question','keywords'], threshold:0.4, distance:60 });
-    // live type‐ahead & send logic (same as before)…
     freshInput.addEventListener('input', () => {
       const q = freshInput.value.trim();
       list.innerHTML = '';
-      freshSend.style.display=freshClear.style.display=q?'block':'none';
-      if (!q) return list.style.display='none';
+      freshSend.style.display = freshClear.style.display = q ? 'block' : 'none';
+      if (!q) return list.hidden = true;
 
-      const results = fuse.search(q).slice(0,5);
+      const results = fuse.search(q).slice(0,5).map(r=>r.item);
       if (!results.length) list.appendChild(makeNoResults());
-      else results.forEach(({item}) => {
+      else results.forEach(item => {
         const li = document.createElement('li');
         li.textContent = item.question;
-        li.addEventListener('click', ()=>{
-          freshInput.value=item.question;
-          freshSend.style.display=freshClear.style.display='block';
-          list.style.display='none';
+        li.addEventListener('click', () => {
+          freshInput.value = item.question;
+          freshSend.style.display = freshClear.style.display = 'block';
+          list.hidden = true;
         });
         list.appendChild(li);
       });
-      list.style.display='block';
+      list.hidden = false;
     });
-    freshClear.addEventListener('click', ()=>{
-      freshInput.value=''; list.innerHTML=''; list.style.display='none';
-      freshSend.style.display=freshClear.style.display='none';
+
+    freshClear.addEventListener('click', () => {
+      freshInput.value = '';
+      list.innerHTML   = '';
+      list.hidden      = true;
+      freshSend.style.display = freshClear.style.display = 'none';
     });
-    freshInput.addEventListener('keydown', e=>{ if(e.key==='Enter') freshSend.click(); });
-    freshSend.addEventListener('click', ()=>{
-      const q=freshInput.value.trim();
-      if(!q) return;
-      const m=fuse.search(q)[0];
-      if(m) document.dispatchEvent(new CustomEvent('faq:suggestionSelected',{detail:m.item}));
+    freshInput.addEventListener('keydown', e => { if (e.key==='Enter') freshSend.click(); });
+    freshSend.addEventListener('click', () => {
+      const q = freshInput.value.trim();
+      if (!q) return;
+      const m = fuse.search(q)[0];
+      if (m) document.dispatchEvent(new CustomEvent('faq:suggestionSelected',{detail:m.item}));
     });
-    return;
   }
 
-  // ─── 9. SI pages ──────────────────────────────────────────────
-  if (SI_DATA.some(p=>p.faqType===faqType)) {
-    const row = SI_DATA.find(p=>p.faqType===faqType);
-    // build slotKeys for SI
-    const slotKeys = {
-      general:    generalKeys,
-      dataBrand:  [row.brandDisplay.toLowerCase()],
-      dataOne:    [row['data-one'].toLowerCase()],
-      diet:       dietKeys.filter(d=>row['data-diet'].toLowerCase()===d),
-      fact:       factKeys,
-      ingredient: row['ing-data-fives'].flatMap(d5=>buildIngKeys(ingMap[d5]||{})),
-      sd:         row['not-data-fives'].flatMap(d5=>buildIngKeys(ingMap[d5]||{})),
-      va:         (row['va-data-fives']||[]).map(d5=>VA_DATA[d5].displayAs.toLowerCase()),
-      breed:      (row['dogBr-fives']||[]).map(d5=>DOG_DATA[d5].displayAs.toLowerCase()),
-      activity:   (row.dogKeys_ac||[]).map(s=>s.toLowerCase()),
-      group:      (row.dogKeys_gp||[]).map(s=>s.toLowerCase()),
-      job:        (row.dogKeys_jb||[]).map(s=>s.toLowerCase())
-    };
+  // ─── CI branch (“Compare” pages) ───────────────────────────────
+  if (faqType === 'ci') {
+    const five = document.getElementById('item-faq-five').value;
+    const row  = CI_DATA.find(r => String(r['data-five']) === five);
+    if (!row) return;
+    const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+    const suggestions = [];
 
-    // fallback for empty breed/activity/group/job
-    ['breed','activity','group','job'].forEach(slot=>{
-      if (!slotKeys[slot].length) slotKeys[slot]=['active dogs'];
+    // 1) Alternatives
+    suggestions.push({
+      question: `Alternatives to ${row['data-brand']} ${row['data-one']}?`,
+      keywords: [ row['data-brand'].toLowerCase(), row['data-one'].toLowerCase() ],
+      type: 'alternatives', answer: ''
     });
 
-    // build Fuse index
-    const fuseIndex=[];     
-    SITemplates.forEach(t=>{
-      t.slots.forEach(slot=>{
-        fuseIndex.push({ template:t, slot, keys:slotKeys[slot]||[] });
+    // 2) Free-of (diet) if set
+    if (row['data-diet']) {
+      suggestions.push({
+        question: `Is ${row['data-brand']} ${row['data-one']} ${row['data-diet']}-free?`,
+        keywords: [ row['data-diet'] ],
+        type: 'freeOf', answer: ''
       });
-    });
-    const fuseSI = new Fuse(fuseIndex, { keys:['keys'], threshold:0.3, minMatchCharLength:2 });
-
-    // suggestion fn
-    function suggestSI(txt){
-      const q=txt.trim().toLowerCase();
-      let m=fuseIndex.filter(e=>e.keys.some(k=>q.includes(k)));
-      if(!m.length) m=fuseSI.search(q).map(r=>r.item);
-      const out=[];
-      SITemplates.forEach(t=>{
-        const ctx={}; 
-        const ok=t.slots.every(slot=>{
-          if(slot==='general'){ ctx.general='What'; return true; }
-          const pick=m.find(x=>x.template===t&&x.slot===slot);
-          if(pick){ ctx[slot]=pick.keys.find(k=>q.includes(k)); return true; }
-          return false;
-        });
-        if(ok) out.push(t.render(ctx));
-      });
-      return out.length? Array.from(new Set(out)).slice(0,3)
-                      : ['Sorry, try typing protein, fat, or peas.'];
     }
 
-    // wire SI type‐ahead
-    freshInput.addEventListener('input', ()=>{
-      const q=freshInput.value;
-      list.innerHTML=''; freshSend.style.display=freshClear.style.display=q?'block':'none';
-      if(!q) return list.style.display='none';
-      const suggestions=suggestSI(q);
-      if(suggestions[0].startsWith('Sorry')) list.appendChild(makeNoResults());
-      else suggestions.forEach(text=>{
-        const li=document.createElement('li');
-        li.textContent=text;
-        li.addEventListener('click',()=>{ freshInput.value=text; list.style.display='none'; });
-        list.appendChild(li);
+    // 3) Fact lookups
+    [
+      ['ga_crude_protein_%','protein'],
+      ['ga_crude_fat_%','fat'],
+      ['ga_crude_fiber_%','fiber'],
+      ['ga_moisture_%','moisture'],
+      ['ga_kcals_per_kg','kcals per kg'],
+      ['ga_kcals_per_cup','kcals per cup']
+    ].forEach(([fld,label]) => {
+      const val = row[fld];
+      if (val != null) {
+        suggestions.push({
+          question: `What is ${row['data-brand']} ${row['data-one']} ${label}%?`,
+          keywords: [ label ],
+          type: 'factPct', answer:''
+        });
+        suggestions.push({
+          question: `How many ${label} in ${row['data-brand']} ${row['data-one']}?`,
+          keywords: [ label ],
+          type: 'factHowMany', answer:''
+        });
+      }
+    });
+
+    // 4) Ingredient‐contains
+    (row['ing-data-fives']||[]).forEach(d5 => {
+      const ing = ingMap[d5]; if(!ing) return;
+      const name = ing.displayAs;
+      const keys = [ name.toLowerCase(), ...(ing.groupWith||[]).map(g=>g.toLowerCase()) ];
+      suggestions.push({
+        question: `Does ${row['data-brand']} ${row['data-one']} contain ${name}?`,
+        keywords: keys, type:'ingredient', answer:''
       });
-      list.style.display='block';
     });
-    freshClear.addEventListener('click',()=>{
-      freshInput.value=''; list.innerHTML=''; list.style.display='none';
-      freshSend.style.display=freshClear.style.display='none';
+
+    // 5) Compare‐placeholder (CE will augment)
+    suggestions.push({
+      question: `Compare ${row['data-brand']} ${row['data-one']} vs [other]?`,
+      keywords: [ row['data-one'].toLowerCase() ],
+      type: 'compare', answer:''
     });
-    freshInput.addEventListener('keydown',e=>{ if(e.key==='Enter') freshSend.click(); });
-    freshSend.addEventListener('click',()=>{
-      const q=freshInput.value.trim();
-      if(!q) return;
-      const m=fuseSI.search(q)[0];
-      if(m) document.dispatchEvent(new CustomEvent('faq:suggestionSelected',{detail:m.item}));
-    });
+
+    return bindFuse(suggestions);
   }
+
+  // ─── SI branch (“Explore” pages) ───────────────────────────────
+  if (faqType === 'si') {
+    const row = SI_DATA.find(r => r.faqType === faqType);
+    if (!row) return;
+    const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+
+    // slot→tokens
+    const generalKeys  = ["what","what's","is","does","compare","for","food for"];
+    const altAdj       = ["best","top","recommended","premium","customer favorite"];
+    const foodAlt      = ["kibble","dog food","dry dog food","dry dog food with","dog food for","kibble for"];
+    const altVerb      = ["for","to","with","without","contain","recommendations for","options for","vet recommended","veterinarian recommended","best","recommended for"];
+    const freeKeys     = ["free","free of","without","no"];
+    const dietKeys     = ["grain-free","poultry-free","peas-free","legumes-free"];
+    const factKeys     = ["protein","fat","fiber","moisture","kcals per cup","kcals per kg","omega 6 fatty acids","omega 3 fatty acids","animal protein","ash","calcium","vitamin d3","vitamin e","vitamin b12"];
+    const breedKeys    = (row['dogBr-fives']||[]).map(d5=>DOG_DATA[d5].displayAs.toLowerCase());
+    const activityKeys = (row.dogKeys_ac||[]).map(s=>s.toLowerCase());
+    const groupKeys    = (row.dogKeys_gp||[]).map(s=>s.toLowerCase());
+    const jobKeys      = (row.dogKeys_jb||[]).map(s=>s.toLowerCase());
+    const sdKeys       = (row['not-data-fives']||[]).flatMap(d5=>{
+      const ing = ingMap[d5]; return ing? [ing.displayAs.toLowerCase()] : [];
+    });
+    const vaKeys       = (row['va-data-fives']||[]).map(d5=>VA_DATA[d5].displayAs.toLowerCase());
+    const ingKeys      = (row['ing-data-fives']||[]).flatMap(d5=>{
+      const ing=ingMap[d5]; return ing? [ing.displayAs.toLowerCase(), ...(ing.groupWith||[]).map(g=>g.toLowerCase())] : [];
+    });
+
+    // fallbacks
+    if (!breedKeys.length)    breedKeys.push('active dogs');
+    if (!activityKeys.length) activityKeys.push('active dogs');
+    if (!groupKeys.length)    groupKeys.push('active dogs');
+    if (!jobKeys.length)      jobKeys.push('active dogs');
+
+    const slotTokens = {
+      general:    [...generalKeys, ...altAdj, ...foodAlt, ...altVerb, ...freeKeys],
+      diet:       dietKeys,
+      fact:       factKeys,
+      factLabel:  factKeys,
+      ingredient: ingKeys,
+      sd:         sdKeys,
+      va:         vaKeys,
+      breed:      breedKeys,
+      activity:   activityKeys,
+      group:      groupKeys,
+      job:        jobKeys
+    };
+
+    // SI mad-libs
+    const SITemplates = [
+      { name:"factPct",      slots:["dataBrand","dataOne","fact"],                render:c=>`What is ${c.dataBrand} ${c.dataOne} ${c.fact}%?` },
+      { name:"factHowMany",  slots:["general","factLabel","dataBrand","dataOne"], render:c=>`${c.general} How many ${c.factLabel} in ${c.dataBrand} ${c.dataOne}?` },
+      { name:"freeOf",       slots:["general","dataBrand","dataOne","diet"],      render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} ${c.diet}-free?` },
+      { name:"ingredient",   slots:["general","dataBrand","dataOne","ingredient"],render:c=>`${c.general} Does ${c.dataBrand} ${c.dataOne} contain ${c.ingredient}?` },
+      { name:"notContains",  slots:["general","dataBrand","dataOne","sd"],        render:c=>`${c.general} Does ${c.dataBrand} ${c.dataOne} contain ${c.sd}?` },
+      { name:"valueAdd",     slots:["general","dataBrand","dataOne","va"],        render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} ${c.va}?` },
+      { name:"breedSuit",    slots:["general","dataBrand","dataOne","breed"],     render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} suitable for ${c.breed}?` },
+      { name:"activitySuit", slots:["general","dataBrand","dataOne","activity"],  render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} good for ${c.activity}?` },
+      { name:"groupSuit",    slots:["general","dataBrand","dataOne","group"],     render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} good for ${c.group}?` },
+      { name:"jobSuit",      slots:["general","dataBrand","dataOne","job"],       render:c=>`${c.general} Is ${c.dataBrand} ${c.dataOne} suitable for ${c.job}?` }
+    ];
+
+    // build suggestions
+    const suggestions = [];
+    SITemplates.forEach(t => {
+      t.slots.forEach(slot => {
+        (slotTokens[slot]||[]).forEach(token => {
+          const ctx = {
+            dataBrand: row.brandDisplay,
+            dataOne:   row['data-one'],
+            [slot]:    token
+          };
+          suggestions.push({
+            question: t.render(ctx),
+            keywords: [ token ],
+            type:     t.name,
+            answer:   ''
+          });
+        });
+      });
+    });
+
+    return bindFuse(suggestions);
+  }
+
+  // ─── Fallback ─────────────────────────────────────────────────
+  list.innerHTML = '';
+  list.appendChild(makeNoResults());
 }
