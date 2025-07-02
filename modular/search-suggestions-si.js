@@ -87,11 +87,18 @@ const templates = [
   }
 ];
 
+function safeArray(val) {
+  if (Array.isArray(val)) return val;
+  if (typeof val === 'string' && val.trim()) return [val];
+  if (val == null) return [];
+  try { return Array.from(val); } catch { return []; }
+}
+
 // ---- Build Suggestions For SI ----
 function buildSuggestions(row, ingMap) {
   let suggestions = [];
   // --- Ingredient Contains/Not Contains
-  (row['ing-data-fives']||[]).forEach(d5=>{
+  safeArray(row['ing-data-fives']).forEach(d5=>{
     const ing = ingMap[d5];
     if (!ing) return;
     suggestions.push({
@@ -101,7 +108,7 @@ function buildSuggestions(row, ingMap) {
       answer: `Yes, ${row['data-brand']} ${row['data-one']} contains ${ing.displayAs}.`
     });
   });
-  (row['not-data-fives']||[]).forEach(d5=>{
+  safeArray(row['not-data-fives']).forEach(d5=>{
     const ing = ingMap[d5];
     if (!ing) return;
     suggestions.push({
@@ -142,7 +149,7 @@ function buildSuggestions(row, ingMap) {
     }
   });
   // --- Value Add (VA)
-  (row['va-data-fives']||[]).forEach(va=>{
+  safeArray(row['va-data-fives']).forEach(va=>{
     suggestions.push({
       type: "va",
       question: `Is ${row['data-brand']} ${row['data-one']} ${va}?`,
@@ -151,7 +158,7 @@ function buildSuggestions(row, ingMap) {
     });
   });
   // --- Breed
-  (row['dogBr-fives']||[]).forEach(b=>{
+  safeArray(row['dogBr-fives']).forEach(b=>{
     suggestions.push({
       type: "breed-suit",
       question: `Is ${row['data-brand']} ${row['data-one']} suitable for ${b}?`,
@@ -160,7 +167,7 @@ function buildSuggestions(row, ingMap) {
     });
   });
   // --- Activity/Group/Job
-  (row['dogKeys_ac']||[]).forEach(a=>{
+  safeArray(row['dogKeys_ac']).forEach(a=>{
     suggestions.push({
       type: "activity-suit",
       question: `Is ${row['data-brand']} ${row['data-one']} good for ${a}?`,
@@ -168,7 +175,7 @@ function buildSuggestions(row, ingMap) {
       answer: `Yes, ${row['data-brand']} ${row['data-one']} is good for ${a}.`
     });
   });
-  (row['dogKeys_gp']||[]).forEach(g=>{
+  safeArray(row['dogKeys_gp']).forEach(g=>{
     suggestions.push({
       type: "group-suit",
       question: `Is ${row['data-brand']} ${row['data-one']} good for ${g}?`,
@@ -176,7 +183,7 @@ function buildSuggestions(row, ingMap) {
       answer: `Yes, ${row['data-brand']} ${row['data-one']} is good for ${g}.`
     });
   });
-  (row['dogKeys_jb']||[]).forEach(j=>{
+  safeArray(row['dogKeys_jb']).forEach(j=>{
     suggestions.push({
       type: "job-suit",
       question: `Is ${row['data-brand']} ${row['data-one']} suitable for ${j}?`,
@@ -186,6 +193,7 @@ function buildSuggestions(row, ingMap) {
   });
   return suggestions;
 }
+
 
 // ---- Main Init Function (single export!) ----
 export function initSearchSuggestions() {
