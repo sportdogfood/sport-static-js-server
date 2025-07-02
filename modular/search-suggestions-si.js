@@ -200,12 +200,11 @@ export function initSearchSuggestions() {
   // --- DOM hooks
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
-  const sendBtn  = document.getElementById('pwr-send-button');
   const clearBtn = document.getElementById('pwr-clear-button');
   const starter  = document.getElementById('pwr-initial-suggestions');
   const answerBox= document.getElementById('pwr-answer-output');
   const answerTxt= document.getElementById('pwr-answer-text');
-  if (!input || !list || !sendBtn || !clearBtn) return;
+  if (!input || !list || !clearBtn) return;
 
   // --- Only show for SI pages (should be guarded in your markup)
   const five = document.getElementById('item-faq-five')?.value;
@@ -236,7 +235,6 @@ export function initSearchSuggestions() {
         a.addEventListener('click', e=>{
           e.preventDefault();
           input.value = item.question;
-          showBtns();
           list.style.display = 'none';
           showAnswer(item.answer);
         });
@@ -244,18 +242,20 @@ export function initSearchSuggestions() {
       });
     starter.style.display = 'flex';
   }
-  function showBtns() { sendBtn.style.display = 'block'; clearBtn.style.display = 'block'; }
-  function hideBtns() { sendBtn.style.display = 'none'; clearBtn.style.display = 'none'; }
+
   function showAnswer(text) {
     answerTxt.textContent = '';
     answerBox.style.display = 'block';
-    new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    if (window.Typed) {
+      new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    } else {
+      answerTxt.textContent = text;
+    }
     starter.style.display = 'none';
     list.style.display    = 'none';
   }
   function resetAll() {
     input.value = '';
-    hideBtns();
     list.style.display    = 'none';
     starter.style.display = 'flex';
     answerBox.style.display = 'none';
@@ -265,7 +265,6 @@ export function initSearchSuggestions() {
   input.addEventListener('input', () => {
     const q = input.value.trim();
     list.innerHTML = '';
-    showBtns();
     if (!q) {
       list.style.display = 'none';
       starter.style.display = 'flex';
@@ -285,7 +284,6 @@ export function initSearchSuggestions() {
         li.textContent = item.question;
         li.addEventListener('click', ()=>{
           input.value = item.question;
-          showBtns();
           showAnswer(item.answer);
         });
         list.appendChild(li);
@@ -295,18 +293,18 @@ export function initSearchSuggestions() {
   });
 
   clearBtn.addEventListener('click', resetAll);
-  input.addEventListener('keydown', e => { if (e.key==='Enter') sendBtn.click(); });
-  sendBtn.addEventListener('click', () => {
+  input.addEventListener('keydown', e => { if (e.key==='Enter') {
+    // Just trigger suggestion logic (no sendBtn)
     const q = input.value.trim();
     if (!q) return;
     const found = fuse.search(q);
     if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
     else showAnswer('No answer set.');
-  });
+  }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
   // --- Initial pills
-  hideBtns();
   answerBox.style.display = 'none';
   renderStarter();
 }
+
