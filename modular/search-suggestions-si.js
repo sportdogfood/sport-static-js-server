@@ -1,313 +1,304 @@
 // search-suggestions-si.js
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { SI_DATA }   from './si.js';
-import { ING_ANIM }  from './ingAnim.js';
-import { ING_PLANT } from './ingPlant.js';
-import { ING_SUPP }  from './ingSupp.js';
+import { SI_DATA }    from './si.js';
+import { ING_ANIM }   from './ingAnim.js';
+import { ING_PLANT }  from './ingPlant.js';
+import { ING_SUPP }   from './ingSupp.js';
 
-// --- Madlib token banks (full, explicit, no omissions) ---
+// ---- Full Token Banks ----
 const general  = ["What", "What's", "Is", "How many", "Does", "Compare"];
-const foodAlt  = ["kibble", "dog food", "dry dog food", "dry food", "dog food for"];
-const altAdj   = ["best", "top", "premium", "recommended", "customer favorite"];
-const altVerb  = ["for", "to", "with", "without", "contain", "recommended for"];
+const foodAlt  = ["kibble", "dog food", "dry dog food", "dry dog food with", "dog food for", "kibble for"];
+const altAdj   = ["best", "top", "recommended", "premium", "customer favorite"];
+const altVerb  = ["for", "to", "with", "without", "contain", "recommended for", "options for", "vet recommended", "veterinarian recommended"];
 const fact     = [
-  "protein", "fat", "fiber", "moisture", "ash", "calcium",
-  "omega 6 fatty acids", "omega 3 fatty acids",
-  "animal protein", "kcals per cup", "kcals per kg",
-  "vitamin d3", "vitamin e", "vitamin b12"
+  "protein", "fat", "fiber", "moisture", "kcals per cup", "kcals per kg",
+  "omega 6 fatty acids", "omega 3 fatty acids", "animal protein",
+  "ash", "calcium", "vitamin d3", "vitamin e", "vitamin b12"
 ];
-const freeKeys = ["free", "free of", "without", "no", "-free"];
-const vaTags   = ["Upgraded Vitamins","Sensitive Stomachs","Probiotics Added",
-                  "Poultry Free","Performance Minerals","Natural Antioxidants",
-                  "Legumes Free","Highly Digestible","High Protein","High Fat",
-                  "High Energy","Healthy Skin and Coat","Grain Inclusive",
-                  "Grain Free","Calorie Dense","Balanced Nutrition","Allergy Relief","500+ kcals per cup"];
+const freeKeys = ["free", "free of", "without", "no"];
 
-// --- Utility: Pull all valid tokens per SI item ---
-function getSlotTokens(row, ING_LOOKUP) {
-  return {
-    dataBrand: row.brandDisplay || row['data-brand'],
-    dataOne:   row['data-one'],
-    breed:     (row['dogBr-fives']||[]).map(f=>f),  // will be mapped to names if needed
-    activity:  (row.dogKeys_ac||"").split(',').map(x=>x.trim()).filter(Boolean),
-    group:     (row.dogKeys_gp||"").split(',').map(x=>x.trim()).filter(Boolean),
-    job:       (row.dogKeys_jb||"").split(',').map(x=>x.trim()).filter(Boolean),
-    ingredient: (row['ing-data-fives']||[]).map(f=>ING_LOOKUP[f]?.displayAs).filter(Boolean),
-    notIngredient: (row['not-data-fives']||[]).map(f=>ING_LOOKUP[f]?.displayAs).filter(Boolean),
-    valueAdd: (row['va-data-fives']||[]).map(f=>vaTags[f] || f).filter(Boolean), // if mapped in ING/VA, otherwise raw
-    diet: ["Grain Free","Legumes Free","Poultry Free","Peas Free","Grain Inclusive"].filter(diet=>
-      ((row['data-legumes']||"").toLowerCase().includes(diet.toLowerCase())) ||
-      ((row['data-poultry']||"").toLowerCase().includes(diet.toLowerCase())) ||
-      ((row['data-grain']||"").toLowerCase().includes(diet.toLowerCase()))
-    ),
-    fact: fact,
-    general: general,
-    foodAlt: foodAlt,
-    altAdj: altAdj,
-    altVerb: altVerb,
-    free: freeKeys,
-  };
+// ---- Utility for Formatting Facts ----
+function formatFactValue(key, val) {
+  if (/_%$/.test(key)) return `${val}%`;
+  if (/per_cup/.test(key)) return `${val} kcals per cup`;
+  if (/per_kg/.test(key)) return `${val} kcals per kg`;
+  if (/lbs/.test(key)) return `${val} lbs`;
+  return val;
 }
 
-// --- Madlib templates for SI (all supported combos, never ambiguous) ---
+// ---- Madlib Templates ----
 const templates = [
-  // 1. Product Contains Ingredient
+  // Ingredient Contains
   {
-    name: "ingredient-contains",
-    slots: ["dataBrand", "dataOne", "ingredient"],
-    render: c => `Does ${c.dataBrand} ${c.dataOne} contain ${c.ingredient}?`
+    type: "ingredient-contains",
+    slots: ["general", "dataBrand", "dataOne", "ingredient"],
+    render: ctx => `${ctx.general} Does ${ctx.dataBrand} ${ctx.dataOne} contain ${ctx.ingredient}?`
   },
-  // 2. Product Does Not Contain Ingredient
+  // Ingredient NOT Contains
   {
-    name: "ingredient-not-contains",
-    slots: ["dataBrand", "dataOne", "notIngredient"],
-    render: c => `Does ${c.dataBrand} ${c.dataOne} contain ${c.notIngredient}?`
+    type: "ingredient-not-contains",
+    slots: ["general", "dataBrand", "dataOne", "ingredient"],
+    render: ctx => `${ctx.general} Does ${ctx.dataBrand} ${ctx.dataOne} contain ${ctx.ingredient}?`
   },
-  // 3. Product Free-of (dietary)
+  // Free-of (Grain, Legumes, Poultry, etc)
   {
-    name: "free-of",
-    slots: ["dataBrand", "dataOne", "diet"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} ${c.diet.toLowerCase()}?`
+    type: "free-of",
+    slots: ["general", "dataBrand", "dataOne", "diet"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} ${ctx.diet}-free?`
   },
-  // 4. Value Add Mention
+  // Fact Percentages and Amounts
   {
-    name: "value-add",
-    slots: ["dataBrand", "dataOne", "valueAdd"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} ${c.valueAdd}?`
+    type: "fact",
+    slots: ["general", "dataBrand", "dataOne", "factLabel", "factValue"],
+    render: ctx => `${ctx.general} What is ${ctx.dataBrand} ${ctx.dataOne} ${ctx.factLabel}?`
   },
-  // 5. Fact: What is [X]?
   {
-    name: "fact-pct",
-    slots: ["dataBrand", "dataOne", "fact"],
-    render: c => `What is ${c.dataBrand} ${c.dataOne} ${c.fact}?`
+    type: "fact-how-many",
+    slots: ["general", "dataBrand", "dataOne", "factLabel", "factValue"],
+    render: ctx => `${ctx.general} How many ${ctx.factLabel} in ${ctx.dataBrand} ${ctx.dataOne}?`
   },
-  // 6. Fact: How many [X] in product?
+  // Value Add (VA)
   {
-    name: "fact-howmany",
-    slots: ["dataBrand", "dataOne", "fact"],
-    render: c => `How many ${c.fact} in ${c.dataBrand} ${c.dataOne}?`
+    type: "va",
+    slots: ["general", "dataBrand", "dataOne", "vaLabel"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} ${ctx.vaLabel}?`
   },
-  // 7. Breed-specific suitability
+  // Breed Suitability
   {
-    name: "breed-suitability",
-    slots: ["dataBrand", "dataOne", "breed"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} suitable for ${c.breed}?`
+    type: "breed-suit",
+    slots: ["general", "dataBrand", "dataOne", "dogBreed"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} suitable for ${ctx.dogBreed}?`
   },
-  // 8. Activity-specific suitability
+  // Dog Activity/Group/Job
   {
-    name: "activity-suitability",
-    slots: ["dataBrand", "dataOne", "activity"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} good for ${c.activity}?`
+    type: "activity-suit",
+    slots: ["general", "dataBrand", "dataOne", "activity"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} good for ${ctx.activity}?`
   },
-  // 9. Group-specific suitability
   {
-    name: "group-suitability",
-    slots: ["dataBrand", "dataOne", "group"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} good for ${c.group}?`
+    type: "group-suit",
+    slots: ["general", "dataBrand", "dataOne", "group"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} good for ${ctx.group}?`
   },
-  // 10. Job-specific suitability
   {
-    name: "job-suitability",
-    slots: ["dataBrand", "dataOne", "job"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} suitable for ${c.job}?`
-  },
+    type: "job-suit",
+    slots: ["general", "dataBrand", "dataOne", "job"],
+    render: ctx => `${ctx.general} Is ${ctx.dataBrand} ${ctx.dataOne} suitable for ${ctx.job}?`
+  }
 ];
 
-// --- Suggestion builder ---
-function buildSuggestions(row, ING_LOOKUP) {
-  const slots = getSlotTokens(row, ING_LOOKUP);
-  const suggestions = [];
-
-  // 1. Ingredient contains
-  slots.ingredient.forEach(ingredient => {
+// ---- Build Suggestions For SI ----
+function buildSuggestions(row, ingMap) {
+  let suggestions = [];
+  // --- Ingredient Contains/Not Contains
+  (row['ing-data-fives']||[]).forEach(d5=>{
+    const ing = ingMap[d5];
+    if (!ing) return;
     suggestions.push({
-      question: `Does ${slots.dataBrand} ${slots.dataOne} contain ${ingredient}?`,
-      keywords: [ingredient.toLowerCase()],
-      type: 'ingredient-contains',
-      answer: '' // will be filled later
+      type: "ingredient-contains",
+      question: `Does ${row['data-brand']} ${row['data-one']} contain ${ing.displayAs}?`,
+      keywords: [ing.displayAs.toLowerCase(), ...(ing.groupWith ? [ing.groupWith.toLowerCase()] : [])],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} contains ${ing.displayAs}.`
     });
   });
-
-  // 2. Ingredient does not contain
-  slots.notIngredient.forEach(ingredient => {
+  (row['not-data-fives']||[]).forEach(d5=>{
+    const ing = ingMap[d5];
+    if (!ing) return;
     suggestions.push({
-      question: `Does ${slots.dataBrand} ${slots.dataOne} contain ${ingredient}?`,
-      keywords: [ingredient.toLowerCase()],
-      type: 'ingredient-not-contains',
-      answer: '' // will be filled later
+      type: "ingredient-not-contains",
+      question: `Does ${row['data-brand']} ${row['data-one']} contain ${ing.displayAs}?`,
+      keywords: [ing.displayAs.toLowerCase(), ...(ing.groupWith ? [ing.groupWith.toLowerCase()] : [])],
+      answer: `No, ${row['data-brand']} ${row['data-one']} does not contain ${ing.displayAs}.`
     });
   });
-
-  // 3. Free-of
-  slots.diet.forEach(diet => {
-    suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} ${diet.toLowerCase()}?`,
-      keywords: [diet.toLowerCase()],
-      type: 'free-of',
-      answer: ''
-    });
+  // --- Free-Of
+  ["data-legumes","data-poultry","data-grain"].forEach(key=>{
+    if (row[key]) {
+      suggestions.push({
+        type: "free-of",
+        question: `Is ${row['data-brand']} ${row['data-one']} ${row[key]}?`,
+        keywords: [row[key].replace(' Free','').toLowerCase(), "free"],
+        answer: `Yes, ${row['data-brand']} ${row['data-one']} is ${row[key].toLowerCase()}.`
+      });
+    }
   });
-
-  // 4. Value Add
-  slots.valueAdd.forEach(va => {
+  // --- Facts (Percentages and Amounts)
+  fact.forEach(fk=>{
+    const dataKey = Object.keys(row).find(k=>k.replace(/[_ ]+/g,'').includes(fk.replace(/[_ ]+/g,'').replace('kcalspercup','kcalspercup').replace('kcalsperkg','kcalsperkg')));
+    if (dataKey && row[dataKey] !== undefined && row[dataKey] !== null) {
+      const val = formatFactValue(dataKey, row[dataKey]);
+      suggestions.push({
+        type: "fact",
+        question: `What is ${row['data-brand']} ${row['data-one']} ${fk}?`,
+        keywords: [fk.toLowerCase()],
+        answer: `${fk.charAt(0).toUpperCase()+fk.slice(1)} for ${row['data-brand']} ${row['data-one']} is ${val}.`
+      });
+      suggestions.push({
+        type: "fact-how-many",
+        question: `How many ${fk} in ${row['data-brand']} ${row['data-one']}?`,
+        keywords: [fk.toLowerCase()],
+        answer: `There are ${val} ${fk} in ${row['data-brand']} ${row['data-one']}.`
+      });
+    }
+  });
+  // --- Value Add (VA)
+  (row['va-data-fives']||[]).forEach(va=>{
     suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} ${va}?`,
+      type: "va",
+      question: `Is ${row['data-brand']} ${row['data-one']} ${va}?`,
       keywords: [va.toLowerCase()],
-      type: 'value-add',
-      answer: ''
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} is ${va}.`
     });
   });
-
-  // 5. Facts
-  fact.forEach(f => {
-    // What is...
+  // --- Breed
+  (row['dogBr-fives']||[]).forEach(b=>{
     suggestions.push({
-      question: `What is ${slots.dataBrand} ${slots.dataOne} ${f}?`,
-      keywords: [f.toLowerCase()],
-      type: 'fact-pct',
-      answer: ''
-    });
-    // How many...
-    suggestions.push({
-      question: `How many ${f} in ${slots.dataBrand} ${slots.dataOne}?`,
-      keywords: [f.toLowerCase()],
-      type: 'fact-howmany',
-      answer: ''
+      type: "breed-suit",
+      question: `Is ${row['data-brand']} ${row['data-one']} suitable for ${b}?`,
+      keywords: [b.toLowerCase()],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} is suitable for ${b}.`
     });
   });
-
-  // 6. Breed suitability
-  slots.breed.forEach(breed => {
+  // --- Activity/Group/Job
+  (row['dogKeys_ac']||[]).forEach(a=>{
     suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} suitable for ${breed}?`,
-      keywords: [breed.toLowerCase()],
-      type: 'breed-suitability',
-      answer: ''
+      type: "activity-suit",
+      question: `Is ${row['data-brand']} ${row['data-one']} good for ${a}?`,
+      keywords: [a.toLowerCase()],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} is good for ${a}.`
     });
   });
-
-  // 7. Activity suitability
-  slots.activity.forEach(activity => {
+  (row['dogKeys_gp']||[]).forEach(g=>{
     suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} good for ${activity}?`,
-      keywords: [activity.toLowerCase()],
-      type: 'activity-suitability',
-      answer: ''
+      type: "group-suit",
+      question: `Is ${row['data-brand']} ${row['data-one']} good for ${g}?`,
+      keywords: [g.toLowerCase()],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} is good for ${g}.`
     });
   });
-
-  // 8. Group suitability
-  slots.group.forEach(group => {
+  (row['dogKeys_jb']||[]).forEach(j=>{
     suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} good for ${group}?`,
-      keywords: [group.toLowerCase()],
-      type: 'group-suitability',
-      answer: ''
+      type: "job-suit",
+      question: `Is ${row['data-brand']} ${row['data-one']} suitable for ${j}?`,
+      keywords: [j.toLowerCase()],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} is suitable for ${j}.`
     });
   });
-
-  // 9. Job suitability
-  slots.job.forEach(job => {
-    suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} suitable for ${job}?`,
-      keywords: [job.toLowerCase()],
-      type: 'job-suitability',
-      answer: ''
-    });
-  });
-
   return suggestions;
 }
 
-// --- Main init function ---
-export function initSearchSuggestionsSI(itemId) {
-  const input   = document.getElementById('pwr-prompt-input');
-  const list    = document.getElementById('pwr-suggestion-list');
-  const starter = document.getElementById('pwr-initial-suggestions');
-  const sendBtn = document.getElementById('pwr-send-button');
-  const clearBtn= document.getElementById('pwr-clear-button');
-  const answerBox = document.getElementById('pwr-answer-output');
-  const answerTxt = document.getElementById('pwr-answer-text');
+// ---- Main Init Function ----
+export function initSearchSuggestions() {
+  // --- DOM hooks
+  const input    = document.getElementById('pwr-prompt-input');
+  const list     = document.getElementById('pwr-suggestion-list');
+  const sendBtn  = document.getElementById('pwr-send-button');
+  const clearBtn = document.getElementById('pwr-clear-button');
+  const starter  = document.getElementById('pwr-initial-suggestions');
+  const answerBox= document.getElementById('pwr-answer-output');
+  const answerTxt= document.getElementById('pwr-answer-text');
+  if (!input || !list || !sendBtn || !clearBtn) return;
 
-  // Compose ingredient lookup
-  const ING_LOOKUP = Object.assign({}, ING_ANIM, ING_PLANT, ING_SUPP);
-
-  // Find SI item
-  const row = SI_DATA.find(r => String(r['data-five']) === String(itemId));
+  // --- Only show for SI pages (should be guarded in your markup)
+  const five = document.getElementById('item-faq-five')?.value;
+  const row  = SI_DATA.find(r => String(r['data-five']) === String(five));
   if (!row) return;
+  const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+  const suggestions = buildSuggestions(row, ingMap);
 
-  // Build suggestions for this product
-  const suggestions = buildSuggestions(row, ING_LOOKUP);
+  // --- Fuse
+  const fuse = new Fuse(suggestions, {
+    keys: ['question','keywords'],
+    threshold: 0.4,
+    distance: 60
+  });
 
-  // Fuse instance
-  const fuse = new Fuse(suggestions, { keys: ['question', 'keywords'], threshold: 0.4, distance: 60 });
-
-  // Pills
+  // --- Starter pills (5 random)
   function renderStarter() {
     starter.innerHTML = '';
     suggestions
+      .map(item=>({ item, r:Math.random() }))
+      .sort((a,b)=>a.r-b.r)
       .slice(0,5)
-      .forEach(sugg => {
-        const btn = document.createElement('button');
-        btn.className = 'pwr-suggestion-pill';
-        btn.textContent = sugg.question;
-        btn.onclick = () => {
-          input.value = sugg.question;
+      .map(x=>x.item)
+      .forEach(item=>{
+        const a = document.createElement('button');
+        a.className = 'pwr-suggestion-pill';
+        a.textContent = item.question;
+        a.addEventListener('click', e=>{
+          e.preventDefault();
+          input.value = item.question;
+          showBtns();
           list.style.display = 'none';
-          starter.style.display = 'none';
-        };
-        starter.appendChild(btn);
+          showAnswer(item.answer);
+        });
+        starter.appendChild(a);
       });
     starter.style.display = 'flex';
   }
+  function showBtns() { sendBtn.style.display = 'block'; clearBtn.style.display = 'block'; }
+  function hideBtns() { sendBtn.style.display = 'none'; clearBtn.style.display = 'none'; }
+  function showAnswer(text) {
+    answerTxt.textContent = '';
+    answerBox.style.display = 'block';
+    new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    starter.style.display = 'none';
+    list.style.display    = 'none';
+  }
+  function resetAll() {
+    input.value = '';
+    hideBtns();
+    list.style.display    = 'none';
+    starter.style.display = 'flex';
+    answerBox.style.display = 'none';
+  }
 
-  // Typeahead
+  // --- Live typeahead suggestions
   input.addEventListener('input', () => {
-    const val = input.value.trim();
-    if (!val) {
-      starter.style.display = 'flex';
+    const q = input.value.trim();
+    list.innerHTML = '';
+    showBtns();
+    if (!q) {
       list.style.display = 'none';
+      starter.style.display = 'flex';
       return;
     }
     starter.style.display = 'none';
-    list.innerHTML = '';
-    const results = fuse.search(val).slice(0, 5);
+    const results = fuse.search(q).slice(0,5).map(r=>r.item);
     if (!results.length) {
       const li = document.createElement('li');
       li.className = 'no-results';
       li.textContent = 'No results found';
+      li.style.pointerEvents = 'none';
       list.appendChild(li);
     } else {
-      results.forEach(res => {
+      results.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = res.item.question;
-        li.onclick = () => {
-          input.value = res.item.question;
-          list.style.display = 'none';
-        };
+        li.textContent = item.question;
+        li.addEventListener('click', ()=>{
+          input.value = item.question;
+          showBtns();
+          showAnswer(item.answer);
+        });
         list.appendChild(li);
       });
     }
     list.style.display = 'block';
   });
 
-  // Send (show answer)
-  sendBtn.onclick = () => {
-    const val = input.value.trim();
-    if (!val) return;
-    const found = fuse.search(val)[0];
-    answerBox.style.display = 'block';
-    answerTxt.textContent = found ? found.item.answer || "Answer logic here (integrate as needed)." : "No answer available.";
-    starter.style.display = 'none';
-    list.style.display = 'none';
-  };
+  clearBtn.addEventListener('click', resetAll);
+  input.addEventListener('keydown', e => { if (e.key==='Enter') sendBtn.click(); });
+  sendBtn.addEventListener('click', () => {
+    const q = input.value.trim();
+    if (!q) return;
+    const found = fuse.search(q);
+    if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
+    else showAnswer('No answer set.');
+  });
+  answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
-  clearBtn.onclick = () => {
-    input.value = '';
-    answerBox.style.display = 'none';
-    list.style.display = 'none';
-    starter.style.display = 'flex';
-  };
-
+  // --- Initial pills
+  hideBtns();
+  answerBox.style.display = 'none';
   renderStarter();
 }
