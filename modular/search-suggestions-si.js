@@ -1,11 +1,13 @@
-
+// All imports at the top
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { SI_DATA }    from './si.js';
 import { ING_ANIM }   from './ingAnim.js';
 import { ING_PLANT }  from './ingPlant.js';
 import { ING_SUPP }   from './ingSupp.js';
 
+// Then export your main function
 export function initSearchSuggestions() {
+
 // ---- Full Token Banks ----
 const general  = ["What", "What's", "Is", "How many", "Does", "Compare"];
 const foodAlt  = ["kibble", "dog food", "dry dog food", "dry dog food with", "dog food for", "kibble for"];
