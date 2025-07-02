@@ -1,192 +1,189 @@
 // search-suggestions-ci.js
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { CI_DATA }   from './ci.js';
-import { ING_ANIM }  from './ingAnim.js';
-import { ING_PLANT } from './ingPlant.js';
-import { ING_SUPP }  from './ingSupp.js';
+import { CI_DATA }    from './ci.js';
+import { ING_ANIM }   from './ingAnim.js';
+import { ING_PLANT }  from './ingPlant.js';
+import { ING_SUPP }   from './ingSupp.js';
 
-// --- Madlib token banks (trimmed to CI needs) ---
-const general  = ["What", "What's", "Is", "How many", "Does", "Compare"];
+// Token banks (CI: a subset for comparison)
+const general  = ["What", "Is", "How many", "Does", "Compare"];
 const fact     = [
-  "protein", "fat", "fiber", "moisture",
-  "kcals per cup", "kcals per kg"
+  "protein", "fat", "fiber", "moisture", "kcals per cup", "kcals per kg"
 ];
-const freeKeys = ["free", "free of", "without", "no", "-free"];
+const freeKeys = ["free", "free of", "without", "no"];
 
-// --- Utility: Pull all valid tokens per CI item ---
-function getSlotTokens(row, ING_LOOKUP) {
-  return {
-    dataBrand: row.brandDisplay || row['data-brand'],
-    dataOne:   row['data-one'],
-    diet:      [row['data-diet']].filter(Boolean),
-    ingredient: (row['ing-data-fives']||[]).map(f=>ING_LOOKUP[f]?.displayAs).filter(Boolean),
-    general:   general,
-    fact:      fact,
-    free:      freeKeys,
-  };
+function formatFactValue(key, val) {
+  if (/_%$/.test(key)) return `${val}%`;
+  if (/per_cup/.test(key)) return `${val} kcals per cup`;
+  if (/per_kg/.test(key)) return `${val} kcals per kg`;
+  if (/lbs/.test(key)) return `${val} lbs`;
+  return val;
 }
 
-// --- Madlib templates for CI ---
-const templates = [
-  // 1. Product Contains Ingredient
-  {
-    name: "ingredient-contains",
-    slots: ["dataBrand", "dataOne", "ingredient"],
-    render: c => `Does ${c.dataBrand} ${c.dataOne} contain ${c.ingredient}?`
-  },
-  // 2. Product Free-of (dietary)
-  {
-    name: "free-of",
-    slots: ["dataBrand", "dataOne", "diet"],
-    render: c => `Is ${c.dataBrand} ${c.dataOne} ${c.diet.toLowerCase()}?`
-  },
-  // 3. Fact: What is [X]?
-  {
-    name: "fact-pct",
-    slots: ["dataBrand", "dataOne", "fact"],
-    render: c => `What is ${c.dataBrand} ${c.dataOne} ${c.fact}?`
-  },
-  // 4. Fact: How many [X] in product?
-  {
-    name: "fact-howmany",
-    slots: ["dataBrand", "dataOne", "fact"],
-    render: c => `How many ${c.fact} in ${c.dataBrand} ${c.dataOne}?`
-  },
-];
-
-// --- Suggestion builder ---
-function buildSuggestions(row, ING_LOOKUP) {
-  const slots = getSlotTokens(row, ING_LOOKUP);
-  const suggestions = [];
-
-  // 1. Ingredient contains
-  slots.ingredient.forEach(ingredient => {
+function buildSuggestions(row, ingMap) {
+  let suggestions = [];
+  // --- Ingredient Contains
+  (row['ing-data-fives']||[]).forEach(d5=>{
+    const ing = ingMap[d5];
+    if (!ing) return;
     suggestions.push({
-      question: `Does ${slots.dataBrand} ${slots.dataOne} contain ${ingredient}?`,
-      keywords: [ingredient.toLowerCase()],
-      type: 'ingredient-contains',
-      answer: ''
+      type: "ingredient-contains",
+      question: `Does ${row['data-brand']} ${row['data-one']} contain ${ing.displayAs}?`,
+      keywords: [ing.displayAs.toLowerCase(), ...(ing.groupWith ? [ing.groupWith.toLowerCase()] : [])],
+      answer: `Yes, ${row['data-brand']} ${row['data-one']} contains ${ing.displayAs}.`
     });
   });
-
-  // 2. Free-of
-  slots.diet.forEach(diet => {
-    suggestions.push({
-      question: `Is ${slots.dataBrand} ${slots.dataOne} ${diet.toLowerCase()}?`,
-      keywords: [diet.toLowerCase()],
-      type: 'free-of',
-      answer: ''
-    });
+  // --- Free-Of (Grain, Legumes, Poultry, etc)
+  ["data-legumes","data-poultry","data-grain"].forEach(key=>{
+    if (row[key]) {
+      suggestions.push({
+        type: "free-of",
+        question: `Is ${row['data-brand']} ${row['data-one']} ${row[key]}?`,
+        keywords: [row[key].replace(' Free','').toLowerCase(), "free"],
+        answer: `Yes, ${row['data-brand']} ${row['data-one']} is ${row[key].toLowerCase()}.`
+      });
+    }
   });
-
-  // 3. Facts
-  fact.forEach(f => {
-    suggestions.push({
-      question: `What is ${slots.dataBrand} ${slots.dataOne} ${f}?`,
-      keywords: [f.toLowerCase()],
-      type: 'fact-pct',
-      answer: ''
-    });
-    suggestions.push({
-      question: `How many ${f} in ${slots.dataBrand} ${slots.dataOne}?`,
-      keywords: [f.toLowerCase()],
-      type: 'fact-howmany',
-      answer: ''
-    });
+  // --- Facts (Percentages and Amounts)
+  fact.forEach(fk=>{
+    const dataKey = Object.keys(row).find(k=>k.replace(/[_ ]+/g,'').includes(fk.replace(/[_ ]+/g,'').replace('kcalspercup','kcalspercup').replace('kcalsperkg','kcalsperkg')));
+    if (dataKey && row[dataKey] !== undefined && row[dataKey] !== null) {
+      const val = formatFactValue(dataKey, row[dataKey]);
+      suggestions.push({
+        type: "fact",
+        question: `What is ${row['data-brand']} ${row['data-one']} ${fk}?`,
+        keywords: [fk.toLowerCase()],
+        answer: `${fk.charAt(0).toUpperCase()+fk.slice(1)} for ${row['data-brand']} ${row['data-one']} is ${val}.`
+      });
+      suggestions.push({
+        type: "fact-how-many",
+        question: `How many ${fk} in ${row['data-brand']} ${row['data-one']}?`,
+        keywords: [fk.toLowerCase()],
+        answer: `There are ${val} ${fk} in ${row['data-brand']} ${row['data-one']}.`
+      });
+    }
   });
-
+  // --- Compare Placeholder
+  suggestions.push({
+    type: "compare",
+    question: `Compare ${row['data-brand']} ${row['data-one']} vs [other]?`,
+    keywords: [row['data-one'].toLowerCase()],
+    answer: `Use the Compare tab to compare this formula with another.`
+  });
   return suggestions;
 }
 
-// --- Main init function ---
-export function initSearchSuggestionsCI(itemId) {
-  const input   = document.getElementById('pwr-prompt-input');
-  const list    = document.getElementById('pwr-suggestion-list');
-  const starter = document.getElementById('pwr-initial-suggestions');
-  const sendBtn = document.getElementById('pwr-send-button');
-  const clearBtn= document.getElementById('pwr-clear-button');
-  const answerBox = document.getElementById('pwr-answer-output');
-  const answerTxt = document.getElementById('pwr-answer-text');
+export function initSearchSuggestions() {
+  // --- DOM hooks
+  const input    = document.getElementById('pwr-prompt-input');
+  const list     = document.getElementById('pwr-suggestion-list');
+  const sendBtn  = document.getElementById('pwr-send-button');
+  const clearBtn = document.getElementById('pwr-clear-button');
+  const starter  = document.getElementById('pwr-initial-suggestions');
+  const answerBox= document.getElementById('pwr-answer-output');
+  const answerTxt= document.getElementById('pwr-answer-text');
+  if (!input || !list || !sendBtn || !clearBtn) return;
 
-  // Compose ingredient lookup
-  const ING_LOOKUP = Object.assign({}, ING_ANIM, ING_PLANT, ING_SUPP);
-
-  // Find CI item
-  const row = CI_DATA.find(r => String(r['data-five']) === String(itemId));
+  // --- Only show for CI pages (should be guarded in your markup)
+  const five = document.getElementById('item-faq-five')?.value;
+  const row  = CI_DATA.find(r => String(r['data-five']) === String(five));
   if (!row) return;
+  const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+  const suggestions = buildSuggestions(row, ingMap);
 
-  // Build suggestions for this product
-  const suggestions = buildSuggestions(row, ING_LOOKUP);
+  // --- Fuse
+  const fuse = new Fuse(suggestions, {
+    keys: ['question','keywords'],
+    threshold: 0.4,
+    distance: 60
+  });
 
-  // Fuse instance
-  const fuse = new Fuse(suggestions, { keys: ['question', 'keywords'], threshold: 0.4, distance: 60 });
-
-  // Pills
+  // --- Starter pills (5 random)
   function renderStarter() {
     starter.innerHTML = '';
     suggestions
+      .map(item=>({ item, r:Math.random() }))
+      .sort((a,b)=>a.r-b.r)
       .slice(0,5)
-      .forEach(sugg => {
-        const btn = document.createElement('button');
-        btn.className = 'pwr-suggestion-pill';
-        btn.textContent = sugg.question;
-        btn.onclick = () => {
-          input.value = sugg.question;
+      .map(x=>x.item)
+      .forEach(item=>{
+        const a = document.createElement('button');
+        a.className = 'pwr-suggestion-pill';
+        a.textContent = item.question;
+        a.addEventListener('click', e=>{
+          e.preventDefault();
+          input.value = item.question;
+          showBtns();
           list.style.display = 'none';
-          starter.style.display = 'none';
-        };
-        starter.appendChild(btn);
+          showAnswer(item.answer);
+        });
+        starter.appendChild(a);
       });
     starter.style.display = 'flex';
   }
+  function showBtns() { sendBtn.style.display = 'block'; clearBtn.style.display = 'block'; }
+  function hideBtns() { sendBtn.style.display = 'none'; clearBtn.style.display = 'none'; }
+  function showAnswer(text) {
+    answerTxt.textContent = '';
+    answerBox.style.display = 'block';
+    new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    starter.style.display = 'none';
+    list.style.display    = 'none';
+  }
+  function resetAll() {
+    input.value = '';
+    hideBtns();
+    list.style.display    = 'none';
+    starter.style.display = 'flex';
+    answerBox.style.display = 'none';
+  }
 
-  // Typeahead
+  // --- Live typeahead suggestions
   input.addEventListener('input', () => {
-    const val = input.value.trim();
-    if (!val) {
-      starter.style.display = 'flex';
+    const q = input.value.trim();
+    list.innerHTML = '';
+    showBtns();
+    if (!q) {
       list.style.display = 'none';
+      starter.style.display = 'flex';
       return;
     }
     starter.style.display = 'none';
-    list.innerHTML = '';
-    const results = fuse.search(val).slice(0, 5);
+    const results = fuse.search(q).slice(0,5).map(r=>r.item);
     if (!results.length) {
       const li = document.createElement('li');
       li.className = 'no-results';
       li.textContent = 'No results found';
+      li.style.pointerEvents = 'none';
       list.appendChild(li);
     } else {
-      results.forEach(res => {
+      results.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = res.item.question;
-        li.onclick = () => {
-          input.value = res.item.question;
-          list.style.display = 'none';
-        };
+        li.textContent = item.question;
+        li.addEventListener('click', ()=>{
+          input.value = item.question;
+          showBtns();
+          showAnswer(item.answer);
+        });
         list.appendChild(li);
       });
     }
     list.style.display = 'block';
   });
 
-  // Send (show answer)
-  sendBtn.onclick = () => {
-    const val = input.value.trim();
-    if (!val) return;
-    const found = fuse.search(val)[0];
-    answerBox.style.display = 'block';
-    answerTxt.textContent = found ? found.item.answer || "Answer logic here (integrate as needed)." : "No answer available.";
-    starter.style.display = 'none';
-    list.style.display = 'none';
-  };
+  clearBtn.addEventListener('click', resetAll);
+  input.addEventListener('keydown', e => { if (e.key==='Enter') sendBtn.click(); });
+  sendBtn.addEventListener('click', () => {
+    const q = input.value.trim();
+    if (!q) return;
+    const found = fuse.search(q);
+    if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
+    else showAnswer('No answer set.');
+  });
+  answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
-  clearBtn.onclick = () => {
-    input.value = '';
-    answerBox.style.display = 'none';
-    list.style.display = 'none';
-    starter.style.display = 'flex';
-  };
-
+  // --- Initial pills
+  hideBtns();
+  answerBox.style.display = 'none';
   renderStarter();
 }
