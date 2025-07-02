@@ -1,9 +1,13 @@
-// search-suggestions-ci.js
+// search-suggestions-si.js
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { CI_DATA }    from './ci.js';
+import { SI_DATA }    from './ci.js';
 import { ING_ANIM }   from './ingAnim.js';
 import { ING_PLANT }  from './ingPlant.js';
 import { ING_SUPP }   from './ingSupp.js';
+
+// Then export your main function
+export function initSearchSuggestions() {
+
 
 // Token banks (CI: a subset for comparison)
 const general  = ["What", "Is", "How many", "Does", "Compare"];
@@ -186,4 +190,5 @@ export function initSearchSuggestions() {
   hideBtns();
   answerBox.style.display = 'none';
   renderStarter();
+}
 }
