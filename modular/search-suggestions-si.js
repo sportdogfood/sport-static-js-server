@@ -9,9 +9,6 @@ import { VA_DATA }    from './va.js';
 import { DOG_DATA }   from './dog.js';
 
 // --- Triggers ---
-const generalTriggers = [
-  "what", "what is", "is", "how", "how much", "how many", "does", "contain", "with", "has", "include", "show", "list"
-];
 const notTriggers = [
   "does not", "doesn't", "dont", "don't", "without", "free of", "not contain", "excludes", "exclude", "minus", "no", "not"
 ];
@@ -52,7 +49,6 @@ function safeArray(val) {
   if (typeof val === "string" && val.trim()) return [val];
   try { return Array.from(val); } catch { return []; }
 }
-// Expand by both spaces and commas, crude singular/plural
 function expandWords(str) {
   if (!str) return [];
   return str.split(/,|\s+/)
@@ -81,24 +77,31 @@ function allIngredientKeywords(ing) {
     group ? `contains ${group}` : "",
   ].filter(Boolean)));
 }
+// For VA: less aggressive, keep data-keys as phrases
 function vaKeywords(va) {
-  // va['data-one'] and va['data-keys'] (comma-separated string)
   let words = [];
-  if (va['data-one']) words = words.concat(expandWords(va['data-one']));
-  if (va['data-keys']) words = words.concat(expandWords(va['data-keys']));
+  if (va['data-one']) words.push(va['data-one'].toLowerCase());
+  if (va['data-keys']) {
+    words = words.concat(
+      va['data-keys'].split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+    );
+  }
   return Array.from(new Set(words));
 }
+// For DOG: use phrases from all fields
 function dogKeywords(dog) {
   let fields = [
-    dog['data-one'], dog.Name, dog['common_misspellings'],
-    dog['other_common_names'], dog['common_initials'], dog['common_nickname'],
-    dog['group-suit'], dog['activity-suit'], dog['job-suit'], dog['activity-level']
+    dog['data-one'], dog.Name,
+    ...(dog['common_misspellings'] ? dog['common_misspellings'].split(',').map(s=>s.trim()) : []),
+    ...(dog['other_common_names'] ? dog['other_common_names'].split(',').map(s=>s.trim()) : []),
+    ...(dog['common_initials'] ? dog['common_initials'].split(',').map(s=>s.trim()) : []),
+    ...(dog['common_nickname'] ? dog['common_nickname'].split(',').map(s=>s.trim()) : []),
+    ...(dog['group-suit'] ? dog['group-suit'].split(',').map(s=>s.trim()) : []),
+    ...(dog['activity-suit'] ? dog['activity-suit'].split(',').map(s=>s.trim()) : []),
+    ...(dog['job-suit'] ? dog['job-suit'].split(',').map(s=>s.trim()) : []),
+    dog['activity-level']
   ];
-  return Array.from(new Set(
-    fields
-      .filter(Boolean)
-      .flatMap(s => expandWords(s))
-  ));
+  return Array.from(new Set(fields.filter(Boolean).map(s => s.toLowerCase())));
 }
 
 // --- SUGGESTION BUILDER ---
@@ -117,7 +120,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       s.push({
         type: "ingredient-contains",
         triggers: allIngredientKeywords(ing),
-        question: `${dataOne} contains ${displayAs}?`,
+        question: `Does ${dataOne} contain ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
         answer: `Yes, ${dataOne} contains ${displayAs}.`,
         'data-sort': ing['data-sort'] ?? 999
@@ -136,7 +139,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       s.push({
         type: "ingredient-not-contains",
         triggers: [...allIngredientKeywords(ing), ...notTriggers, ...freeTriggers],
-        question: `${dataOne} does not contain ${displayAs}?`,
+        question: `Does ${dataOne} contain ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
         answer: `No, ${dataOne} does not contain ${displayAs}.`,
         'data-sort': ing['data-sort'] ?? 999
@@ -152,7 +155,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       s.push({
         type: "free-of",
         triggers: [diet.toLowerCase(), ...freeTriggers, `${diet.toLowerCase()} free`],
-        question: `${dataOne} is ${diet} Free?`,
+        question: `Is ${dataOne} free of ${diet}?`,
         keywords: [diet.toLowerCase(), "free", `${diet.toLowerCase()} free`],
         answer: `Yes, ${dataOne} is free of ${diet}.`,
         'data-sort': row[`${key}-sort`] ?? 999
@@ -164,13 +167,15 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5];
     if (!va || !va['data-one']) return;
-    const triggers = vaKeywords(va);
+    const q = `Does ${dataOne} help with ${va['data-one']}?`;
+    const a = va.cf_description?.trim()
+      || `${dataOne} is crafted for ${va['data-one'].toLowerCase()}.`;
     s.push({
       type: "value-add",
-      triggers,
-      question: `${dataOne} offers ${va['data-one']}?`,
-      keywords: triggers,
-      answer: `Yes, ${dataOne} offers ${va['data-one']}.`,
+      triggers: vaKeywords(va),
+      question: q,
+      keywords: vaKeywords(va),
+      answer: a,
       'data-sort': (typeof va['data-sort'] === 'number' ? va['data-sort'] : 999)
     });
   });
@@ -179,82 +184,104 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   FACTS.forEach(f => {
     if (row[f.key] !== undefined && row[f.key] !== null && row[f.key] !== "") {
       const val = row[f.key];
+      const label = f.label.replace(/[(%)]/g, '').trim();
       s.push({
         type: "fact",
-        triggers: [f.label.toLowerCase(), ...f.aliases.flatMap(expandWords)],
-        question: `${dataOne} ${f.label}?`,
-        keywords: [...f.aliases.flatMap(expandWords), f.label.toLowerCase()],
-        answer: `${dataOne} ${f.label} is ${val}`,
+        triggers: [label.toLowerCase(), ...f.aliases.map(a => a.toLowerCase())],
+        question: `What is the ${label} in ${dataOne}?`,
+        keywords: [...f.aliases.map(a => a.toLowerCase()), label.toLowerCase()],
+        answer: `${dataOne} contains ${val} ${label}.`,
         'data-sort': f['data-sort'] ?? 999
       });
     }
   });
 
-  // --- DOG/BREED/JOB/GROUP/ACTIVITY ---
+  // --- DOG/BREED/JOB/GROUP/ACTIVITY (only show if mapped to at least one breed in dogBr-fives) ---
   const dogSeen = new Set();
+  const mappedDogObjs = safeArray(row['dogBr-fives'])
+    .map(d5 => dogMap[d5])
+    .filter(dog => !!dog);
 
-  safeArray(row['dogBr-fives']).forEach(d5 => {
-    const dog = dogMap[d5];
-    if (!dog || !dog['data-one'] || dogSeen.has(dog['data-one'])) return;
-    const triggers = dogKeywords(dog);
+  // Breeds
+  mappedDogObjs.forEach(dog => {
+    if (!dog['data-one'] || dogSeen.has(dog['data-one'])) return;
     dogSeen.add(dog['data-one']);
     s.push({
       type: "dog-breed",
-      triggers,
-      question: `${dataOne} for ${dog['data-one']}?`,
-      keywords: triggers,
-      answer: `${dataOne} is recommended for ${dog['data-one']}.`,
+      triggers: dogKeywords(dog),
+      question: `Is ${dataOne} recommended for ${dog['data-one']}?`,
+      keywords: dogKeywords(dog),
+      answer: `Yes, ${dataOne} is recommended for ${dog['data-one']}.`,
       'data-sort': (typeof dog['data-sort'] === 'number' ? dog['data-sort'] : 999)
     });
   });
 
-  // Activities, Jobs, Groups
-  const tagVariants = [
-    { key: 'activity-suit', type: 'dog-activity', label: 'activity' },
-    { key: 'group-suit',    type: 'dog-group',    label: 'group' },
-    { key: 'job-suit',      type: 'dog-job',      label: 'job' }
-  ];
-  tagVariants.forEach(({key, type, label}) => {
-    if (row[key]) {
-      row[key].split(",").map(x=>x.trim()).filter(Boolean).forEach(tag => {
-        const tagKey = `${type}:${tag}`;
-        if (!dogSeen.has(tagKey)) {
-          dogSeen.add(tagKey);
-          const triggers = expandWords(tag);
-          s.push({
-            type,
-            triggers,
-            question: `${dataOne} for ${tag}?`,
-            keywords: triggers,
-            answer: `${dataOne} is recommended for ${tag}.`,
-            'data-sort': row[`${key}-sort`] ?? 999
-          });
-        }
-      });
-    }
+  // For group/activity/job/activity-level, aggregate all mapped breed values
+  function collectAllFromDogs(field) {
+    return Array.from(new Set(
+      mappedDogObjs.flatMap(dog => (dog[field] || '').split(',').map(s => s.trim()).filter(Boolean))
+    ));
+  }
+  // Groups
+  collectAllFromDogs('group-suit').forEach(group => {
+    if (dogSeen.has('group:' + group)) return;
+    dogSeen.add('group:' + group);
+    s.push({
+      type: "dog-group",
+      triggers: [group.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${group}?`,
+      keywords: [group.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${group}.`,
+      'data-sort': 999
+    });
   });
-
-  // Activity level (as a quick suggestion)
-  if (typeof row["activity-level"] === "string" && row["activity-level"].trim()) {
-    const activityLevel = row["activity-level"].toLowerCase();
-    const triggers = expandWords(activityLevel);
+  // Activities
+  collectAllFromDogs('activity-suit').forEach(activity => {
+    if (dogSeen.has('activity:' + activity)) return;
+    dogSeen.add('activity:' + activity);
+    s.push({
+      type: "dog-activity",
+      triggers: [activity.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${activity}?`,
+      keywords: [activity.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${activity}.`,
+      'data-sort': 999
+    });
+  });
+  // Jobs
+  collectAllFromDogs('job-suit').forEach(job => {
+    if (dogSeen.has('job:' + job)) return;
+    dogSeen.add('job:' + job);
+    s.push({
+      type: "dog-job",
+      triggers: [job.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${job}?`,
+      keywords: [job.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${job}.`,
+      'data-sort': 999
+    });
+  });
+  // Activity-levels
+  collectAllFromDogs('activity-level').forEach(level => {
+    if (dogSeen.has('level:' + level)) return;
+    dogSeen.add('level:' + level);
     s.push({
       type: "dog-activity-level",
-      triggers,
-      question: `${dataOne} for ${row["activity-level"]} dogs?`,
-      keywords: triggers,
-      answer: `${dataOne} is best for ${row["activity-level"]} dogs.`,
-      'data-sort': row['activity-level-sort'] ?? 999
+      triggers: [level.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${level} dogs?`,
+      keywords: [level.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${level} dogs.`,
+      'data-sort': 999
     });
-  }
+  });
 
   // Default breed as fallback (Active Adult, 60 lbs)
   if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
-    const fallback = expandWords("active adult breed dog 60 lbs average default");
+    const fallback = ["active adult", "breed", "dog", "60 lbs", "average", "default"];
     s.push({
       type: "dog-default",
       triggers: fallback,
-      question: `${dataOne} for Active Adult (60 lbs)?`,
+      question: `Is ${dataOne} recommended for an active adult (60 lbs)?`,
       keywords: fallback,
       answer: `${dataOne} is recommended for an active adult dog (60 lbs).`,
       'data-sort': 999
