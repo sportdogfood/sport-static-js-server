@@ -488,4 +488,4 @@ export function initSearchSuggestions() {
   answerBox.style.display = 'none';
   renderStarter();
 }
-}
+
