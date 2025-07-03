@@ -1,5 +1,5 @@
-export const VA_DATA = [ 
-  {
+export const VA_DATA = {
+  "VYSPN": {
     "Name": "Calorie Dense",
     "Slug": "calorie-dense-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -51,10 +51,16 @@ export const VA_DATA = [
       "PEG2O",
       "MNLTS",
       "HKAHU",
-      "CSIRP"
+      "CSIRP",
+      "ZM6ZC",
+      "ZZP8A",
+      "ADGHC",
+      "DSFXG",
+      "HNNKP",
+      "RNAPM"
     ]
   },
-  {
+  "NG6TL": {
     "Name": "High Energy",
     "Slug": "high-energy-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -112,20 +118,12 @@ export const VA_DATA = [
       "MM5SK",
       "OSXWL",
       "SOG9C",
-      "LESYJ",
-      "N6M4B",
-      "KC9UL",
-      "HWZH0",
-      "TQ87J",
-      "UT6SQ",
-      "GVJDB",
-      "VMXSF",
-      "EA62U",
-      "9CDZC",
-      "J5GHM"
+      "ZZP8A",
+      "ADGHC",
+      "BRTGB"
     ]
   },
-  {
+  "TQRAE": {
     "Name": "High Fat",
     "Slug": "high-fat-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -166,12 +164,9 @@ export const VA_DATA = [
       "29099",
       "28979"
     ],
-    "dog-data-fives": [
-      "9V6Z8",
-      "CEZHB"
-    ]
+    "dog-data-fives": "9V6Z8"
   },
-  {
+  "SKYQA": {
     "Name": "Highly Digestible",
     "Slug": "highly-digestible-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -222,20 +217,17 @@ export const VA_DATA = [
     ],
     "dog-data-fives": [
       "KCDKK",
-      "5PFWE",
       "WBT8X",
       "Y6PGF",
       "LCCV8",
-      "OP4RY",
       "HKAHU",
       "UTHHC",
-      "LESYJ",
-      "N6M4B",
-      "HWZH0",
-      "CEZHB"
+      "ZM6ZC",
+      "B9REG",
+      "RNAPM"
     ]
   },
-  {
+  "ZIFVT": {
     "Name": "Legumes Free",
     "Slug": "legumes-free-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -275,7 +267,7 @@ export const VA_DATA = [
     ],
     "dog-data-fives": ""
   },
-  {
+  "F2O7T": {
     "Name": "Poultry Free",
     "Slug": "poultry-free-dry-dog-food",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -315,7 +307,7 @@ export const VA_DATA = [
     ],
     "dog-data-fives": ""
   },
-  {
+  "1UH7O": {
     "Name": "Allergy Relief",
     "Slug": "premium-dog-food-for-allergy-relief",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -359,9 +351,9 @@ export const VA_DATA = [
       "29099",
       "28979"
     ],
-    "dog-data-fives": "OP4RY"
+    "dog-data-fives": ""
   },
-  {
+  "MXQV1": {
     "Name": "Balanced Nutrition",
     "Slug": "premium-dog-food-for-balanced-nutrition",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -407,27 +399,18 @@ export const VA_DATA = [
     "dog-data-fives": [
       "KCDKK",
       "GAQ7O",
-      "5PFWE",
       "WBT8X",
       "OSXWL",
       "PEG2O",
-      "OP4RY",
       "HKAHU",
       "UTHHC",
-      "LESYJ",
-      "KC9UL",
-      "HWZH0",
-      "TQ87J",
-      "UT6SQ",
-      "GVJDB",
-      "VMXSF",
-      "CEZHB",
-      "EA62U",
-      "9CDZC",
-      "J5GHM"
+      "ZM6ZC",
+      "B9REG",
+      "RNAPM",
+      "BRTGB"
     ]
   },
-  {
+  "JDRWK": {
     "Name": "Healthy Skin and Coat",
     "Slug": "premium-dog-food-for-healthy-skin-and-coat",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -474,12 +457,10 @@ export const VA_DATA = [
     ],
     "dog-data-fives": [
       "EP5IL",
-      "N6M4B",
-      "HWZH0",
-      "UT6SQ"
+      "ZZP8A"
     ]
   },
-  {
+  "MBUVJ": {
     "Name": "Sensitive Stomachs",
     "Slug": "premium-dog-food-for-sensitive-stomachs",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -527,9 +508,9 @@ export const VA_DATA = [
       "29099",
       "28979"
     ],
-    "dog-data-fives": "OP4RY"
+    "dog-data-fives": ""
   },
-  {
+  "VFKR6": {
     "Name": "Natural Antioxidants",
     "Slug": "premium-dog-food-with-natural-antioxidants",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -564,7 +545,6 @@ export const VA_DATA = [
       "EK1NU",
       "NVUQ6",
       "L5O6A",
-      "AGJPT",
       "XV780"
     ],
     "si-data-fives": [
@@ -580,12 +560,10 @@ export const VA_DATA = [
     "dog-data-fives": [
       "LCCV8",
       "MNLTS",
-      "KC9UL",
-      "UT6SQ",
-      "J5GHM"
+      "HNNKP"
     ]
   },
-  {
+  "KJCYZ": {
     "Name": "Performance Minerals",
     "Slug": "premium-dog-food-with-performance-minerals",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -639,16 +617,13 @@ export const VA_DATA = [
       "B5JOI",
       "SOG9C",
       "CSIRP",
-      "LESYJ",
-      "KC9UL",
-      "TQ87J",
-      "GVJDB",
-      "VMXSF",
-      "CEZHB",
-      "EA62U"
+      "ZM6ZC",
+      "ZZP8A",
+      "ADGHC",
+      "DSFXG"
     ]
   },
-  {
+  "GKJX3": {
     "Name": "Probiotics Added",
     "Slug": "premium-dog-food-with-probiotics-added",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -695,21 +670,21 @@ export const VA_DATA = [
     "dog-data-fives": [
       "KCDKK",
       "GAQ7O",
-      "5PFWE",
       "EP5IL",
       "Y6PGF",
       "PEG2O",
-      "OP4RY",
       "HKAHU",
       "UTHHC",
       "CSIRP",
-      "TQ87J",
-      "VMXSF",
-      "9CDZC",
-      "J5GHM"
+      "ZM6ZC",
+      "B9REG",
+      "ZZP8A",
+      "DSFXG",
+      "RNAPM",
+      "BRTGB"
     ]
   },
-  {
+  "9QHMW": {
     "Name": "Upgraded Vitamins",
     "Slug": "premium-dog-food-with-upgraded-vitamins",
     "Collection ID": "647ddb9037101ce399b331ed",
@@ -773,10 +748,169 @@ export const VA_DATA = [
       "B5JOI",
       "MNLTS",
       "UTHHC",
-      "N6M4B",
-      "GVJDB",
-      "EA62U",
-      "9CDZC"
+      "B9REG",
+      "HNNKP",
+      "BRTGB"
     ]
+  },
+  "WREGA": {
+    "Name": "500+ kcals per cup",
+    "Slug": "",
+    "Collection ID": "",
+    "Item ID": "",
+    "canonical": "",
+    "recordId": "recgg1zXuljBwRegA",
+    "recordType": "",
+    "recordStatus": "",
+    "calcSlug": "",
+    "vaName": "",
+    "data-five": "WREGA",
+    "data-sort": "",
+    "data-one": "",
+    "previewengine": "",
+    "previewAlttag": "",
+    "cf_description": "",
+    "data-faqType": "",
+    "typed_intro": "",
+    "manual_faq_enabled": "",
+    "tone_override_tagline": "",
+    "tone_override_subtitle": "",
+    "section-h1": "",
+    "section-name": "",
+    "section-p": "",
+    "section-prompt": "",
+    "persona_context": "",
+    "ing-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "dog-data-fives": ""
+  },
+  "RU3DD": {
+    "Name": "High Protein",
+    "Slug": "",
+    "Collection ID": "",
+    "Item ID": "",
+    "canonical": "",
+    "recordId": "recV9JwvaKuCru3DD",
+    "recordType": "",
+    "recordStatus": "",
+    "calcSlug": "",
+    "vaName": "",
+    "data-five": "RU3DD",
+    "data-sort": "",
+    "data-one": "",
+    "previewengine": "",
+    "previewAlttag": "",
+    "cf_description": "",
+    "data-faqType": "",
+    "typed_intro": "",
+    "manual_faq_enabled": "",
+    "tone_override_tagline": "",
+    "tone_override_subtitle": "",
+    "section-h1": "",
+    "section-name": "",
+    "section-p": "",
+    "section-prompt": "",
+    "persona_context": "",
+    "ing-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "dog-data-fives": ""
+  },
+  "KFWMD": {
+    "Name": "Grain Free",
+    "Slug": "",
+    "Collection ID": "",
+    "Item ID": "",
+    "canonical": "",
+    "recordId": "rec8oOoSgF2lkFwmD",
+    "recordType": "",
+    "recordStatus": "",
+    "calcSlug": "",
+    "vaName": "",
+    "data-five": "KFWMD",
+    "data-sort": "",
+    "data-one": "",
+    "previewengine": "",
+    "previewAlttag": "",
+    "cf_description": "",
+    "data-faqType": "",
+    "typed_intro": "",
+    "manual_faq_enabled": "",
+    "tone_override_tagline": "",
+    "tone_override_subtitle": "",
+    "section-h1": "",
+    "section-name": "",
+    "section-p": "",
+    "section-prompt": "",
+    "persona_context": "",
+    "ing-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "dog-data-fives": ""
+  },
+  "VTQGN": {
+    "Name": "Grain Inclusive",
+    "Slug": "",
+    "Collection ID": "",
+    "Item ID": "",
+    "canonical": "",
+    "recordId": "recFotuVKC83VtqGN",
+    "recordType": "",
+    "recordStatus": "",
+    "calcSlug": "",
+    "vaName": "",
+    "data-five": "VTQGN",
+    "data-sort": "",
+    "data-one": "",
+    "previewengine": "",
+    "previewAlttag": "",
+    "cf_description": "",
+    "data-faqType": "",
+    "typed_intro": "",
+    "manual_faq_enabled": "",
+    "tone_override_tagline": "",
+    "tone_override_subtitle": "",
+    "section-h1": "",
+    "section-name": "",
+    "section-p": "",
+    "section-prompt": "",
+    "persona_context": "",
+    "ing-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "dog-data-fives": ""
+  },
+  "VDTXI": {
+    "Name": "No Peas",
+    "Slug": "",
+    "Collection ID": "",
+    "Item ID": "",
+    "canonical": "",
+    "recordId": "recwTn9BzItwVdTxi",
+    "recordType": "",
+    "recordStatus": "",
+    "calcSlug": "",
+    "vaName": "",
+    "data-five": "VDTXI",
+    "data-sort": "",
+    "data-one": "",
+    "previewengine": "",
+    "previewAlttag": "",
+    "cf_description": "",
+    "data-faqType": "",
+    "typed_intro": "",
+    "manual_faq_enabled": "",
+    "tone_override_tagline": "",
+    "tone_override_subtitle": "",
+    "section-h1": "",
+    "section-name": "",
+    "section-p": "",
+    "section-prompt": "",
+    "persona_context": "",
+    "ing-data-fives": [],
+    "si-data-fives": [],
+    "sf-data-fives": [],
+    "dog-data-fives": ""
   }
-];
+};
