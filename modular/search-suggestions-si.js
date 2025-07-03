@@ -53,15 +53,15 @@ function vaKeywords(va) {
     `with ${base}`,
     `has ${base}`,
     `contains ${base}`,
-    ...(va && va.tags ? va.tags : [])
+    ...(va && va.tags ? va.tags.map(t => t.toLowerCase()) : [])
   ].filter(Boolean)));
 }
 function dogKeywords(dog) {
   if (!dog || typeof dog !== "object") return [];
   const out = [
-    dog.displayAs, // exact
+    dog.displayAs,
     dog.displayAs && dog.displayAs + "s",
-    dog.displayAs && dog.displayAs.replace(/dog$/i, "").trim(), // remove trailing 'dog'
+    dog.displayAs && dog.displayAs.replace(/dog$/i, "").trim(),
     dog.common_misspellings, dog.other_common_names, dog.common_initials, dog.common_nickname,
     dog.breed, dog.breeds, dog.type, dog.group, dog.job, dog.activity, dog.activityLevel,
     dog.group_suit, dog.job_suit, dog.activity_suit
@@ -157,9 +157,10 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     if (!va || !va.displayAs) return; // Only show value-adds present in map
     const displayAs = va.displayAs.trim();
     const triggers = Array.from(new Set([
-      ...vaTriggers,
       displayAs.toLowerCase(),
-      ...(va.triggers ? va.triggers.map(t => t.toLowerCase()) : [])
+      ...vaTriggers,
+      ...(va.triggers ? va.triggers.map(t => t.toLowerCase()) : []),
+      ...(va.tags ? va.tags.map(t => t.toLowerCase()) : [])
     ]));
     s.push({
       type: "value-add",
@@ -336,23 +337,54 @@ export function initSearchSuggestions() {
     }
     starter.style.display = 'none';
 
-    // Intent detection
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
     const isFact = /^what is|how much|how many/.test(q);
-    const isDog = /dog|breed|for|good for|recommended/.test(q);
+    const isContains = /\b(contains?|has|with|does|include)\b/.test(q);
 
     let results = fuse.search(q).slice(0, 10).map(r => r.item);
 
-    // Strict result type filtering based on intent
-    results = results.filter(item => {
-      if (item.type === "fact") return isFact;
-      if (item.type === "ingredient-not-contains") return isNegative || (q.split(' ').some(word => item.keywords.includes(word)));
-      if (item.type === "ingredient-contains") return !isNegative;
-      if (item.type === "free-of") return q.includes("free");
-      if (item.type === "dog-breed" || item.type === "dog-group" || item.type === "dog-activity" || item.type === "dog-job" || item.type === "dog-activity-level" || item.type === "dog-default") return isDog || q.split(' ').some(word => item.keywords.includes(word));
-      if (item.type === "value-add") return vaTriggers.some(tr => q.includes(tr)) || item.keywords.some(k => q.includes(k));
-      return true;
-    });
+    // If negative intent -> only show not-contains, free-of, or relevant
+    if (isNegative) {
+      results = results.filter(item =>
+        item.type === "ingredient-not-contains" ||
+        item.type === "free-of" ||
+        (item.type === "fact" && isFact) ||
+        item.type.startsWith("dog-") ||
+        item.type === "value-add"
+      );
+    }
+    // If "what is" or "how much" intent -> only show facts
+    else if (isFact) {
+      results = results.filter(item => item.type === "fact");
+    }
+    // If input contains "contains", "has", "does", etc. -> show ingredient-contains (and breeds, value-adds if matched)
+    else if (isContains) {
+      results = results.filter(item =>
+        item.type === "ingredient-contains" ||
+        item.type.startsWith("dog-") ||
+        item.type === "value-add"
+      );
+    }
+    // For single-word or unknown queries, show *all* plausible matches
+    else if (q.split(' ').length === 1) {
+      results = results.filter(item =>
+        item.type === "ingredient-contains" ||
+        item.type === "ingredient-not-contains" ||
+        item.type === "free-of" ||
+        item.type === "value-add" ||
+        item.type.startsWith("dog-")
+      );
+    }
+
+    // Filter for strong keyword match if the input is a single word ingredient/breed/etc.
+    if (q.split(' ').length === 1) {
+      results = results.filter(item =>
+        item.triggers.some(t => t === q) ||
+        item.keywords.some(k => k === q) ||
+        item.triggers.some(t => t.includes(q)) ||
+        item.keywords.some(k => k.includes(q))
+      );
+    }
 
     if (!results.length) {
       const li = document.createElement('li');
@@ -380,22 +412,43 @@ export function initSearchSuggestions() {
     if (!q) return;
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
     const isFact = /^what is|how much|how many/.test(q);
-    const isDog = /dog|breed|for|good for|recommended/.test(q);
+    const isContains = /\b(contains?|has|with|does|include)\b/.test(q);
 
-    let found = fuse.search(q);
+    let found = fuse.search(q).map(r => r.item);
 
-    found = found.filter(r => {
-      const item = r.item;
-      if (item.type === "fact") return isFact;
-      if (item.type === "ingredient-not-contains") return isNegative || (q.split(' ').some(word => item.keywords.includes(word)));
-      if (item.type === "ingredient-contains") return !isNegative;
-      if (item.type === "free-of") return q.includes("free");
-      if (item.type === "dog-breed" || item.type === "dog-group" || item.type === "dog-activity" || item.type === "dog-job" || item.type === "dog-activity-level" || item.type === "dog-default") return isDog || q.split(' ').some(word => item.keywords.includes(word));
-      if (item.type === "value-add") return vaTriggers.some(tr => q.includes(tr)) || item.keywords.some(k => q.includes(k));
-      return true;
-    });
+    if (isNegative) {
+      found = found.filter(item =>
+        item.type === "ingredient-not-contains" ||
+        item.type === "free-of" ||
+        (item.type === "fact" && isFact) ||
+        item.type.startsWith("dog-") ||
+        item.type === "value-add"
+      );
+    } else if (isFact) {
+      found = found.filter(item => item.type === "fact");
+    } else if (isContains) {
+      found = found.filter(item =>
+        item.type === "ingredient-contains" ||
+        item.type.startsWith("dog-") ||
+        item.type === "value-add"
+      );
+    } else if (q.split(' ').length === 1) {
+      found = found.filter(item =>
+        item.type === "ingredient-contains" ||
+        item.type === "ingredient-not-contains" ||
+        item.type === "free-of" ||
+        item.type === "value-add" ||
+        item.type.startsWith("dog-")
+      );
+      found = found.filter(item =>
+        item.triggers.some(t => t === q) ||
+        item.keywords.some(k => k === q) ||
+        item.triggers.some(t => t.includes(q)) ||
+        item.keywords.some(k => k.includes(q))
+      );
+    }
 
-    if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
+    if (found.length) showAnswer(found[0].answer || 'No answer set.');
     else showAnswer('No answer set.');
   }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
