@@ -1,5 +1,3 @@
-export function initSearchSuggestions() {
-  console.log("initSearchSuggestions called!");
 
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { SI_DATA }    from './si.js';
