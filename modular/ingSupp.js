@@ -1,5 +1,6 @@
 export const ING_SUPP = [
   {
+  "JUDBS": {
     "Name": "Ascorbic Acid",
     "Slug": "ascorbic-acid",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -74,7 +75,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin C",
     "termDescription": "Vitamin C; antioxidant and immune support."
   },
-  {
+  "KSOUF": {
     "Name": "Zinc Sulfate",
     "Slug": "zinc-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -151,7 +152,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Zinc",
     "termDescription": "Zinc source for skin, coat, immune health."
   },
-  {
+  "ZPGID": {
     "Name": "Zinc Proteinate",
     "Slug": "zinc-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -223,7 +224,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Zinc",
     "termDescription": "Highly bioavailable zinc for better absorption."
   },
-  {
+  "PN28C": {
     "Name": "Zinc Amino Acids",
     "Slug": "zinc-amino-acids-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -322,7 +323,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Zinc",
     "termDescription": "Zinc bound for absorption; supports immunity and skin."
   },
-  {
+  "M5PNO": {
     "Name": "Zinc Amino Acids Chelate",
     "Slug": "zinc-amino-acids-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -385,7 +386,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Zinc",
     "termDescription": "Chelated zinc; high absorption, skin and immune support."
   },
-  {
+  "MDI1T": {
     "Name": "Yeast Cultures",
     "Slug": "yeast-cultures",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -460,7 +461,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic/prebiotic, supports gut health, palatability."
   },
-  {
+  "EGJ3G": {
     "Name": "Vitamin K",
     "Slug": "vitamin-k",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -523,7 +524,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin K",
     "termDescription": "Blood clotting, bone health."
   },
-  {
+  "EK1NU": {
     "Name": "Vitamin E",
     "Slug": "vitamin-e",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -611,7 +612,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin E",
     "termDescription": "Antioxidant; skin, coat, cellular protection."
   },
-  {
+  "UDMZM": {
     "Name": "Vitamin D3",
     "Slug": "vitamin-d3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -705,7 +706,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin D3",
     "termDescription": "Active vitamin D; calcium balance, immune health."
   },
-  {
+  "4BLZB": {
     "Name": "Vitamin D",
     "Slug": "vitamin-d",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -768,7 +769,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin D",
     "termDescription": "Bone growth, immune function."
   },
-  {
+  "S50XY": {
     "Name": "Vitamin C",
     "Slug": "vitamin-c",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -831,7 +832,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin C",
     "termDescription": "Ascorbic acid; antioxidant, immune support."
   },
-  {
+  "ZAPVO": {
     "Name": "Vitamin B12",
     "Slug": "vitamin-b12",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -926,7 +927,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B12",
     "termDescription": "Cobalamin; nervous system and red blood cells."
   },
-  {
+  "JYSYG": {
     "Name": "Vitamin B9",
     "Slug": "vitamin-b9",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -989,7 +990,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B9",
     "termDescription": "Folic acid; cell growth and metabolism."
   },
-  {
+  "QPLJE": {
     "Name": "Vitamin B8",
     "Slug": "vitamin-b8",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1052,7 +1053,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B8",
     "termDescription": "Inositol; cell membrane health."
   },
-  {
+  "KY9KL": {
     "Name": "Vitamin B7",
     "Slug": "vitamin-b7",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1115,7 +1116,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B7",
     "termDescription": "Biotin; skin, coat, energy."
   },
-  {
+  "D6BTD": {
     "Name": "Vitamin B6",
     "Slug": "vitamin-b6",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1178,7 +1179,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B6",
     "termDescription": "Pyridoxine; metabolism and blood health."
   },
-  {
+  "ZV6KQ": {
     "Name": "Vitamin B5",
     "Slug": "vitamin-b5",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1241,7 +1242,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B5",
     "termDescription": "Pantothenic acid; energy metabolism."
   },
-  {
+  "P0LJ3": {
     "Name": "Vitamin B3",
     "Slug": "vitamin-b3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1304,7 +1305,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B3",
     "termDescription": "Niacin; metabolism, skin, coat."
   },
-  {
+  "EZIA4": {
     "Name": "Vitamin B2",
     "Slug": "vitamin-b2",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1367,7 +1368,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B2",
     "termDescription": "Riboflavin; cellular function and growth."
   },
-  {
+  "HKOFV": {
     "Name": "Vitamin B1",
     "Slug": "vitamin-b1",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1430,7 +1431,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B1",
     "termDescription": "Thiamine; metabolism and nervous system support."
   },
-  {
+  "72XQK": {
     "Name": "Vitamin B",
     "Slug": "vitamin-b",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1493,7 +1494,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B-complex",
     "termDescription": "General group; support metabolism, growth, energy."
   },
-  {
+  "HBTUA": {
     "Name": "Vitamin A Acetate",
     "Slug": "vitamin-a-acetate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1556,7 +1557,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin A",
     "termDescription": "Synthetic vitamin A; vision, immune, and skin health."
   },
-  {
+  "XGD4Z": {
     "Name": "Vitamin A",
     "Slug": "vitamin-a",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1645,7 +1646,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin A",
     "termDescription": "Supports vision, growth, immune system."
   },
-  {
+  "W0HAM": {
     "Name": "Turmeric",
     "Slug": "turmeric",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1716,7 +1717,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Curcumin",
     "termDescription": "Botanical; provides antioxidant and anti-inflammatory effects."
   },
-  {
+  "YHGZY": {
     "Name": "Thiamine Mononitrate",
     "Slug": "thiamine-mononitrate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1803,7 +1804,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B1",
     "termDescription": "Synthetic B1; supplemental for nervous system and digestion."
   },
-  {
+  "5ELBD": {
     "Name": "Thiamine",
     "Slug": "thiamine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1898,7 +1899,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B1",
     "termDescription": "B-vitamin; aids carbohydrate metabolism, nervous system."
   },
-  {
+  "M0BM4": {
     "Name": "Taurine",
     "Slug": "taurine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1986,7 +1987,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Amino acid for heart health and vision; especially important in some dog breeds."
   },
-  {
+  "OQE8V": {
     "Name": "Sodium Selenite",
     "Slug": "sodium-selenite",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2058,7 +2059,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Selenium",
     "termDescription": "Inorganic selenium; antioxidant, immune function."
   },
-  {
+  "XVC1B": {
     "Name": "Sodium Hex",
     "Slug": "sodium-hex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2121,7 +2122,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Sodium",
     "termDescription": "Sodium salt; supports electrolyte balance."
   },
-  {
+  "XV780": {
     "Name": "Selenium Yeast",
     "Slug": "selenium-yeast",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2230,7 +2231,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Selenium",
     "termDescription": "Selenium bound to yeast; highly bioavailable."
   },
-  {
+  "SFO7X": {
     "Name": "Selenium",
     "Slug": "selenium",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2293,7 +2294,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Selenium",
     "termDescription": "Trace mineral for antioxidant protection and immune function."
   },
-  {
+  "9UMLW": {
     "Name": "Salt",
     "Slug": "salt",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2395,7 +2396,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Sodium",
     "termDescription": "Sodium chloride; essential electrolyte and flavor enhancer."
   },
-  {
+  "L5O6A": {
     "Name": "Rosemary Extract",
     "Slug": "rosemary-extract",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2495,7 +2496,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Natural antioxidant; acts as preservative and flavor."
   },
-  {
+  "COVUX": {
     "Name": "Riboflavin Supplement",
     "Slug": "riboflavin-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2575,7 +2576,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B2",
     "termDescription": "Supplemental B2 for growth and energy."
   },
-  {
+  "81XCU": {
     "Name": "Riboflavin",
     "Slug": "riboflavin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2679,7 +2680,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B2",
     "termDescription": "B-vitamin; necessary for energy and cellular function."
   },
-  {
+  "MLAA7": {
     "Name": "Pyridoxine Hydrochloride",
     "Slug": "pyridoxine-hydrochloride",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2766,7 +2767,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B6",
     "termDescription": "Supplemental B6 for metabolism and energy production."
   },
-  {
+  "ABJVI": {
     "Name": "Pyridoxine",
     "Slug": "pyridoxine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2861,7 +2862,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B6",
     "termDescription": "B-vitamin; involved in protein metabolism and red blood cell formation."
   },
-  {
+  "MVXMR": {
     "Name": "Potassium Iodide",
     "Slug": "potassium-iodide",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2924,7 +2925,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iodine",
     "termDescription": "Iodine source for thyroid support."
   },
-  {
+  "5S0XF": {
     "Name": "Potassium Citrate",
     "Slug": "potassium-citrate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2990,7 +2991,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Potassium",
     "termDescription": "Potassium supplement; supports urinary tract health."
   },
-  {
+  "AH4GG": {
     "Name": "Potassium Chloride",
     "Slug": "potassium-chloride",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3086,7 +3087,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Potassium",
     "termDescription": "Potassium and chloride source; electrolyte balance."
   },
-  {
+  "17ZQK": {
     "Name": "Potassium",
     "Slug": "potassium",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3149,7 +3150,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Potassium",
     "termDescription": "Essential mineral for nerve/muscle health."
   },
-  {
+  "8LGUT": {
     "Name": "Niacin Supplement",
     "Slug": "niacin-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3226,7 +3227,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B3",
     "termDescription": "Supplemental niacin for metabolism and overall health."
   },
-  {
+  "YRWGG": {
     "Name": "Niacin",
     "Slug": "niacin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3333,7 +3334,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B3",
     "termDescription": "B-vitamin, supports energy metabolism, skin/coat."
   },
-  {
+  "Z9I0H": {
     "Name": "Natural Flavors",
     "Slug": "natural-flavors",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3412,7 +3413,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Palatants/flavor enhancers; improve kibble palatability."
   },
-  {
+  "AGJPT": {
     "Name": "Mixed Tocopherols",
     "Slug": "mixed-tocopherols",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3492,7 +3493,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin E",
     "termDescription": "Antioxidant (Vitamin E family); natural preservative in kibble."
   },
-  {
+  "NRX8Q": {
     "Name": "Manganese Sulfate",
     "Slug": "manganese-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3562,7 +3563,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Manganese",
     "termDescription": "Standard manganese source; supports metabolism."
   },
-  {
+  "BWNCE": {
     "Name": "Manganese Proteinate",
     "Slug": "manganese-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3635,7 +3636,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Manganese",
     "termDescription": "Manganese bound for absorption; bone/joint health."
   },
-  {
+  "MRSTT": {
     "Name": "Manganese Amino Acids Complex",
     "Slug": "manganese-amino-acids-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3733,7 +3734,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Manganese",
     "termDescription": "Manganese bound for better absorption; joint, enzyme support."
   },
-  {
+  "T8QHB": {
     "Name": "Manganese Amino Acids Chelate",
     "Slug": "manganese-amino-acids-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3796,7 +3797,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Manganese",
     "termDescription": "Highly bioavailable manganese; bone and joint health."
   },
-  {
+  "TRFPO": {
     "Name": "Magnesium Sulfate",
     "Slug": "magnesium-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3859,7 +3860,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Magnesium",
     "termDescription": "Magnesium source for bone/nerve health."
   },
-  {
+  "JZHRB": {
     "Name": "Magnesium Proteinate",
     "Slug": "magnesium-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3922,7 +3923,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Magnesium",
     "termDescription": "Highly available magnesium; better absorption."
   },
-  {
+  "AG2D0": {
     "Name": "Lactobacillus Plantarum Fermentation",
     "Slug": "lactobacillus-plantarum-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3985,7 +3986,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; digestive and immune health."
   },
-  {
+  "UQHTP": {
     "Name": "Lactobacillus Casei Fermentation",
     "Slug": "lactobacillus-casei-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4082,7 +4083,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; aids digestion and immune response."
   },
-  {
+  "RUAPK": {
     "Name": "Lactobacillus Acidophilus Fermentation",
     "Slug": "lactobacillus-acidophilus-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4179,7 +4180,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; promotes healthy gut bacteria."
   },
-  {
+  "KZYKM": {
     "Name": "L-Lysine",
     "Slug": "l-lysine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4245,7 +4246,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Essential amino acid; supports muscle development and immune function."
   },
-  {
+  "3U0K4": {
     "Name": "L-carnitine",
     "Slug": "l-carnitine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4320,7 +4321,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Amino acid-like compound; supports energy/fat metabolism in active dogs."
   },
-  {
+  "AYYHZ": {
     "Name": "Iron Sulfate",
     "Slug": "iron-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4395,7 +4396,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Standard iron source in pet food; supports blood formation."
   },
-  {
+  "ECLSM": {
     "Name": "Iron Proteinate",
     "Slug": "iron-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4461,7 +4462,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Iron bound to protein; increases absorption for blood health."
   },
-  {
+  "JEBP3": {
     "Name": "Iron Amino Acids Complex",
     "Slug": "iron-amino-acids-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4562,7 +4563,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Iron supplement; more bioavailable form."
   },
-  {
+  "WDDHT": {
     "Name": "Iron Amino Acids Chelate",
     "Slug": "iron-amino-acids-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4625,7 +4626,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Iron chelated with amino acids for improved absorption."
   },
-  {
+  "90DOH": {
     "Name": "Inulin",
     "Slug": "inulin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4704,7 +4705,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Prebiotic fiber from chicory; supports healthy gut flora."
   },
-  {
+  "V43XM": {
     "Name": "Glucosamine Hydrochloride",
     "Slug": "glucosamine-hydrochloride",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4779,7 +4780,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Stabilized glucosamine; more bioavailable."
   },
-  {
+  "IPPTH": {
     "Name": "Glucosamine",
     "Slug": "glucosamine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4845,7 +4846,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Joint health supplement; supports cartilage, mobility."
   },
-  {
+  "4GUVA": {
     "Name": "Fructooligosaccharide",
     "Slug": "fructooligosaccharide",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4915,7 +4916,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Prebiotic fiber; gut health, digestion."
   },
-  {
+  "MBFOA": {
     "Name": "Folic Acid",
     "Slug": "folic-acid",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5022,7 +5023,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B9",
     "termDescription": "B-vitamin; important for cell growth and metabolism."
   },
-  {
+  "BOL4J": {
     "Name": "Ferrous Sulfate",
     "Slug": "ferrous-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5110,7 +5111,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Iron supplement; supports red blood cell production."
   },
-  {
+  "RSKUH": {
     "Name": "Ferrous Proteinate",
     "Slug": "ferrous-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5173,7 +5174,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Highly absorbable iron supplement."
   },
-  {
+  "CAIRD": {
     "Name": "Ferrous Glycine",
     "Slug": "ferrous-glycine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5240,7 +5241,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iron",
     "termDescription": "Iron chelate; highly bioavailable for blood support."
   },
-  {
+  "HFCYR": {
     "Name": "Enterococcus Faecium Fermentation",
     "Slug": "enterococcus-faecium-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5336,7 +5337,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; aids digestion and supports immune function."
   },
-  {
+  "SQ0XJ": {
     "Name": "D-calcium Pantothenate",
     "Slug": "d-calcium-pantothenate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5434,7 +5435,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B5",
     "termDescription": "B-vitamin; supports metabolism, energy production."
   },
-  {
+  "555IX": {
     "Name": "Copper Sulfate",
     "Slug": "copper-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5519,7 +5520,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Copper",
     "termDescription": "Inorganic copper; standard trace mineral."
   },
-  {
+  "K3WTW": {
     "Name": "Copper Proteinate",
     "Slug": "copper-proteinate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5594,7 +5595,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Copper",
     "termDescription": "Copper bound for absorption; blood, coat, immune."
   },
-  {
+  "J76F7": {
     "Name": "Copper Amino Acids Complex",
     "Slug": "copper-amino-acids-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5692,7 +5693,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Copper",
     "termDescription": "Bioavailable copper supplement; supports blood, bones, coat."
   },
-  {
+  "7TIG4": {
     "Name": "Copper Amino Acids Chelate",
     "Slug": "copper-amino-acids-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5755,7 +5756,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Copper",
     "termDescription": "Highly absorbable copper bound to amino acids."
   },
-  {
+  "KE2JS": {
     "Name": "Citric Acid",
     "Slug": "citric-acid",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5818,7 +5819,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Natural preservative; extends shelf life."
   },
-  {
+  "9WQMN": {
     "Name": "Chondroitin Sulfate",
     "Slug": "chondroitin-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5893,7 +5894,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Sulfated form; more bioavailable joint support."
   },
-  {
+  "XQLSB": {
     "Name": "Chondroitin",
     "Slug": "chondroitin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5956,7 +5957,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Joint supplement; supports cartilage and mobility."
   },
-  {
+  "QKPNY": {
     "Name": "Choline Chloride",
     "Slug": "choline-chloride",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6060,7 +6061,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Choline",
     "termDescription": "Synthetic form of choline; aids metabolism and nervous system."
   },
-  {
+  "GJDKZ": {
     "Name": "Choline",
     "Slug": "choline",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6123,7 +6124,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Choline",
     "termDescription": "Essential nutrient for nerve and brain function."
   },
-  {
+  "XROAQ": {
     "Name": "Calcium Sulfate",
     "Slug": "calcium-sulfate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6186,7 +6187,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Calcium",
     "termDescription": "Source of calcium; used for bone health and nutrition."
   },
-  {
+  "MICCW": {
     "Name": "Calcium Stearate",
     "Slug": "calcium-stearate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6259,7 +6260,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Calcium",
     "termDescription": "Flow agent; improves ingredient mixing in kibble."
   },
-  {
+  "8CBAD": {
     "Name": "Calcium Propionate",
     "Slug": "calcium-propionate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6334,7 +6335,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Calcium",
     "termDescription": "Preservative; prevents mold and spoilage in kibble."
   },
-  {
+  "UIC8H": {
     "Name": "Calcium Pantothenate",
     "Slug": "calcium-pantothenate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6407,7 +6408,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B5",
     "termDescription": "B5 vitamin; metabolism, energy."
   },
-  {
+  "AWE1M": {
     "Name": "Calcium Iodate",
     "Slug": "calcium-iodate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6487,7 +6488,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Iodine",
     "termDescription": "Iodine supplement; supports thyroid function."
   },
-  {
+  "KZC6H": {
     "Name": "Calcium Carbonate",
     "Slug": "calcium-carbonate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6571,7 +6572,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Calcium",
     "termDescription": "Calcium source; bone health, mineral balance."
   },
-  {
+  "GL5KA": {
     "Name": "Brewers Yeast",
     "Slug": "brewers-yeast",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6634,7 +6635,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B-vitamins",
     "termDescription": "Nutritional yeast; source of B-vitamins, protein, flavor."
   },
-  {
+  "LNDRX": {
     "Name": "Brewers Dried Yeast",
     "Slug": "brewers-dried-yeast",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6713,7 +6714,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B-vitamins",
     "termDescription": "Dried yeast; palatability and B-vitamin source."
   },
-  {
+  "YD8CG": {
     "Name": "Biotin",
     "Slug": "biotin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6824,7 +6825,7 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B7",
     "termDescription": "B-vitamin, supports skin/coat health and metabolism."
   },
-  {
+  "PSCOG": {
     "Name": "Bacillus Subtilis Fermentation",
     "Slug": "bacillus-subtilis-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6887,7 +6888,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; supports digestion, immune function."
   },
-  {
+  "ES2BJ": {
     "Name": "Bacillus Coagulans Fermentation",
     "Slug": "bacillus-coagulans-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6950,7 +6951,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Probiotic; gut health, immune support."
   },
-  {
+  "WOIOX": {
     "Name": "Copper Amino Acid Complex",
     "Slug": "copper-amino-acid-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7013,7 +7014,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ISOKH": {
     "Name": "Vitamin B 5",
     "Slug": "vitamin-b-5",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7076,7 +7077,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "UO3QV": {
     "Name": "Vitamin B 6",
     "Slug": "vitamin-b-6",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7139,7 +7140,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ELK1I": {
     "Name": "Mixed Tocopherol",
     "Slug": "mixed-tocopherol",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7202,7 +7203,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "OGDUY": {
     "Name": "Vitamin B 2",
     "Slug": "vitamin-b-2",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7265,7 +7266,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "6AXPL": {
     "Name": "Vitamin B 7",
     "Slug": "vitamin-b-7",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7328,7 +7329,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "LBGOD": {
     "Name": "Vitamin B 3",
     "Slug": "vitamin-b-3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7391,7 +7392,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "JTSRY": {
     "Name": "Bifido Bacterium Bifidium Fermentation",
     "Slug": "bifido-bacterium-bifidium-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7487,7 +7488,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "EKBTQ": {
     "Name": "Vitamin A Supplement",
     "Slug": "vitamin-a-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7576,7 +7577,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "RRO5G": {
     "Name": "Dried Enterococcus Faecium Fermentation Product",
     "Slug": "dried-enterococcus-faecium-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7648,7 +7649,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "DQ78W": {
     "Name": "Dried Lactobacillus Acidophilus Fermentation Product",
     "Slug": "dried-lactobacillus-acidophilus-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7723,7 +7724,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "04ZOO": {
     "Name": "Vitamin E Supplement",
     "Slug": "vitamin-e-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7804,7 +7805,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "6GX4D": {
     "Name": "Dried Bacillus Subtilis Fermentation Product",
     "Slug": "dried-bacillus-subtilis-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7867,7 +7868,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "K8DK5": {
     "Name": "Dried Bifidobacterium Animalis Fermentation Product",
     "Slug": "dried-bifidobacterium-animalis-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7930,7 +7931,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "COFRG": {
     "Name": "Dried Lactobacillus Plantarum Fermentation Product",
     "Slug": "dried-lactobacillus-plantarum-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -7993,7 +7994,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "TJL90": {
     "Name": "Iron Amino Acid Chelate",
     "Slug": "iron-amino-acid-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8056,7 +8057,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "C09YO": {
     "Name": "Vitamin B 8",
     "Slug": "vitamin-b-8",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8119,7 +8120,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "XPFOV": {
     "Name": "Vitamin B-12",
     "Slug": "vitamin-b-12",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8182,7 +8183,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "4GGMJ": {
     "Name": "Dried Bacillus Coagulans Fermentation Product",
     "Slug": "dried-bacillus-coagulans-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8256,7 +8257,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "V4J22": {
     "Name": "Vitamin B 12",
     "Slug": "vitamin-b-12",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8319,7 +8320,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "QY3IX": {
     "Name": "Dried Aspergillus Oryzae Fermentation Extract",
     "Slug": "dried-aspergillus-oryzae-fermentation-extract",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8391,7 +8392,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "YJSLD": {
     "Name": "Dried Bacillus Subtilis Fermentation Extract",
     "Slug": "dried-bacillus-subtilis-fermentation-extract",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8463,7 +8464,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "SWMVA": {
     "Name": "L-Carnitine",
     "Slug": "l-carnitine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8545,7 +8546,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "JJTVJ": {
     "Name": "Yeast Extract",
     "Slug": "yeast-extract",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8612,7 +8613,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "8UWMC": {
     "Name": "D-Calcium Pantothenate",
     "Slug": "d-calcium-pantothenate",
     "Collection ID": "",
@@ -8689,7 +8690,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "MUQQG": {
     "Name": "Dried Lactobacillus Casei Fermentation Product",
     "Slug": "dried-lactobacillus-casei-fermentation-product.",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8752,7 +8753,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "QX1UZ": {
     "Name": "Vitamin B-12 Supplement",
     "Slug": "vitamin-b-12-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8840,7 +8841,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "COCPI": {
     "Name": "Vitamin D-3 Supplement",
     "Slug": "vitamin-d-3-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -8928,7 +8929,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ETXUL": {
     "Name": "Yeast Culture",
     "Slug": "yeast-culture",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9000,7 +9001,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "T6W2R": {
     "Name": "Bifidobacterium Animalis Fermentation ",
     "Slug": "bifidobacterium-animalis-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9063,7 +9064,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "IH84B": {
     "Name": "Dried Lactobacillus Casei Fermentation",
     "Slug": "dried-lactobacillus-casei-fermentation",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9126,7 +9127,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "RXPVM": {
     "Name": "Vitamin D 3",
     "Slug": "vitamin-d-3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9189,7 +9190,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "JGIRZ": {
     "Name": "Vitamin D-3",
     "Slug": "vitamin-d-3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9252,7 +9253,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ZAJPG": {
     "Name": "Vitamin K Supplement",
     "Slug": "vitamin-k-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9315,7 +9316,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "WGO0K": {
     "Name": "Vitamin B-6",
     "Slug": "vitamin-b-6",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9378,7 +9379,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ITRQE": {
     "Name": "Vitamin B-9",
     "Slug": "vitamin-b-9",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9441,7 +9442,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "YXCZK": {
     "Name": "Vitamin B 9",
     "Slug": "vitamin-b-9",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9504,7 +9505,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "JK8KH": {
     "Name": "Vitamin B9 Supplement",
     "Slug": "vitamin-b9-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9567,7 +9568,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "MWALO": {
     "Name": "Vitamin B-8",
     "Slug": "vitamin-b-8",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9630,7 +9631,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "VS7NC": {
     "Name": "Vitamin B8 Supplement",
     "Slug": "vitamin-b8-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9693,7 +9694,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "SAVP3": {
     "Name": "Vitamin B-7",
     "Slug": "vitamin-b-7",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9756,7 +9757,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "N9BUV": {
     "Name": "Vitamin B7 Supplement",
     "Slug": "vitamin-b7-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9819,7 +9820,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "RLWJL": {
     "Name": "Vitamin B6 Supplement",
     "Slug": "vitamin-b6-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9882,7 +9883,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "VVLXM": {
     "Name": "Vitamin B-5",
     "Slug": "vitamin-b-5",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -9945,7 +9946,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "MNSEM": {
     "Name": "Vitamin B5 Supplement",
     "Slug": "vitamin-b5-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10008,7 +10009,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "2NESK": {
     "Name": "Vitamin B-3",
     "Slug": "vitamin-b-3",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10071,7 +10072,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "NGTFZ": {
     "Name": "Vitamin B3 Supplement",
     "Slug": "vitamin-b3-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10134,7 +10135,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "UWF2R": {
     "Name": "Vitamin B-2",
     "Slug": "vitamin-b-2",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10197,7 +10198,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "X5PS4": {
     "Name": "Vitamin B2 Supplement",
     "Slug": "vitamin-b2-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10260,7 +10261,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "Z7YMP": {
     "Name": "Vitamin B-1",
     "Slug": "vitamin-b-1",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10323,7 +10324,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "KRZ9I": {
     "Name": "Vitamin B1 Supplement",
     "Slug": "vitamin-b1-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10386,7 +10387,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "Y4ITI": {
     "Name": "Vitamin B Supplement",
     "Slug": "vitamin-b-supplement",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10449,7 +10450,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "IJBBW": {
     "Name": "Manganese Amino Acid Chelate",
     "Slug": "manganese-amino-acid-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10512,7 +10513,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "IDQAS": {
     "Name": "Iron Amino Acid Complex",
     "Slug": "iron-amino-acid-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10585,7 +10586,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "XYXI3": {
     "Name": "Copper Amino Acid Chelate",
     "Slug": "copper-amino-acid-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10648,7 +10649,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "CTLAE": {
     "Name": "Dried Bacterium Bifidium Fermentation Product",
     "Slug": "dried-bacterium-bifidium-fermentation-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10711,7 +10712,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "2IXN8": {
     "Name": "Zinc Amino Acid Chelate",
     "Slug": "zinc-amino-acid-chelate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10774,7 +10775,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "Z3XCG": {
     "Name": "Zinc Amino Acids",
     "Slug": "zinc-amino-acid-complex",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10837,7 +10838,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "GJA6Y": {
     "Name": "Sodium Hexametaphosphate",
     "Slug": "sodium-hexametaphosphate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10900,7 +10901,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "6LJTN": {
     "Name": "Manganese",
     "Slug": "",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -10963,7 +10964,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "TDPRO": {
     "Name": "Animal Digest",
     "Slug": "animal-digest",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11026,7 +11027,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Flavor enhancer from hydrolyzed animal tissues."
   },
-  {
+  "QJO9S": {
     "Name": "Autolyzed Yeast",
     "Slug": "autolyzed-yeast",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11089,7 +11090,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Yeast broken down for flavor, prebiotic effect."
   },
-  {
+  "TNJ5K": {
     "Name": "Caramel",
     "Slug": "caramel",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11152,7 +11153,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Natural coloring for kibble; improves appearance."
   },
-  {
+  "WJEHA": {
     "Name": "Cellulose",
     "Slug": "cellulose",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11215,7 +11216,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Plant fiber; aids digestion and stool formation."
   },
-  {
+  "QT1FJ": {
     "Name": "Hydrolyzed Protein",
     "Slug": "hydrolyzed-protein",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11278,7 +11279,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Proteins broken down; used for hypoallergenic diets."
   },
-  {
+  "PG8TP": {
     "Name": "Hydrolyzed Yeast",
     "Slug": "hydrolyzed-yeast",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11371,7 +11372,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Broken down yeast; flavor, palatability, prebiotic."
   },
-  {
+  "759SV": {
     "Name": "Monopotassium Glutamate",
     "Slug": "monopotassium-glutamate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11434,7 +11435,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Flavor enhancer; palatability for kibble."
   },
-  {
+  "OWEO0": {
     "Name": "Monosodium Glutamate",
     "Slug": "monosodium-glutamate",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11497,7 +11498,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Flavor enhancer; increases taste appeal of kibble."
   },
-  {
+  "9FK4M": {
     "Name": "Powdered Cellulose",
     "Slug": "powdered-cellulose",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11564,7 +11565,7 @@ export const ING_SUPP = [
     "vitamins_derived": "",
     "termDescription": "Plant-based fiber; improves stool quality, gut health."
   },
-  {
+  "XZBDL": {
     "Name": "Yeast Extracts",
     "Slug": "yeast-extracts",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -11627,4 +11628,5 @@ export const ING_SUPP = [
     "vitamins_derived": "Vitamin B-vitamins",
     "termDescription": "Flavor and protein enhancer from yeast; palatability."
   }
+
 ];
