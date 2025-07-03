@@ -1,5 +1,6 @@
 export const ING_ANIM = [ 
-  {
+ {
+  "CBJVQ": {
     "Name": "Anchovy",
     "Slug": "anchovy",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -62,7 +63,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Small fish; used for animal protein and natural omega-3s."
   },
-  {
+  "4RIOW": {
     "Name": "Anchovy Meal",
     "Slug": "anchovy-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -125,7 +126,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated anchovy protein; adds fish flavor and nutrients."
   },
-  {
+  "FIVTY": {
     "Name": "Animal Fat",
     "Slug": "animal-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -188,7 +189,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Rendered animal fat; source of energy, flavor, and essential fatty acids."
   },
-  {
+  "FLMRA": {
     "Name": "Beef",
     "Slug": "beef",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -257,7 +258,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Red meat; highly digestible protein and source of iron and B vitamins."
   },
-  {
+  "ARHPV": {
     "Name": "Beef Fat",
     "Slug": "beef-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -320,7 +321,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Rendered beef fat; added for palatability and energy."
   },
-  {
+  "CQCMT": {
     "Name": "Beef Liver",
     "Slug": "beef-liver",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -383,7 +384,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin B12, Iron",
     "termDescription": "Organ meat; rich in protein, iron, and vitamin A."
   },
-  {
+  "GSJWC": {
     "Name": "Beef Meal",
     "Slug": "beef-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -457,7 +458,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered beef concentrate; high in protein, used as main kibble base."
   },
-  {
+  "BSARH": {
     "Name": "Beef Tripe",
     "Slug": "beef-tripe",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -520,7 +521,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Stomach lining; adds unique protein, palatability, and enzymes."
   },
-  {
+  "2NZMY": {
     "Name": "Bison",
     "Slug": "bison",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -583,7 +584,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Lean red meat alternative; novel protein source for sensitive dogs."
   },
-  {
+  "RUMCD": {
     "Name": "Bison Meal",
     "Slug": "bison-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -646,7 +647,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Concentrated, rendered bison protein; for high-protein formulas."
   },
-  {
+  "LCALN": {
     "Name": "Blood Meal",
     "Slug": "blood-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -727,7 +728,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Iron",
     "termDescription": "Dried blood; extremely high in protein and iron."
   },
-  {
+  "CBOFC": {
     "Name": "Boar",
     "Slug": "boar",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -790,7 +791,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Wild red meat; novel, high-protein source for allergy-prone dogs."
   },
-  {
+  "F1QED": {
     "Name": "Buffalo",
     "Slug": "buffalo",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -853,7 +854,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Lean red meat; high in protein, often used as an alternative protein."
   },
-  {
+  "C6HRL": {
     "Name": "Buffalo Meal",
     "Slug": "buffalo-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -954,7 +955,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered, concentrated buffalo protein."
   },
-  {
+  "ZVHND": {
     "Name": "Catfish",
     "Slug": "catfish",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1017,7 +1018,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "White fish; source of animal protein and omega-3s."
   },
-  {
+  "U9EU7": {
     "Name": "Catfish Meal",
     "Slug": "catfish-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1109,7 +1110,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated catfish protein; boosts fish content and omega-3s."
   },
-  {
+  "IULX1": {
     "Name": "Chicken",
     "Slug": "chicken",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1181,7 +1182,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Popular poultry; highly digestible protein and amino acids."
   },
-  {
+  "IQEVA": {
     "Name": "Chicken By-Product",
     "Slug": "chicken-by-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1244,7 +1245,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Parts of chicken not in meat (organs, neck, feet); protein and minerals."
   },
-  {
+  "I1FXE": {
     "Name": "Chicken By-Product Meal",
     "Slug": "chicken-by-product-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1311,7 +1312,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered chicken by-products; high in protein, more concentrated than whole."
   },
-  {
+  "XMHNC": {
     "Name": "Chicken Cartilage",
     "Slug": "chicken-cartilage",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1374,7 +1375,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Glucosamine",
     "termDescription": "Connective tissue; source of natural glucosamine for joint support."
   },
-  {
+  "VUYIW": {
     "Name": "Chicken Fat",
     "Slug": "chicken-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1489,7 +1490,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin E (trace)",
     "termDescription": "Fat rendered from chicken; for energy, flavor, and omega-6."
   },
-  {
+  "CEVBH": {
     "Name": "Chicken Meal",
     "Slug": "chicken-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1562,7 +1563,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Concentrated, rendered chicken protein; major source of animal protein."
   },
-  {
+  "JRLXE": {
     "Name": "Cod",
     "Slug": "cod",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1625,7 +1626,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Lean fish; used for animal protein, flavor, and omega-3 content."
   },
-  {
+  "OEXO1": {
     "Name": "Deboned Chicken",
     "Slug": "deboned-chicken",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1688,7 +1689,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "GAMG6": {
     "Name": "Dehydrated Chicken",
     "Slug": "dehydrated-chicken",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1751,7 +1752,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "CIPVY": {
     "Name": "Dehydrated Cod",
     "Slug": "dehydrated-cod",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1814,7 +1815,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "HT5ZK": {
     "Name": "Dehydrated Herring",
     "Slug": "dehydrated-herring",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1880,7 +1881,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "C2TWM": {
     "Name": "Dehydrated Lamb",
     "Slug": "dehydrated-lamb",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -1943,7 +1944,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "Y7ODL": {
     "Name": "Dehydrated Salmon",
     "Slug": "dehydrated-salmon",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2006,7 +2007,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "8KBDY": {
     "Name": "Dried Egg Product",
     "Slug": "dried-egg-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2074,7 +2075,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "8ALHU": {
     "Name": "Dried Eggs",
     "Slug": "dried-eggs",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2137,7 +2138,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "SHJRO": {
     "Name": "Dried Porcine Plasma",
     "Slug": "dried-porcine-plasma",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2200,7 +2201,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "XC0BR": {
     "Name": "Dried Whole Eggs",
     "Slug": "dried-whole-eggs",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2266,7 +2267,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "H8HEP": {
     "Name": "Duck",
     "Slug": "duck",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2329,7 +2330,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Poultry; alternative, highly palatable animal protein."
   },
-  {
+  "WSBE2": {
     "Name": "Duck Fat",
     "Slug": "duck-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2392,7 +2393,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin E (trace)",
     "termDescription": "Rendered fat; energy source and enhances palatability."
   },
-  {
+  "DH0D2": {
     "Name": "Duck Meal",
     "Slug": "duck-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2455,7 +2456,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Concentrated, rendered duck protein."
   },
-  {
+  "Z1DXF": {
     "Name": "Egg",
     "Slug": "egg",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2518,7 +2519,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "ZTMYL": {
     "Name": "Egg Product",
     "Slug": "egg-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2608,7 +2609,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin B12",
     "termDescription": "Processed whole eggs; source of complete animal protein and fat."
   },
-  {
+  "8OTUY": {
     "Name": "Eggs",
     "Slug": "eggs",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2679,7 +2680,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin B12",
     "termDescription": "Whole eggs; highly digestible animal protein and fatty acids."
   },
-  {
+  "SZ9O3": {
     "Name": "Fish Meal",
     "Slug": "fish-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2757,7 +2758,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "RD1WV": {
     "Name": "Fish Oil",
     "Slug": "fish-oil",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2839,7 +2840,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Oil from fish; source of EPA, DHA omega-3 for skin/coat."
   },
-  {
+  "GZJHS": {
     "Name": "Freeze-Dried Beef",
     "Slug": "freeze-dried-beef",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2902,7 +2903,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "Z7Z8A": {
     "Name": "Fresh Herring",
     "Slug": "fresh-herring",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -2968,7 +2969,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "UNEJR": {
     "Name": "Haddock",
     "Slug": "haddock",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3031,7 +3032,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "White fish; used for protein and as a novel fish protein."
   },
-  {
+  "GUYLG": {
     "Name": "Herring",
     "Slug": "herring",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3094,7 +3095,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Oily fish; high in animal protein and natural omega-3s."
   },
-  {
+  "BCPGM": {
     "Name": "Herring Meal",
     "Slug": "herring-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3157,7 +3158,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Rendered herring; concentrated protein, flavor, and omega-3s."
   },
-  {
+  "IQTT3": {
     "Name": "Herring Oil",
     "Slug": "herring-oil",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3232,7 +3233,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Oil from herring; provides EPA/DHA for skin, coat, and inflammation support."
   },
-  {
+  "GHQD5": {
     "Name": "Hydrolyzed Porcine",
     "Slug": "hydrolyzed-porcine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3295,7 +3296,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Processed pork, proteins broken down for hypoallergenic diets."
   },
-  {
+  "7SZIB": {
     "Name": "Lamb",
     "Slug": "lamb",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3358,7 +3359,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Red meat from sheep; alternative protein for dogs with sensitivities."
   },
-  {
+  "B9RZP": {
     "Name": "Lamb Meal",
     "Slug": "lamb-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3421,7 +3422,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered lamb; concentrated protein, good for hypoallergenic formulas."
   },
-  {
+  "DJLBW": {
     "Name": "Mackerel",
     "Slug": "mackerel",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3484,7 +3485,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Oily fish; used for high animal protein and omega-3s."
   },
-  {
+  "QGLWJ": {
     "Name": "Meat by Product",
     "Slug": "meat-by-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3547,7 +3548,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Generic animal parts, organs; protein and minerals."
   },
-  {
+  "LILLF": {
     "Name": "Meat by Product Meal",
     "Slug": "meat-by-product-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3610,7 +3611,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered meat by-products; concentrated animal protein."
   },
-  {
+  "ZI96X": {
     "Name": "Meat Parts",
     "Slug": "meat-parts",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3673,7 +3674,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Unspecified animal tissue; protein and amino acids."
   },
-  {
+  "MEEDO": {
     "Name": "Menhaden",
     "Slug": "menhaden",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3736,7 +3737,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Oily fish; used for animal protein and omega-3 content."
   },
-  {
+  "LNUMU": {
     "Name": "Menhaden Fish Meal",
     "Slug": "menhaden-fish-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3819,7 +3820,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "HQGYF": {
     "Name": "Menhaden Fish Oil",
     "Slug": "menhaden-fish-oil",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3891,7 +3892,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "YXPAM": {
     "Name": "Menhaden Meal",
     "Slug": "",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -3954,7 +3955,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated menhaden protein and omega-3s; highly digestible."
   },
-  {
+  "SASQ6": {
     "Name": "Menhaden Oil",
     "Slug": "",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4017,7 +4018,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Oil from menhaden; excellent source of EPA, DHA omega-3s."
   },
-  {
+  "4T3AI": {
     "Name": "Mussel",
     "Slug": "mussel",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4080,7 +4081,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12, Omega-3",
     "termDescription": "Shellfish; source of protein, omega-3, and joint-support nutrients."
   },
-  {
+  "FU4BY": {
     "Name": "Oceanfish",
     "Slug": "oceanfish",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4143,7 +4144,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Mixed fish species; source of animal protein and flavor."
   },
-  {
+  "PZN5Y": {
     "Name": "Oceanfish Meal",
     "Slug": "oceanfish-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4206,7 +4207,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Rendered, concentrated fish protein from various species."
   },
-  {
+  "GMEKJ": {
     "Name": "Pollock",
     "Slug": "pollock",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4269,7 +4270,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "White fish; lean protein and natural omega-3 fatty acids."
   },
-  {
+  "TB00X": {
     "Name": "Pollock Oil",
     "Slug": "pollock-oil",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4332,7 +4333,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Oil from pollock; provides omega-3 for coat and skin health."
   },
-  {
+  "ZUJDK": {
     "Name": "Porcine Fat",
     "Slug": "porcine-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4395,7 +4396,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin E (trace)",
     "termDescription": "Rendered pork fat; energy, flavor, and palatability."
   },
-  {
+  "FKP0A": {
     "Name": "Porcine Gelatin",
     "Slug": "porcine-gelatin",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4458,7 +4459,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Collagen",
     "termDescription": "Gelatin from pork skin/bones; for texture, protein, and joint health."
   },
-  {
+  "QYXQO": {
     "Name": "Porcine Meal ",
     "Slug": "porcine-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4521,7 +4522,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "NCE9F": {
     "Name": "Porcine Plasma",
     "Slug": "porcine-plasma",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4593,7 +4594,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Blood plasma from pork; digestible protein and immunoglobulins."
   },
-  {
+  "C6L27": {
     "Name": "Porcine Protein",
     "Slug": "porcine-protein",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4656,7 +4657,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "H80RE": {
     "Name": "Pork",
     "Slug": "pork",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4719,7 +4720,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Red meat; common protein for palatability and nutrition."
   },
-  {
+  "FOBGF": {
     "Name": "Pork Fat",
     "Slug": "pork-fat",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4782,7 +4783,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin E (trace)",
     "termDescription": "Rendered pork fat; palatability, energy, and flavor."
   },
-  {
+  "H0NSG": {
     "Name": "Pork Meal",
     "Slug": "pork-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4874,7 +4875,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered pork protein; concentrated, digestible animal protein."
   },
-  {
+  "PLMTN": {
     "Name": "Poultry",
     "Slug": "poultry",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -4937,7 +4938,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Generic bird; source of animal protein and fat."
   },
-  {
+  "MYRTC": {
     "Name": "Poultry by Product",
     "Slug": "poultry-by-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5010,7 +5011,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Organs and non-meat parts from poultry; added for protein and minerals."
   },
-  {
+  "PD7TZ": {
     "Name": "Poultry by Product Meal",
     "Slug": "poultry-by-product-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5073,7 +5074,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Rendered by-products; concentrated animal protein and minerals."
   },
-  {
+  "M1LGJ": {
     "Name": "Poultry By-Product",
     "Slug": "poultry-by-product",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5136,7 +5137,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Same as above; often refers to organ/tissue by-products in dog food."
   },
-  {
+  "QHDUJ": {
     "Name": "Poultry By-Product Meal",
     "Slug": "",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5214,7 +5215,7 @@ export const ING_ANIM = [
     "vitamins_derived": "",
     "termDescription": ""
   },
-  {
+  "QELPS": {
     "Name": "Poultry Parts",
     "Slug": "poultry-parts",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5277,7 +5278,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Unspecified poultry parts; may include muscle and organs."
   },
-  {
+  "OF1IY": {
     "Name": "Rabbit",
     "Slug": "rabbit",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5340,7 +5341,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Novel protein; alternative for dogs with allergies, lean protein."
   },
-  {
+  "THZVQ": {
     "Name": "Salmon",
     "Slug": "salmon",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5403,7 +5404,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Oily fish; rich in protein and omega-3 fatty acids."
   },
-  {
+  "LHLHB": {
     "Name": "Salmon Meal",
     "Slug": "salmon-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5469,7 +5470,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated, rendered salmon protein."
   },
-  {
+  "OWC0W": {
     "Name": "Salmon Oil",
     "Slug": "salmon-oil",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5556,7 +5557,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin A, Vitamin D (trace)",
     "termDescription": "Oil from salmon; key source of EPA/DHA omega-3 for coat and skin."
   },
-  {
+  "ZCSMT": {
     "Name": "Sardine",
     "Slug": "sardine",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5619,7 +5620,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Small oily fish; high in animal protein and omega-3."
   },
-  {
+  "6INDN": {
     "Name": "Sardine Meal",
     "Slug": "sardine-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5682,7 +5683,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated sardine protein and oil; boosts omega-3s and digestibility."
   },
-  {
+  "36UON": {
     "Name": "Trout",
     "Slug": "trout",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5745,7 +5746,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Lean, palatable fish; animal protein and natural omega-3."
   },
-  {
+  "Y3ETC": {
     "Name": "Trout Meal",
     "Slug": "trout-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5808,7 +5809,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Concentrated, rendered trout protein."
   },
-  {
+  "UNGGH": {
     "Name": "Turkey",
     "Slug": "turkey",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5871,7 +5872,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Poultry; lean animal protein with good digestibility."
   },
-  {
+  "NZA1U": {
     "Name": "Turkey Meal",
     "Slug": "turkey-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5934,7 +5935,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B6, Vitamin B12",
     "termDescription": "Rendered turkey concentrate; animal protein for palatability."
   },
-  {
+  "FEBFL": {
     "Name": "Venison",
     "Slug": "venison",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -5997,7 +5998,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Lean, novel red meat; hypoallergenic animal protein."
   },
-  {
+  "9DX7S": {
     "Name": "Venison Meal",
     "Slug": "venison-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6060,7 +6061,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin B12, Iron",
     "termDescription": "Concentrated venison; high in protein, used for sensitive dogs."
   },
-  {
+  "0UPPM": {
     "Name": "Whitefish",
     "Slug": "whitefish",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6123,7 +6124,7 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Generic term for white fish species; lean protein source."
   },
-  {
+  "PDJ3U": {
     "Name": "Whitefish Meal",
     "Slug": "whitefish-meal",
     "Collection ID": "6844fa6f23dcea123b5ae1ed",
@@ -6186,4 +6187,5 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Rendered, concentrated whitefish protein; animal protein and flavor."
   }
+}
 ];
