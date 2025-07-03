@@ -27,39 +27,49 @@ const weightTriggers = [
 
 // --- Helpers ---
 function allIngredientKeywords(ing) {
-  const base = (ing.displayAs || "").toLowerCase();
-  const group = (ing.groupWith || "").toLowerCase();
-  const tags = (ing.tags || []).map(String);
+  if (!ing) return [];
+  const base = typeof ing.displayAs === "string" ? ing.displayAs.toLowerCase() : "";
+  const group = typeof ing.groupWith === "string" ? ing.groupWith.toLowerCase() : "";
+  const tags = Array.isArray(ing.tags) ? ing.tags.map(String) : [];
   return [
     base,
-    `with ${base}`,
-    `has ${base}`,
-    `contains ${base}`,
-    `including ${base}`,
+    base ? `with ${base}` : "",
+    base ? `has ${base}` : "",
+    base ? `contains ${base}` : "",
+    base ? `including ${base}` : "",
     group,
-    `with ${group}`,
-    `contains ${group}`,
+    group ? `with ${group}` : "",
+    group ? `contains ${group}` : "",
     ...tags
   ].filter(Boolean);
 }
 function vaKeywords(va) {
-  const base = va.displayAs ? va.displayAs.toLowerCase() : va.toLowerCase();
+  // Defensive: va can be string or object with displayAs
+  let base = "";
+  if (va && typeof va === "object" && typeof va.displayAs === "string") {
+    base = va.displayAs.toLowerCase();
+  } else if (typeof va === "string") {
+    base = va.toLowerCase();
+  }
   return [
     base,
     base.replace(/ free$/, ""),
-    `with ${base}`,
-    `has ${base}`,
-    `contains ${base}`,
-    ...(va.tags || [])
-  ];
+    base ? `with ${base}` : "",
+    base ? `has ${base}` : "",
+    base ? `contains ${base}` : "",
+    ...(va && va.tags ? va.tags : [])
+  ].filter(Boolean);
 }
 function dogKeywords(dog) {
-  const terms = [dog.displayAs.toLowerCase()];
-  if (dog.group) terms.push(dog.group.toLowerCase());
-  if (dog.job) terms.push(dog.job.toLowerCase());
-  if (dog.activity) terms.push(dog.activity.toLowerCase());
-  if (dog.activityLevel) terms.push(dog.activityLevel.toLowerCase());
-  return Array.from(new Set(terms));
+  if (!dog || typeof dog !== "object") return [];
+  const out = [];
+  if (typeof dog.displayAs === "string") out.push(dog.displayAs.toLowerCase());
+  if (typeof dog.group === "string") out.push(dog.group.toLowerCase());
+  if (typeof dog.job === "string") out.push(dog.job.toLowerCase());
+  if (typeof dog.activity === "string") out.push(dog.activity.toLowerCase());
+  if (typeof dog.activityLevel === "string") out.push(dog.activityLevel.toLowerCase());
+  // Add more as needed
+  return Array.from(new Set(out.filter(Boolean)));
 }
 const FACTS = [
   { key: "ga_crude_protein_%", label: "Protein (%)", aliases: ["protein", "crude protein", "protein %"] },
@@ -96,14 +106,15 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const containsSeen = new Set();
   safeArray(row['ing-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    if (ing && !containsSeen.has(ing.displayAs)) {
-      containsSeen.add(ing.displayAs);
+    const displayAs = ing && typeof ing.displayAs === "string" ? ing.displayAs : d5;
+    if (ing && !containsSeen.has(displayAs)) {
+      containsSeen.add(displayAs);
       s.push({
         type: "ingredient-contains",
         triggers: ["contain", "with", "has", "ingredient", "include", ...allIngredientKeywords(ing)],
-        question: `${dataOne} contains ${ing.displayAs}?`,
+        question: `${dataOne} contains ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `Yes, ${dataOne} contains ${ing.displayAs}.`
+        answer: `Yes, ${dataOne} contains ${displayAs}.`
       });
     }
   });
@@ -112,14 +123,15 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const notSeen = new Set();
   safeArray(row['not-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    if (ing && !notSeen.has(ing.displayAs)) {
-      notSeen.add(ing.displayAs);
+    const displayAs = ing && typeof ing.displayAs === "string" ? ing.displayAs : d5;
+    if (ing && !notSeen.has(displayAs)) {
+      notSeen.add(displayAs);
       s.push({
         type: "ingredient-not-contains",
         triggers: ["not", ...notTriggers, ...allIngredientKeywords(ing)],
-        question: `${dataOne} does not contain ${ing.displayAs}?`,
+        question: `${dataOne} does not contain ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `No, ${dataOne} does not contain ${ing.displayAs}.`
+        answer: `No, ${dataOne} does not contain ${displayAs}.`
       });
     }
   });
@@ -127,7 +139,8 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   // --- Free-Of (Legumes/Poultry/Grain) ---
   ["data-legumes","data-poultry","data-grain"].forEach(key => {
     if (row[key]) {
-      const diet = row[key].replace(' Free', '').replace('-free', '').replace('free','').trim();
+      const diet = row[key].replace(/ Free|-free|free/gi, '').trim();
+      if (!diet) return;
       s.push({
         type: "free-of",
         triggers: ["free", ...freeTriggers, diet.toLowerCase()],
@@ -138,46 +151,40 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     }
   });
 
+  // --- Value Adds ---
+  safeArray(row['va-data-fives']).forEach(d5 => {
+    const va = vaMap[d5];
+    const displayAs = (va && typeof va.displayAs === 'string' && va.displayAs.trim())
+      ? va.displayAs.trim()
+      : (typeof d5 === 'string' ? d5.trim() : '');
+    if (!displayAs) return; // Skip if no value
 
-// --- Value Adds ---
-safeArray(row['va-data-fives']).forEach(d5 => {
-  const va = vaMap[d5];
-  // Defensive: always resolve a valid display label
-  const displayAs = (va && typeof va.displayAs === 'string' && va.displayAs.trim())
-    ? va.displayAs.trim()
-    : (typeof d5 === 'string' ? d5.trim() : ''); // fallback to d5 or blank
+    let triggers = ["value-add", ...vaTriggers];
+    if (va && Array.isArray(va.triggers)) {
+      triggers = triggers.concat(
+        va.triggers.filter(Boolean).map(t =>
+          typeof t === 'string' ? t.toLowerCase() : ''
+        ).filter(Boolean)
+      );
+    }
+    triggers.push(displayAs.toLowerCase());
 
-  if (!displayAs) return; // Skip if we still have nothing valid
+    let keywords = [];
+    try {
+      keywords = vaKeywords(va || displayAs);
+      if (!Array.isArray(keywords)) keywords = [String(keywords)];
+    } catch (e) {
+      keywords = [displayAs.toLowerCase()];
+    }
 
-  // Defensive: triggers array
-  let triggers = ["value-add"];
-  if (va && Array.isArray(va.triggers)) {
-    triggers = triggers.concat(
-      va.triggers.filter(Boolean).map(t =>
-        typeof t === 'string' ? t.toLowerCase() : ''
-      ).filter(Boolean)
-    );
-  }
-  triggers.push(displayAs.toLowerCase());
-
-  // Defensive: keywords array
-  let keywords = [];
-  try {
-    keywords = vaKeywords(va || { displayAs });
-    if (!Array.isArray(keywords)) keywords = [String(keywords)];
-  } catch (e) {
-    keywords = [displayAs.toLowerCase()];
-  }
-
-  s.push({
-    type: "value-add",
-    triggers,
-    question: `${dataOne} offers ${displayAs}?`,
-    keywords,
-    answer: `Yes, ${dataOne} offers ${displayAs}.`
+    s.push({
+      type: "value-add",
+      triggers,
+      question: `${dataOne} offers ${displayAs}?`,
+      keywords,
+      answer: `Yes, ${dataOne} offers ${displayAs}.`
+    });
   });
-});
-
 
   // --- Facts (Percentages and Amounts) ---
   FACTS.forEach(f => {
@@ -194,26 +201,28 @@ safeArray(row['va-data-fives']).forEach(d5 => {
   });
 
   // --- DOG/BREED/JOB/GROUP/ACTIVITY (improved) ---
-  // Use breed block for dogBr-fives; also handle jobs, groups, and activities as "text tags"
   const dogSeen = new Set();
 
   safeArray(row['dogBr-fives']).forEach(d5 => {
     const dog = dogMap[d5];
-    if (dog && !dogSeen.has(dog.displayAs)) {
+    if (dog && typeof dog.displayAs === "string" && !dogSeen.has(dog.displayAs)) {
       dogSeen.add(dog.displayAs);
       // Use all aliases: misspellings, other names, initials, nickname
       const dogAliases = [
-        dog.displayAs?.toLowerCase(),
-        dog.common_misspellings?.toLowerCase(),
-        dog.other_common_names?.toLowerCase(),
-        dog.common_initials?.toLowerCase(),
-        dog.common_nickname?.toLowerCase()
+        typeof dog.displayAs === "string" ? dog.displayAs.toLowerCase() : "",
+        typeof dog.common_misspellings === "string" ? dog.common_misspellings.toLowerCase() : "",
+        typeof dog.other_common_names === "string" ? dog.other_common_names.toLowerCase() : "",
+        typeof dog.common_initials === "string" ? dog.common_initials.toLowerCase() : "",
+        typeof dog.common_nickname === "string" ? dog.common_nickname.toLowerCase() : ""
       ].filter(Boolean);
       s.push({
         type: "dog-breed",
         triggers: [
-          "breed", "dog", ...dogAliases, "for", "good for", "recommended", (dog.group_suit||"").toLowerCase(), (dog.job_suit||"").toLowerCase(), (dog.activity_suit||"").toLowerCase()
-        ],
+          "breed", "dog", ...dogAliases, "for", "good for", "recommended",
+          typeof dog.group_suit === "string" ? dog.group_suit.toLowerCase() : "",
+          typeof dog.job_suit === "string" ? dog.job_suit.toLowerCase() : "",
+          typeof dog.activity_suit === "string" ? dog.activity_suit.toLowerCase() : ""
+        ].filter(Boolean),
         question: `${dataOne} for ${dog.displayAs}?`,
         keywords: [...dogKeywords(dog), ...dogAliases],
         answer: `${dataOne} is recommended for ${dog.displayAs}.`
@@ -246,12 +255,13 @@ safeArray(row['va-data-fives']).forEach(d5 => {
   });
 
   // Activity level (as a quick suggestion)
-  if (row["activity-level"]) {
+  if (typeof row["activity-level"] === "string" && row["activity-level"].trim()) {
+    const activityLevel = row["activity-level"].toLowerCase();
     s.push({
       type: "dog-activity-level",
-      triggers: ["activity level", row["activity-level"].toLowerCase(), "level", "energy", "active", "for"],
+      triggers: ["activity level", activityLevel, "level", "energy", "active", "for"],
       question: `${dataOne} for ${row["activity-level"]} dogs?`,
-      keywords: [row["activity-level"].toLowerCase()],
+      keywords: [activityLevel],
       answer: `${dataOne} is best for ${row["activity-level"]} dogs.`
     });
   }
@@ -269,7 +279,6 @@ safeArray(row['va-data-fives']).forEach(d5 => {
 
   return s;
 }
-
 
 // --- MAIN INIT ---
 export function initSearchSuggestions() {
