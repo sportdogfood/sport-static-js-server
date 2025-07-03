@@ -138,17 +138,29 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     }
   });
 
-  // --- Value Adds ---
-  safeArray(row['va-data-fives']).forEach(d5 => {
-    const va = vaMap[d5] || { displayAs: d5 };
-    s.push({
-      type: "value-add",
-      triggers: ["value-add", ...vaTriggers, va.displayAs.toLowerCase()],
-      question: `${dataOne} offers ${va.displayAs}?`,
-      keywords: vaKeywords(va),
-      answer: `Yes, ${dataOne} offers ${va.displayAs}.`
-    });
+// --- Value Adds ---
+safeArray(row['va-data-fives']).forEach(d5 => {
+  const va = vaMap[d5];
+  if (!va) return; // Skip unknown value-adds, or decide if you want to push a fallback
+  // Triggers should come from va.triggers if defined, or a default set
+  const triggers = Array.isArray(va.triggers)
+    ? ["value-add", ...va.triggers.map(t => t.toLowerCase()), va.displayAs.toLowerCase()]
+    : ["value-add", va.displayAs.toLowerCase()];
+  // Defensive for vaKeywords
+  let keywords = [];
+  try {
+    keywords = vaKeywords(va);
+  } catch (e) {
+    keywords = [va.displayAs.toLowerCase()];
+  }
+  s.push({
+    type: "value-add",
+    triggers,
+    question: `${dataOne} offers ${va.displayAs}?`,
+    keywords,
+    answer: `Yes, ${dataOne} offers ${va.displayAs}.`
   });
+});
 
   // --- Facts (Percentages and Amounts) ---
   FACTS.forEach(f => {
