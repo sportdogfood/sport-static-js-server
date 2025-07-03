@@ -1,4 +1,4 @@
-export const ING_ANIM = [ 
+export const ING_ANIM = {
  
   "CBJVQ": {
     "Name": "Anchovy",
@@ -6188,4 +6188,4 @@ export const ING_ANIM = [
     "termDescription": "Rendered, concentrated whitefish protein; animal protein and flavor."
   }
 
-];
+};
