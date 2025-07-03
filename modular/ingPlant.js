@@ -1,5 +1,5 @@
 // ingPlant.js
-export const ING_PLANT = [ 
+export const ING_PLANT = 
 {
   "Y70QF": {
     "Name": "Navy Beans",
@@ -12627,4 +12627,4 @@ export const ING_PLANT = [
     "termDescription": "Plant extract often used to reduce stool odor and aid digestion."
   }
 
-];
+);
