@@ -1,5 +1,5 @@
 export const ING_ANIM = [ 
- {
+ 
   "CBJVQ": {
     "Name": "Anchovy",
     "Slug": "anchovy",
@@ -6187,5 +6187,5 @@ export const ING_ANIM = [
     "vitamins_derived": "Vitamin D, Vitamin B12",
     "termDescription": "Rendered, concentrated whitefish protein; animal protein and flavor."
   }
-}
+
 ];
