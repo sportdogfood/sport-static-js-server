@@ -1,104 +1,117 @@
-// search-suggestions-si.js
+// search-suggestions-ci.js
+
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
-import { SI_DATA }    from './ci.js';
+import { CI_DATA }    from './ci.js';
 import { ING_ANIM }   from './ingAnim.js';
 import { ING_PLANT }  from './ingPlant.js';
 import { ING_SUPP }   from './ingSupp.js';
 
-// Then export your main function
-export function initSearchSuggestions() {
+// ---- Core Triggers ----
+const generalTriggers = ["what", "is", "how", "does", "contain", "with", "has", "include", "show"];
+const freeTriggers    = ["free", "free of", "without", "minus", "no"];
 
+// ---- Ingredient Helper ----
+function allIngredientKeywords(ing) {
+  const base = ing.displayAs.toLowerCase();
+  return [
+    base,
+    `with ${base}`,
+    `has ${base}`,
+    `contains ${base}`,
+    `${base} included`,
+    `including ${base}`,
+    ing.groupWith ? `with ${ing.groupWith.toLowerCase()}` : null,
+    ing.groupWith ? `contains ${ing.groupWith.toLowerCase()}` : null,
+    ...(ing.tags || [])
+  ].filter(Boolean);
+}
 
-// Token banks (CI: a subset for comparison)
-const general  = ["What", "Is", "How many", "Does", "Compare"];
-const fact     = [
-  "protein", "fat", "fiber", "moisture", "kcals per cup", "kcals per kg"
+// ---- Fact Definitions ----
+const FACTS = [
+  { key: "ga_crude_protein_%",   label: "protein",         aliases: ["protein", "crude protein", "protein %"] },
+  { key: "ga_crude_fat_%",       label: "fat",             aliases: ["fat", "crude fat", "fat %"] },
+  { key: "ga_crude_fiber_%",     label: "fiber",           aliases: ["fiber", "crude fiber", "fiber %"] },
+  { key: "ga_moisture_%",        label: "moisture",        aliases: ["moisture", "moisture %"] },
+  { key: "ga_ash_%",             label: "ash",             aliases: ["ash", "ash %"] },
+  { key: "ga_calcium_%",         label: "calcium",         aliases: ["calcium", "calcium %"] },
+  { key: "ga_omega_6_fatty_acids_%", label: "omega 6",     aliases: ["omega 6", "omega 6 fatty acids"] },
+  { key: "ga_omega_3_fatty_acids_%", label: "omega 3",     aliases: ["omega 3", "omega 3 fatty acids"] },
+  { key: "ga_vitamin_d_3",       label: "vitamin d3",      aliases: ["vitamin d", "vitamin d3"] },
+  { key: "ga_vitamin_e",         label: "vitamin e",       aliases: ["vitamin e"] },
+  { key: "ga_vitamin_b_12",      label: "vitamin b12",     aliases: ["vitamin b12"] },
+  { key: "specs_kcals_per_cup",  label: "kcals per cup",   aliases: ["calories", "kcals", "kcals per cup", "kcals/cup"] },
+  { key: "specs_kcals_per_kg",   label: "kcals per kg",    aliases: ["kcals/kg", "kcals per kg"] }
 ];
-const freeKeys = ["free", "free of", "without", "no"];
 
-function formatFactValue(key, val) {
-  if (/_%$/.test(key)) return `${val}%`;
-  if (/per_cup/.test(key)) return `${val} kcals per cup`;
-  if (/per_kg/.test(key)) return `${val} kcals per kg`;
-  if (/lbs/.test(key)) return `${val} lbs`;
-  return val;
-}
+// ---- Main Suggestion Builder ----
+function buildCiSuggestions(row, ingMap) {
+  const s = [];
 
-function buildSuggestions(row, ingMap) {
-  let suggestions = [];
   // --- Ingredient Contains
-  (row['ing-data-fives']||[]).forEach(d5=>{
+  (row['ing-data-fives'] || []).forEach(d5 => {
     const ing = ingMap[d5];
-    if (!ing) return;
-    suggestions.push({
-      type: "ingredient-contains",
-      question: `Does ${row['data-brand']} ${row['data-one']} contain ${ing.displayAs}?`,
-      keywords: [ing.displayAs.toLowerCase(), ...(ing.groupWith ? [ing.groupWith.toLowerCase()] : [])],
-      answer: `Yes, ${row['data-brand']} ${row['data-one']} contains ${ing.displayAs}.`
-    });
+    if (ing)
+      s.push({
+        type: "ingredient-contains",
+        triggers: [...generalTriggers, ...allIngredientKeywords(ing)],
+        question: `Contains ${ing.displayAs}?`,
+        keywords: allIngredientKeywords(ing),
+        answer: `Yes, contains ${ing.displayAs}.`
+      });
   });
-  // --- Free-Of (Grain, Legumes, Poultry, etc)
-  ["data-legumes","data-poultry","data-grain"].forEach(key=>{
+
+  // --- Free-Of Diets (e.g., Grain-Free, Legumes-Free, Poultry-Free)
+  ["data-legumes","data-poultry","data-grain"].forEach(key => {
     if (row[key]) {
-      suggestions.push({
+      const diet = row[key].replace(' Free', '').replace('-free', '').replace('free','').trim();
+      s.push({
         type: "free-of",
-        question: `Is ${row['data-brand']} ${row['data-one']} ${row[key]}?`,
-        keywords: [row[key].replace(' Free','').toLowerCase(), "free"],
-        answer: `Yes, ${row['data-brand']} ${row['data-one']} is ${row[key].toLowerCase()}.`
+        triggers: [...freeTriggers, diet],
+        question: `Free of ${diet}?`,
+        keywords: [diet, "free", `${diet} free`],
+        answer: `Yes, free of ${diet}.`
       });
     }
   });
+
   // --- Facts (Percentages and Amounts)
-  fact.forEach(fk=>{
-    const dataKey = Object.keys(row).find(k=>k.replace(/[_ ]+/g,'').includes(fk.replace(/[_ ]+/g,'').replace('kcalspercup','kcalspercup').replace('kcalsperkg','kcalsperkg')));
-    if (dataKey && row[dataKey] !== undefined && row[dataKey] !== null) {
-      const val = formatFactValue(dataKey, row[dataKey]);
-      suggestions.push({
+  FACTS.forEach(f => {
+    if (row[f.key] !== undefined && row[f.key] !== null) {
+      const val = row[f.key];
+      s.push({
         type: "fact",
-        question: `What is ${row['data-brand']} ${row['data-one']} ${fk}?`,
-        keywords: [fk.toLowerCase()],
-        answer: `${fk.charAt(0).toUpperCase()+fk.slice(1)} for ${row['data-brand']} ${row['data-one']} is ${val}.`
-      });
-      suggestions.push({
-        type: "fact-how-many",
-        question: `How many ${fk} in ${row['data-brand']} ${row['data-one']}?`,
-        keywords: [fk.toLowerCase()],
-        answer: `There are ${val} ${fk} in ${row['data-brand']} ${row['data-one']}.`
+        triggers: [f.label, ...f.aliases, ...generalTriggers],
+        question: `${f.label.charAt(0).toUpperCase() + f.label.slice(1)}?`,
+        keywords: [...f.aliases],
+        answer: `${f.label.charAt(0).toUpperCase() + f.label.slice(1)}: ${val}`
       });
     }
   });
-  // --- Compare Placeholder
-  suggestions.push({
-    type: "compare",
-    question: `Compare ${row['data-brand']} ${row['data-one']} vs [other]?`,
-    keywords: [row['data-one'].toLowerCase()],
-    answer: `Use the Compare tab to compare this formula with another.`
-  });
-  return suggestions;
+
+  return s;
 }
 
+// ---- Main Init Function ----
 export function initSearchSuggestions() {
-  // --- DOM hooks
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
-  const sendBtn  = document.getElementById('pwr-send-button');
   const clearBtn = document.getElementById('pwr-clear-button');
   const starter  = document.getElementById('pwr-initial-suggestions');
   const answerBox= document.getElementById('pwr-answer-output');
   const answerTxt= document.getElementById('pwr-answer-text');
-  if (!input || !list || !sendBtn || !clearBtn) return;
+  if (!input || !list || !clearBtn) return;
 
   // --- Only show for CI pages (should be guarded in your markup)
   const five = document.getElementById('item-faq-five')?.value;
   const row  = CI_DATA.find(r => String(r['data-five']) === String(five));
   if (!row) return;
   const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
-  const suggestions = buildSuggestions(row, ingMap);
+  const suggestions = buildCiSuggestions(row, ingMap);
 
-  // --- Fuse
+  // --- Fuse search for live trigger/keyword
   const fuse = new Fuse(suggestions, {
-    keys: ['question','keywords'],
-    threshold: 0.4,
+    keys: ['question','keywords','triggers'],
+    threshold: 0.38,
     distance: 60
   });
 
@@ -117,7 +130,6 @@ export function initSearchSuggestions() {
         a.addEventListener('click', e=>{
           e.preventDefault();
           input.value = item.question;
-          showBtns();
           list.style.display = 'none';
           showAnswer(item.answer);
         });
@@ -125,18 +137,20 @@ export function initSearchSuggestions() {
       });
     starter.style.display = 'flex';
   }
-  function showBtns() { sendBtn.style.display = 'block'; clearBtn.style.display = 'block'; }
-  function hideBtns() { sendBtn.style.display = 'none'; clearBtn.style.display = 'none'; }
+
   function showAnswer(text) {
     answerTxt.textContent = '';
     answerBox.style.display = 'block';
-    new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    if (window.Typed) {
+      new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+    } else {
+      answerTxt.textContent = text;
+    }
     starter.style.display = 'none';
     list.style.display    = 'none';
   }
   function resetAll() {
     input.value = '';
-    hideBtns();
     list.style.display    = 'none';
     starter.style.display = 'flex';
     answerBox.style.display = 'none';
@@ -144,16 +158,15 @@ export function initSearchSuggestions() {
 
   // --- Live typeahead suggestions
   input.addEventListener('input', () => {
-    const q = input.value.trim();
+    const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
-    showBtns();
     if (!q) {
       list.style.display = 'none';
       starter.style.display = 'flex';
       return;
     }
     starter.style.display = 'none';
-    const results = fuse.search(q).slice(0,5).map(r=>r.item);
+    const results = fuse.search(q).slice(0,7).map(r=>r.item);
     if (!results.length) {
       const li = document.createElement('li');
       li.className = 'no-results';
@@ -166,7 +179,6 @@ export function initSearchSuggestions() {
         li.textContent = item.question;
         li.addEventListener('click', ()=>{
           input.value = item.question;
-          showBtns();
           showAnswer(item.answer);
         });
         list.appendChild(li);
@@ -176,19 +188,16 @@ export function initSearchSuggestions() {
   });
 
   clearBtn.addEventListener('click', resetAll);
-  input.addEventListener('keydown', e => { if (e.key==='Enter') sendBtn.click(); });
-  sendBtn.addEventListener('click', () => {
-    const q = input.value.trim();
+  input.addEventListener('keydown', e => { if (e.key==='Enter') {
+    const q = input.value.trim().toLowerCase();
     if (!q) return;
     const found = fuse.search(q);
     if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
     else showAnswer('No answer set.');
-  });
+  }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
   // --- Initial pills
-  hideBtns();
   answerBox.style.display = 'none';
   renderStarter();
-}
 }
