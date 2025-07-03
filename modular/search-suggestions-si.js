@@ -8,6 +8,7 @@ import { ING_SUPP }   from './ingSupp.js';
 import { VA_DATA }    from './va.js';
 import { DOG_DATA }   from './dog.js';
 
+// --- Triggers ---
 const generalTriggers = [
   "what", "is", "how", "how much", "how many", "does", "contain", "with", "has", "include", "show", "list"
 ];
@@ -24,9 +25,11 @@ const weightTriggers = [
   "weight", "lb", "lbs", "kg", "pound", "how much", "feed", "for my", "dog is", "weighs"
 ];
 
+// --- Helpers ---
 function allIngredientKeywords(ing) {
   const base = (ing.displayAs || "").toLowerCase();
   const group = (ing.groupWith || "").toLowerCase();
+  const tags = (ing.tags || []).map(String);
   return [
     base,
     `with ${base}`,
@@ -36,7 +39,7 @@ function allIngredientKeywords(ing) {
     group,
     `with ${group}`,
     `contains ${group}`,
-    ...(ing.tags || [])
+    ...tags
   ].filter(Boolean);
 }
 function vaKeywords(va) {
@@ -84,125 +87,123 @@ function safeArray(val) {
   try { return Array.from(val); } catch { return []; }
 }
 
+// --- SUGGESTION BUILDER ---
 function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const s = [];
+  const dataOne = row['data-one'];
 
-  // --- Ingredient Contains
+  // --- Ingredient Contains (deduped by displayAs) ---
+  const containsSeen = new Set();
   safeArray(row['ing-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    if (ing)
+    if (ing && !containsSeen.has(ing.displayAs)) {
+      containsSeen.add(ing.displayAs);
       s.push({
         type: "ingredient-contains",
         triggers: ["contain", "with", "has", "ingredient", "include", ...allIngredientKeywords(ing)],
-        question: `Contains ${ing.displayAs}?`,
+        question: `${dataOne} contains ${ing.displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `Yes, contains ${ing.displayAs}.`
+        answer: `Yes, ${dataOne} contains ${ing.displayAs}.`
       });
+    }
   });
-  // --- Ingredient Not-Contains
+  // --- Ingredient Not-Contains (deduped by displayAs) ---
+  const notSeen = new Set();
   safeArray(row['not-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    if (ing)
+    if (ing && !notSeen.has(ing.displayAs)) {
+      notSeen.add(ing.displayAs);
       s.push({
         type: "ingredient-not-contains",
         triggers: ["not", ...notTriggers, ...allIngredientKeywords(ing)],
-        question: `Does not contain ${ing.displayAs}?`,
+        question: `${dataOne} does not contain ${ing.displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `No, does not contain ${ing.displayAs}.`
+        answer: `No, ${dataOne} does not contain ${ing.displayAs}.`
       });
+    }
   });
-  // --- Free-Of
+  // --- Free-Of (Legumes/Poultry/Grain) ---
   ["data-legumes","data-poultry","data-grain"].forEach(key => {
     if (row[key]) {
       const diet = row[key].replace(' Free', '').replace('-free', '').replace('free','').trim();
       s.push({
         type: "free-of",
         triggers: ["free", ...freeTriggers, diet.toLowerCase()],
-        question: `${diet} Free?`,
+        question: `${dataOne} is ${diet} Free?`,
         keywords: [diet.toLowerCase(), "free", `${diet.toLowerCase()} free`],
-        answer: `Yes, free of ${diet}.`
+        answer: `Yes, ${dataOne} is free of ${diet}.`
       });
     }
   });
-  // --- Value Adds
+  // --- Value Adds ---
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5] || { displayAs: d5 };
     s.push({
       type: "value-add",
       triggers: ["value-add", ...vaTriggers, va.displayAs.toLowerCase()],
-      question: `${va.displayAs}?`,
+      question: `${dataOne} offers ${va.displayAs}?`,
       keywords: vaKeywords(va),
-      answer: `Yes, ${va.displayAs}.`
+      answer: `Yes, ${dataOne} offers ${va.displayAs}.`
     });
   });
-  // --- Facts (Percentages and Amounts)
+  // --- Facts (Percentages and Amounts) ---
   FACTS.forEach(f => {
     if (row[f.key] !== undefined && row[f.key] !== null && row[f.key] !== "") {
       const val = row[f.key];
       s.push({
         type: "fact",
         triggers: [f.label.toLowerCase(), ...f.aliases, ...generalTriggers],
-        question: `${f.label}`,
+        question: `${dataOne} ${f.label}?`,
         keywords: [...f.aliases, f.label.toLowerCase()],
-        answer: `${f.label}: ${val}`
+        answer: `${dataOne} ${f.label} is ${val}`
       });
     }
   });
-  // --- Dog/Breed/Job/Activity
+  // --- Dog/Breed/Job/Activity ---
   safeArray(row['dogBr-fives']).forEach(d5 => {
     const dog = dogMap[d5];
-    if (dog)
+    if (dog) {
       s.push({
         type: "dog-breed",
-        triggers: ["breed", dog.displayAs.toLowerCase(), ...(dog.tags||[])],
-        question: `${dog.displayAs} breed?`,
+        triggers: ["breed", dog.displayAs.toLowerCase(), ...(dog.tags||[]), "for", "good for", "recommended"],
+        question: `${dataOne} for ${dog.displayAs}?`,
         keywords: dogKeywords(dog),
-        answer: `Good for ${dog.displayAs}.`
+        answer: `${dataOne} is recommended for ${dog.displayAs}.`
       });
+    }
   });
-
   safeArray(row['dogKeys_ac']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(act => {
     s.push({
       type: "dog-activity",
-      triggers: ["activity", "active", "good for", act.toLowerCase()],
-      question: `Good for ${act}?`,
+      triggers: ["activity", "active", "good for", "recommended", act.toLowerCase()],
+      question: `${dataOne} for ${act}?`,
       keywords: [act.toLowerCase()],
-      answer: `Good for ${act}.`
+      answer: `${dataOne} is recommended for ${act}.`
     });
   });
   safeArray(row['dogKeys_gp']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(gp => {
     s.push({
       type: "dog-group",
-      triggers: ["group", "for", gp.toLowerCase()],
-      question: `Good for group: ${gp}?`,
+      triggers: ["group", "for", "good for", "recommended", gp.toLowerCase()],
+      question: `${dataOne} for group: ${gp}?`,
       keywords: [gp.toLowerCase()],
-      answer: `For ${gp} group.`
+      answer: `${dataOne} is recommended for group: ${gp}.`
     });
   });
   safeArray(row['dogKeys_jb']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(jb => {
     s.push({
       type: "dog-job",
-      triggers: ["job", "for", jb.toLowerCase()],
-      question: `Good for job: ${jb}?`,
+      triggers: ["job", "for", "good for", "recommended", jb.toLowerCase()],
+      question: `${dataOne} for job: ${jb}?`,
       keywords: [jb.toLowerCase()],
-      answer: `For ${jb} job.`
+      answer: `${dataOne} is recommended for job: ${jb}.`
     });
   });
-
-  // --- Weight/Feeding (optional, comment out if not needed)
-  // safeArray(row['dogWeights'] || []).forEach(wt => {
-  //   s.push({
-  //     type: "weight",
-  //     triggers: [...weightTriggers, wt],
-  //     question: `Feed ${wt}?`,
-  //     keywords: [wt, `${wt} dog`, `feed ${wt}`],
-  //     answer: `Ask about feeding for a dog at ${wt}.`
-  //   });
-  // });
 
   return s;
 }
 
+// --- MAIN INIT ---
 export function initSearchSuggestions() {
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
@@ -228,25 +229,30 @@ export function initSearchSuggestions() {
     distance: 60
   });
 
-  // --- Show ONLY relevant (not random) pills
+  // --- Starter pills: Show first 2 per category only (edit as needed)
   function renderStarter() {
     starter.innerHTML = '';
-    // Show all contains/not/free/fact pills in order
-    const pillTypes = ["ingredient-contains", "ingredient-not-contains", "free-of", "value-add", "fact"];
-    suggestions
-      .filter(item=>pillTypes.includes(item.type))
-      .forEach(item=>{
-        const a = document.createElement('button');
-        a.className = 'pwr-suggestion-pill';
-        a.textContent = item.question;
-        a.addEventListener('click', e=>{
-          e.preventDefault();
-          input.value = item.question;
-          list.style.display = 'none';
-          showAnswer(item.answer);
+    const pillTypes = [
+      "ingredient-contains", "ingredient-not-contains",
+      "free-of", "value-add", "fact"
+    ];
+    pillTypes.forEach(type => {
+      suggestions
+        .filter(item => item.type === type)
+        .slice(0, 2)
+        .forEach(item => {
+          const a = document.createElement('button');
+          a.className = 'pwr-suggestion-pill';
+          a.textContent = item.question;
+          a.addEventListener('click', e => {
+            e.preventDefault();
+            input.value = item.question;
+            list.style.display = 'none';
+            showAnswer(item.answer);
+          });
+          starter.appendChild(a);
         });
-        starter.appendChild(a);
-      });
+    });
     starter.style.display = 'flex';
   }
 
@@ -268,7 +274,7 @@ export function initSearchSuggestions() {
     answerBox.style.display = 'none';
   }
 
-  // --- Live typeahead suggestions
+  // --- Live typeahead suggestions with not-contains filtering
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
@@ -278,7 +284,14 @@ export function initSearchSuggestions() {
       return;
     }
     starter.style.display = 'none';
-    const results = fuse.search(q).slice(0,10).map(r=>r.item);
+
+    let results = fuse.search(q).slice(0, 10).map(r => r.item);
+
+    // Only show ingredient-not-contains if negative intent is present
+    if (!notTriggers.some(tr => q.includes(tr))) {
+      results = results.filter(item => item.type !== "ingredient-not-contains");
+    }
+
     if (!results.length) {
       const li = document.createElement('li');
       li.className = 'no-results';
@@ -289,7 +302,7 @@ export function initSearchSuggestions() {
       results.forEach(item => {
         const li = document.createElement('li');
         li.textContent = item.question;
-        li.addEventListener('click', ()=>{
+        li.addEventListener('click', () => {
           input.value = item.question;
           showAnswer(item.answer);
         });
@@ -300,16 +313,19 @@ export function initSearchSuggestions() {
   });
 
   clearBtn.addEventListener('click', resetAll);
-  input.addEventListener('keydown', e => { if (e.key==='Enter') {
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') {
     const q = input.value.trim().toLowerCase();
     if (!q) return;
-    const found = fuse.search(q);
+    let found = fuse.search(q);
+    // Filter out not-contains if no negative intent
+    if (!notTriggers.some(tr => q.includes(tr))) {
+      found = found.filter(r => r.item.type !== "ingredient-not-contains");
+    }
     if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
     else showAnswer('No answer set.');
   }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
-  // --- Initial pills
   answerBox.style.display = 'none';
   renderStarter();
 }
