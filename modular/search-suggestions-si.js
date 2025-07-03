@@ -52,6 +52,13 @@ function safeArray(val) {
   if (typeof val === "string" && val.trim()) return [val];
   try { return Array.from(val); } catch { return []; }
 }
+function expandWords(str) {
+  if (!str) return [];
+  // "Probiotics Added" → ["probiotics", "added", "probiotic"]
+  const words = str.split(/\s+/).map(w => w.toLowerCase().replace(/[^a-z0-9]/g, ''));
+  const stems = words.map(w => w.endsWith('s') ? w.slice(0, -1) : w); // crude singular
+  return Array.from(new Set([...words, ...stems]));
+}
 function allIngredientKeywords(ing) {
   if (!ing) return [];
   const base = typeof ing.displayAs === "string" ? ing.displayAs.toLowerCase() : "";
@@ -63,6 +70,7 @@ function allIngredientKeywords(ing) {
     base, plural, singular,
     ...tags.map(t => t.toLowerCase()),
     group,
+    ...expandWords(base),
     `with ${base}`, `with ${plural}`, `with ${singular}`,
     `has ${base}`, `has ${plural}`, `has ${singular}`,
     `contains ${base}`, `contains ${plural}`, `contains ${singular}`,
@@ -74,26 +82,23 @@ function allIngredientKeywords(ing) {
 function vaKeywords(va) {
   let base = (va && typeof va.displayAs === "string") ? va.displayAs.toLowerCase() : "";
   if (!base && typeof va === "string") base = va.toLowerCase();
+  const vaTags = va && va.tags ? va.tags.map(t => t.toLowerCase()) : [];
   return Array.from(new Set([
-    base,
-    base.replace(/ free$/, ""),
-    `with ${base}`,
-    `has ${base}`,
-    `contains ${base}`,
-    ...(va && va.tags ? va.tags.map(t => t.toLowerCase()) : [])
+    ...expandWords(base),
+    ...expandWords(vaTags.join(" ")),
+    ...(va && va.triggers ? va.triggers.map(t => t.toLowerCase()) : [])
   ].filter(Boolean)));
 }
 function dogKeywords(dog) {
   if (!dog || typeof dog !== "object") return [];
-  const out = [
+  let out = [
     dog.displayAs,
-    dog.displayAs && dog.displayAs + "s",
-    dog.displayAs && dog.displayAs.replace(/dog$/i, "").trim(),
     dog.common_misspellings, dog.other_common_names, dog.common_initials, dog.common_nickname,
     dog.breed, dog.breeds, dog.type, dog.group, dog.job, dog.activity, dog.activityLevel,
     dog.group_suit, dog.job_suit, dog.activity_suit
   ];
-  return Array.from(new Set(out.filter(Boolean).map(s => s.toLowerCase())));
+  out = out.filter(Boolean).map(s => s.toLowerCase());
+  return Array.from(new Set(out.flatMap(expandWords).concat(out)));
 }
 
 // --- SUGGESTION BUILDER ---
@@ -114,7 +119,8 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         triggers: allIngredientKeywords(ing),
         question: `${dataOne} contains ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `Yes, ${dataOne} contains ${displayAs}.`
+        answer: `Yes, ${dataOne} contains ${displayAs}.`,
+        'data-sort': ing['data-sort'] ?? 999
       });
     }
   });
@@ -132,7 +138,8 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         triggers: [...allIngredientKeywords(ing), ...notTriggers, ...freeTriggers],
         question: `${dataOne} does not contain ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
-        answer: `No, ${dataOne} does not contain ${displayAs}.`
+        answer: `No, ${dataOne} does not contain ${displayAs}.`,
+        'data-sort': ing['data-sort'] ?? 999
       });
     }
   });
@@ -147,7 +154,8 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         triggers: [diet.toLowerCase(), ...freeTriggers, `${diet.toLowerCase()} free`],
         question: `${dataOne} is ${diet} Free?`,
         keywords: [diet.toLowerCase(), "free", `${diet.toLowerCase()} free`],
-        answer: `Yes, ${dataOne} is free of ${diet}.`
+        answer: `Yes, ${dataOne} is free of ${diet}.`,
+        'data-sort': row[`${key}-sort`] ?? 999
       });
     }
   });
@@ -158,17 +166,18 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     if (!va || !va.displayAs) return;
     const displayAs = va.displayAs.trim();
     const triggers = Array.from(new Set([
-      displayAs.toLowerCase(),
+      ...expandWords(displayAs),
       ...vaTriggers,
-      ...(va.triggers ? va.triggers.map(t => t.toLowerCase()) : []),
-      ...(va.tags ? va.tags.map(t => t.toLowerCase()) : [])
+      ...(va.triggers ? va.triggers.flatMap(expandWords) : []),
+      ...(va.tags ? va.tags.flatMap(expandWords) : [])
     ]));
     s.push({
       type: "value-add",
       triggers,
       question: `${dataOne} offers ${displayAs}?`,
       keywords: vaKeywords(va),
-      answer: `Yes, ${dataOne} offers ${displayAs}.`
+      answer: `Yes, ${dataOne} offers ${displayAs}.`,
+      'data-sort': va['data-sort'] ?? 999
     });
   });
 
@@ -178,10 +187,11 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       const val = row[f.key];
       s.push({
         type: "fact",
-        triggers: [f.label.toLowerCase(), ...f.aliases.map(a => a.toLowerCase())],
+        triggers: [f.label.toLowerCase(), ...f.aliases.flatMap(expandWords)],
         question: `${dataOne} ${f.label}?`,
-        keywords: [...f.aliases.map(a => a.toLowerCase()), f.label.toLowerCase()],
-        answer: `${dataOne} ${f.label} is ${val}`
+        keywords: [...f.aliases.flatMap(expandWords), f.label.toLowerCase()],
+        answer: `${dataOne} ${f.label} is ${val}`,
+        'data-sort': f['data-sort'] ?? 999
       });
     }
   });
@@ -199,7 +209,8 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         triggers: dogAliases,
         question: `${dataOne} for ${dog.displayAs}?`,
         keywords: dogAliases,
-        answer: `${dataOne} is recommended for ${dog.displayAs}.`
+        answer: `${dataOne} is recommended for ${dog.displayAs}.`,
+        'data-sort': dog['data-sort'] ?? 999
       });
     }
   });
@@ -216,12 +227,14 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         const tagKey = `${type}:${tag}`;
         if (!dogSeen.has(tagKey)) {
           dogSeen.add(tagKey);
+          const triggers = expandWords(tag);
           s.push({
             type,
-            triggers: [tag.toLowerCase()],
+            triggers,
             question: `${dataOne} for ${tag}?`,
-            keywords: [tag.toLowerCase()],
-            answer: `${dataOne} is recommended for ${tag}.`
+            keywords: triggers,
+            answer: `${dataOne} is recommended for ${tag}.`,
+            'data-sort': row[`${key}-sort`] ?? 999
           });
         }
       });
@@ -231,12 +244,14 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   // Activity level (as a quick suggestion)
   if (typeof row["activity-level"] === "string" && row["activity-level"].trim()) {
     const activityLevel = row["activity-level"].toLowerCase();
+    const triggers = expandWords(activityLevel);
     s.push({
       type: "dog-activity-level",
-      triggers: [activityLevel],
+      triggers,
       question: `${dataOne} for ${row["activity-level"]} dogs?`,
-      keywords: [activityLevel],
-      answer: `${dataOne} is best for ${row["activity-level"]} dogs.`
+      keywords: triggers,
+      answer: `${dataOne} is best for ${row["activity-level"]} dogs.`,
+      'data-sort': row['activity-level-sort'] ?? 999
     });
   }
 
@@ -244,10 +259,11 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
     s.push({
       type: "dog-default",
-      triggers: ["active adult", "breed", "dog", "active", "adult", "default", "60 lbs", "average"],
+      triggers: expandWords("active adult breed dog 60 lbs average default"),
       question: `${dataOne} for Active Adult (60 lbs)?`,
-      keywords: ["active adult", "60 lbs", "average", "default"],
-      answer: `${dataOne} is recommended for an active adult dog (60 lbs).`
+      keywords: expandWords("active adult 60 lbs average default"),
+      answer: `${dataOne} is recommended for an active adult dog (60 lbs).`,
+      'data-sort': 999
     });
   }
 
@@ -280,7 +296,6 @@ export function initSearchSuggestions() {
     distance: 60
   });
 
-  // --- Starter pills: Show first 2 per category only (edit as needed)
   function renderStarter() {
     starter.innerHTML = '';
     const pillTypes = [
@@ -325,7 +340,6 @@ export function initSearchSuggestions() {
     answerBox.style.display = 'none';
   }
 
-  // --- Live typeahead suggestions with strict intent routing ---
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
@@ -336,39 +350,51 @@ export function initSearchSuggestions() {
     }
     starter.style.display = 'none';
 
-    // --- INTENT LOGIC ---
+    const queryWords = q.split(/\s+/).filter(Boolean);
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
     const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
-    // Find matching dog/va items by trigger/keyword
-    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
-    const vaMatch = suggestions.filter(item => item.type === "value-add" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+
+    function matchItem(item) {
+      const fields = [...(item.triggers||[]), ...(item.keywords||[])];
+      return queryWords.every(word =>
+        fields.some(field => field === word || field.startsWith(word) || field.includes(word))
+      );
+    }
+
+    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && matchItem(item));
+    const vaMatch = suggestions.filter(item => item.type === "value-add" && matchItem(item));
 
     let results = [];
 
     if (isFact) {
-      results = suggestions.filter(item => item.type === "fact" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+      results = suggestions.filter(item => item.type === "fact" && matchItem(item));
     } else if (dogMatch.length) {
       results = dogMatch;
     } else if (vaMatch.length) {
       results = vaMatch;
     } else if (isNegative) {
-      results = suggestions.filter(item => item.type === "ingredient-not-contains" || item.type === "free-of");
+      results = suggestions.filter(item => (item.type === "ingredient-not-contains" || item.type === "free-of") && matchItem(item));
     } else {
-      // Default: show only relevant ingredient matches
       results = suggestions.filter(item =>
         (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
-        (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q)))
+        matchItem(item)
       );
-      // Fallback: breeds/va/facts for non-ingredient matches
       if (!results.length) {
         results = suggestions.filter(item =>
           item.type.startsWith("dog-") ||
           item.type === "value-add" ||
           item.type === "fact"
-        ).filter(item =>
-          item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))
-        );
+        ).filter(matchItem);
       }
+    }
+
+    // --- data-sort priority sort (blank/missing = 999, lowest first)
+    if (results.length && typeof results[0]['data-sort'] !== 'undefined') {
+      results.sort((a, b) => {
+        const sa = (a['data-sort'] === null || a['data-sort'] === undefined || a['data-sort'] === '') ? 999 : Number(a['data-sort']);
+        const sb = (b['data-sort'] === null || b['data-sort'] === undefined || b['data-sort'] === '') ? 999 : Number(b['data-sort']);
+        return sa - sb;
+      });
     }
 
     if (!results.length) {
@@ -396,34 +422,41 @@ export function initSearchSuggestions() {
     const q = input.value.trim().toLowerCase();
     if (!q) return;
 
+    const queryWords = q.split(/\s+/).filter(Boolean);
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
     const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
-    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
-    const vaMatch = suggestions.filter(item => item.type === "value-add" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+
+    function matchItem(item) {
+      const fields = [...(item.triggers||[]), ...(item.keywords||[])];
+      return queryWords.every(word =>
+        fields.some(field => field === word || field.startsWith(word) || field.includes(word))
+      );
+    }
+
+    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && matchItem(item));
+    const vaMatch = suggestions.filter(item => item.type === "value-add" && matchItem(item));
 
     let found = [];
 
     if (isFact) {
-      found = suggestions.filter(item => item.type === "fact" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+      found = suggestions.filter(item => item.type === "fact" && matchItem(item));
     } else if (dogMatch.length) {
       found = dogMatch;
     } else if (vaMatch.length) {
       found = vaMatch;
     } else if (isNegative) {
-      found = suggestions.filter(item => item.type === "ingredient-not-contains" || item.type === "free-of");
+      found = suggestions.filter(item => (item.type === "ingredient-not-contains" || item.type === "free-of") && matchItem(item));
     } else {
       found = suggestions.filter(item =>
         (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
-        (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q)))
+        matchItem(item)
       );
       if (!found.length) {
         found = suggestions.filter(item =>
           item.type.startsWith("dog-") ||
           item.type === "value-add" ||
           item.type === "fact"
-        ).filter(item =>
-          item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))
-        );
+        ).filter(matchItem);
       }
     }
 
