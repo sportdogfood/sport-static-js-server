@@ -52,13 +52,15 @@ function safeArray(val) {
   if (typeof val === "string" && val.trim()) return [val];
   try { return Array.from(val); } catch { return []; }
 }
+// Expand by both spaces and commas, crude singular/plural
 function expandWords(str) {
   if (!str) return [];
-  // "Probiotics Added" → ["probiotics", "added", "probiotic"]
-  const words = str.split(/\s+/).map(w => w.toLowerCase().replace(/[^a-z0-9]/g, ''));
-  const stems = words.map(w => w.endsWith('s') ? w.slice(0, -1) : w); // crude singular
-  return Array.from(new Set([...words, ...stems]));
+  return str.split(/,|\s+/)
+    .map(w => w.trim().toLowerCase())
+    .filter(Boolean)
+    .flatMap(w => w.endsWith('s') ? [w, w.slice(0, -1)] : [w]);
 }
+// Only for INGREDIENTS!
 function allIngredientKeywords(ing) {
   if (!ing) return [];
   const base = typeof ing.displayAs === "string" ? ing.displayAs.toLowerCase() : "";
@@ -80,25 +82,23 @@ function allIngredientKeywords(ing) {
   ].filter(Boolean)));
 }
 function vaKeywords(va) {
-  let base = (va && typeof va.displayAs === "string") ? va.displayAs.toLowerCase() : "";
-  if (!base && typeof va === "string") base = va.toLowerCase();
-  const vaTags = va && va.tags ? va.tags.map(t => t.toLowerCase()) : [];
-  return Array.from(new Set([
-    ...expandWords(base),
-    ...expandWords(vaTags.join(" ")),
-    ...(va && va.triggers ? va.triggers.map(t => t.toLowerCase()) : [])
-  ].filter(Boolean)));
+  // va['data-one'] and va['data-keys'] (comma-separated string)
+  let words = [];
+  if (va['data-one']) words = words.concat(expandWords(va['data-one']));
+  if (va['data-keys']) words = words.concat(expandWords(va['data-keys']));
+  return Array.from(new Set(words));
 }
 function dogKeywords(dog) {
-  if (!dog || typeof dog !== "object") return [];
-  let out = [
-    dog.displayAs,
-    dog.common_misspellings, dog.other_common_names, dog.common_initials, dog.common_nickname,
-    dog.breed, dog.breeds, dog.type, dog.group, dog.job, dog.activity, dog.activityLevel,
-    dog.group_suit, dog.job_suit, dog.activity_suit
+  let fields = [
+    dog['data-one'], dog.Name, dog['common_misspellings'],
+    dog['other_common_names'], dog['common_initials'], dog['common_nickname'],
+    dog['group-suit'], dog['activity-suit'], dog['job-suit'], dog['activity-level']
   ];
-  out = out.filter(Boolean).map(s => s.toLowerCase());
-  return Array.from(new Set(out.flatMap(expandWords).concat(out)));
+  return Array.from(new Set(
+    fields
+      .filter(Boolean)
+      .flatMap(s => expandWords(s))
+  ));
 }
 
 // --- SUGGESTION BUILDER ---
@@ -163,21 +163,15 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   // --- Value Adds ---
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5];
-    if (!va || !va.displayAs) return;
-    const displayAs = va.displayAs.trim();
-    const triggers = Array.from(new Set([
-      ...expandWords(displayAs),
-      ...vaTriggers,
-      ...(va.triggers ? va.triggers.flatMap(expandWords) : []),
-      ...(va.tags ? va.tags.flatMap(expandWords) : [])
-    ]));
+    if (!va || !va['data-one']) return;
+    const triggers = vaKeywords(va);
     s.push({
       type: "value-add",
       triggers,
-      question: `${dataOne} offers ${displayAs}?`,
-      keywords: vaKeywords(va),
-      answer: `Yes, ${dataOne} offers ${displayAs}.`,
-      'data-sort': va['data-sort'] ?? 999
+      question: `${dataOne} offers ${va['data-one']}?`,
+      keywords: triggers,
+      answer: `Yes, ${dataOne} offers ${va['data-one']}.`,
+      'data-sort': (typeof va['data-sort'] === 'number' ? va['data-sort'] : 999)
     });
   });
 
@@ -201,18 +195,17 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
 
   safeArray(row['dogBr-fives']).forEach(d5 => {
     const dog = dogMap[d5];
-    if (dog && typeof dog.displayAs === "string" && !dogSeen.has(dog.displayAs)) {
-      dogSeen.add(dog.displayAs);
-      const dogAliases = dogKeywords(dog);
-      s.push({
-        type: "dog-breed",
-        triggers: dogAliases,
-        question: `${dataOne} for ${dog.displayAs}?`,
-        keywords: dogAliases,
-        answer: `${dataOne} is recommended for ${dog.displayAs}.`,
-        'data-sort': dog['data-sort'] ?? 999
-      });
-    }
+    if (!dog || !dog['data-one'] || dogSeen.has(dog['data-one'])) return;
+    const triggers = dogKeywords(dog);
+    dogSeen.add(dog['data-one']);
+    s.push({
+      type: "dog-breed",
+      triggers,
+      question: `${dataOne} for ${dog['data-one']}?`,
+      keywords: triggers,
+      answer: `${dataOne} is recommended for ${dog['data-one']}.`,
+      'data-sort': (typeof dog['data-sort'] === 'number' ? dog['data-sort'] : 999)
+    });
   });
 
   // Activities, Jobs, Groups
@@ -257,11 +250,12 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
 
   // Default breed as fallback (Active Adult, 60 lbs)
   if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
+    const fallback = expandWords("active adult breed dog 60 lbs average default");
     s.push({
       type: "dog-default",
-      triggers: expandWords("active adult breed dog 60 lbs average default"),
+      triggers: fallback,
       question: `${dataOne} for Active Adult (60 lbs)?`,
-      keywords: expandWords("active adult 60 lbs average default"),
+      keywords: fallback,
       answer: `${dataOne} is recommended for an active adult dog (60 lbs).`,
       'data-sort': 999
     });
