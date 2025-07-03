@@ -22,7 +22,36 @@ const vaTriggers = [
   "has", "with", "feature", "includes", "plus", "added", "value", "benefit"
 ];
 
+// --- Fact aliases for fast intent mapping ---
+const FACTS = [
+  { key: "ga_crude_protein_%", label: "Protein (%)", aliases: ["protein", "crude protein", "protein %"] },
+  { key: "ga_crude_fat_%",     label: "Fat (%)",     aliases: ["fat", "crude fat", "fat %"] },
+  { key: "ga_crude_fiber_%",   label: "Fiber (%)",   aliases: ["fiber", "crude fiber", "fiber %"] },
+  { key: "ga_moisture_%",      label: "Moisture (%)",aliases: ["moisture", "moisture %"] },
+  { key: "ga_ash_%",           label: "Ash (%)",     aliases: ["ash", "ash %"] },
+  { key: "ga_calcium_%",       label: "Calcium (%)", aliases: ["calcium", "calcium %"] },
+  { key: "ga_phosphorous_%",   label: "Phosphorus (%)", aliases: ["phosphorus", "phosphorous", "phosphorus %"] },
+  { key: "ga_omega_6_fatty_acids_%", label: "Omega 6 (%)", aliases: ["omega 6", "omega 6 fatty acids"] },
+  { key: "ga_omega_3_fatty_acids_%", label: "Omega 3 (%)", aliases: ["omega 3", "omega 3 fatty acids"] },
+  { key: "ga_vitamin_d3_ui_per_kg",     label: "Vitamin D3", aliases: ["vitamin d", "vitamin d3"] },
+  { key: "ga_vitamin_e_ui_per_kg",       label: "Vitamin E", aliases: ["vitamin e"] },
+  { key: "ga_vitamin_b12_ui_per_kg",    label: "Vitamin B12", aliases: ["vitamin b12"] },
+  { key: "ga_selenium",        label: "Selenium", aliases: ["selenium"] },
+  { key: "ga_animal_protein_%",label: "Animal Protein (%)", aliases: ["animal protein"] },
+  { key: "ga_kcals_per_cup", label: "kcals per cup", aliases: ["calories", "kcals", "kcals per cup", "kcals/cup"] },
+  { key: "ga_kcals_per_kg",  label: "kcals per kg", aliases: ["kcals/kg", "kcals per kg"] }
+];
+
+const FACT_ALIASES = [];
+FACTS.forEach(f => FACT_ALIASES.push(...f.aliases.map(a => a.toLowerCase()), f.label.toLowerCase()));
+
 // --- Helpers ---
+function safeArray(val) {
+  if (Array.isArray(val)) return val;
+  if (val == null) return [];
+  if (typeof val === "string" && val.trim()) return [val];
+  try { return Array.from(val); } catch { return []; }
+}
 function allIngredientKeywords(ing) {
   if (!ing) return [];
   const base = typeof ing.displayAs === "string" ? ing.displayAs.toLowerCase() : "";
@@ -31,9 +60,7 @@ function allIngredientKeywords(ing) {
   const group = typeof ing.groupWith === "string" ? ing.groupWith.toLowerCase() : "";
   const tags = Array.isArray(ing.tags) ? ing.tags.map(String) : [];
   return Array.from(new Set([
-    base,
-    plural,
-    singular,
+    base, plural, singular,
     ...tags.map(t => t.toLowerCase()),
     group,
     `with ${base}`, `with ${plural}`, `with ${singular}`,
@@ -66,33 +93,7 @@ function dogKeywords(dog) {
     dog.breed, dog.breeds, dog.type, dog.group, dog.job, dog.activity, dog.activityLevel,
     dog.group_suit, dog.job_suit, dog.activity_suit
   ];
-  // Defensive: lower, remove undefined
   return Array.from(new Set(out.filter(Boolean).map(s => s.toLowerCase())));
-}
-const FACTS = [
-  { key: "ga_crude_protein_%", label: "Protein (%)", aliases: ["protein", "crude protein", "protein %"] },
-  { key: "ga_crude_fat_%",     label: "Fat (%)",     aliases: ["fat", "crude fat", "fat %"] },
-  { key: "ga_crude_fiber_%",   label: "Fiber (%)",   aliases: ["fiber", "crude fiber", "fiber %"] },
-  { key: "ga_moisture_%",      label: "Moisture (%)",aliases: ["moisture", "moisture %"] },
-  { key: "ga_ash_%",           label: "Ash (%)",     aliases: ["ash", "ash %"] },
-  { key: "ga_calcium_%",       label: "Calcium (%)", aliases: ["calcium", "calcium %"] },
-  { key: "ga_phosphorous_%",   label: "Phosphorus (%)", aliases: ["phosphorus", "phosphorous", "phosphorus %"] },
-  { key: "ga_omega_6_fatty_acids_%", label: "Omega 6 (%)", aliases: ["omega 6", "omega 6 fatty acids"] },
-  { key: "ga_omega_3_fatty_acids_%", label: "Omega 3 (%)", aliases: ["omega 3", "omega 3 fatty acids"] },
-  { key: "ga_vitamin_d3_ui_per_kg",     label: "Vitamin D3", aliases: ["vitamin d", "vitamin d3"] },
-  { key: "ga_vitamin_e_ui_per_kg",       label: "Vitamin E", aliases: ["vitamin e"] },
-  { key: "ga_vitamin_b12_ui_per_kg",    label: "Vitamin B12", aliases: ["vitamin b12"] },
-  { key: "ga_selenium",        label: "Selenium", aliases: ["selenium"] },
-  { key: "ga_animal_protein_%",label: "Animal Protein (%)", aliases: ["animal protein"] },
-  { key: "ga_kcals_per_cup", label: "kcals per cup", aliases: ["calories", "kcals", "kcals per cup", "kcals/cup"] },
-  { key: "ga_kcals_per_kg",  label: "kcals per kg", aliases: ["kcals/kg", "kcals per kg"] }
-];
-
-function safeArray(val) {
-  if (Array.isArray(val)) return val;
-  if (val == null) return [];
-  if (typeof val === "string" && val.trim()) return [val];
-  try { return Array.from(val); } catch { return []; }
 }
 
 // --- SUGGESTION BUILDER ---
@@ -154,7 +155,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   // --- Value Adds ---
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5];
-    if (!va || !va.displayAs) return; // Only show value-adds present in map
+    if (!va || !va.displayAs) return;
     const displayAs = va.displayAs.trim();
     const triggers = Array.from(new Set([
       displayAs.toLowerCase(),
@@ -195,9 +196,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       const dogAliases = dogKeywords(dog);
       s.push({
         type: "dog-breed",
-        triggers: [
-          ...dogAliases, "breed", "dog", "for", "good for", "recommended"
-        ],
+        triggers: dogAliases,
         question: `${dataOne} for ${dog.displayAs}?`,
         keywords: dogAliases,
         answer: `${dataOne} is recommended for ${dog.displayAs}.`
@@ -219,7 +218,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
           dogSeen.add(tagKey);
           s.push({
             type,
-            triggers: [tag.toLowerCase(), label, "for", "good for", "recommended"],
+            triggers: [tag.toLowerCase()],
             question: `${dataOne} for ${tag}?`,
             keywords: [tag.toLowerCase()],
             answer: `${dataOne} is recommended for ${tag}.`
@@ -234,7 +233,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     const activityLevel = row["activity-level"].toLowerCase();
     s.push({
       type: "dog-activity-level",
-      triggers: [activityLevel, "activity level", "level", "energy", "active", "for"],
+      triggers: [activityLevel],
       question: `${dataOne} for ${row["activity-level"]} dogs?`,
       keywords: [activityLevel],
       answer: `${dataOne} is best for ${row["activity-level"]} dogs.`
@@ -326,7 +325,7 @@ export function initSearchSuggestions() {
     answerBox.style.display = 'none';
   }
 
-  // --- Live typeahead suggestions with advanced filtering
+  // --- Live typeahead suggestions with strict intent routing ---
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
@@ -337,53 +336,39 @@ export function initSearchSuggestions() {
     }
     starter.style.display = 'none';
 
+    // --- INTENT LOGIC ---
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
-    const isFact = /^what is|how much|how many/.test(q);
-    const isContains = /\b(contains?|has|with|does|include)\b/.test(q);
+    const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
+    // Find matching dog/va items by trigger/keyword
+    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+    const vaMatch = suggestions.filter(item => item.type === "value-add" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
 
-    let results = fuse.search(q).slice(0, 10).map(r => r.item);
+    let results = [];
 
-    // If negative intent -> only show not-contains, free-of, or relevant
-    if (isNegative) {
-      results = results.filter(item =>
-        item.type === "ingredient-not-contains" ||
-        item.type === "free-of" ||
-        (item.type === "fact" && isFact) ||
-        item.type.startsWith("dog-") ||
-        item.type === "value-add"
+    if (isFact) {
+      results = suggestions.filter(item => item.type === "fact" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+    } else if (dogMatch.length) {
+      results = dogMatch;
+    } else if (vaMatch.length) {
+      results = vaMatch;
+    } else if (isNegative) {
+      results = suggestions.filter(item => item.type === "ingredient-not-contains" || item.type === "free-of");
+    } else {
+      // Default: show only relevant ingredient matches
+      results = suggestions.filter(item =>
+        (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
+        (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q)))
       );
-    }
-    // If "what is" or "how much" intent -> only show facts
-    else if (isFact) {
-      results = results.filter(item => item.type === "fact");
-    }
-    // If input contains "contains", "has", "does", etc. -> show ingredient-contains (and breeds, value-adds if matched)
-    else if (isContains) {
-      results = results.filter(item =>
-        item.type === "ingredient-contains" ||
-        item.type.startsWith("dog-") ||
-        item.type === "value-add"
-      );
-    }
-    // For single-word or unknown queries, show *all* plausible matches
-    else if (q.split(' ').length === 1) {
-      results = results.filter(item =>
-        item.type === "ingredient-contains" ||
-        item.type === "ingredient-not-contains" ||
-        item.type === "free-of" ||
-        item.type === "value-add" ||
-        item.type.startsWith("dog-")
-      );
-    }
-
-    // Filter for strong keyword match if the input is a single word ingredient/breed/etc.
-    if (q.split(' ').length === 1) {
-      results = results.filter(item =>
-        item.triggers.some(t => t === q) ||
-        item.keywords.some(k => k === q) ||
-        item.triggers.some(t => t.includes(q)) ||
-        item.keywords.some(k => k.includes(q))
-      );
+      // Fallback: breeds/va/facts for non-ingredient matches
+      if (!results.length) {
+        results = suggestions.filter(item =>
+          item.type.startsWith("dog-") ||
+          item.type === "value-add" ||
+          item.type === "fact"
+        ).filter(item =>
+          item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))
+        );
+      }
     }
 
     if (!results.length) {
@@ -410,42 +395,36 @@ export function initSearchSuggestions() {
   input.addEventListener('keydown', e => { if (e.key === 'Enter') {
     const q = input.value.trim().toLowerCase();
     if (!q) return;
+
     const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
-    const isFact = /^what is|how much|how many/.test(q);
-    const isContains = /\b(contains?|has|with|does|include)\b/.test(q);
+    const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
+    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+    const vaMatch = suggestions.filter(item => item.type === "value-add" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
 
-    let found = fuse.search(q).map(r => r.item);
+    let found = [];
 
-    if (isNegative) {
-      found = found.filter(item =>
-        item.type === "ingredient-not-contains" ||
-        item.type === "free-of" ||
-        (item.type === "fact" && isFact) ||
-        item.type.startsWith("dog-") ||
-        item.type === "value-add"
+    if (isFact) {
+      found = suggestions.filter(item => item.type === "fact" && (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))));
+    } else if (dogMatch.length) {
+      found = dogMatch;
+    } else if (vaMatch.length) {
+      found = vaMatch;
+    } else if (isNegative) {
+      found = suggestions.filter(item => item.type === "ingredient-not-contains" || item.type === "free-of");
+    } else {
+      found = suggestions.filter(item =>
+        (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
+        (item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q)))
       );
-    } else if (isFact) {
-      found = found.filter(item => item.type === "fact");
-    } else if (isContains) {
-      found = found.filter(item =>
-        item.type === "ingredient-contains" ||
-        item.type.startsWith("dog-") ||
-        item.type === "value-add"
-      );
-    } else if (q.split(' ').length === 1) {
-      found = found.filter(item =>
-        item.type === "ingredient-contains" ||
-        item.type === "ingredient-not-contains" ||
-        item.type === "free-of" ||
-        item.type === "value-add" ||
-        item.type.startsWith("dog-")
-      );
-      found = found.filter(item =>
-        item.triggers.some(t => t === q) ||
-        item.keywords.some(k => k === q) ||
-        item.triggers.some(t => t.includes(q)) ||
-        item.keywords.some(k => k.includes(q))
-      );
+      if (!found.length) {
+        found = suggestions.filter(item =>
+          item.type.startsWith("dog-") ||
+          item.type === "value-add" ||
+          item.type === "fact"
+        ).filter(item =>
+          item.triggers.some(tr => tr.startsWith(q) || tr.includes(q)) || item.keywords.some(k => k.startsWith(q) || k.includes(q))
+        );
+      }
     }
 
     if (found.length) showAnswer(found[0].answer || 'No answer set.');
