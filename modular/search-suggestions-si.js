@@ -92,12 +92,18 @@ const FACTS = [
   { key: "specs_kcals_per_kg",  label: "kcals per kg", aliases: ["kcals/kg", "kcals per kg"] }
 ];
 
+function safeArray(val) {
+  if (Array.isArray(val)) return val;
+  if (val == null) return [];
+  if (typeof val === "string" && val.trim()) return [val];
+  try { return Array.from(val); } catch { return []; }
+}
 // ---- Main Suggestion Builder ----
 function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const s = [];
 
   // --- Ingredient Contains
-  (row['ing-data-fives'] || []).forEach(d5 => {
+  safeArray(row['ing-data-fives'] || []).forEach(d5 => {
     const ing = ingMap[d5];
     if (ing)
       s.push({
@@ -110,7 +116,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   });
 
   // --- Ingredient Not-Contains
-  (row['not-data-fives'] || []).forEach(d5 => {
+  safeArray(row['not-data-fives'] || []).forEach(d5 => {
     const ing = ingMap[d5];
     if (ing)
       s.push({
@@ -123,7 +129,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   });
 
   // --- Value Adds
-  (row['va-data-fives'] || []).forEach(d5 => {
+  safeArray(row['va-data-fives'] || []).forEach(d5 => {
     const va = vaMap[d5] || { displayAs: d5 }; // fallback for string VAs
     s.push({
       type: "value-add",
@@ -170,7 +176,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   });
 
   // --- Dog/Breed/Job/Activity
-  (row['dogBr-fives'] || []).forEach(d5 => {
+  safeArray(row['dogBr-fives'] || []).forEach(d5 => {
     const dog = dogMap[d5];
     if (dog)
       s.push({
@@ -181,7 +187,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         answer: `Good for ${dog.displayAs}.`
       });
   });
-  (row['dogKeys_ac'] || []).forEach(d5 => {
+  safeArray(row['dogKeys_ac'] || []).forEach(d5 => {
     const dog = dogMap[d5];
     if (dog)
       s.push({
@@ -192,7 +198,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         answer: `Good for ${dog.displayAs}.`
       });
   });
-  (row['dogKeys_gp'] || []).forEach(d5 => {
+  safeArray(row['dogKeys_gp'] || []).forEach(d5 => {
     const dog = dogMap[d5];
     if (dog)
       s.push({
@@ -203,7 +209,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
         answer: `For ${dog.displayAs} group.`
       });
   });
-  (row['dogKeys_jb'] || []).forEach(d5 => {
+  safeArray(row['dogKeys_jb'] || []).forEach(d5 => {
     const dog = dogMap[d5];
     if (dog)
       s.push({
@@ -216,7 +222,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   });
 
   // --- Weight/Feeding
-  (row['dogWeights'] || ["40 lbs","50 lbs","60 lbs","70 lbs","80 lbs"]).forEach(wt => {
+  safeArray(row['dogWeights'] || ["40 lbs","50 lbs","60 lbs","70 lbs","80 lbs"]).forEach(wt => {
     s.push({
       type: "weight",
       triggers: [...weightTriggers, wt],
