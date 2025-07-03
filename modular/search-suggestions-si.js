@@ -138,29 +138,46 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     }
   });
 
+
 // --- Value Adds ---
 safeArray(row['va-data-fives']).forEach(d5 => {
   const va = vaMap[d5];
-  if (!va) return; // Skip unknown value-adds, or decide if you want to push a fallback
-  // Triggers should come from va.triggers if defined, or a default set
-  const triggers = Array.isArray(va.triggers)
-    ? ["value-add", ...va.triggers.map(t => t.toLowerCase()), va.displayAs.toLowerCase()]
-    : ["value-add", va.displayAs.toLowerCase()];
-  // Defensive for vaKeywords
+  // Defensive: always resolve a valid display label
+  const displayAs = (va && typeof va.displayAs === 'string' && va.displayAs.trim())
+    ? va.displayAs.trim()
+    : (typeof d5 === 'string' ? d5.trim() : ''); // fallback to d5 or blank
+
+  if (!displayAs) return; // Skip if we still have nothing valid
+
+  // Defensive: triggers array
+  let triggers = ["value-add"];
+  if (va && Array.isArray(va.triggers)) {
+    triggers = triggers.concat(
+      va.triggers.filter(Boolean).map(t =>
+        typeof t === 'string' ? t.toLowerCase() : ''
+      ).filter(Boolean)
+    );
+  }
+  triggers.push(displayAs.toLowerCase());
+
+  // Defensive: keywords array
   let keywords = [];
   try {
-    keywords = vaKeywords(va);
+    keywords = vaKeywords(va || { displayAs });
+    if (!Array.isArray(keywords)) keywords = [String(keywords)];
   } catch (e) {
-    keywords = [va.displayAs.toLowerCase()];
+    keywords = [displayAs.toLowerCase()];
   }
+
   s.push({
     type: "value-add",
     triggers,
-    question: `${dataOne} offers ${va.displayAs}?`,
+    question: `${dataOne} offers ${displayAs}?`,
     keywords,
-    answer: `Yes, ${dataOne} offers ${va.displayAs}.`
+    answer: `Yes, ${dataOne} offers ${displayAs}.`
   });
 });
+
 
   // --- Facts (Percentages and Amounts) ---
   FACTS.forEach(f => {
