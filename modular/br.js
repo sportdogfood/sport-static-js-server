@@ -1,7 +1,6 @@
-// br.js
-export const BRANDS = [
-  {
+export const BRANDS = {
 
+  "1000": {
     "Name": "Sport Dog Food",
     "Slug": "premium-sport-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -108,7 +107,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "6526": {
     "Name": "Blue Buffalo",
     "Slug": "alternative-to-blue-buffalo-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -147,7 +146,7 @@ export const BRANDS = [
     "ci-data-fives": [],
     "cf-data-fives": []
   },
-  {
+  "6697": {
     "Name": "Dr Tims",
     "Slug": "alternative-to-dr-tims-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -267,7 +266,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "6734": {
     "Name": "Eukanuba",
     "Slug": "alternative-to-eukanuba-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -357,7 +356,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "6749": {
     "Name": "Farmina",
     "Slug": "alternative-to-farmina-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -470,7 +469,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "7138": {
     "Name": "Nutro",
     "Slug": "alternative-to-nutro-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -509,7 +508,7 @@ export const BRANDS = [
     "ci-data-fives": [],
     "cf-data-fives": []
   },
-  {
+  "7434": {
     "Name": "Purina Pro Plan",
     "Slug": "alternative-to-purina-pro-plan-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -640,7 +639,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "7487": {
     "Name": "Royal Canin",
     "Slug": "alternative-to-royal-canin-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -679,7 +678,7 @@ export const BRANDS = [
     "ci-data-fives": [],
     "cf-data-fives": []
   },
-  {
+  "7536": {
     "Name": "Solid Gold",
     "Slug": "alternative-to-solid-gold-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -776,7 +775,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "7682": {
     "Name": "Victor",
     "Slug": "alternative-to-victor-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -920,7 +919,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "8755": {
     "Name": "Acana",
     "Slug": "alternative-to-acana-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -1005,7 +1004,7 @@ export const BRANDS = [
     ],
     "cf-data-fives": []
   },
-  {
+  "8819": {
     "Name": "Orijen",
     "Slug": "alternative-to-orijen-dog-food",
     "Collection ID": "647ddb9037101ce399b330cb",
@@ -1044,4 +1043,5 @@ export const BRANDS = [
     "ci-data-fives": [],
     "cf-data-fives": []
   }
-];
+
+};
