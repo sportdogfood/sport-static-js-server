@@ -1,5 +1,5 @@
-export const DOG_DATA = [
-  {
+export const DOG_DATA = {
+  "HGW3D": {
     "Name": "Weimaraners",
     "Slug": "",
     "Collection ID": "",
@@ -16,7 +16,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -50,10 +50,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "ME0KB": {
     "Name": "Vizslas",
     "Slug": "",
     "Collection ID": "",
@@ -70,7 +69,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -104,10 +103,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "NTOHN": {
     "Name": "Rottweilers",
     "Slug": "",
     "Collection ID": "",
@@ -124,7 +122,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -158,10 +156,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "GF0GP": {
     "Name": "Labrador Retrievers",
     "Slug": "",
     "Collection ID": "",
@@ -178,7 +175,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -212,10 +209,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "8KTYX": {
     "Name": "Golden Retrievers",
     "Slug": "",
     "Collection ID": "",
@@ -232,7 +228,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -266,10 +262,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "MLXGP": {
     "Name": "German Shorthaired Pointers",
     "Slug": "",
     "Collection ID": "",
@@ -286,7 +281,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -320,10 +315,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "2ZREE": {
     "Name": "German Shepherds",
     "Slug": "",
     "Collection ID": "",
@@ -340,7 +334,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -374,10 +368,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "VJYZS": {
     "Name": "Dutch Shepherds",
     "Slug": "",
     "Collection ID": "",
@@ -394,7 +387,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -428,10 +421,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "4TIL1": {
     "Name": "Doberman Pinschers",
     "Slug": "",
     "Collection ID": "",
@@ -448,7 +440,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -482,10 +474,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "UQ7MN": {
     "Name": "Chesapeake Bay Retrievers",
     "Slug": "",
     "Collection ID": "",
@@ -502,7 +493,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -536,10 +527,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "MOVBB": {
     "Name": "Border Collies",
     "Slug": "",
     "Collection ID": "",
@@ -556,7 +546,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -590,10 +580,9 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   },
-  {
+  "IPVOO": {
     "Name": "Belgian Malinois",
     "Slug": "",
     "Collection ID": "",
@@ -610,7 +599,7 @@ export const DOG_DATA = [
     "previewengine": "",
     "previewAlttag": "",
     "cf_description": "",
-    "data-faqType": "",
+    "data-faqType": "dog",
     "typed_intro": "",
     "manual_faq_enabled": "",
     "tone_override_tagline": "",
@@ -644,7 +633,6 @@ export const DOG_DATA = [
     "max_weight": "",
     "min_weight": "",
     "life_span": "",
-    "color_coat": "",
-    "activity_level": ""
+    "color_coat": ""
   }
-];
+};
