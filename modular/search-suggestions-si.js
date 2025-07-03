@@ -1,4 +1,4 @@
-// search-suggestions-si.js
+// search-suggestions-si.js changes
 
 // --- Imports ---
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
