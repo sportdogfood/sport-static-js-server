@@ -12627,4 +12627,4 @@ export const ING_PLANT =
     "termDescription": "Plant extract often used to reduce stool odor and aid digestion."
   }
 
-);
+};
