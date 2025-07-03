@@ -10,7 +10,7 @@ import { DOG_DATA }   from './dog.js';
 
 // --- Triggers ---
 const generalTriggers = [
-  "what", "is", "how", "how much", "how many", "does", "contain", "with", "has", "include", "show", "list"
+  "what", "what is", "is", "how", "how much", "how many", "does", "contain", "with", "has", "include", "show", "list"
 ];
 const notTriggers = [
   "does not", "doesn't", "dont", "don't", "without", "free of", "not contain", "excludes", "exclude", "minus", "no", "not"
@@ -21,55 +21,53 @@ const freeTriggers = [
 const vaTriggers = [
   "has", "with", "feature", "includes", "plus", "added", "value", "benefit"
 ];
-const weightTriggers = [
-  "weight", "lb", "lbs", "kg", "pound", "how much", "feed", "for my", "dog is", "weighs"
-];
 
 // --- Helpers ---
 function allIngredientKeywords(ing) {
   if (!ing) return [];
   const base = typeof ing.displayAs === "string" ? ing.displayAs.toLowerCase() : "";
+  const plural = base.endsWith('s') ? base : (base ? base + 's' : "");
+  const singular = base.endsWith('s') ? base.slice(0, -1) : base;
   const group = typeof ing.groupWith === "string" ? ing.groupWith.toLowerCase() : "";
   const tags = Array.isArray(ing.tags) ? ing.tags.map(String) : [];
-  return [
+  return Array.from(new Set([
     base,
-    base ? `with ${base}` : "",
-    base ? `has ${base}` : "",
-    base ? `contains ${base}` : "",
-    base ? `including ${base}` : "",
+    plural,
+    singular,
+    ...tags.map(t => t.toLowerCase()),
     group,
+    `with ${base}`, `with ${plural}`, `with ${singular}`,
+    `has ${base}`, `has ${plural}`, `has ${singular}`,
+    `contains ${base}`, `contains ${plural}`, `contains ${singular}`,
+    `including ${base}`, `including ${plural}`, `including ${singular}`,
     group ? `with ${group}` : "",
     group ? `contains ${group}` : "",
-    ...tags
-  ].filter(Boolean);
+  ].filter(Boolean)));
 }
 function vaKeywords(va) {
-  // Defensive: va can be string or object with displayAs
-  let base = "";
-  if (va && typeof va === "object" && typeof va.displayAs === "string") {
-    base = va.displayAs.toLowerCase();
-  } else if (typeof va === "string") {
-    base = va.toLowerCase();
-  }
-  return [
+  let base = (va && typeof va.displayAs === "string") ? va.displayAs.toLowerCase() : "";
+  if (!base && typeof va === "string") base = va.toLowerCase();
+  return Array.from(new Set([
     base,
     base.replace(/ free$/, ""),
-    base ? `with ${base}` : "",
-    base ? `has ${base}` : "",
-    base ? `contains ${base}` : "",
+    `with ${base}`,
+    `has ${base}`,
+    `contains ${base}`,
     ...(va && va.tags ? va.tags : [])
-  ].filter(Boolean);
+  ].filter(Boolean)));
 }
 function dogKeywords(dog) {
   if (!dog || typeof dog !== "object") return [];
-  const out = [];
-  if (typeof dog.displayAs === "string") out.push(dog.displayAs.toLowerCase());
-  if (typeof dog.group === "string") out.push(dog.group.toLowerCase());
-  if (typeof dog.job === "string") out.push(dog.job.toLowerCase());
-  if (typeof dog.activity === "string") out.push(dog.activity.toLowerCase());
-  if (typeof dog.activityLevel === "string") out.push(dog.activityLevel.toLowerCase());
-  // Add more as needed
-  return Array.from(new Set(out.filter(Boolean)));
+  const out = [
+    dog.displayAs, // exact
+    dog.displayAs && dog.displayAs + "s",
+    dog.displayAs && dog.displayAs.replace(/dog$/i, "").trim(), // remove trailing 'dog'
+    dog.common_misspellings, dog.other_common_names, dog.common_initials, dog.common_nickname,
+    dog.breed, dog.breeds, dog.type, dog.group, dog.job, dog.activity, dog.activityLevel,
+    dog.group_suit, dog.job_suit, dog.activity_suit
+  ];
+  // Defensive: lower, remove undefined
+  return Array.from(new Set(out.filter(Boolean).map(s => s.toLowerCase())));
 }
 const FACTS = [
   { key: "ga_crude_protein_%", label: "Protein (%)", aliases: ["protein", "crude protein", "protein %"] },
@@ -106,12 +104,13 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const containsSeen = new Set();
   safeArray(row['ing-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    const displayAs = ing && typeof ing.displayAs === "string" ? ing.displayAs : d5;
-    if (ing && !containsSeen.has(displayAs)) {
+    if (!ing || !ing.displayAs) return;
+    const displayAs = ing.displayAs;
+    if (!containsSeen.has(displayAs)) {
       containsSeen.add(displayAs);
       s.push({
         type: "ingredient-contains",
-        triggers: ["contain", "with", "has", "ingredient", "include", ...allIngredientKeywords(ing)],
+        triggers: allIngredientKeywords(ing),
         question: `${dataOne} contains ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
         answer: `Yes, ${dataOne} contains ${displayAs}.`
@@ -123,12 +122,13 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   const notSeen = new Set();
   safeArray(row['not-data-fives']).forEach(d5 => {
     const ing = ingMap[d5];
-    const displayAs = ing && typeof ing.displayAs === "string" ? ing.displayAs : d5;
-    if (ing && !notSeen.has(displayAs)) {
+    if (!ing || !ing.displayAs) return;
+    const displayAs = ing.displayAs;
+    if (!notSeen.has(displayAs)) {
       notSeen.add(displayAs);
       s.push({
         type: "ingredient-not-contains",
-        triggers: ["not", ...notTriggers, ...allIngredientKeywords(ing)],
+        triggers: [...allIngredientKeywords(ing), ...notTriggers, ...freeTriggers],
         question: `${dataOne} does not contain ${displayAs}?`,
         keywords: allIngredientKeywords(ing),
         answer: `No, ${dataOne} does not contain ${displayAs}.`
@@ -143,7 +143,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       if (!diet) return;
       s.push({
         type: "free-of",
-        triggers: ["free", ...freeTriggers, diet.toLowerCase()],
+        triggers: [diet.toLowerCase(), ...freeTriggers, `${diet.toLowerCase()} free`],
         question: `${dataOne} is ${diet} Free?`,
         keywords: [diet.toLowerCase(), "free", `${diet.toLowerCase()} free`],
         answer: `Yes, ${dataOne} is free of ${diet}.`
@@ -154,34 +154,18 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   // --- Value Adds ---
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5];
-    const displayAs = (va && typeof va.displayAs === 'string' && va.displayAs.trim())
-      ? va.displayAs.trim()
-      : (typeof d5 === 'string' ? d5.trim() : '');
-    if (!displayAs) return; // Skip if no value
-
-    let triggers = ["value-add", ...vaTriggers];
-    if (va && Array.isArray(va.triggers)) {
-      triggers = triggers.concat(
-        va.triggers.filter(Boolean).map(t =>
-          typeof t === 'string' ? t.toLowerCase() : ''
-        ).filter(Boolean)
-      );
-    }
-    triggers.push(displayAs.toLowerCase());
-
-    let keywords = [];
-    try {
-      keywords = vaKeywords(va || displayAs);
-      if (!Array.isArray(keywords)) keywords = [String(keywords)];
-    } catch (e) {
-      keywords = [displayAs.toLowerCase()];
-    }
-
+    if (!va || !va.displayAs) return; // Only show value-adds present in map
+    const displayAs = va.displayAs.trim();
+    const triggers = Array.from(new Set([
+      ...vaTriggers,
+      displayAs.toLowerCase(),
+      ...(va.triggers ? va.triggers.map(t => t.toLowerCase()) : [])
+    ]));
     s.push({
       type: "value-add",
       triggers,
       question: `${dataOne} offers ${displayAs}?`,
-      keywords,
+      keywords: vaKeywords(va),
       answer: `Yes, ${dataOne} offers ${displayAs}.`
     });
   });
@@ -192,45 +176,35 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       const val = row[f.key];
       s.push({
         type: "fact",
-        triggers: [f.label.toLowerCase(), ...f.aliases, ...generalTriggers],
+        triggers: [f.label.toLowerCase(), ...f.aliases.map(a => a.toLowerCase())],
         question: `${dataOne} ${f.label}?`,
-        keywords: [...f.aliases, f.label.toLowerCase()],
+        keywords: [...f.aliases.map(a => a.toLowerCase()), f.label.toLowerCase()],
         answer: `${dataOne} ${f.label} is ${val}`
       });
     }
   });
 
-  // --- DOG/BREED/JOB/GROUP/ACTIVITY (improved) ---
+  // --- DOG/BREED/JOB/GROUP/ACTIVITY ---
   const dogSeen = new Set();
 
   safeArray(row['dogBr-fives']).forEach(d5 => {
     const dog = dogMap[d5];
     if (dog && typeof dog.displayAs === "string" && !dogSeen.has(dog.displayAs)) {
       dogSeen.add(dog.displayAs);
-      // Use all aliases: misspellings, other names, initials, nickname
-      const dogAliases = [
-        typeof dog.displayAs === "string" ? dog.displayAs.toLowerCase() : "",
-        typeof dog.common_misspellings === "string" ? dog.common_misspellings.toLowerCase() : "",
-        typeof dog.other_common_names === "string" ? dog.other_common_names.toLowerCase() : "",
-        typeof dog.common_initials === "string" ? dog.common_initials.toLowerCase() : "",
-        typeof dog.common_nickname === "string" ? dog.common_nickname.toLowerCase() : ""
-      ].filter(Boolean);
+      const dogAliases = dogKeywords(dog);
       s.push({
         type: "dog-breed",
         triggers: [
-          "breed", "dog", ...dogAliases, "for", "good for", "recommended",
-          typeof dog.group_suit === "string" ? dog.group_suit.toLowerCase() : "",
-          typeof dog.job_suit === "string" ? dog.job_suit.toLowerCase() : "",
-          typeof dog.activity_suit === "string" ? dog.activity_suit.toLowerCase() : ""
-        ].filter(Boolean),
+          ...dogAliases, "breed", "dog", "for", "good for", "recommended"
+        ],
         question: `${dataOne} for ${dog.displayAs}?`,
-        keywords: [...dogKeywords(dog), ...dogAliases],
+        keywords: dogAliases,
         answer: `${dataOne} is recommended for ${dog.displayAs}.`
       });
     }
   });
 
-  // Activities, Jobs, Groups (parse comma-list, dedupe, and add as separate suggestions)
+  // Activities, Jobs, Groups
   const tagVariants = [
     { key: 'activity-suit', type: 'dog-activity', label: 'activity' },
     { key: 'group-suit',    type: 'dog-group',    label: 'group' },
@@ -244,7 +218,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
           dogSeen.add(tagKey);
           s.push({
             type,
-            triggers: [label, tag.toLowerCase(), "for", "good for", "recommended"],
+            triggers: [tag.toLowerCase(), label, "for", "good for", "recommended"],
             question: `${dataOne} for ${tag}?`,
             keywords: [tag.toLowerCase()],
             answer: `${dataOne} is recommended for ${tag}.`
@@ -259,7 +233,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
     const activityLevel = row["activity-level"].toLowerCase();
     s.push({
       type: "dog-activity-level",
-      triggers: ["activity level", activityLevel, "level", "energy", "active", "for"],
+      triggers: [activityLevel, "activity level", "level", "energy", "active", "for"],
       question: `${dataOne} for ${row["activity-level"]} dogs?`,
       keywords: [activityLevel],
       answer: `${dataOne} is best for ${row["activity-level"]} dogs.`
@@ -270,7 +244,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
     s.push({
       type: "dog-default",
-      triggers: ["breed", "dog", "active", "adult", "default", "60 lbs", "average"],
+      triggers: ["active adult", "breed", "dog", "active", "adult", "default", "60 lbs", "average"],
       question: `${dataOne} for Active Adult (60 lbs)?`,
       keywords: ["active adult", "60 lbs", "average", "default"],
       answer: `${dataOne} is recommended for an active adult dog (60 lbs).`
@@ -311,7 +285,7 @@ export function initSearchSuggestions() {
     starter.innerHTML = '';
     const pillTypes = [
       "ingredient-contains", "ingredient-not-contains",
-      "free-of", "value-add", "fact"
+      "free-of", "value-add", "fact", "dog-breed"
     ];
     pillTypes.forEach(type => {
       suggestions
@@ -351,7 +325,7 @@ export function initSearchSuggestions() {
     answerBox.style.display = 'none';
   }
 
-  // --- Live typeahead suggestions with not-contains filtering
+  // --- Live typeahead suggestions with advanced filtering
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
@@ -362,12 +336,23 @@ export function initSearchSuggestions() {
     }
     starter.style.display = 'none';
 
+    // Intent detection
+    const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
+    const isFact = /^what is|how much|how many/.test(q);
+    const isDog = /dog|breed|for|good for|recommended/.test(q);
+
     let results = fuse.search(q).slice(0, 10).map(r => r.item);
 
-    // Only show ingredient-not-contains if negative intent is present
-    if (!notTriggers.some(tr => q.includes(tr))) {
-      results = results.filter(item => item.type !== "ingredient-not-contains");
-    }
+    // Strict result type filtering based on intent
+    results = results.filter(item => {
+      if (item.type === "fact") return isFact;
+      if (item.type === "ingredient-not-contains") return isNegative || (q.split(' ').some(word => item.keywords.includes(word)));
+      if (item.type === "ingredient-contains") return !isNegative;
+      if (item.type === "free-of") return q.includes("free");
+      if (item.type === "dog-breed" || item.type === "dog-group" || item.type === "dog-activity" || item.type === "dog-job" || item.type === "dog-activity-level" || item.type === "dog-default") return isDog || q.split(' ').some(word => item.keywords.includes(word));
+      if (item.type === "value-add") return vaTriggers.some(tr => q.includes(tr)) || item.keywords.some(k => q.includes(k));
+      return true;
+    });
 
     if (!results.length) {
       const li = document.createElement('li');
@@ -393,11 +378,23 @@ export function initSearchSuggestions() {
   input.addEventListener('keydown', e => { if (e.key === 'Enter') {
     const q = input.value.trim().toLowerCase();
     if (!q) return;
+    const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
+    const isFact = /^what is|how much|how many/.test(q);
+    const isDog = /dog|breed|for|good for|recommended/.test(q);
+
     let found = fuse.search(q);
-    // Filter out not-contains if no negative intent
-    if (!notTriggers.some(tr => q.includes(tr))) {
-      found = found.filter(r => r.item.type !== "ingredient-not-contains");
-    }
+
+    found = found.filter(r => {
+      const item = r.item;
+      if (item.type === "fact") return isFact;
+      if (item.type === "ingredient-not-contains") return isNegative || (q.split(' ').some(word => item.keywords.includes(word)));
+      if (item.type === "ingredient-contains") return !isNegative;
+      if (item.type === "free-of") return q.includes("free");
+      if (item.type === "dog-breed" || item.type === "dog-group" || item.type === "dog-activity" || item.type === "dog-job" || item.type === "dog-activity-level" || item.type === "dog-default") return isDog || q.split(' ').some(word => item.keywords.includes(word));
+      if (item.type === "value-add") return vaTriggers.some(tr => q.includes(tr)) || item.keywords.some(k => q.includes(k));
+      return true;
+    });
+
     if (found.length) showAnswer(found[0].item.answer || 'No answer set.');
     else showAnswer('No answer set.');
   }});
