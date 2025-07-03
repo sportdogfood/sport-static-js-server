@@ -11629,4 +11629,4 @@ export const ING_SUPP =
     "termDescription": "Flavor and protein enhancer from yeast; palatability."
   }
 
-);
+  };
