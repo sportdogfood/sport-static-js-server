@@ -1,4 +1,3 @@
-
 export const VA_DATA = [ 
   {
     "Name": "Calorie Dense",
