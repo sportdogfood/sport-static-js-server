@@ -107,6 +107,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       });
     }
   });
+
   // --- Ingredient Not-Contains (deduped by displayAs) ---
   const notSeen = new Set();
   safeArray(row['not-data-fives']).forEach(d5 => {
@@ -122,6 +123,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       });
     }
   });
+
   // --- Free-Of (Legumes/Poultry/Grain) ---
   ["data-legumes","data-poultry","data-grain"].forEach(key => {
     if (row[key]) {
@@ -135,6 +137,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       });
     }
   });
+
   // --- Value Adds ---
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5] || { displayAs: d5 };
@@ -146,6 +149,7 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       answer: `Yes, ${dataOne} offers ${va.displayAs}.`
     });
   });
+
   // --- Facts (Percentages and Amounts) ---
   FACTS.forEach(f => {
     if (row[f.key] !== undefined && row[f.key] !== null && row[f.key] !== "") {
@@ -159,49 +163,84 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       });
     }
   });
-  // --- Dog/Breed/Job/Activity ---
+
+  // --- DOG/BREED/JOB/GROUP/ACTIVITY (improved) ---
+  // Use breed block for dogBr-fives; also handle jobs, groups, and activities as "text tags"
+  const dogSeen = new Set();
+
   safeArray(row['dogBr-fives']).forEach(d5 => {
     const dog = dogMap[d5];
-    if (dog) {
+    if (dog && !dogSeen.has(dog.displayAs)) {
+      dogSeen.add(dog.displayAs);
+      // Use all aliases: misspellings, other names, initials, nickname
+      const dogAliases = [
+        dog.displayAs?.toLowerCase(),
+        dog.common_misspellings?.toLowerCase(),
+        dog.other_common_names?.toLowerCase(),
+        dog.common_initials?.toLowerCase(),
+        dog.common_nickname?.toLowerCase()
+      ].filter(Boolean);
       s.push({
         type: "dog-breed",
-        triggers: ["breed", dog.displayAs.toLowerCase(), ...(dog.tags||[]), "for", "good for", "recommended"],
+        triggers: [
+          "breed", "dog", ...dogAliases, "for", "good for", "recommended", (dog.group_suit||"").toLowerCase(), (dog.job_suit||"").toLowerCase(), (dog.activity_suit||"").toLowerCase()
+        ],
         question: `${dataOne} for ${dog.displayAs}?`,
-        keywords: dogKeywords(dog),
+        keywords: [...dogKeywords(dog), ...dogAliases],
         answer: `${dataOne} is recommended for ${dog.displayAs}.`
       });
     }
   });
-  safeArray(row['dogKeys_ac']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(act => {
-    s.push({
-      type: "dog-activity",
-      triggers: ["activity", "active", "good for", "recommended", act.toLowerCase()],
-      question: `${dataOne} for ${act}?`,
-      keywords: [act.toLowerCase()],
-      answer: `${dataOne} is recommended for ${act}.`
-    });
+
+  // Activities, Jobs, Groups (parse comma-list, dedupe, and add as separate suggestions)
+  const tagVariants = [
+    { key: 'activity-suit', type: 'dog-activity', label: 'activity' },
+    { key: 'group-suit',    type: 'dog-group',    label: 'group' },
+    { key: 'job-suit',      type: 'dog-job',      label: 'job' }
+  ];
+  tagVariants.forEach(({key, type, label}) => {
+    if (row[key]) {
+      row[key].split(",").map(x=>x.trim()).filter(Boolean).forEach(tag => {
+        const tagKey = `${type}:${tag}`;
+        if (!dogSeen.has(tagKey)) {
+          dogSeen.add(tagKey);
+          s.push({
+            type,
+            triggers: [label, tag.toLowerCase(), "for", "good for", "recommended"],
+            question: `${dataOne} for ${tag}?`,
+            keywords: [tag.toLowerCase()],
+            answer: `${dataOne} is recommended for ${tag}.`
+          });
+        }
+      });
+    }
   });
-  safeArray(row['dogKeys_gp']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(gp => {
+
+  // Activity level (as a quick suggestion)
+  if (row["activity-level"]) {
     s.push({
-      type: "dog-group",
-      triggers: ["group", "for", "good for", "recommended", gp.toLowerCase()],
-      question: `${dataOne} for group: ${gp}?`,
-      keywords: [gp.toLowerCase()],
-      answer: `${dataOne} is recommended for group: ${gp}.`
+      type: "dog-activity-level",
+      triggers: ["activity level", row["activity-level"].toLowerCase(), "level", "energy", "active", "for"],
+      question: `${dataOne} for ${row["activity-level"]} dogs?`,
+      keywords: [row["activity-level"].toLowerCase()],
+      answer: `${dataOne} is best for ${row["activity-level"]} dogs.`
     });
-  });
-  safeArray(row['dogKeys_jb']).join(",").split(",").map(x=>x.trim()).filter(Boolean).forEach(jb => {
+  }
+
+  // Default breed as fallback (Active Adult, 60 lbs)
+  if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
     s.push({
-      type: "dog-job",
-      triggers: ["job", "for", "good for", "recommended", jb.toLowerCase()],
-      question: `${dataOne} for job: ${jb}?`,
-      keywords: [jb.toLowerCase()],
-      answer: `${dataOne} is recommended for job: ${jb}.`
+      type: "dog-default",
+      triggers: ["breed", "dog", "active", "adult", "default", "60 lbs", "average"],
+      question: `${dataOne} for Active Adult (60 lbs)?`,
+      keywords: ["active adult", "60 lbs", "average", "default"],
+      answer: `${dataOne} is recommended for an active adult dog (60 lbs).`
     });
-  });
+  }
 
   return s;
 }
+
 
 // --- MAIN INIT ---
 export function initSearchSuggestions() {
