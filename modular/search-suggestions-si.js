@@ -95,9 +95,187 @@ function dogKeywords(dog) {
   return Array.from(new Set(fields.filter(Boolean).map(s => s.toLowerCase())));
 }
 
-// --- AGNOSTIC SUGGESTIONS ---
+function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
+  const s = [];
+  const dataOne = row['data-one'];
 
-  // (1) VA AGNOSTIC SUGGESTIONS (Best calorie-dense kibble? etc)
+  // --- INGREDIENT CONTAINS ---
+  const containsSeen = new Set();
+  safeArray(row['ing-data-fives']).forEach(d5 => {
+    const ing = ingMap[d5];
+    if (!ing || !ing.displayAs) return;
+    const displayAs = ing.displayAs;
+    if (!containsSeen.has(displayAs)) {
+      containsSeen.add(displayAs);
+      s.push({
+        type: "ingredient-contains",
+        triggers: allIngredientKeywords(ing),
+        question: `Does ${dataOne} contain ${displayAs}?`,
+        keywords: allIngredientKeywords(ing),
+        answer: `Yes, ${dataOne} contains ${displayAs}.`,
+        'data-sort': ing['data-sort'] ?? 999
+      });
+    }
+  });
+
+  // --- INGREDIENT NOT-CONTAINS (free-from) ---
+  const notSeen = new Set();
+  safeArray(row['not-data-fives']).forEach(d5 => {
+    const ing = ingMap[d5];
+    if (!ing || !ing.displayAs) return;
+    const displayAs = ing.displayAs;
+    if (!notSeen.has(displayAs)) {
+      notSeen.add(displayAs);
+      s.push({
+        type: "ingredient-not-contains",
+        triggers: [...allIngredientKeywords(ing), ...notTriggers, ...freeTriggers],
+        question: `Does ${dataOne} contain ${displayAs}?`,
+        keywords: allIngredientKeywords(ing),
+        answer: `No, ${dataOne} does not contain ${displayAs}.`,
+        'data-sort': ing['data-sort'] ?? 999
+      });
+    }
+  });
+
+  // --- FREE OF (poultry, legumes, grain) ---
+  ["data-legumes","data-poultry","data-grain"].forEach(key => {
+    if (row[key]) {
+      const diet = row[key].replace(/ Free|-free|free/gi, '').trim();
+      if (!diet) return;
+      s.push({
+        type: "free-of",
+        triggers: [diet.toLowerCase(), ...freeTriggers, `${diet.toLowerCase()} free`],
+        question: `Is ${dataOne} free of ${diet}?`,
+        keywords: [diet.toLowerCase(), "free", `${diet.toLowerCase()} free`],
+        answer: `Yes, ${dataOne} is free of ${diet}.`,
+        'data-sort': row[`${key}-sort`] ?? 999
+      });
+    }
+  });
+
+  // --- VA-FORMULA-SPECIFIC (value-adds) ---
+  safeArray(row['va-data-fives']).forEach(d5 => {
+    const va = vaMap[d5];
+    if (!va || !va['data-one']) return;
+    const q = `Is ${dataOne} ${va['data-one'].toLowerCase()}?`;
+    const a = va.cf_description?.trim()
+      || `${dataOne} is crafted for ${va['data-one'].toLowerCase()}.`;
+    s.push({
+      type: "va-formula-specific",
+      triggers: vaKeywords(va),
+      question: q,
+      keywords: vaKeywords(va),
+      answer: a,
+      'data-sort': (typeof va['data-sort'] === 'number' ? va['data-sort'] : 999)
+    });
+  });
+
+  // --- FACTS (protein %, fat %, etc) ---
+  FACTS.forEach(f => {
+    if (row[f.key] !== undefined && row[f.key] !== null && row[f.key] !== "") {
+      const val = row[f.key];
+      const label = f.label.replace(/[(%)]/g, '').trim();
+      s.push({
+        type: "fact",
+        triggers: [label.toLowerCase(), ...f.aliases.map(a => a.toLowerCase())],
+        question: `What is the ${label} in ${dataOne}?`,
+        keywords: [...f.aliases.map(a => a.toLowerCase()), label.toLowerCase()],
+        answer: `${dataOne} contains ${val} ${label}.`,
+        'data-sort': f['data-sort'] ?? 999
+      });
+    }
+  });
+
+  // --- DOG BREED RECOMMENDATIONS ---
+  const dogSeen = new Set();
+  const mappedDogObjs = safeArray(row['dogBr-fives'])
+    .map(d5 => dogMap[d5])
+    .filter(dog => !!dog);
+
+  mappedDogObjs.forEach(dog => {
+    if (!dog['data-one'] || dogSeen.has(dog['data-one'])) return;
+    dogSeen.add(dog['data-one']);
+    s.push({
+      type: "dog-breed",
+      triggers: dogKeywords(dog),
+      question: `Is ${dataOne} recommended for ${dog['data-one']}?`,
+      keywords: dogKeywords(dog),
+      answer: `Yes, ${dataOne} is recommended for ${dog['data-one']}.`,
+      'data-sort': (typeof dog['data-sort'] === 'number' ? dog['data-sort'] : 999)
+    });
+  });
+
+  // --- DOG SUITABILITY GROUPS/ACTIVITIES/JOBS/LEVELS ---
+  function collectAllFromDogs(field) {
+    return Array.from(new Set(
+      mappedDogObjs.flatMap(dog => (dog[field] || '').split(',').map(s => s.trim()).filter(Boolean))
+    ));
+  }
+  collectAllFromDogs('group-suit').forEach(group => {
+    if (dogSeen.has('group:' + group)) return;
+    dogSeen.add('group:' + group);
+    s.push({
+      type: "dog-group",
+      triggers: [group.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${group}?`,
+      keywords: [group.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${group}.`,
+      'data-sort': 999
+    });
+  });
+  collectAllFromDogs('activity-suit').forEach(activity => {
+    if (dogSeen.has('activity:' + activity)) return;
+    dogSeen.add('activity:' + activity);
+    s.push({
+      type: "dog-activity",
+      triggers: [activity.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${activity}?`,
+      keywords: [activity.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${activity}.`,
+      'data-sort': 999
+    });
+  });
+  collectAllFromDogs('job-suit').forEach(job => {
+    if (dogSeen.has('job:' + job)) return;
+    dogSeen.add('job:' + job);
+    s.push({
+      type: "dog-job",
+      triggers: [job.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${job}?`,
+      keywords: [job.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${job}.`,
+      'data-sort': 999
+    });
+  });
+  collectAllFromDogs('activity-level').forEach(level => {
+    if (dogSeen.has('level:' + level)) return;
+    dogSeen.add('level:' + level);
+    s.push({
+      type: "dog-activity-level",
+      triggers: [level.toLowerCase()],
+      question: `Is ${dataOne} suitable for ${level} dogs?`,
+      keywords: [level.toLowerCase()],
+      answer: `Yes, ${dataOne} is suitable for ${level} dogs.`,
+      'data-sort': 999
+    });
+  });
+
+  // --- FALLBACK (generic active adult dog) ---
+  if (!row['dogBr-fives'] || !row['dogBr-fives'].length) {
+    const fallback = ["active adult", "breed", "dog", "60 lbs", "average", "default"];
+    s.push({
+      type: "dog-default",
+      triggers: fallback,
+      question: `Is ${dataOne} recommended for an active adult (60 lbs)?`,
+      keywords: fallback,
+      answer: `${dataOne} is recommended for an active adult dog (60 lbs).`,
+      'data-sort': 999
+    });
+  }
+
+  // --- AGNOSTIC SUGGESTIONS ---
+
+  // (1) VA AGNOSTIC SUGGESTIONS
   if (Array.isArray(VA_AGNOSTIC)) {
     VA_AGNOSTIC.forEach(va => {
       if (
@@ -124,7 +302,7 @@ function dogKeywords(dog) {
     });
   }
 
-  // (2) DOG/BREED AGNOSTIC SUGGESTIONS (Best kibble for Rottweilers? etc)
+  // (2) DOG/BREED AGNOSTIC SUGGESTIONS
   if (Array.isArray(DOG_AGNOSTIC)) {
     DOG_AGNOSTIC.forEach(dog => {
       if (
@@ -151,7 +329,7 @@ function dogKeywords(dog) {
     });
   }
 
-  // (3) VA+DOG AGNOSTIC SUGGESTIONS (Best calorie-dense kibble for Rottweilers? etc)
+  // (3) VA+DOG AGNOSTIC SUGGESTIONS
   if (Array.isArray(DOG_AGNOSTIC) && Array.isArray(VA_AGNOSTIC)) {
     DOG_AGNOSTIC.forEach(dog => {
       if (
