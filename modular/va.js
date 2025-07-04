@@ -1,4 +1,5 @@
-export const VA_DATA = {
+
+ export const VA_DATA = {
   "VYSPN": {
     "Name": "Calorie Dense",
     "Slug": "calorie-dense-dry-dog-food",
@@ -103,14 +104,10 @@ export const VA_DATA = {
       "81XCU"
     ],
     "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+      "29280"
     ],
     "sf-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+      "29280"
     ],
     "dog-data-fives": [
       "GAQ7O",
@@ -158,14 +155,10 @@ export const VA_DATA = {
       "NVHW0"
     ],
     "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+      "29280"
     ],
     "sf-data-fives": [
-      "29280",
-      "29099",
-      "28979"
+      "29280"
     ],
     "dog-data-fives": "9V6Z8"
   },
@@ -350,73 +343,13 @@ export const VA_DATA = {
     ],
     "si-data-fives": [
       "29280",
-      "29099",
-      "28979"
+      "29099"
     ],
     "sf-data-fives": [
       "29280",
-      "29099",
-      "28979"
+      "29099"
     ],
     "dog-data-fives": ""
-  },
-  "MXQV1": {
-    "Name": "Balanced Nutrition",
-    "Slug": "premium-dog-food-for-balanced-nutrition",
-    "Collection ID": "647ddb9037101ce399b331ed",
-    "Item ID": "6852c5f22feae61b10b78904",
-    "canonical": "premium-dog-food-for-balanced-nutrition",
-    "recordId": "rec6X7GHmvXeMxqV1",
-    "recordType": "",
-    "recordStatus": "",
-    "calcSlug": "",
-    "vaName": "Balanced Nutrition",
-    "data-five": "MXQV1",
-    "data-sort": 8,
-    "data-one": "Balanced Nutrition",
-    "previewengine": "",
-    "previewAlttag": "",
-    "cf_description": "",
-    "data-faqType": "va",
-    "typed_intro": "",
-    "manual_faq_enabled": "",
-    "tone_override_tagline": "",
-    "tone_override_subtitle": "",
-    "section-h1": "",
-    "section-name": "",
-    "section-p": "",
-    "section-prompt": "",
-    "persona_context": "",
-    "data-keys": "complete and balanced dog food, well-rounded nutrition, meets all AAFCO standards, nutrient-balanced kibble, all-in-one nutrition for dogs",
-    "ing-data-fives": [
-      "IIDS9",
-      "KEB4Z",
-      "UQ30T",
-      "UDMZM"
-    ],
-    "si-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ],
-    "sf-data-fives": [
-      "29280",
-      "29099",
-      "28979"
-    ],
-    "dog-data-fives": [
-      "KCDKK",
-      "GAQ7O",
-      "WBT8X",
-      "OSXWL",
-      "PEG2O",
-      "HKAHU",
-      "UTHHC",
-      "ZM6ZC",
-      "B9REG",
-      "RNAPM",
-      "BRTGB"
-    ]
   },
   "JDRWK": {
     "Name": "Healthy Skin and Coat",
@@ -510,13 +443,11 @@ export const VA_DATA = {
     ],
     "si-data-fives": [
       "29280",
-      "29099",
-      "28979"
+      "29099"
     ],
     "sf-data-fives": [
       "29280",
-      "29099",
-      "28979"
+      "29099"
     ],
     "dog-data-fives": ""
   },
@@ -796,41 +727,12 @@ export const VA_DATA = {
     "persona_context": "",
     "data-keys": "",
     "ing-data-fives": [],
-    "si-data-fives": [],
-    "sf-data-fives": [],
-    "dog-data-fives": ""
-  },
-  "RU3DD": {
-    "Name": "High Protein",
-    "Slug": "",
-    "Collection ID": "",
-    "Item ID": "",
-    "canonical": "",
-    "recordId": "recV9JwvaKuCru3DD",
-    "recordType": "",
-    "recordStatus": "",
-    "calcSlug": "",
-    "vaName": "",
-    "data-five": "RU3DD",
-    "data-sort": "",
-    "data-one": "",
-    "previewengine": "",
-    "previewAlttag": "",
-    "cf_description": "",
-    "data-faqType": "va",
-    "typed_intro": "",
-    "manual_faq_enabled": "",
-    "tone_override_tagline": "",
-    "tone_override_subtitle": "",
-    "section-h1": "",
-    "section-name": "",
-    "section-p": "",
-    "section-prompt": "",
-    "persona_context": "",
-    "data-keys": "",
-    "ing-data-fives": [],
-    "si-data-fives": [],
-    "sf-data-fives": [],
+    "si-data-fives": [
+      "29280"
+    ],
+    "sf-data-fives": [
+      "29280"
+    ],
     "dog-data-fives": ""
   },
   "KFWMD": {
@@ -862,8 +764,12 @@ export const VA_DATA = {
     "persona_context": "",
     "data-keys": "",
     "ing-data-fives": [],
-    "si-data-fives": [],
-    "sf-data-fives": [],
+    "si-data-fives": [
+      "28979"
+    ],
+    "sf-data-fives": [
+      "28979"
+    ],
     "dog-data-fives": ""
   },
   "VTQGN": {
@@ -895,12 +801,16 @@ export const VA_DATA = {
     "persona_context": "",
     "data-keys": "",
     "ing-data-fives": [],
-    "si-data-fives": [],
-    "sf-data-fives": [],
+    "si-data-fives": [
+      "29280"
+    ],
+    "sf-data-fives": [
+      "29280"
+    ],
     "dog-data-fives": ""
   },
   "VDTXI": {
-    "Name": "No Peas",
+    "Name": "Peas Free",
     "Slug": "",
     "Collection ID": "",
     "Item ID": "",
@@ -928,8 +838,17 @@ export const VA_DATA = {
     "persona_context": "",
     "data-keys": "",
     "ing-data-fives": [],
-    "si-data-fives": [],
-    "sf-data-fives": [],
+    "si-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
+    "sf-data-fives": [
+      "29280",
+      "29099",
+      "28979"
+    ],
     "dog-data-fives": ""
   }
 };
+
