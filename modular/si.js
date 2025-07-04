@@ -1,5 +1,6 @@
 export const SI_DATA =
-[
+
+ [
   {
     "Name": "Cub Puppy",
     "Slug": "premium-cub-puppy-peas-free-dog-food",
@@ -477,7 +478,6 @@ export const SI_DATA =
       "VYSPN",
       "1UH7O",
       "SKYQA",
-      "MXQV1",
       "MBUVJ",
       "TQRAE",
       "JDRWK",
@@ -486,7 +486,10 @@ export const SI_DATA =
       "KJCYZ",
       "GKJX3",
       "ZIFVT",
-      "F2O7T"
+      "F2O7T",
+      "VDTXI",
+      "WREGA",
+      "VTQGN"
     ],
     "Product ID": "084282929280",
     "specs_in_stock": "",
@@ -988,20 +991,18 @@ export const SI_DATA =
     ],
     "sf-data-five": "29099",
     "va-data-fives": [
-      "NG6TL",
       "VYSPN",
       "1UH7O",
       "SKYQA",
-      "MXQV1",
       "MBUVJ",
-      "TQRAE",
       "JDRWK",
       "VFKR6",
       "9QHMW",
       "KJCYZ",
       "GKJX3",
       "ZIFVT",
-      "F2O7T"
+      "F2O7T",
+      "VDTXI"
     ],
     "Product ID": "084282929099",
     "specs_in_stock": "",
@@ -1507,20 +1508,17 @@ export const SI_DATA =
     ],
     "sf-data-five": "28979",
     "va-data-fives": [
-      "NG6TL",
       "VYSPN",
-      "1UH7O",
       "SKYQA",
-      "MBUVJ",
-      "TQRAE",
       "JDRWK",
       "VFKR6",
       "9QHMW",
       "KJCYZ",
-      "MXQV1",
       "GKJX3",
       "ZIFVT",
-      "F2O7T"
+      "F2O7T",
+      "KFWMD",
+      "VDTXI"
     ],
     "Product ID": "084282928979",
     "specs_in_stock": true,
@@ -1546,5 +1544,6 @@ export const SI_DATA =
     "ga_vitamin_b12_ui_per_kg": 0,
     "aafco-options": "Formulated to meet the nutritional levels established by the AAFCO Dog Food Nutrient Profiles for All Life Stages, including growth of large size dogs (70 lb. or more as an adult).",
     "aafco-short": "For all life stages"
+
   }
 ];
