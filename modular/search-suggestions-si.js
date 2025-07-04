@@ -8,15 +8,9 @@ import { DOG_DATA }   from './dog.js';
 
 console.log("[SI] Module loaded. SI_DATA, ING_ANIM, ING_PLANT, ING_SUPP, VA_DATA, DOG_DATA imported.");
 
-const notTriggers = [
-  "does not", "doesn't", "dont", "don't", "without", "free of", "not contain", "excludes", "exclude", "minus", "no", "not"
-];
-const freeTriggers = [
-  "free", "free of", "without", "minus", "no"
-];
-const vaTriggers = [
-  "has", "with", "feature", "includes", "plus", "added", "value", "benefit"
-];
+const notTriggers = [ "does not", "doesn't", "dont", "don't", "without", "free of", "not contain", "excludes", "exclude", "minus", "no", "not" ];
+const freeTriggers = [ "free", "free of", "without", "minus", "no" ];
+const vaTriggers = [ "has", "with", "feature", "includes", "plus", "added", "value", "benefit" ];
 
 const FACTS = [
   { key: "ga_crude_protein_%", label: "Protein (%)", aliases: ["protein", "crude protein", "protein %"] },
@@ -98,8 +92,37 @@ function dogKeywords(dog) {
   return Array.from(new Set(fields.filter(Boolean).map(s => s.toLowerCase())));
 }
 
+// --- AGNOSTIC SUGGESTION HELPERS ---
+
+function formulaName(row) {
+  return row && (row['data-one'] || row.Name || row['formula-name'] || row['title']) || "(unknown)";
+}
+function allUniqueVATags() {
+  // Collect all va-tags (comma separated) from SI_DATA
+  return Array.from(
+    new Set([].concat(...SI_DATA.map(r => (r['va-tags']||"").split(',').map(s=>s.trim()).filter(Boolean))))
+  );
+}
+function formulasWithVATag(tag) {
+  if (!tag) return [];
+  return SI_DATA.filter(row =>
+    (row['va-tags'] && row['va-tags'].toLowerCase().includes(tag.toLowerCase()))
+    || (row['data-legumes'] && tag.includes('legume') && row['data-legumes'].toLowerCase().includes('free'))
+    || (row['data-poultry'] && tag.includes('poultry') && row['data-poultry'].toLowerCase().includes('free'))
+    || (row['data-grain'] && tag.includes('grain') && row['data-grain'].toLowerCase().includes('free'))
+  );
+}
+function formulasForDogTag(dogTag) {
+  if (!dogTag) return [];
+  let dog = DOG_DATA.find(d => d['data-one'] && d['data-one'].toLowerCase() === dogTag.toLowerCase());
+  if (!dog || !dog['si-data-fives']) return [];
+  let ids = (Array.isArray(dog['si-data-fives']) ? dog['si-data-fives'] : String(dog['si-data-fives']).split(',')).map(s=>String(s).trim()).filter(Boolean);
+  return ids.map(id => SI_DATA.find(r => String(r['data-five']) === id)).filter(Boolean);
+}
+
+// --- EXTEND buildSiSuggestions WITH AGNOSTIC ENTRIES ---
 function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
-  console.log("[SI] buildSiSuggestions running...");
+  // --- EXISTING FORMULA-SPECIFIC LOGIC ---
   const s = [];
   const dataOne = row['data-one'];
 
@@ -157,11 +180,11 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   safeArray(row['va-data-fives']).forEach(d5 => {
     const va = vaMap[d5];
     if (!va || !va['data-one']) return;
-    const q = `Does ${dataOne} help with ${va['data-one']}?`;
+    const q = `Is ${dataOne} ${va['data-one'].toLowerCase()}?`;
     const a = va.cf_description?.trim()
       || `${dataOne} is crafted for ${va['data-one'].toLowerCase()}.`;
     s.push({
-      type: "value-add",
+      type: "va-formula-specific",
       triggers: vaKeywords(va),
       question: q,
       keywords: vaKeywords(va),
@@ -268,9 +291,72 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
       'data-sort': 999
     });
   }
+
+  // --- AGNOSTIC SUGGESTIONS ---
+
+  // (1) Agnostic VA (all formulas)
+  allUniqueVATags().forEach(tag => {
+    let bestFormulas = formulasWithVATag(tag).map(formulaName);
+    if (bestFormulas.length) {
+      s.push({
+        type: "va-agnostic",
+        triggers: [tag.toLowerCase(), ...freeTriggers],
+        question: `Best ${tag.replace(/-/g, ' ')} kibble?`,
+        keywords: [tag.toLowerCase()],
+        answer: `Formulas: ${bestFormulas.join(", ")}`
+      });
+    }
+  });
+  // Dog food without X (legumes, poultry, grain)
+  ["legumes","poultry","grain"].forEach(tag=>{
+    let bestFormulas = formulasWithVATag(`${tag}-free`).map(formulaName);
+    if (bestFormulas.length) {
+      s.push({
+        type: "va-agnostic",
+        triggers: [tag, "without", "free"],
+        question: `Dog food without ${tag}?`,
+        keywords: [tag, "without", "free"],
+        answer: `Formulas without ${tag}: ${bestFormulas.join(", ")}`
+      });
+    }
+  });
+
+  // (2) Dog/Breed agnostic
+  DOG_DATA.forEach(dog => {
+    let formulas = formulasForDogTag(dog['data-one']);
+    if (dog['data-one'] && formulas.length) {
+      s.push({
+        type: "dog-agnostic",
+        triggers: [dog['data-one'].toLowerCase()],
+        question: `Best kibble for ${dog['data-one']}?`,
+        keywords: [dog['data-one'].toLowerCase()],
+        answer: `Recommended formulas for ${dog['data-one']}: ${formulas.map(formulaName).join(", ")}`
+      });
+    }
+  });
+
+  // (3) VA + dog/breed agnostic
+  DOG_DATA.forEach(dog => {
+    let dogFormulas = formulasForDogTag(dog['data-one']);
+    let tags = Array.from(new Set([].concat(...dogFormulas.map(f => (f['va-tags']||"").split(',').map(s=>s.trim()).filter(Boolean)))));
+    tags.forEach(tag => {
+      let matchingFormulas = dogFormulas.filter(f => (f['va-tags']||"").split(',').map(s=>s.trim()).includes(tag)).map(formulaName);
+      if (dog['data-one'] && tag && matchingFormulas.length) {
+        s.push({
+          type: "va-dog-agnostic",
+          triggers: [tag.toLowerCase(), dog['data-one'].toLowerCase()],
+          question: `Best ${tag.replace(/-/g, ' ')} kibble for ${dog['data-one']}?`,
+          keywords: [tag.toLowerCase(), dog['data-one'].toLowerCase()],
+          answer: `Recommended ${tag.replace(/-/g, ' ')} formulas for ${dog['data-one']}: ${matchingFormulas.join(", ")}`
+        });
+      }
+    });
+  });
+
   return s;
 }
 
+// -------------------- UI LOGIC (unchanged) --------------------
 export function initSearchSuggestions() {
   console.log("[SI] initSearchSuggestions called!");
   const input    = document.getElementById('pwr-prompt-input');
@@ -301,38 +387,21 @@ export function initSearchSuggestions() {
 
   console.log("[SI] Suggestions built:", suggestions.length);
 
-  const fuse = new Fuse(suggestions, {
-    keys: ['question','keywords','triggers'],
-    threshold: 0.36,
-    distance: 60
-  });
-
   function renderStarter() {
-    console.log("[SI] renderStarter called!");
     starter.innerHTML = '';
-    const pillTypes = [
-      "ingredient-contains", "ingredient-not-contains",
-      "free-of", "value-add", "fact", "dog-breed"
-    ];
-    pillTypes.forEach(type => {
-      suggestions
-        .filter(item => item.type === type)
-        .slice(0, 2)
-        .forEach(item => {
-          const a = document.createElement('button');
-          a.className = 'pwr-suggestion-pill';
-          a.textContent = item.question;
-          a.addEventListener('click', e => {
-            e.preventDefault();
-            input.value = item.question;
-            list.style.display = 'none';
-            showAnswer(item.answer);
-          });
-          starter.appendChild(a);
-        });
+    suggestions.slice(0, 6).forEach(item => {
+      const a = document.createElement('button');
+      a.className = 'pwr-suggestion-pill';
+      a.textContent = item.question;
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        input.value = item.question;
+        list.style.display = 'none';
+        showAnswer(item.answer);
+      });
+      starter.appendChild(a);
     });
     starter.style.display = 'flex';
-    console.log("[SI] Starter pills rendered:", starter.children.length);
   }
 
   function showAnswer(text) {
@@ -345,14 +414,12 @@ export function initSearchSuggestions() {
     }
     starter.style.display = 'none';
     list.style.display    = 'none';
-    console.log("[SI] showAnswer called:", text);
   }
   function resetAll() {
     input.value = '';
     list.style.display    = 'none';
     starter.style.display = 'flex';
     answerBox.style.display = 'none';
-    console.log("[SI] resetAll called!");
   }
 
   input.addEventListener('input', () => {
@@ -366,9 +433,6 @@ export function initSearchSuggestions() {
     starter.style.display = 'none';
 
     const queryWords = q.split(/\s+/).filter(Boolean);
-    const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
-    const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
-
     function matchItem(item) {
       const fields = [...(item.triggers||[]), ...(item.keywords||[])];
       return queryWords.every(word =>
@@ -376,40 +440,7 @@ export function initSearchSuggestions() {
       );
     }
 
-    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && matchItem(item));
-    const vaMatch = suggestions.filter(item => item.type === "value-add" && matchItem(item));
-
-    let results = [];
-
-    if (isFact) {
-      results = suggestions.filter(item => item.type === "fact" && matchItem(item));
-    } else if (dogMatch.length) {
-      results = dogMatch;
-    } else if (vaMatch.length) {
-      results = vaMatch;
-    } else if (isNegative) {
-      results = suggestions.filter(item => (item.type === "ingredient-not-contains" || item.type === "free-of") && matchItem(item));
-    } else {
-      results = suggestions.filter(item =>
-        (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
-        matchItem(item)
-      );
-      if (!results.length) {
-        results = suggestions.filter(item =>
-          item.type.startsWith("dog-") ||
-          item.type === "value-add" ||
-          item.type === "fact"
-        ).filter(matchItem);
-      }
-    }
-
-    if (results.length && typeof results[0]['data-sort'] !== 'undefined') {
-      results.sort((a, b) => {
-        const sa = (a['data-sort'] === null || a['data-sort'] === undefined || a['data-sort'] === '') ? 999 : Number(a['data-sort']);
-        const sb = (b['data-sort'] === null || b['data-sort'] === undefined || b['data-sort'] === '') ? 999 : Number(b['data-sort']);
-        return sa - sb;
-      });
-    }
+    let results = suggestions.filter(matchItem);
 
     if (!results.length) {
       const li = document.createElement('li');
@@ -418,19 +449,17 @@ export function initSearchSuggestions() {
       li.style.pointerEvents = 'none';
       list.appendChild(li);
     } else {
-    results.slice(0, 7).forEach(item => {
-  const li = document.createElement('li');
-  li.textContent = item.question;
-  li.addEventListener('click', () => {
-    input.value = item.question;
-    showAnswer(item.answer);
-  });
-  list.appendChild(li);
-});
-
+      results.slice(0, 7).forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item.question;
+        li.addEventListener('click', () => {
+          input.value = item.question;
+          showAnswer(item.answer);
+        });
+        list.appendChild(li);
+      });
     }
     list.style.display = 'block';
-    console.log("[SI] Suggestions list rendered:", results.length);
   });
 
   clearBtn.addEventListener('click', resetAll);
@@ -439,46 +468,16 @@ export function initSearchSuggestions() {
     if (!q) return;
 
     const queryWords = q.split(/\s+/).filter(Boolean);
-    const isNegative = notTriggers.some(tr => q.includes(tr)) || freeTriggers.some(tr => q.includes(tr));
-    const isFact = FACT_ALIASES.some(alias => alias.startsWith(q) || q.startsWith(alias) || alias.includes(q));
-
     function matchItem(item) {
       const fields = [...(item.triggers||[]), ...(item.keywords||[])];
       return queryWords.every(word =>
         fields.some(field => field === word || field.startsWith(word) || field.includes(word))
       );
     }
-
-    const dogMatch = suggestions.filter(item => item.type.startsWith("dog-") && matchItem(item));
-    const vaMatch = suggestions.filter(item => item.type === "value-add" && matchItem(item));
-
-    let found = [];
-
-    if (isFact) {
-      found = suggestions.filter(item => item.type === "fact" && matchItem(item));
-    } else if (dogMatch.length) {
-      found = dogMatch;
-    } else if (vaMatch.length) {
-      found = vaMatch;
-    } else if (isNegative) {
-      found = suggestions.filter(item => (item.type === "ingredient-not-contains" || item.type === "free-of") && matchItem(item));
-    } else {
-      found = suggestions.filter(item =>
-        (item.type === "ingredient-contains" || item.type === "ingredient-not-contains" || item.type === "free-of") &&
-        matchItem(item)
-      );
-      if (!found.length) {
-        found = suggestions.filter(item =>
-          item.type.startsWith("dog-") ||
-          item.type === "value-add" ||
-          item.type === "fact"
-        ).filter(matchItem);
-      }
-    }
+    let found = suggestions.filter(matchItem);
 
     if (found.length) showAnswer(found[0].answer || 'No answer set.');
     else showAnswer('No answer set.');
-    console.log("[SI] Enter key processed. Results:", found.length);
   }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
