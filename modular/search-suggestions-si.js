@@ -5,6 +5,9 @@ import { ING_PLANT }  from './ingPlant.js';
 import { ING_SUPP }   from './ingSupp.js';
 import { VA_DATA }    from './va.js';
 import { DOG_DATA }   from './dog.js';
+import { VA_AGNOSTIC } from './vaAgn.js';
+import { DOG_AGNOSTIC } from './dogAgn.js';
+
 
 console.log("[SI] Module loaded. SI_DATA, ING_ANIM, ING_PLANT, ING_SUPP, VA_DATA, DOG_DATA imported.");
 
@@ -293,68 +296,70 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   }
 
   // --- AGNOSTIC SUGGESTIONS ---
+// --- AGNOSTIC SUGGESTIONS ---
 
-  // (1) Agnostic VA (all formulas)
-  allUniqueVATags().forEach(tag => {
-    let bestFormulas = formulasWithVATag(tag).map(formulaName);
-    if (bestFormulas.length) {
-      s.push({
-        type: "va-agnostic",
-        triggers: [tag.toLowerCase(), ...freeTriggers],
-        question: `Best ${tag.replace(/-/g, ' ')} kibble?`,
-        keywords: [tag.toLowerCase()],
-        answer: `Formulas: ${bestFormulas.join(", ")}`
-      });
-    }
-  });
-  // Dog food without X (legumes, poultry, grain)
-  ["legumes","poultry","grain"].forEach(tag=>{
-    let bestFormulas = formulasWithVATag(`${tag}-free`).map(formulaName);
-    if (bestFormulas.length) {
-      s.push({
-        type: "va-agnostic",
-        triggers: [tag, "without", "free"],
-        question: `Dog food without ${tag}?`,
-        keywords: [tag, "without", "free"],
-        answer: `Formulas without ${tag}: ${bestFormulas.join(", ")}`
-      });
-    }
-  });
-
-  // (2) Dog/Breed agnostic
-  DOG_DATA.forEach(dog => {
-    let formulas = formulasForDogTag(dog['data-one']);
-    if (dog['data-one'] && formulas.length) {
-      s.push({
-        type: "dog-agnostic",
-        triggers: [dog['data-one'].toLowerCase()],
-        question: `Best kibble for ${dog['data-one']}?`,
-        keywords: [dog['data-one'].toLowerCase()],
-        answer: `Recommended formulas for ${dog['data-one']}: ${formulas.map(formulaName).join(", ")}`
-      });
-    }
-  });
-
-  // (3) VA + dog/breed agnostic
-  DOG_DATA.forEach(dog => {
-    let dogFormulas = formulasForDogTag(dog['data-one']);
-    let tags = Array.from(new Set([].concat(...dogFormulas.map(f => (f['va-tags']||"").split(',').map(s=>s.trim()).filter(Boolean)))));
-    tags.forEach(tag => {
-      let matchingFormulas = dogFormulas.filter(f => (f['va-tags']||"").split(',').map(s=>s.trim()).includes(tag)).map(formulaName);
-      if (dog['data-one'] && tag && matchingFormulas.length) {
-        s.push({
-          type: "va-dog-agnostic",
-          triggers: [tag.toLowerCase(), dog['data-one'].toLowerCase()],
-          question: `Best ${tag.replace(/-/g, ' ')} kibble for ${dog['data-one']}?`,
-          keywords: [tag.toLowerCase(), dog['data-one'].toLowerCase()],
-          answer: `Recommended ${tag.replace(/-/g, ' ')} formulas for ${dog['data-one']}: ${matchingFormulas.join(", ")}`
-        });
-      }
+// AGNOSTIC VA SUGGESTIONS (Best calorie-dense kibble? etc)
+VA_AGNOSTIC.forEach(va => {
+  // Only include if at least 1 related formula
+  if (Array.isArray(va.ids) && va.ids.length) {
+    s.push({
+      type: "va-agnostic",
+      triggers: va.triggers || [va.tag.toLowerCase()],
+      question: `Best ${va.tag.replace(/-/g, ' ')} kibble?`,
+      keywords: va.triggers || [va.tag.toLowerCase()],
+      answer: `Try formulas: ${va.ids.map(id => {
+        // Try to find display name from SI_DATA
+        const row = SI_DATA.find(r => String(r['data-five']) === String(id));
+        return row ? (row['data-one'] || row.Name || id) : id;
+      }).join(", ")}`,
+      description: va.description || ""
     });
-  });
+  }
+});
 
-  return s;
+// AGNOSTIC DOG/BREED SUGGESTIONS (Best kibble for Rottweilers? etc)
+DOG_AGNOSTIC.forEach(dog => {
+  if (Array.isArray(dog.ids) && dog.ids.length) {
+    s.push({
+      type: "dog-agnostic",
+      triggers: [dog.tag.toLowerCase()],
+      question: `Best kibble for ${dog.tag}?`,
+      keywords: [dog.tag.toLowerCase()],
+      answer: `Recommended formulas for ${dog.tag}: ${dog.ids.map(id => {
+        const row = SI_DATA.find(r => String(r['data-five']) === String(id));
+        return row ? (row['data-one'] || row.Name || id) : id;
+      }).join(", ")}`,
+      description: dog.description || ""
+    });
+  }
+});
+
+// AGNOSTIC VA+DOG SUGGESTIONS (Best calorie-dense kibble for Rottweilers? etc)
+DOG_AGNOSTIC.forEach(dog => {
+  if (!Array.isArray(dog.ids) || !dog.tag) return;
+  VA_AGNOSTIC.forEach(va => {
+    if (!Array.isArray(va.ids) || !va.tag) return;
+    // Find formulas that appear in BOTH
+    const matches = va.ids.filter(id => dog.ids.includes(id));
+    if (matches.length) {
+      s.push({
+        type: "va-dog-agnostic",
+        triggers: [va.tag.toLowerCase(), dog.tag.toLowerCase()],
+        question: `Best ${va.tag.replace(/-/g, ' ')} kibble for ${dog.tag}?`,
+        keywords: [va.tag.toLowerCase(), dog.tag.toLowerCase()],
+        answer: `Recommended ${va.tag.replace(/-/g, ' ')} formulas for ${dog.tag}: ${matches.map(id => {
+          const row = SI_DATA.find(r => String(r['data-five']) === String(id));
+          return row ? (row['data-one'] || row.Name || id) : id;
+        }).join(", ")}`,
+        description: (va.description || "") + " for " + dog.tag
+      });
+    }
+  });
+});
+
+return s;
 }
+
 
 // -------------------- UI LOGIC (unchanged) --------------------
 export function initSearchSuggestions() {
