@@ -274,91 +274,120 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
   }
 
   // --- AGNOSTIC SUGGESTIONS ---
+// --- AGNOSTIC SUGGESTIONS ---
+// These phrases are what people will type and expect results for
+const AGNOSTIC_PREFIXES = ["best", "top", "recommended", "most popular", "highest rated", "highest protein", "calorie dense"];
 
-  // (1) VA AGNOSTIC SUGGESTIONS
-  if (Array.isArray(VA_AGNOSTIC)) {
-    VA_AGNOSTIC.forEach(va => {
-      if (
-        typeof va === "object" &&
-        va &&
-        typeof va.tag === "string" &&
-        va.tag.trim() &&
-        Array.isArray(va.ids) &&
-        va.ids.length
-      ) {
-        const tagStr = va.tag.trim();
+// (1) VA AGNOSTIC SUGGESTIONS
+if (Array.isArray(VA_AGNOSTIC)) {
+  VA_AGNOSTIC.forEach(va => {
+    if (
+      typeof va === "object" &&
+      va &&
+      typeof va.tag === "string" &&
+      va.tag.trim() &&
+      Array.isArray(va.ids) &&
+      va.ids.length
+    ) {
+      const tagStr = va.tag.trim();
+      AGNOSTIC_PREFIXES.forEach(prefix => {
         s.push({
           type: "va-agnostic",
-          triggers: Array.isArray(va.triggers) ? va.triggers : [tagStr.toLowerCase()],
-          question: `Best ${tagStr.replace(/-/g, ' ')} kibble?`,
-          keywords: Array.isArray(va.triggers) ? va.triggers : [tagStr.toLowerCase()],
+          triggers: [
+            prefix,
+            tagStr.toLowerCase(),
+            `${prefix} ${tagStr.toLowerCase()}`,
+            `${prefix} ${tagStr.replace(/-/g, ' ').toLowerCase()}`,
+            `${prefix} ${va.tag.replace(/-/g, ' ').toLowerCase()} kibble`,
+            `${prefix} ${va.tag.replace(/-/g, ' ').toLowerCase()} dog food`,
+          ],
+          question: `${prefix.charAt(0).toUpperCase()+prefix.slice(1)} ${va.tag.replace(/-/g, ' ')} kibble?`,
+          keywords: [prefix, tagStr.toLowerCase()],
           answer: `Try formulas: ${va.ids.map(id => {
             const row = SI_DATA.find(r => String(r['data-five']) === String(id));
             return row ? (row['data-one'] || row.Name || id) : id;
           }).join(", ")}`,
           description: typeof va.description === "string" ? va.description : ""
         });
-      }
-    });
-  }
+      });
+    }
+  });
+}
 
-  // (2) DOG/BREED AGNOSTIC SUGGESTIONS
-  if (Array.isArray(DOG_AGNOSTIC)) {
-    DOG_AGNOSTIC.forEach(dog => {
-      if (
-        typeof dog === "object" &&
-        dog &&
-        typeof dog.tag === "string" &&
-        dog.tag.trim() &&
-        Array.isArray(dog.ids) &&
-        dog.ids.length
-      ) {
-        const tagStr = dog.tag.trim();
+// (2) DOG/BREED AGNOSTIC SUGGESTIONS
+if (Array.isArray(DOG_AGNOSTIC)) {
+  DOG_AGNOSTIC.forEach(dog => {
+    if (
+      typeof dog === "object" &&
+      dog &&
+      typeof dog.tag === "string" &&
+      dog.tag.trim() &&
+      Array.isArray(dog.ids) &&
+      dog.ids.length
+    ) {
+      const tagStr = dog.tag.trim();
+      AGNOSTIC_PREFIXES.forEach(prefix => {
         s.push({
           type: "dog-agnostic",
-          triggers: [tagStr.toLowerCase()],
-          question: `Best kibble for ${tagStr}?`,
-          keywords: [tagStr.toLowerCase()],
-          answer: `Recommended formulas for ${tagStr}: ${dog.ids.map(id => {
+          triggers: [
+            prefix,
+            tagStr.toLowerCase(),
+            `${prefix} ${tagStr.toLowerCase()}`,
+            `${prefix} ${tagStr.replace(/-/g, ' ').toLowerCase()}`,
+            `${prefix} for ${tagStr.replace(/-/g, ' ').toLowerCase()}`,
+            `${prefix} dog food for ${tagStr.replace(/-/g, ' ').toLowerCase()}`
+          ],
+          question: `${prefix.charAt(0).toUpperCase()+prefix.slice(1)} kibble for ${dog.tag}?`,
+          keywords: [prefix, tagStr.toLowerCase()],
+          answer: `Recommended formulas for ${dog.tag}: ${dog.ids.map(id => {
             const row = SI_DATA.find(r => String(r['data-five']) === String(id));
             return row ? (row['data-one'] || row.Name || id) : id;
           }).join(", ")}`,
           description: typeof dog.description === "string" ? dog.description : ""
         });
-      }
-    });
-  }
+      });
+    }
+  });
+}
 
-  // (3) VA+DOG AGNOSTIC SUGGESTIONS
-  if (Array.isArray(DOG_AGNOSTIC) && Array.isArray(VA_AGNOSTIC)) {
-    DOG_AGNOSTIC.forEach(dog => {
-      if (
-        typeof dog === "object" &&
-        dog &&
-        typeof dog.tag === "string" &&
-        dog.tag.trim() &&
-        Array.isArray(dog.ids) &&
-        dog.ids.length
-      ) {
-        const dogTagStr = dog.tag.trim();
-        VA_AGNOSTIC.forEach(va => {
-          if (
-            typeof va === "object" &&
-            va &&
-            typeof va.tag === "string" &&
-            va.tag.trim() &&
-            Array.isArray(va.ids) &&
-            va.ids.length
-          ) {
-            const vaTagStr = va.tag.trim();
-            const matches = va.ids.filter(id => dog.ids.includes(id));
-            if (matches.length) {
+// (3) VA+DOG AGNOSTIC SUGGESTIONS
+if (Array.isArray(DOG_AGNOSTIC) && Array.isArray(VA_AGNOSTIC)) {
+  DOG_AGNOSTIC.forEach(dog => {
+    if (
+      typeof dog === "object" &&
+      dog &&
+      typeof dog.tag === "string" &&
+      dog.tag.trim() &&
+      Array.isArray(dog.ids) &&
+      dog.ids.length
+    ) {
+      const dogTagStr = dog.tag.trim();
+      VA_AGNOSTIC.forEach(va => {
+        if (
+          typeof va === "object" &&
+          va &&
+          typeof va.tag === "string" &&
+          va.tag.trim() &&
+          Array.isArray(va.ids) &&
+          va.ids.length
+        ) {
+          const vaTagStr = va.tag.trim();
+          const matches = va.ids.filter(id => dog.ids.includes(id));
+          if (matches.length) {
+            AGNOSTIC_PREFIXES.forEach(prefix => {
               s.push({
                 type: "va-dog-agnostic",
-                triggers: [vaTagStr.toLowerCase(), dogTagStr.toLowerCase()],
-                question: `Best ${vaTagStr.replace(/-/g, ' ')} kibble for ${dogTagStr}?`,
-                keywords: [vaTagStr.toLowerCase(), dogTagStr.toLowerCase()],
-                answer: `Recommended ${vaTagStr.replace(/-/g, ' ')} formulas for ${dogTagStr}: ${matches.map(id => {
+                triggers: [
+                  prefix,
+                  vaTagStr.toLowerCase(),
+                  dogTagStr.toLowerCase(),
+                  `${prefix} ${vaTagStr.replace(/-/g, ' ').toLowerCase()} for ${dogTagStr.replace(/-/g, ' ').toLowerCase()}`,
+                  `${prefix} ${vaTagStr.replace(/-/g, ' ').toLowerCase()} kibble for ${dogTagStr.replace(/-/g, ' ').toLowerCase()}`,
+                  `${prefix} dog food for ${dogTagStr.replace(/-/g, ' ').toLowerCase()} with ${vaTagStr.replace(/-/g, ' ').toLowerCase()}`
+                ],
+                question: `${prefix.charAt(0).toUpperCase()+prefix.slice(1)} ${va.tag.replace(/-/g, ' ')} kibble for ${dog.tag}?`,
+                keywords: [prefix, vaTagStr.toLowerCase(), dogTagStr.toLowerCase()],
+                answer: `Recommended ${va.tag.replace(/-/g, ' ')} formulas for ${dog.tag}: ${matches.map(id => {
                   const row = SI_DATA.find(r => String(r['data-five']) === String(id));
                   return row ? (row['data-one'] || row.Name || id) : id;
                 }).join(", ")}`,
@@ -366,12 +395,14 @@ function buildSiSuggestions(row, ingMap, vaMap, dogMap) {
                   (typeof va.description === "string" ? va.description : "") +
                   (typeof dog.description === "string" && dog.description ? " for " + dogTagStr : "")
               });
-            }
+            });
           }
-        });
-      }
-    });
-  }
+        }
+      });
+    }
+  });
+}
+
 
   return s;
 }
