@@ -314,34 +314,43 @@ if (Array.isArray(VA_AGNOSTIC)) {
   });
 }
 
-// (2) DOG/BREED AGNOSTIC SUGGESTIONS
 if (Array.isArray(DOG_AGNOSTIC)) {
   DOG_AGNOSTIC.forEach(dog => {
     if (
       typeof dog === "object" &&
       dog &&
-      typeof dog.tag === "string" &&
-      dog.tag.trim() &&
+      typeof dog.breed === "string" &&
+      dog.breed.trim() &&
       Array.isArray(dog.ids) &&
       dog.ids.length
     ) {
-      const tagStr = dog.tag.trim();
+      const breed = dog.breed.trim();
       AGNOSTIC_PREFIXES.forEach(prefix => {
         s.push({
           type: "dog-agnostic",
           triggers: [
+            ...dog.triggers,
             prefix,
-            tagStr.toLowerCase(),
-            `${prefix} ${tagStr.toLowerCase()}`,
-            `${prefix} ${tagStr.replace(/-/g, ' ').toLowerCase()}`,
-            `${prefix} for ${tagStr.replace(/-/g, ' ').toLowerCase()}`,
-            `${prefix} dog food for ${tagStr.replace(/-/g, ' ').toLowerCase()}`
+            `${prefix} ${breed.toLowerCase()}`,
+            `${prefix} kibble for ${breed.toLowerCase()}`,
+            `${prefix} dog food for ${breed.toLowerCase()}`
           ],
-          question: `${prefix.charAt(0).toUpperCase()+prefix.slice(1)} kibble for ${dog.tag}?`,
-          keywords: [prefix, tagStr.toLowerCase()],
-          answer: `Recommended formulas for ${dog.tag}: ${dog.ids.map(id => {
+          question: `${prefix.charAt(0).toUpperCase() + prefix.slice(1)} kibble for ${breed}?`,
+          keywords: [
+            ...dog.triggers,
+            breed.toLowerCase(),
+            prefix
+          ],
+          answer: `Recommended formulas for ${breed}: ${dog.ids.map(id => {
             const row = SI_DATA.find(r => String(r['data-five']) === String(id));
-            return row ? (row['data-one'] || row.Name || id) : id;
+            // If you want links, generate them here:
+            if (row) {
+              const name = row['data-one'] || row.Name || id;
+              // Assuming you have a URL slug in row['Slug']
+              const slug = row['Slug'] || '';
+              return `<a href="/item-profiles/${slug}" target="_blank">${name}</a>`;
+            }
+            return id;
           }).join(", ")}`,
           description: typeof dog.description === "string" ? dog.description : ""
         });
@@ -349,6 +358,7 @@ if (Array.isArray(DOG_AGNOSTIC)) {
     }
   });
 }
+
 
 // (3) VA+DOG AGNOSTIC SUGGESTIONS
 if (Array.isArray(DOG_AGNOSTIC) && Array.isArray(VA_AGNOSTIC)) {
@@ -438,6 +448,7 @@ export function initSearchSuggestions() {
   const suggestions = buildSiSuggestions(row, ingMap, vaMap, dogMap);
 
   console.log("[SI] Suggestions built:", suggestions.length);
+console.log("[SI] Suggestions:", suggestions);
 
   function renderStarter() {
     starter.innerHTML = '';
