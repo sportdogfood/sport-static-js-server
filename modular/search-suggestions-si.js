@@ -418,15 +418,16 @@ export function initSearchSuggestions() {
       li.style.pointerEvents = 'none';
       list.appendChild(li);
     } else {
-      results.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item.question;
-        li.addEventListener('click', () => {
-          input.value = item.question;
-          showAnswer(item.answer);
-        });
-        list.appendChild(li);
-      });
+    results.slice(0, 7).forEach(item => {
+  const li = document.createElement('li');
+  li.textContent = item.question;
+  li.addEventListener('click', () => {
+    input.value = item.question;
+    showAnswer(item.answer);
+  });
+  list.appendChild(li);
+});
+
     }
     list.style.display = 'block';
     console.log("[SI] Suggestions list rendered:", results.length);
