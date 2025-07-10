@@ -1,74 +1,143 @@
-import { SI_DATA }    from './si.js';
-import { VA_AGNOSTIC } from './vaAgn.js';
+import { SI_DATA }      from './si.js';
+import { ING_ANIM }     from './ingAnim.js';
+import { ING_PLANT }    from './ingPlant.js';
+import { ING_SUPP }     from './ingSupp.js';
+import { VA_DATA }      from './va.js';
+import { DOG_DATA }     from './dog.js';
+import { VA_AGNOSTIC }  from './vaAgn.js';
 import { DOG_AGNOSTIC } from './dogAgn.js';
 
-// Utility: Link generator for formulas
-function linkifyFormula(row) {
-  const name = row['data-one'] || row.Name || '';
-  const slug = row['Slug'] || (name.toLowerCase().replace(/\s+/g, '-'));
-  return `<a href="/si/${slug}" class="fsi-link" target="_blank">${name}</a>`;
-}
-
-// Utility: Get SI formula row by name (case-insensitive)
-function getFormulaRow(name) {
-  if (!name) return null;
-  return SI_DATA.find(
-    r => (r['data-one'] || r.Name || '').toLowerCase() === name.toLowerCase()
-  );
-}
-
-// Utility: For leaderboard questions, return the relevant stat key
-const NUTRIENT_FACTS = [
-  { key: "ga_kcals_per_cup",   label: "Kcals/cup",  aliases: ["calories", "kcals", "kcals per cup", "kcal/cup"] },
-  { key: "ga_crude_fat_%",     label: "Fat %",      aliases: ["fat", "fat %", "crude fat"] },
-  { key: "ga_crude_protein_%", label: "Protein %",  aliases: ["protein", "protein %", "crude protein"] }
+// Use the same FACTS structure as SI
+const FACTS = [
+  { key: "ga_crude_protein_%", label: "Protein %", aliases: ["protein", "crude protein", "protein %"] },
+  { key: "ga_crude_fat_%",     label: "Fat %",     aliases: ["fat", "crude fat", "fat %"] },
+  { key: "ga_kcals_per_cup",   label: "Kcals/cup", aliases: ["calories", "kcals", "kcals per cup", "kcals/cup"] },
 ];
-function detectNutrientKey(q) {
-  const lq = q.toLowerCase();
-  for (const f of NUTRIENT_FACTS) {
-    if (f.aliases.some(a => lq.includes(a))) return f;
-  }
-  return null;
+
+function linkifyFormula(row) {
+  if (!row) return '';
+  const name = row['data-one'] || row.Name || '';
+  const slug = row['Slug'] || '';
+  // Use /si/ not /item-profiles/
+  return `<a href="/si/${slug}" target="_blank">${name.toUpperCase()}</a>`;
 }
 
-// Build all formula names for search/triggering
-const FORMULA_NAMES = SI_DATA.map(r => r['data-one'] || r.Name).filter(Boolean);
+// Helper to match query intent
+function includesAny(str, arr) {
+  str = str.toLowerCase();
+  return arr.some(val => str.includes(val));
+}
 
-// Build suggestions list
-function buildFsiSuggestions() {
+// Build all pills and suggestions for all formulas
+function buildFsiSuggestions(siData, ingMap, vaMap, dogMap) {
   const suggestions = [];
+  // ----------- AGNOSTIC / "BEST" -------------
+  if (Array.isArray(VA_AGNOSTIC)) {
+    VA_AGNOSTIC.forEach(va => {
+      if (va.tag && va.ids && va.ids.length) {
+        const formulas = va.ids.map(id => siData.find(r => String(r['data-five']) === String(id))).filter(Boolean);
+        if (formulas.length) {
+          suggestions.push({
+            type: 'va-agnostic',
+            triggers: [
+              `best for ${va.tag.toLowerCase()}`,
+              `best food for ${va.tag.toLowerCase()}`,
+              va.tag.toLowerCase()
+            ],
+            question: `Best food for ${va.tag}?`,
+            answer: `For ${va.tag.toLowerCase()} dogs, we recommend ${formulas.map(linkifyFormula).join(', ')}.`,
+            formulas
+          });
+        }
+      }
+    });
+  }
 
-  // 1. Leaderboard agnostics: "highest protein", "most kcals", etc
-  NUTRIENT_FACTS.forEach(fact => {
-    const highest = SI_DATA.reduce((a, b) =>
-      (Number(a[fact.key]) || 0) >= (Number(b[fact.key]) || 0) ? a : b
-    );
+  if (Array.isArray(DOG_AGNOSTIC)) {
+    DOG_AGNOSTIC.forEach(dog => {
+      if (dog.breed && dog.ids && dog.ids.length) {
+        const formulas = dog.ids.map(id => siData.find(r => String(r['data-five']) === String(id))).filter(Boolean);
+        if (formulas.length) {
+          suggestions.push({
+            type: 'dog-agnostic',
+            triggers: [
+              `best for ${dog.breed.toLowerCase()}`,
+              `best food for ${dog.breed.toLowerCase()}`,
+              dog.breed.toLowerCase()
+            ],
+            question: `Best food for ${dog.breed}s?`,
+            answer: `For ${dog.breed.toLowerCase()}s, we recommend ${formulas.map(linkifyFormula).join(', ')}.`,
+            formulas
+          });
+        }
+      }
+    });
+  }
+
+  // ----------- NUTRIENT LEADERBOARD -------------
+  FACTS.forEach(fact => {
+    // Find the "highest" and "lowest" food for each fact
+    let max = -Infinity, min = Infinity, winner = null, loser = null;
+    siData.forEach(row => {
+      let val = Number(row[fact.key]);
+      if (!isNaN(val)) {
+        if (val > max) { max = val; winner = row; }
+        if (val < min) { min = val; loser = row; }
+      }
+    });
+    // Highest
     suggestions.push({
       type: 'leaderboard',
       triggers: [
-        `highest ${fact.label.split(' ')[0].toLowerCase()}`,
-        `most ${fact.label.split(' ')[0].toLowerCase()}`,
-        `${fact.label.split(' ')[0].toLowerCase()} leaderboard`,
-        ...fact.aliases
+        `highest ${fact.label.toLowerCase()}`,
+        `highest ${fact.aliases[0]}`,
+        `most ${fact.aliases[0]}`,
+        fact.aliases[0]
       ],
-      question: `Which food has the highest ${fact.label.toLowerCase()}?`,
-      answer: `${highest['data-one']} has the highest ${fact.label.toLowerCase()} (${highest[fact.key]}) among our foods.`,
+      question: `Highest ${fact.label}?`,
+      answer: `${winner ? (winner['data-one'] || winner.Name) : 'One formula'} has the highest ${fact.label.toLowerCase()} (${winner ? winner[fact.key] : 'n/a'}) among our foods.`,
       factKey: fact.key,
-      label: fact.label
+      factLabel: fact.label,
+      winner,
+      allRows: siData
+    });
+    // Lowest (optional)
+    suggestions.push({
+      type: 'leaderboard',
+      triggers: [
+        `lowest ${fact.label.toLowerCase()}`,
+        `least ${fact.aliases[0]}`,
+        `fewest ${fact.aliases[0]}`
+      ],
+      question: `Lowest ${fact.label}?`,
+      answer: `${loser ? (loser['data-one'] || loser.Name) : 'One formula'} has the lowest ${fact.label.toLowerCase()} (${loser ? loser[fact.key] : 'n/a'}) among our foods.`,
+      factKey: fact.key,
+      factLabel: fact.label,
+      winner: loser,
+      allRows: siData
     });
   });
 
-  // 2. Free from (poultry, legumes, peas)
+  // ----------- FREE FROM (poultry, legumes, peas) -------------
   [
-    { key: "data-poultry", name: "poultry" },
-    { key: "data-legumes", name: "legumes" },
-    { key: "data-peas",    name: "peas" }
+    { key: 'data-poultry', name: 'poultry' },
+    { key: 'data-legumes', name: 'legumes' },
+    { key: 'data-peas', name: 'peas' }
   ].forEach(diet => {
-    const formulas = SI_DATA.filter(row => (row[diet.key] || '').toLowerCase().includes('free'));
+    const formulas = siData.filter(row => {
+      // Only formulas where the flag is true/yes or 'Free'
+      const val = row[diet.key];
+      if (!val) return false;
+      return String(val).toLowerCase().includes('free');
+    });
     if (formulas.length) {
       suggestions.push({
-        type: 'freefrom',
-        triggers: [`free from ${diet.name}`, `no ${diet.name}`, `${diet.name} free`, `without ${diet.name}`],
+        type: 'free-from',
+        triggers: [
+          `free from ${diet.name}`,
+          `without ${diet.name}`,
+          `${diet.name} free`
+        ],
         question: `Which foods are free from ${diet.name}?`,
         answer: `These foods are free from ${diet.name}: ${formulas.map(linkifyFormula).join(', ')}.`,
         formulas
@@ -76,152 +145,101 @@ function buildFsiSuggestions() {
     }
   });
 
-  // 3. VA agnostics: best for [purpose], e.g. "best for agility"
-  (Array.isArray(VA_AGNOSTIC) ? VA_AGNOSTIC : []).forEach(va => {
-    if (!va || !va.tag || !Array.isArray(va.ids)) return;
-    const formulas = va.ids.map(id => SI_DATA.find(row => String(row['data-five']) === String(id))).filter(Boolean);
-    if (!formulas.length) return;
+  // ----------- DIRECT FORMULA QUERIES (Show me X) -------------
+  siData.forEach(row => {
+    const name = row['data-one'] || row.Name || '';
+    const slug = row['Slug'] || '';
     suggestions.push({
-      type: 'va-agnostic',
-      triggers: [
-        `best for ${va.tag.toLowerCase()}`,
-        `${va.tag.toLowerCase()} dogs`,
-        ...[va.tag.toLowerCase()]
-      ],
-      question: `Best food for ${va.tag}?`,
-      answer: `For ${va.tag.toLowerCase()} dogs, we recommend ${formulas.map(linkifyFormula).join(', ').replace(/,([^,]*)$/, ' and$1')}.`,
-      context: va.tag,
-      formulas
-    });
-  });
-
-  // 4. Dog agnostics: best for [breed]
-  (Array.isArray(DOG_AGNOSTIC) ? DOG_AGNOSTIC : []).forEach(dog => {
-    if (!dog || !dog.breed || !Array.isArray(dog.ids)) return;
-    const formulas = dog.ids.map(id => SI_DATA.find(row => String(row['data-five']) === String(id))).filter(Boolean);
-    if (!formulas.length) return;
-    suggestions.push({
-      type: 'dog-agnostic',
-      triggers: [
-        `best food for ${dog.breed.toLowerCase()}`,
-        `best for ${dog.breed.toLowerCase()}`,
-        `${dog.breed.toLowerCase()} dogs`
-      ],
-      question: `Best food for ${dog.breed}?`,
-      answer: `For ${dog.breed.toLowerCase()}, we recommend ${formulas.map(linkifyFormula).join(', ').replace(/,([^,]*)$/, ' and$1')}.`,
-      context: dog.breed,
-      formulas
-    });
-  });
-
-  // 5. Direct formula queries: "show me Cub"
-  FORMULA_NAMES.forEach(name => {
-    const row = getFormulaRow(name);
-    if (!row) return;
-    suggestions.push({
-      type: 'show-formula',
+      type: 'direct-formula',
       triggers: [
         `show me ${name.toLowerCase()}`,
-        `${name.toLowerCase()} formula`,
-        `${name.toLowerCase()} food`
+        `see ${name.toLowerCase()}`,
+        name.toLowerCase()
       ],
       question: `Show me ${name}`,
-      answer: `<b>${name}</b><br><a href="/si/${row.Slug}" class="fsi-link" target="_blank">View Full FAQ</a>`,
-      formula: { name, url: `/si/${row.Slug}` }
+      answer: `${name}<br>No description available.<br><a href="/si/${slug}" target="_blank">VIEW FULL FAQ</a>`,
+      formula: row
     });
   });
 
-  // 6. Fallback (no matches): show all formulas
-  suggestions.push({
-    type: 'fallback',
-    triggers: [],
-    question: 'Show all foods',
-    answer: `Here are all our foods: ${SI_DATA.map(linkifyFormula).join(', ')}.`
+  // ----------- INGREDIENT/FALLBACK (Does Cub contain Flaxseed) -------------
+  // This is the "redirect to SI" fallback
+  siData.forEach(row => {
+    const name = row['data-one'] || row.Name || '';
+    const slug = row['Slug'] || '';
+    suggestions.push({
+      type: 'ingredient-fallback',
+      triggers: [
+        `does ${name.toLowerCase()} contain`, `ingredients in ${name.toLowerCase()}`
+      ],
+      question: `Does ${name} contain [ingredient]?`,
+      answer: `Let’s take a closer look at ${name}!<br><a href="/si/${slug}" target="_blank">View ${name} FAQ</a>`,
+      formula: row
+    });
   });
 
   return suggestions;
 }
 
-// ----- UI Logic -----
+// Utility: build leaderboard table (render below answer)
+function buildLeaderboardTable(factKey, allRows, winner) {
+  if (!factKey || !allRows) return '';
+  const rows = allRows.map(row => ({
+    name: row['data-one'] || row.Name,
+    protein: row['ga_crude_protein_%'] || '',
+    fat: row['ga_crude_fat_%'] || '',
+    kcals: row['ga_kcals_per_cup'] || '',
+    slug: row['Slug'] || ''
+  }));
+  return `
+    <div id="fsi-leaderboard-table-wrap">
+    <table class="fsi-leaderboard-table">
+      <thead>
+        <tr>
+          <th>Formula</th><th>Protein %</th><th>Fat %</th><th>Kcals/cup</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr${winner && (r.name === (winner['data-one'] || winner.Name)) ? ' class="fsi-winner-row"' : ''}>
+            <td>${r.name}</td>
+            <td>${r.protein}</td>
+            <td>${r.fat}</td>
+            <td>${r.kcals}</td>
+            <td><a href="/si/${r.slug}" target="_blank">VIEW</a></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+    </div>
+  `;
+}
+
+// --- UI/Interaction Logic ---
 export function initFsiSuggestions() {
-  console.log("[FSI] initFsiSuggestions called!");
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
   const clearBtn = document.getElementById('pwr-clear-button');
   const starter  = document.getElementById('pwr-initial-suggestions');
   const answerBox= document.getElementById('pwr-answer-output');
   const answerTxt= document.getElementById('pwr-answer-text');
-  if (!input || !list || !clearBtn) return;
+  const leaderboardContainerId = 'fsi-leaderboard-container';
 
-  const suggestions = buildFsiSuggestions();
-
-  // Table rendering
-  let tableDiv = document.getElementById('fsi-nutrient-table');
-  if (!tableDiv) {
-    tableDiv = document.createElement('div');
-    tableDiv.id = 'fsi-nutrient-table';
-    answerBox.parentNode.insertBefore(tableDiv, answerBox.nextSibling);
-  }
-  function clearTable() { tableDiv.innerHTML = ''; }
-
-  function renderTable(factKey, highlightName) {
-    if (!factKey) return clearTable();
-    const headers = ['Formula', 'Protein %', 'Fat %', 'Kcals/cup', ''];
-    tableDiv.innerHTML = `<table class="fsi-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody></tbody></table>`;
-    const tbody = tableDiv.querySelector('tbody');
-    SI_DATA.forEach(row => {
-      const name = row['data-one'];
-      const tr = document.createElement('tr');
-      if (name === highlightName) tr.className = 'fsi-table-highlight';
-      tr.innerHTML = `
-        <td>${name}</td>
-        <td>${row['ga_crude_protein_%']}</td>
-        <td>${row['ga_crude_fat_%']}</td>
-        <td>${row['ga_kcals_per_cup']}</td>
-        <td><a href="/si/${row['Slug']}" class="fsi-link" target="_blank">View</a></td>
-      `;
-      tbody.appendChild(tr);
-    });
+  // Clean up any previous leaderboard tables
+  function clearLeaderboard() {
+    let el = document.getElementById(leaderboardContainerId);
+    if (el) el.parentNode.removeChild(el);
   }
 
-  function showAnswer(item) {
-    answerTxt.innerHTML = '';
-    answerBox.style.display = 'block';
-    list.style.display = 'none';
-    starter.style.display = 'none';
-    clearTable();
-
-    if (item.type === 'leaderboard') {
-      answerTxt.innerHTML = item.answer;
-      // highlight highest value row
-      const highest = SI_DATA.reduce((a, b) =>
-        (Number(a[item.factKey]) || 0) >= (Number(b[item.factKey]) || 0) ? a : b
-      );
-      renderTable(item.factKey, highest['data-one']);
-    } else if (item.type === 'va-agnostic' || item.type === 'dog-agnostic') {
-      answerTxt.innerHTML = item.answer;
-    } else if (item.type === 'freefrom') {
-      answerTxt.innerHTML = item.answer;
-    } else if (item.type === 'show-formula') {
-      answerTxt.innerHTML = `<b>${item.formula.name}</b><br><a href="${item.formula.url}" class="fsi-link" target="_blank">View Full FAQ</a>`;
-    } else if (item.type === 'fallback') {
-      answerTxt.innerHTML = item.answer;
-    } else {
-      answerTxt.innerText = item.answer || '';
-    }
-  }
-
-  function resetAll() {
-    input.value = '';
-    list.style.display    = 'none';
-    starter.style.display = 'flex';
-    answerBox.style.display = 'none';
-    clearTable();
-  }
+  // Data
+  const ingMap = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+  const vaMap  = VA_DATA;
+  const dogMap = DOG_DATA;
+  const suggestions = buildFsiSuggestions(SI_DATA, ingMap, vaMap, dogMap);
 
   function renderStarter() {
     starter.innerHTML = '';
-    suggestions.slice(0, 7).forEach(item => {
+    suggestions.slice(0, 6).forEach(item => {
       const a = document.createElement('button');
       a.className = 'pwr-suggestion-pill';
       a.innerHTML = item.question;
@@ -236,19 +254,59 @@ export function initFsiSuggestions() {
     starter.style.display = 'flex';
   }
 
+  function showAnswer(item) {
+    answerTxt.innerHTML = '';
+    answerBox.style.display = 'block';
+    clearLeaderboard();
+
+    // Render main answer text
+    answerTxt.innerHTML = item.answer;
+
+    // Leaderboard table, if type
+    if (item.type === 'leaderboard') {
+      // Insert table below answerBox, not inside it
+      let container = document.createElement('div');
+      container.id = leaderboardContainerId;
+      container.innerHTML = buildLeaderboardTable(item.factKey, item.allRows, item.winner);
+      answerBox.after(container);
+    }
+    // For any type with list, improve formatting
+    if (item.type === 'free-from' && item.formulas && item.formulas.length > 0) {
+      // Replace answerTxt with a sentence and a styled list of links
+      let html = `These foods are free from ${item.question.split(' ').slice(-1)}: <ul class="fsi-list">`;
+      html += item.formulas.map(r => `<li>${linkifyFormula(r)}</li>`).join('');
+      html += '</ul>';
+      answerTxt.innerHTML = html;
+    }
+
+    starter.style.display = 'none';
+    list.style.display    = 'none';
+  }
+
+  function resetAll() {
+    input.value = '';
+    list.style.display    = 'none';
+    starter.style.display = 'flex';
+    answerBox.style.display = 'none';
+    clearLeaderboard();
+  }
+
+  // Input events (suggestions as you type)
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
     if (!q) {
       list.style.display = 'none';
       starter.style.display = 'flex';
+      clearLeaderboard();
       return;
     }
     starter.style.display = 'none';
+    clearLeaderboard();
 
+    // Match on triggers or keywords
     function matchItem(item) {
-      const fields = [...(item.triggers||[])];
-      return fields.some(field => q.includes(field));
+      return item.triggers.some(t => q.includes(t));
     }
     let results = suggestions.filter(matchItem);
 
@@ -278,20 +336,15 @@ export function initFsiSuggestions() {
     if (!q) return;
 
     function matchItem(item) {
-      const fields = [...(item.triggers||[])];
-      return fields.some(field => q.includes(field));
+      return item.triggers.some(t => q.includes(t));
     }
     let found = suggestions.filter(matchItem);
 
     if (found.length) showAnswer(found[0]);
-    else showAnswer(suggestions[suggestions.length-1]); // fallback: show all
+    else showAnswer({answer: 'No answer set.', type: ''});
   }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
   answerBox.style.display = 'none';
   renderStarter();
-  clearTable();
-  console.log("[FSI] initFsiSuggestions finished.");
 }
-
-
