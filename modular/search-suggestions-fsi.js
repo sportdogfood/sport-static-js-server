@@ -1,16 +1,112 @@
-import { SI_DATA }    from './si.js';
-import { ING_ANIM }   from './ingAnim.js';
-import { ING_PLANT }  from './ingPlant.js';
-import { ING_SUPP }   from './ingSupp.js';
-import { VA_AGNOSTIC } from './vaAgn.js';
+import { SI_DATA }      from './si.js';
+import { VA_AGNOSTIC }  from './vaAgn.js';
 import { DOG_AGNOSTIC } from './dogAgn.js';
 
-// --- Constants for triggers to show the nutrition table ---
 const NUTRIENT_TRIGGERS = [
-  "protein", "fat", "kcals", "kcal", "calorie", "calories", "highest", "lowest"
+  "protein", "fat", "kcals", "kcal", "calorie", "calories"
 ];
 
-// --- Helper: create SI link for a formula row ---
+function buildFsiSuggestions() {
+  const s = [];
+  // --- AGNOSTIC SUGGESTIONS ---
+  if (Array.isArray(VA_AGNOSTIC)) {
+    VA_AGNOSTIC.forEach(va => {
+      if (
+        typeof va === "object" &&
+        va &&
+        typeof va.tag === "string" &&
+        va.tag.trim() &&
+        Array.isArray(va.ids) &&
+        va.ids.length
+      ) {
+        const tagStr = va.tag.trim();
+        const formulas = va.ids.map(id => SI_DATA.find(r => String(r['data-five']) === String(id))).filter(Boolean);
+        if (!formulas.length) return;
+        s.push({
+          type: "agnostic",
+          triggers: [
+            "best", "recommended", `best food for ${tagStr.toLowerCase()}`, tagStr.toLowerCase()
+          ],
+          question: `Best food for ${tagStr}?`,
+          answer: `For ${tagStr.toLowerCase()} dogs, we recommend ${formulas.map(siLink).join(' and ')}.`
+        });
+      }
+    });
+  }
+  if (Array.isArray(DOG_AGNOSTIC)) {
+    DOG_AGNOSTIC.forEach(dog => {
+      if (
+        typeof dog === "object" &&
+        dog &&
+        typeof dog.breed === "string" &&
+        dog.breed.trim() &&
+        Array.isArray(dog.ids) &&
+        dog.ids.length
+      ) {
+        const breed = dog.breed.trim();
+        const formulas = dog.ids.map(id => SI_DATA.find(r => String(r['data-five']) === String(id))).filter(Boolean);
+        if (!formulas.length) return;
+        s.push({
+          type: "agnostic",
+          triggers: [
+            "best", "recommended", `best food for ${breed.toLowerCase()}`, breed.toLowerCase()
+          ],
+          question: `Best food for ${breed}s?`,
+          answer: `For ${breed.toLowerCase()}s, we recommend ${formulas.map(siLink).join(' and ')}.`
+        });
+      }
+    });
+  }
+  // --- FREE FROM SUGGESTIONS ---
+  [
+    { key: 'data-poultry', name: 'poultry' },
+    { key: 'data-legumes', name: 'legumes' },
+    { key: 'data-peas', name: 'peas' }
+  ].forEach(diet => {
+    const formulas = SI_DATA.filter(row => {
+      const val = row[diet.key];
+      if (!val) return false;
+      return String(val).toLowerCase().includes('free');
+    });
+    if (formulas.length) {
+      s.push({
+        type: 'agnostic',
+        triggers: [
+          `free from ${diet.name}`, `without ${diet.name}`,
+          `${diet.name} free`, `no ${diet.name}`, `not contain ${diet.name}`
+        ],
+        question: `Which foods are free from ${diet.name}?`,
+        answer: `The following formulas are free from ${diet.name}: ${formulas.map(siLink).join(', ')}.`
+      });
+    }
+  });
+  // --- NUTRIENT TABLE TRIGGER ---
+  s.push({
+    type: 'table',
+    triggers: [...NUTRIENT_TRIGGERS, "highest", "lowest"],
+    question: 'Show nutrition chart',
+    answer: `Here's a chart comparing protein, fat, and calories per cup for all our formulas.`,
+    showTable: true
+  });
+  // --- FORMULA FORWARD ---
+  SI_DATA.forEach(row => {
+    const name = row['data-one'] || row.Name || '';
+    const slug = row['Slug'] || '';
+    if (!name || !slug) return;
+    s.push({
+      type: 'forward-si',
+      triggers: [
+        name.toLowerCase(),
+        `show me ${name.toLowerCase()}`,
+        `learn more about ${name.toLowerCase()}`
+      ],
+      question: `Show me ${name}`,
+      answer: `Want all the details? <a href="/si/${slug}" target="_blank">See the full ${name} FAQ here</a>.`
+    });
+  });
+  return s;
+}
+
 function siLink(row) {
   const name = row['data-one'] || row.Name || '';
   const slug = row['Slug'] || '';
@@ -18,102 +114,6 @@ function siLink(row) {
   return `<a href="/si/${slug}" target="_blank">${name}</a>`;
 }
 
-// --- Build FSI Suggestions using SI-style logic, but for all formulas ---
-function buildFsiSuggestions(siData) {
-  const suggestions = [];
-
-  // --- Agnostic: best food for (VA/DOG agnostic) ---
-  if (Array.isArray(VA_AGNOSTIC)) {
-    VA_AGNOSTIC.forEach(va => {
-      if (va.tag && va.ids && va.ids.length) {
-        const formulas = va.ids.map(id => siData.find(r => String(r['data-five']) === String(id))).filter(Boolean);
-        if (formulas.length) {
-          suggestions.push({
-            type: 'agnostic',
-            triggers: [
-              'best', 'recommended', `best food for ${va.tag.toLowerCase()}`,
-              va.tag.toLowerCase()
-            ],
-            question: `Best food for ${va.tag}?`,
-            answer: `For ${va.tag.toLowerCase()} dogs, we recommend ${formulas.map(siLink).join(' and ')}.`,
-          });
-        }
-      }
-    });
-  }
-
-  if (Array.isArray(DOG_AGNOSTIC)) {
-    DOG_AGNOSTIC.forEach(dog => {
-      if (dog.breed && dog.ids && dog.ids.length) {
-        const formulas = dog.ids.map(id => siData.find(r => String(r['data-five']) === String(id))).filter(Boolean);
-        if (formulas.length) {
-          suggestions.push({
-            type: 'agnostic',
-            triggers: [
-              'best', 'recommended', `best food for ${dog.breed.toLowerCase()}`,
-              dog.breed.toLowerCase()
-            ],
-            question: `Best food for ${dog.breed}s?`,
-            answer: `For ${dog.breed.toLowerCase()}s, we recommend ${formulas.map(siLink).join(' and ')}.`,
-          });
-        }
-      }
-    });
-  }
-
-  // --- Free from poultry, legumes, peas ---
-  [
-    { key: 'data-poultry', name: 'poultry' },
-    { key: 'data-legumes', name: 'legumes' },
-    { key: 'data-peas', name: 'peas' }
-  ].forEach(diet => {
-    const formulas = siData.filter(row => {
-      const val = row[diet.key];
-      if (!val) return false;
-      return String(val).toLowerCase().includes('free');
-    });
-    if (formulas.length) {
-      suggestions.push({
-        type: 'agnostic',
-        triggers: [
-          `free from ${diet.name}`, `without ${diet.name}`,
-          `${diet.name} free`, `no ${diet.name}`, `not contain ${diet.name}`
-        ],
-        question: `Which foods are free from ${diet.name}?`,
-        answer: `The following formulas are free from ${diet.name}: ${formulas.map(siLink).join(', ')}.`,
-      });
-    }
-  });
-
-  // --- Nutrition table (global, for any protein/fat/kcals/highest/lowest) ---
-  suggestions.push({
-    type: 'table',
-    triggers: NUTRIENT_TRIGGERS,
-    question: 'Show nutrition chart',
-    answer: `Here's a chart comparing protein, fat, and calories per cup for all our formulas.`,
-    showTable: true
-  });
-
-  // --- “Show me [formula]”/forward all other formula queries directly to SI ---
-  siData.forEach(row => {
-    const name = row['data-one'] || row.Name || '';
-    const slug = row['Slug'] || '';
-    if (!name || !slug) return;
-    suggestions.push({
-      type: 'forward-si',
-      triggers: [
-        name.toLowerCase(),
-        `show me ${name.toLowerCase()}`
-      ],
-      question: `Show me ${name}`,
-      answer: `Want all the details? <a href="/si/${slug}" target="_blank">See the full ${name} FAQ here</a>.`,
-    });
-  });
-
-  return suggestions;
-}
-
-// --- Table builder (plain, no highlight) ---
 function buildNutritionTable(siData) {
   const cols = [
     { key: 'data-one', label: 'Formula' },
@@ -140,7 +140,6 @@ function buildNutritionTable(siData) {
   `;
 }
 
-// ----------------- UI LOGIC (copied from SI) -----------------
 export function initFsiSuggestions() {
   const input    = document.getElementById('pwr-prompt-input');
   const list     = document.getElementById('pwr-suggestion-list');
@@ -149,9 +148,7 @@ export function initFsiSuggestions() {
   const answerBox= document.getElementById('pwr-answer-output');
   const answerTxt= document.getElementById('pwr-answer-text');
   const leaderboardContainerId = 'fsi-nutrition-table-wrap';
-
-  // Data for all formulas
-  const suggestions = buildFsiSuggestions(SI_DATA);
+  const suggestions = buildFsiSuggestions();
 
   function clearTable() {
     let el = document.getElementById(leaderboardContainerId);
@@ -203,7 +200,6 @@ export function initFsiSuggestions() {
     clearTable();
   }
 
-  // --- SI-style matching: match all words in query against any trigger (per SI) ---
   input.addEventListener('input', () => {
     const q = input.value.trim().toLowerCase();
     list.innerHTML = '';
