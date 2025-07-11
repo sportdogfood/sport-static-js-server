@@ -130,13 +130,17 @@ function formatSuggestion(item) {
 }
 
 // --- Render Suggestions as <ul><li> (includes brand link if present) ---
+// --- Render Suggestions as <ul><li> (includes brand link if present) ---
 function renderSuggestions(suggestions) {
   suggestionList.innerHTML = '';
+  const pillsRow = document.querySelector('.pwr-pills-row');
   if (!suggestions.length) {
     suggestionList.innerHTML = `<li class="pwr-suggest-none">No matches found.</li>`;
     suggestionList.style.display = 'block';
     initialSuggestions.style.display = 'none';
     answerBox.style.display = 'none';
+    // Hide the pills row
+    if (pillsRow) pillsRow.style.display = 'none';
     return;
   }
   suggestions.forEach(item => {
@@ -165,7 +169,10 @@ function renderSuggestions(suggestions) {
   suggestionList.style.display = 'block';
   initialSuggestions.style.display = 'none';
   answerBox.style.display = 'none';
+  // Hide the pills row when suggestions are shown
+  if (pillsRow) pillsRow.style.display = 'none';
 }
+
 
 // --- UI/Answer logic with arrow-up-right and font-size 1rem ---
 function showAnswer(text, link) {
