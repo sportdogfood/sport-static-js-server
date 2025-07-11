@@ -453,6 +453,7 @@ console.log("[SI] Suggestions:", suggestions);
 function renderPills(pills) {
   const initialSuggestions = document.getElementById('pwr-initial-suggestions');
   const pillsRow = document.querySelector('.pwr-pills-row');
+ const suggestionList = document.getElementById('pwr-suggestion-list'); // <-- add this line
   initialSuggestions.innerHTML = '';
   pills.forEach(item => {
     const btn = document.createElement('button');
