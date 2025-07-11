@@ -24,7 +24,7 @@ const items = CI_DATA
     dataGrain: row["data-grain"] || "",
     dataSort: row["data-sort"] || "",
   }));
-
+const itemNames = items.map(x => x.name).filter(Boolean);
 // --- Pills for this brand only (no Brand pill) ---
 const diets   = [...new Set(items.map(x => x.dataDiet).filter(Boolean))];
 const legumes = [...new Set(items.map(x => x.dataLegumes).filter(Boolean))];
@@ -32,6 +32,7 @@ const poultry = [...new Set(items.map(x => x.dataPoultry).filter(Boolean))];
 const grains  = [...new Set(items.map(x => x.dataGrain).filter(Boolean))];
 
 const pillBlocks = [
+  { label: "Product", values: itemNames, key: "name" },   // <--- NEW LINE FOR ITEM PILLS
   { label: "Diet",    values: diets,     key: "dataDiet" },
   { label: "Legumes", values: legumes,   key: "dataLegumes" },
   { label: "Poultry", values: poultry,   key: "dataPoultry" },
