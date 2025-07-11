@@ -4,7 +4,7 @@ import { BRANDS } from './br.js';
 
 // --- Normalize CI Data & Filter out Sport Dog Food brand (data-brand "1000") ---
 const items = CI_DATA
-  .filter(row => String(row["data-brand"]) !== "1000") // Filter out Sport Dog Food CIs
+  .filter(row => String(row["data-brand"]) !== "1000")
   .map(row => ({
     name: row["Name"] || row["name"] || "",
     slug: row["Slug"] || row["slug"] || "",
@@ -93,7 +93,6 @@ function renderPills() {
 function getSuggestions(query) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  // Brand logic: If a non-SDF brand is matched, filter
   const brandMatch = brandsArr.find(b => q.includes(b.toLowerCase()));
   let main = [];
   if (brandMatch) {
@@ -106,7 +105,6 @@ function getSuggestions(query) {
   if (brandMatch && brandsByName[brandMatch.toLowerCase()]) {
     brandLink = brandsByName[brandMatch.toLowerCase()];
   } else {
-    // fuzzy match against any brand keys for fallback
     for (const key in brandsByName) {
       if (q === key || q.includes(key)) {
         if (brandsByName[key] && brandsByName[key].brandName !== "Sport Dog Food") {
@@ -116,11 +114,15 @@ function getSuggestions(query) {
       }
     }
   }
-  // If found, push to special results list (as an object with ._brand = true)
   if (brandLink) {
     main.push({ _brand: true, ...brandLink });
   }
   return main;
+}
+
+// --- Format suggestion label per requirements ---
+function formatSuggestion(item) {
+  return `${item.dataOne} by ${item.dataBrand} <span>${item.dataDiet}</span>`;
 }
 
 // --- Render Suggestions as <ul><li> (includes brand link if present) ---
@@ -138,20 +140,21 @@ function renderSuggestions(suggestions) {
     li.className = 'pwr-suggestion-row';
     li.tabIndex = 0;
     if (item._brand) {
-      // Brand result (not Sport Dog Food)
       li.innerHTML = `<span class="pwr-suggestion-main">See all <b>${item.brandName}</b> foods</span>
         <span class="pwr-suggestion-meta">Brand page</span>`;
       li.dataset.brandslug = item.Slug || item.slug;
       li.dataset.brand = item.brandName;
       li.dataset.type = "brand";
     } else {
-      // Suggested question format: {data-one} by {data-brand} <span>{data-diet}</span>
-      li.innerHTML = `
-        <span class="pwr-suggestion-main">${item.dataOne} by ${item.dataBrand} <span>${item.dataDiet}</span></span>
-      `;
+      // Use new format for suggested question
+      li.innerHTML = `<span class="pwr-suggestion-main">${formatSuggestion(item)}</span>`;
       li.dataset.slug = item.slug;
       li.dataset.name = item.name;
       li.dataset.type = "ci";
+      li.dataset.inputValue = `${item.dataOne} by ${item.dataBrand}`; // for input fill (exclude HTML tags)
+      li.dataset.fullValue = formatSuggestion(item); // full HTML for display, plain for input
+      li.dataset.ciBrand = item.dataBrand;
+      li.dataset.ciDiet = item.dataDiet;
     }
     suggestionList.appendChild(li);
   });
@@ -200,15 +203,21 @@ input.addEventListener('input', e => {
   renderSuggestions(suggestions);
 });
 
-// --- Suggestion click (show answer or brand, do NOT copy to input) ---
+// --- Suggestion click (fill input, show answer) ---
 suggestionList.addEventListener('click', e => {
   const li = e.target.closest('li.pwr-suggestion-row');
   if (!li) return;
   if (li.dataset.type === "brand" && li.dataset.brandslug) {
+    input.value = `All ${li.dataset.brand} foods`;
+    updateButtons();
     showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/brands/${li.dataset.brandslug}`);
     return;
   }
   if (li.dataset.type === "ci" && li.dataset.name && li.dataset.slug) {
+    // Fill input with formatted suggestion (text only)
+    const inputVal = li.dataset.inputValue || li.textContent || '';
+    input.value = inputVal;
+    updateButtons();
     showAnswer(li.dataset.name, `https://www.sportdogfood.com/ci/${li.dataset.slug}`);
   }
 });
@@ -217,10 +226,15 @@ suggestionList.addEventListener('keydown', e => {
     const li = e.target.closest('li.pwr-suggestion-row');
     if (!li) return;
     if (li.dataset.type === "brand" && li.dataset.brandslug) {
+      input.value = `All ${li.dataset.brand} foods`;
+      updateButtons();
       showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/brands/${li.dataset.brandslug}`);
       return;
     }
     if (li.dataset.type === "ci" && li.dataset.name && li.dataset.slug) {
+      const inputVal = li.dataset.inputValue || li.textContent || '';
+      input.value = inputVal;
+      updateButtons();
       showAnswer(li.dataset.name, `https://www.sportdogfood.com/ci/${li.dataset.slug}`);
     }
   }
