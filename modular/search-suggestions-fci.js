@@ -2,23 +2,27 @@ import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { CI_DATA } from './ci.js';
 import { BRANDS } from './br.js';
 
-// --- Normalize CI Data ---
-const items = CI_DATA.map(row => ({
-  name: row["Name"] || row["name"] || "",
-  slug: row["Slug"] || row["slug"] || "",
-  itemId: row["Item ID"] || row["itemId"] || "",
-  dataFive: row["data-five"] || "",
-  dataOne: row["data-one"] || "",
-  dataBrand: row["data-brand"] || "",
-  dataDiet: row["data-diet"] || "",
-  dataLegumes: row["data-legumes"] || "",
-  dataPoultry: row["data-poultry"] || "",
-  dataGrain: row["data-grain"] || "",
-  dataSort: row["data-sort"] || "",
-}));
+// --- Normalize CI Data & Filter out Sport Dog Food brand (data-brand "1000") ---
+const items = CI_DATA
+  .filter(row => String(row["data-brand"]) !== "1000") // Filter out Sport Dog Food CIs
+  .map(row => ({
+    name: row["Name"] || row["name"] || "",
+    slug: row["Slug"] || row["slug"] || "",
+    itemId: row["Item ID"] || row["itemId"] || "",
+    dataFive: row["data-five"] || "",
+    dataOne: row["data-one"] || "",
+    dataBrand: row["data-brand"] || "",
+    dataDiet: row["data-diet"] || "",
+    dataLegumes: row["data-legumes"] || "",
+    dataPoultry: row["data-poultry"] || "",
+    dataGrain: row["data-grain"] || "",
+    dataSort: row["data-sort"] || "",
+  }));
 
-// --- Prepare brands for pills (exclude Sport Dog Food) ---
-const brandsArr = Array.isArray(items) ? [...new Set(items.map(x => x.dataBrand).filter(b => b && b !== 'Sport Dog Food'))] : [];
+// --- Prepare brands for pills (exclude Sport Dog Food, data-five "1000") ---
+const brandsArr = Array.isArray(items)
+  ? [...new Set(items.map(x => x.dataBrand).filter(b => b && b !== 'Sport Dog Food'))]
+  : [];
 const diets   = [...new Set(items.map(x => x.dataDiet).filter(Boolean))];
 const legumes = [...new Set(items.map(x => x.dataLegumes).filter(Boolean))];
 const poultry = [...new Set(items.map(x => x.dataPoultry).filter(Boolean))];
@@ -42,12 +46,11 @@ const fuse = new Fuse(items, {
   includeScore: true,
 });
 
-// --- Brand lookup by lower-case keys ---
+// --- Brand lookup by lower-case keys (exclude Sport Dog Food) ---
 const brandsByName = {};
 Object.values(BRANDS).forEach(b => {
-  if (b["brandName"] && b["brandName"] !== "Sport Dog Food") {
+  if (b["brandName"] && b["brandName"] !== "Sport Dog Food" && String(b["data-five"]) !== "1000") {
     brandsByName[b["brandName"].toLowerCase()] = b;
-    // Add keys for all variants, if provided (Purina, Purina Pro Plan, etc)
     if (b.keys) {
       b.keys.split(',').forEach(k => {
         brandsByName[k.trim().toLowerCase()] = b;
@@ -56,7 +59,7 @@ Object.values(BRANDS).forEach(b => {
   }
 });
 
-// --- DOM refs (matches SI markup) ---
+// --- DOM refs ---
 const input    = document.getElementById('pwr-prompt-input');
 const clearBtn = document.getElementById('pwr-clear-button');
 const suggestionList = document.getElementById('pwr-suggestion-list');
@@ -96,7 +99,6 @@ function getSuggestions(query) {
   if (brandMatch) {
     main = items.filter(x => (x.dataBrand || '').toLowerCase() === brandMatch.toLowerCase());
   } else {
-    // Standard fuzzy
     main = fuse.search(q, { limit: 8 }).map(x => x.item);
   }
   // Add brand link if found and not SDF
@@ -104,7 +106,7 @@ function getSuggestions(query) {
   if (brandMatch && brandsByName[brandMatch.toLowerCase()]) {
     brandLink = brandsByName[brandMatch.toLowerCase()];
   } else {
-    // fuzzy match against any brand keys for fallback (e.g. "pro plan", "blue")
+    // fuzzy match against any brand keys for fallback
     for (const key in brandsByName) {
       if (q === key || q.includes(key)) {
         if (brandsByName[key] && brandsByName[key].brandName !== "Sport Dog Food") {
@@ -143,12 +145,9 @@ function renderSuggestions(suggestions) {
       li.dataset.brand = item.brandName;
       li.dataset.type = "brand";
     } else {
+      // Suggested question format: {data-one} by {data-brand} <span>{data-diet}</span>
       li.innerHTML = `
-        <span class="pwr-suggestion-main">${item.name}</span>
-        <span class="pwr-suggestion-meta">
-          ${item.dataBrand ? `<span>${item.dataBrand}</span>` : ''}
-          ${item.dataDiet ? `<span>${item.dataDiet}</span>` : ''}
-        </span>
+        <span class="pwr-suggestion-main">${item.dataOne} by ${item.dataBrand} <span>${item.dataDiet}</span></span>
       `;
       li.dataset.slug = item.slug;
       li.dataset.name = item.name;
@@ -161,9 +160,12 @@ function renderSuggestions(suggestions) {
   answerBox.style.display = 'none';
 }
 
-// --- UI/Answer logic
+// --- UI/Answer logic with arrow-up-right and font-size 1rem ---
 function showAnswer(text, link) {
-  answerTxt.innerHTML = `<a href="${link}" target="_blank" rel="noopener">${text}</a>`;
+  answerTxt.innerHTML = `<a href="${link}" target="_blank" rel="noopener" style="font-size:1rem;display:inline-flex;align-items:center;">
+    ${text}
+    <svg style="margin-left:0.42em;width:1.22em;height:1.22em;vertical-align:-0.18em;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M7 7h10v10"/></svg>
+    </a>`;
   answerBox.style.display = 'block';
   suggestionList.style.display = 'none';
   initialSuggestions.style.display = 'none';
@@ -174,7 +176,6 @@ function resetAll() {
   answerBox.style.display = 'none';
   suggestionList.style.display = 'none';
   initialSuggestions.style.display = 'flex';
-  // Pills row
   const pillsRow = document.querySelector('.pwr-pills-row');
   if (pillsRow) pillsRow.style.display = 'flex';
 }
@@ -199,7 +200,7 @@ input.addEventListener('input', e => {
   renderSuggestions(suggestions);
 });
 
-// --- Suggestion click (show answer or brand) ---
+// --- Suggestion click (show answer or brand, do NOT copy to input) ---
 suggestionList.addEventListener('click', e => {
   const li = e.target.closest('li.pwr-suggestion-row');
   if (!li) return;
