@@ -1,52 +1,54 @@
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { CI_DATA } from './ci.js';
 
-//--- Core Data & Indexing ---
+// --- Normalize Data ---
 const items = CI_DATA.map(row => ({
-  ...row,
-  keyList: [
-    (row.name || '').toLowerCase(),
-    (row['data-one'] || '').toLowerCase(),
-    (row['data-brand'] || '').toLowerCase(),
-    (row['data-diet'] || '').toLowerCase(),
-    (row['data-legumes'] || '').toLowerCase(),
-    (row['data-poultry'] || '').toLowerCase(),
-    (row['data-grain'] || '').toLowerCase(),
-  ].filter(Boolean),
+  name: row.Name || row.name || "",                       // Always use normalized key
+  slug: row.Slug || row.slug || "",
+  itemId: row["Item ID"] || row.itemId || "",
+  dataFive: row["data-five"] || row.dataFive || "",
+  dataOne: row["data-one"] || row.dataOne || "",
+  dataBrand: row["data-brand"] || row.dataBrand || "",
+  dataDiet: row["data-diet"] || row.dataDiet || "",
+  dataLegumes: row["data-legumes"] || row.dataLegumes || "",
+  dataPoultry: row["data-poultry"] || row.dataPoultry || "",
+  dataGrain: row["data-grain"] || row.dataGrain || "",
+  dataSort: row["data-sort"] || row.dataSort || "",
 }));
 
+// --- Unique pill values ---
 function getUnique(arr, key) {
   return [...new Set(arr.map(x => (x[key] || '').trim()).filter(Boolean))];
 }
 
-const brands   = getUnique(items, 'data-brand');
-const diets    = getUnique(items, 'data-diet');
-const legumes  = getUnique(items, 'data-legumes');
-const poultry  = getUnique(items, 'data-poultry');
-const grains   = getUnique(items, 'data-grain');
+const brands  = getUnique(items, 'dataBrand');
+const diets   = getUnique(items, 'dataDiet');
+const legumes = getUnique(items, 'dataLegumes');
+const poultry = getUnique(items, 'dataPoultry');
+const grains  = getUnique(items, 'dataGrain');
 
 const pillBlocks = [
-  { label: "Brand",   values: brands,   key: "data-brand" },
-  { label: "Diet",    values: diets,    key: "data-diet" },
-  { label: "Legumes", values: legumes,  key: "data-legumes" },
-  { label: "Poultry", values: poultry,  key: "data-poultry" },
-  { label: "Grain",   values: grains,   key: "data-grain" },
+  { label: "Brand",   values: brands,   key: "dataBrand" },
+  { label: "Diet",    values: diets,    key: "dataDiet" },
+  { label: "Legumes", values: legumes,  key: "dataLegumes" },
+  { label: "Poultry", values: poultry,  key: "dataPoultry" },
+  { label: "Grain",   values: grains,   key: "dataGrain" },
 ];
 
-//--- Fuse config ---
+// --- Fuse config (match normalized keys) ---
 const fuse = new Fuse(items, {
   keys: [
-    "name", "data-one", "data-brand", "data-diet", "data-legumes", "data-poultry", "data-grain", "slug", "itemId"
+    "name", "dataOne", "dataBrand", "dataDiet", "dataLegumes", "dataPoultry", "dataGrain", "slug", "itemId"
   ],
   threshold: 0.36,
   includeScore: true,
 });
 
-//--- Triggers
+// --- Triggers
 const freeTriggers = ["free", "without", "minus", "no"];
 const brandTriggers = ["brand", ...brands.map(x => x.toLowerCase())];
 
-//--- DOM refs (match markup) ---
+// --- DOM refs (match SI markup) ---
 const input    = document.getElementById('pwr-prompt-input');
 const clearBtn = document.getElementById('pwr-clear-button');
 const suggestionList = document.getElementById('pwr-suggestion-list');
@@ -55,7 +57,7 @@ const answerTxt = document.getElementById('pwr-answer-text');
 const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
-//--- Pills ---
+// --- Pills ---
 function renderPills() {
   initialSuggestions.innerHTML = '';
   pillBlocks.forEach(block => {
@@ -73,24 +75,24 @@ function renderPills() {
 }
 renderPills();
 
-//--- Suggestion logic ---
+// --- Suggestion logic ---
 function getSuggestions(query) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
   const brandMatch = brands.find(b => q.includes(b.toLowerCase()));
   if (brandMatch) {
-    return items.filter(x => (x['data-brand'] || '').toLowerCase() === brandMatch.toLowerCase());
+    return items.filter(x => (x.dataBrand || '').toLowerCase() === brandMatch.toLowerCase());
   }
   if (freeTriggers.some(tr => q.includes(tr))) {
-    if (q.includes('legume')) return items.filter(x => /(free|no|without)/.test(q) ? (x['data-legumes'] && /no|none|free|without/i.test(x['data-legumes'])) : true);
-    if (q.includes('poultry')) return items.filter(x => /(free|no|without)/.test(q) ? (x['data-poultry'] && /no|none|free|without/i.test(x['data-poultry'])) : true);
-    if (q.includes('grain'))   return items.filter(x => /(free|no|without)/.test(q) ? (x['data-grain'] && /no|none|free|without/i.test(x['data-grain'])) : true);
+    if (q.includes('legume')) return items.filter(x => /(free|no|without)/.test(q) ? (x.dataLegumes && /no|none|free|without/i.test(x.dataLegumes)) : true);
+    if (q.includes('poultry')) return items.filter(x => /(free|no|without)/.test(q) ? (x.dataPoultry && /no|none|free|without/i.test(x.dataPoultry)) : true);
+    if (q.includes('grain'))   return items.filter(x => /(free|no|without)/.test(q) ? (x.dataGrain && /no|none|free|without/i.test(x.dataGrain)) : true);
   }
   const results = fuse.search(q, { limit: 7 });
   return results.map(x => x.item);
 }
 
-//--- Render Suggestions as <ul><li>
+// --- Render Suggestions as <ul><li>
 function renderSuggestions(suggestions) {
   suggestionList.innerHTML = '';
   if (!suggestions.length) {
@@ -107,8 +109,8 @@ function renderSuggestions(suggestions) {
     li.innerHTML = `
       <span class="pwr-suggestion-main">${item.name}</span>
       <span class="pwr-suggestion-meta">
-        ${item['data-brand'] ? `<span>${item['data-brand']}</span>` : ''}
-        ${item['data-diet'] ? `<span>${item['data-diet']}</span>` : ''}
+        ${item.dataBrand ? `<span>${item.dataBrand}</span>` : ''}
+        ${item.dataDiet ? `<span>${item.dataDiet}</span>` : ''}
       </span>
     `;
     li.dataset.slug = item.slug;
@@ -120,7 +122,7 @@ function renderSuggestions(suggestions) {
   answerBox.style.display = 'none';
 }
 
-//--- UI/Answer logic
+// --- UI/Answer logic
 function showAnswer(text, link) {
   answerTxt.innerHTML = `<a href="${link}" target="_blank" rel="noopener">${text}</a>`;
   answerBox.style.display = 'block';
@@ -135,7 +137,7 @@ function resetAll() {
   initialSuggestions.style.display = 'flex';
 }
 
-//--- Input triggers
+// --- Input triggers
 function updateButtons() {
   const hasValue = !!input.value.trim();
   clearBtn.style.display = hasValue ? 'block' : 'none';
@@ -153,7 +155,7 @@ input.addEventListener('input', e => {
   renderSuggestions(suggestions);
 });
 
-//--- Suggestion click (show answer)
+// --- Suggestion click (show answer)
 suggestionList.addEventListener('click', e => {
   const li = e.target.closest('li.pwr-suggestion-row');
   if (!li) return;
@@ -171,7 +173,7 @@ suggestionList.addEventListener('keydown', e => {
   }
 });
 
-//--- Pill click (filter)
+// --- Pill click (filter)
 initialSuggestions.addEventListener('click', e => {
   if (e.target.classList.contains('pwr-pill')) {
     const type = e.target.dataset.pillType;
@@ -181,12 +183,11 @@ initialSuggestions.addEventListener('click', e => {
   }
 });
 
-//--- Answer close/reset logic
+// --- Answer close/reset logic
 if (clearBtn)    clearBtn.addEventListener('click', resetAll);
 if (answerClose) answerClose.addEventListener('click', resetAll);
 
-//--- Export for loader
+// --- Export for loader
 export function initSearchSuggestions() {
   resetAll();
-  // (Anything else needed to "boot" the module goes here)
 }
