@@ -471,64 +471,65 @@ function renderPills(pills) {
   if (pillsRow) pillsRow.style.display = pills.length ? 'flex' : 'none';
 }
 
-
-  function showAnswer(text) {
-    answerTxt.textContent = '';
-    answerBox.style.display = 'block';
-    if (window.Typed) {
-      new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
-    } else {
-      answerTxt.textContent = text;
-    }
-    starter.style.display = 'none';
-    list.style.display    = 'none';
+function showAnswer(text) {
+  answerTxt.textContent = '';
+  answerBox.style.display = 'block';
+  if (window.Typed) {
+    new window.Typed(answerTxt, { strings: [text], typeSpeed: 18, showCursor: false });
+  } else {
+    answerTxt.textContent = text;
   }
-  function resetAll() {
-    input.value = '';
-    list.style.display    = 'none';
+  starter.style.display = 'none';
+  list.style.display    = 'none';
+}
+
+function resetAll() {
+  input.value = '';
+  list.style.display    = 'none';
+  starter.style.display = 'flex';
+  answerBox.style.display = 'none';
+}
+
+input.addEventListener('input', () => {
+  const q = input.value.trim().toLowerCase();
+  list.innerHTML = '';
+  if (!q) {
+    list.style.display = 'none';
     starter.style.display = 'flex';
-    answerBox.style.display = 'none';
+    return;
+  }
+  starter.style.display = 'none';
+
+  const queryWords = q.split(/\s+/).filter(Boolean);
+  function matchItem(item) {
+    const fields = [...(item.triggers||[]), ...(item.keywords||[])];
+    return queryWords.every(word =>
+      fields.some(field => field === word || field.startsWith(word) || field.includes(word))
+    );
   }
 
-  input.addEventListener('input', () => {
-    const q = input.value.trim().toLowerCase();
-    list.innerHTML = '';
-    if (!q) {
-      list.style.display = 'none';
-      starter.style.display = 'flex';
-      return;
-    }
-    starter.style.display = 'none';
+  let results = suggestions.filter(matchItem);
 
-    const queryWords = q.split(/\s+/).filter(Boolean);
-    function matchItem(item) {
-      const fields = [...(item.triggers||[]), ...(item.keywords||[])];
-      return queryWords.every(word =>
-        fields.some(field => field === word || field.startsWith(word) || field.includes(word))
-      );
-    }
-
-    let results = suggestions.filter(matchItem);
-
-    if (!results.length) {
+  if (!results.length) {
+    const li = document.createElement('li');
+    li.className = 'no-results';
+    li.textContent = 'No results found';
+    li.style.pointerEvents = 'none';
+    list.appendChild(li);
+  } else {
+    results.slice(0, 7).forEach(item => {
       const li = document.createElement('li');
-      li.className = 'no-results';
-      li.textContent = 'No results found';
-      li.style.pointerEvents = 'none';
-      list.appendChild(li);
-    } else {
-      results.slice(0, 7).forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item.question;
-        li.addEventListener('click', () => {
-          input.value = item.question;
-          showAnswer(item.answer);
-        });
-        list.appendChild(li);
+      li.textContent = item.question;
+      li.addEventListener('click', () => {
+        input.value = item.question;
+        showAnswer(item.answer);
       });
-    }
-    list.style.display = 'block';
-  });
+      list.appendChild(li);
+    });
+  }
+  list.style.display = 'block';
+});
+
 
   clearBtn.addEventListener('click', resetAll);
   input.addEventListener('keydown', e => { if (e.key === 'Enter') {
