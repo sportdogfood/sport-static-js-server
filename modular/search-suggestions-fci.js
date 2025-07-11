@@ -66,6 +66,13 @@ const answerTxt = document.getElementById('pwr-answer-text');
 const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
+console.log('[DEBUG] First item:', items[0]);
+console.log('[DEBUG] brands:', brands);
+console.log('[DEBUG] diets:', diets);
+console.log('[DEBUG] legumes:', legumes);
+console.log('[DEBUG] poultry:', poultry);
+console.log('[DEBUG] grains:', grains);
+
 // --- Pills ---
 function renderPills() {
   initialSuggestions.innerHTML = '';
