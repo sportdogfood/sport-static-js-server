@@ -425,12 +425,20 @@ export function initSearchSuggestions() {
   const list     = document.getElementById('pwr-suggestion-list');
   const clearBtn = document.getElementById('pwr-clear-button');
   const starter  = document.getElementById('pwr-initial-suggestions');
+const pillsRow = document.querySelector('.pwr-pills-row');
   const answerBox= document.getElementById('pwr-answer-output');
   const answerTxt= document.getElementById('pwr-answer-text');
-  if (!input || !list || !clearBtn) {
-    console.log("[SI] One or more input elements missing!");
-    return;
-  }
+
+  function showSuggestionsList() {
+  if (pillsRow) pillsRow.style.display = 'none';
+  if (list)     list.style.display = 'block';
+}
+
+function showPillsRow() {
+  if (pillsRow) pillsRow.style.display = 'flex';
+  if (list)     list.style.display = 'none';
+}
+
   console.log("[SI] DOM elements found!");
 
   const five = document.getElementById('item-faq-five')?.value;
@@ -452,8 +460,6 @@ console.log("[SI] Suggestions:", suggestions);
 
 function renderPills(pills) {
   const initialSuggestions = document.getElementById('pwr-initial-suggestions');
-  const pillsRow = document.querySelector('.pwr-pills-row');
- const suggestionList = document.getElementById('pwr-suggestion-list'); // <-- add this line
   initialSuggestions.innerHTML = '';
   pills.forEach(item => {
     const btn = document.createElement('button');
@@ -463,7 +469,7 @@ function renderPills(pills) {
     btn.addEventListener('click', e => {
       e.preventDefault();
       input.value = item.question;
-      suggestionList.style.display = 'none';
+      list.style.display = 'none';
       showAnswer(item.answer);
     });
     initialSuggestions.appendChild(btn);
@@ -471,6 +477,7 @@ function renderPills(pills) {
   initialSuggestions.style.display = 'flex';
   if (pillsRow) pillsRow.style.display = pills.length ? 'flex' : 'none';
 }
+
 
 function showAnswer(text) {
   answerTxt.textContent = '';
@@ -486,7 +493,7 @@ function showAnswer(text) {
 
 function resetAll() {
   input.value = '';
-  list.style.display    = 'none';
+  showPillsRow();
   starter.style.display = 'flex';
   answerBox.style.display = 'none';
 }
@@ -495,10 +502,12 @@ input.addEventListener('input', () => {
   const q = input.value.trim().toLowerCase();
   list.innerHTML = '';
   if (!q) {
+    showPillsRow();
     list.style.display = 'none';
     starter.style.display = 'flex';
     return;
   }
+  showSuggestionsList();
   starter.style.display = 'none';
 
   const queryWords = q.split(/\s+/).filter(Boolean);
