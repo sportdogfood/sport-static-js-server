@@ -3,7 +3,8 @@ import { CI_DATA } from './ci.js';
 import { BRANDS } from './br.js';
 
 // --- Get current brand data-five value from the DOM ---
-const brandId = (document.getElementById('item-faq-five')?.value || '').trim();
+
+const brandId = (document.getElementById('current-brand-five')?.value || '').trim();
 const thisBrand = Object.values(BRANDS).find(b => String(b['data-five']) === brandId);
 
 // --- Normalize CI Data for this brand only ---
