@@ -550,7 +550,7 @@ input.addEventListener('input', () => {
   }});
   answerBox.querySelector('.pwr-answer-close')?.addEventListener('click', resetAll);
 
-  answerBox.style.display = 'none';
-  renderStarter();
+answerBox.style.display = 'none';
+  renderPills(suggestions.slice(0, 6));   // <--- use this, not renderStarter()
   console.log("[SI] initSearchSuggestions finished.");
 }
