@@ -57,11 +57,7 @@ const answerTxt = document.getElementById('pwr-answer-text');
 const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
-const brands  = getUnique(items, 'dataBrand');
-const diets   = getUnique(items, 'dataDiet');
-const legumes = getUnique(items, 'dataLegumes');
-const poultry = getUnique(items, 'dataPoultry');
-const grains  = getUnique(items, 'dataGrain');
+
 
 // --- Pills ---
 function renderPills() {
