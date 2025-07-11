@@ -89,6 +89,10 @@ function renderPills() {
     });
   });
   initialSuggestions.style.display = 'flex';
+
+const pillsRow = document.querySelector('.pwr-pills-row');
+if (pillsRow) pillsRow.style.display = 'flex';
+
 }
 renderPills();
 
