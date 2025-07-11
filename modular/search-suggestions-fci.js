@@ -84,6 +84,17 @@ function renderPills() {
     });
   });
   initialSuggestions.style.display = 'flex';
+  // Only show the pills row if there are pills
+  const pillsRow = document.querySelector('.pwr-pills-row');
+  if (pillsRow) {
+    pillsRow.style.display = initialSuggestions.children.length ? 'flex' : 'none';
+  }
+}
+
+
+    });
+  });
+  initialSuggestions.style.display = 'flex';
   // Always show the pills row
   const pillsRow = document.querySelector('.pwr-pills-row');
   if (pillsRow) pillsRow.style.display = 'flex';
