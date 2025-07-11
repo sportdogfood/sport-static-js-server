@@ -69,6 +69,7 @@ const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
 // --- Pills (SI style) ---
+// --- Pills (SI style) ---
 function renderPills() {
   initialSuggestions.innerHTML = '';
   pillBlocks.forEach(block => {
@@ -91,14 +92,6 @@ function renderPills() {
   }
 }
 
-
-    });
-  });
-  initialSuggestions.style.display = 'flex';
-  // Always show the pills row
-  const pillsRow = document.querySelector('.pwr-pills-row');
-  if (pillsRow) pillsRow.style.display = 'flex';
-}
 
 // --- Get suggestions + brand link logic ---
 function getSuggestions(query) {
