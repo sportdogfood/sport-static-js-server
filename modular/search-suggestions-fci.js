@@ -197,12 +197,20 @@ suggestionList.addEventListener('keydown', e => {
 // --- Pill click (filter)
 initialSuggestions.addEventListener('click', e => {
   if (e.target.classList.contains('pwr-pill')) {
-    const type = e.target.dataset.pillType;
     const value = e.target.dataset.pillValue;
-    let matches = items.filter(x => (x[type] || '').toLowerCase() === value.toLowerCase());
-    renderSuggestions(matches);
+    // Put pill text into input field
+    input.value = value;
+    updateButtons();
+    // Trigger filtering as if user typed the value
+    const suggestions = getSuggestions(value);
+    renderSuggestions(suggestions);
+    // Optionally, show the answer immediately if only one result
+    if (suggestions.length === 1) {
+      showAnswer(suggestions[0].name, `https://www.sportdogfood.com/ci/${suggestions[0].slug}`);
+    }
   }
 });
+
 
 // --- Answer close/reset logic
 if (clearBtn)    clearBtn.addEventListener('click', resetAll);
