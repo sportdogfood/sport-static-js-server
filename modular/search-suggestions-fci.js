@@ -1,20 +1,22 @@
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { CI_DATA } from './ci.js';
 
-// --- Normalize Data ---
+// --- Normalize Data: use EXACT keys as in your file ---
 const items = CI_DATA.map(row => ({
-  name: row.Name || row.name || "",                       // Always use normalized key
-  slug: row.Slug || row.slug || "",
-  itemId: row["Item ID"] || row.itemId || "",
-  dataFive: row["data-five"] || row.dataFive || "",
-  dataOne: row["data-one"] || row.dataOne || "",
-  dataBrand: row["data-brand"] || row.dataBrand || "",
-  dataDiet: row["data-diet"] || row.dataDiet || "",
-  dataLegumes: row["data-legumes"] || row.dataLegumes || "",
-  dataPoultry: row["data-poultry"] || row.dataPoultry || "",
-  dataGrain: row["data-grain"] || row.dataGrain || "",
-  dataSort: row["data-sort"] || row.dataSort || "",
+  name: row["Name"] || row["name"] || "",
+  slug: row["Slug"] || row["slug"] || "",
+  itemId: row["Item ID"] || row["itemId"] || "",
+  dataFive: row["data-five"] || "",
+  dataOne: row["data-one"] || "",
+  dataBrand: row["data-brand"] || "",
+  dataDiet: row["data-diet"] || "",
+  dataLegumes: row["data-legumes"] || "",
+  dataPoultry: row["data-poultry"] || "",
+  dataGrain: row["data-grain"] || "",
+  dataSort: row["data-sort"] || "",
 }));
+
+console.log('[FCI] items:', items);
 
 // --- Unique pill values ---
 function getUnique(arr, key) {
@@ -27,6 +29,13 @@ const legumes = getUnique(items, 'dataLegumes');
 const poultry = getUnique(items, 'dataPoultry');
 const grains  = getUnique(items, 'dataGrain');
 
+// Diagnostics
+console.log('[FCI] brands:', brands);
+console.log('[FCI] diets:', diets);
+console.log('[FCI] legumes:', legumes);
+console.log('[FCI] poultry:', poultry);
+console.log('[FCI] grains:', grains);
+
 const pillBlocks = [
   { label: "Brand",   values: brands,   key: "dataBrand" },
   { label: "Diet",    values: diets,    key: "dataDiet" },
@@ -35,7 +44,7 @@ const pillBlocks = [
   { label: "Grain",   values: grains,   key: "dataGrain" },
 ];
 
-// --- Fuse config (match normalized keys) ---
+// --- Fuse config ---
 const fuse = new Fuse(items, {
   keys: [
     "name", "dataOne", "dataBrand", "dataDiet", "dataLegumes", "dataPoultry", "dataGrain", "slug", "itemId"
@@ -48,7 +57,7 @@ const fuse = new Fuse(items, {
 const freeTriggers = ["free", "without", "minus", "no"];
 const brandTriggers = ["brand", ...brands.map(x => x.toLowerCase())];
 
-// --- DOM refs (match SI markup) ---
+// --- DOM refs ---
 const input    = document.getElementById('pwr-prompt-input');
 const clearBtn = document.getElementById('pwr-clear-button');
 const suggestionList = document.getElementById('pwr-suggestion-list');
@@ -57,19 +66,18 @@ const answerTxt = document.getElementById('pwr-answer-text');
 const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
-
-
 // --- Pills ---
 function renderPills() {
   initialSuggestions.innerHTML = '';
   pillBlocks.forEach(block => {
     block.values.forEach(val => {
+      if (!val) return;
       const pill = document.createElement('button');
       pill.className = 'pwr-pill';
       pill.type = 'button';
       pill.dataset.pillType = block.key;
       pill.dataset.pillValue = val;
-      pill.textContent = `${val}`;
+      pill.textContent = val;
       initialSuggestions.appendChild(pill);
     });
   });
