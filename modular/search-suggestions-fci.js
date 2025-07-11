@@ -126,7 +126,7 @@ function getSuggestions(query) {
 
 // --- Format suggestion label per requirements ---
 function formatSuggestion(item) {
-  return `${item.dataOne} by ${item.dataBrand} <span>${item.dataDiet}</span>`;
+  return `${item.dataOne} by ${item.dataBrand} <span class="pwr-suggest-diet">${item.dataDiet}</span>`;
 }
 
 // --- Render Suggestions as <ul><li> (includes brand link if present) ---
