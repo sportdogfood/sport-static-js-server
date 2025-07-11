@@ -1,7 +1,8 @@
 import Fuse from 'https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.mjs';
 import { CI_DATA } from './ci.js';
+import { BRANDS } from './br.js';
 
-// --- Normalize Data: use EXACT keys as in your file ---
+// --- Normalize CI Data ---
 const items = CI_DATA.map(row => ({
   name: row["Name"] || row["name"] || "",
   slug: row["Slug"] || row["slug"] || "",
@@ -16,35 +17,23 @@ const items = CI_DATA.map(row => ({
   dataSort: row["data-sort"] || "",
 }));
 
-console.log('[FCI] items:', items);
+// --- Prepare brands for pills (exclude Sport Dog Food) ---
+const brandsArr = Array.isArray(items) ? [...new Set(items.map(x => x.dataBrand).filter(b => b && b !== 'Sport Dog Food'))] : [];
+const diets   = [...new Set(items.map(x => x.dataDiet).filter(Boolean))];
+const legumes = [...new Set(items.map(x => x.dataLegumes).filter(Boolean))];
+const poultry = [...new Set(items.map(x => x.dataPoultry).filter(Boolean))];
+const grains  = [...new Set(items.map(x => x.dataGrain).filter(Boolean))];
 
-// --- Unique pill values ---
-function getUnique(arr, key) {
-  return [...new Set(arr.map(x => (x[key] || '').trim()).filter(Boolean))];
-}
-
-const brands  = getUnique(items, 'dataBrand');
-const diets   = getUnique(items, 'dataDiet');
-const legumes = getUnique(items, 'dataLegumes');
-const poultry = getUnique(items, 'dataPoultry');
-const grains  = getUnique(items, 'dataGrain');
-
-// Diagnostics
-console.log('[FCI] brands:', brands);
-console.log('[FCI] diets:', diets);
-console.log('[FCI] legumes:', legumes);
-console.log('[FCI] poultry:', poultry);
-console.log('[FCI] grains:', grains);
-
+// --- Pills config ---
 const pillBlocks = [
-  { label: "Brand",   values: brands,   key: "dataBrand" },
-  { label: "Diet",    values: diets,    key: "dataDiet" },
-  { label: "Legumes", values: legumes,  key: "dataLegumes" },
-  { label: "Poultry", values: poultry,  key: "dataPoultry" },
-  { label: "Grain",   values: grains,   key: "dataGrain" },
+  { label: "Brand",   values: brandsArr, key: "dataBrand" },
+  { label: "Diet",    values: diets,     key: "dataDiet" },
+  { label: "Legumes", values: legumes,   key: "dataLegumes" },
+  { label: "Poultry", values: poultry,   key: "dataPoultry" },
+  { label: "Grain",   values: grains,    key: "dataGrain" },
 ];
 
-// --- Fuse config ---
+// --- Fuse config for fuzzy search ---
 const fuse = new Fuse(items, {
   keys: [
     "name", "dataOne", "dataBrand", "dataDiet", "dataLegumes", "dataPoultry", "dataGrain", "slug", "itemId"
@@ -53,11 +42,21 @@ const fuse = new Fuse(items, {
   includeScore: true,
 });
 
-// --- Triggers
-const freeTriggers = ["free", "without", "minus", "no"];
-const brandTriggers = ["brand", ...brands.map(x => x.toLowerCase())];
+// --- Brand lookup by lower-case keys ---
+const brandsByName = {};
+Object.values(BRANDS).forEach(b => {
+  if (b["brandName"] && b["brandName"] !== "Sport Dog Food") {
+    brandsByName[b["brandName"].toLowerCase()] = b;
+    // Add keys for all variants, if provided (Purina, Purina Pro Plan, etc)
+    if (b.keys) {
+      b.keys.split(',').forEach(k => {
+        brandsByName[k.trim().toLowerCase()] = b;
+      });
+    }
+  }
+});
 
-// --- DOM refs ---
+// --- DOM refs (matches SI markup) ---
 const input    = document.getElementById('pwr-prompt-input');
 const clearBtn = document.getElementById('pwr-clear-button');
 const suggestionList = document.getElementById('pwr-suggestion-list');
@@ -66,21 +65,14 @@ const answerTxt = document.getElementById('pwr-answer-text');
 const answerClose = answerBox.querySelector('.pwr-answer-close');
 const initialSuggestions = document.getElementById('pwr-initial-suggestions');
 
-console.log('[DEBUG] First item:', items[0]);
-console.log('[DEBUG] brands:', brands);
-console.log('[DEBUG] diets:', diets);
-console.log('[DEBUG] legumes:', legumes);
-console.log('[DEBUG] poultry:', poultry);
-console.log('[DEBUG] grains:', grains);
-
-// --- Pills ---
+// --- Pills (SI style) ---
 function renderPills() {
   initialSuggestions.innerHTML = '';
   pillBlocks.forEach(block => {
     block.values.forEach(val => {
       if (!val) return;
       const pill = document.createElement('button');
-     pill.className = 'pwr-pill pwr-suggestion-pill';
+      pill.className = 'pwr-pill pwr-suggestion-pill';
       pill.type = 'button';
       pill.dataset.pillType = block.key;
       pill.dataset.pillValue = val;
@@ -89,31 +81,47 @@ function renderPills() {
     });
   });
   initialSuggestions.style.display = 'flex';
-
-const pillsRow = document.querySelector('.pwr-pills-row');
-if (pillsRow) pillsRow.style.display = 'flex';
-
+  // Always show the pills row
+  const pillsRow = document.querySelector('.pwr-pills-row');
+  if (pillsRow) pillsRow.style.display = 'flex';
 }
-renderPills();
 
-// --- Suggestion logic ---
+// --- Get suggestions + brand link logic ---
 function getSuggestions(query) {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  const brandMatch = brands.find(b => q.includes(b.toLowerCase()));
+  // Brand logic: If a non-SDF brand is matched, filter
+  const brandMatch = brandsArr.find(b => q.includes(b.toLowerCase()));
+  let main = [];
   if (brandMatch) {
-    return items.filter(x => (x.dataBrand || '').toLowerCase() === brandMatch.toLowerCase());
+    main = items.filter(x => (x.dataBrand || '').toLowerCase() === brandMatch.toLowerCase());
+  } else {
+    // Standard fuzzy
+    main = fuse.search(q, { limit: 8 }).map(x => x.item);
   }
-  if (freeTriggers.some(tr => q.includes(tr))) {
-    if (q.includes('legume')) return items.filter(x => /(free|no|without)/.test(q) ? (x.dataLegumes && /no|none|free|without/i.test(x.dataLegumes)) : true);
-    if (q.includes('poultry')) return items.filter(x => /(free|no|without)/.test(q) ? (x.dataPoultry && /no|none|free|without/i.test(x.dataPoultry)) : true);
-    if (q.includes('grain'))   return items.filter(x => /(free|no|without)/.test(q) ? (x.dataGrain && /no|none|free|without/i.test(x.dataGrain)) : true);
+  // Add brand link if found and not SDF
+  let brandLink = null;
+  if (brandMatch && brandsByName[brandMatch.toLowerCase()]) {
+    brandLink = brandsByName[brandMatch.toLowerCase()];
+  } else {
+    // fuzzy match against any brand keys for fallback (e.g. "pro plan", "blue")
+    for (const key in brandsByName) {
+      if (q === key || q.includes(key)) {
+        if (brandsByName[key] && brandsByName[key].brandName !== "Sport Dog Food") {
+          brandLink = brandsByName[key];
+          break;
+        }
+      }
+    }
   }
-  const results = fuse.search(q, { limit: 7 });
-  return results.map(x => x.item);
+  // If found, push to special results list (as an object with ._brand = true)
+  if (brandLink) {
+    main.push({ _brand: true, ...brandLink });
+  }
+  return main;
 }
 
-// --- Render Suggestions as <ul><li>
+// --- Render Suggestions as <ul><li> (includes brand link if present) ---
 function renderSuggestions(suggestions) {
   suggestionList.innerHTML = '';
   if (!suggestions.length) {
@@ -127,15 +135,25 @@ function renderSuggestions(suggestions) {
     const li = document.createElement('li');
     li.className = 'pwr-suggestion-row';
     li.tabIndex = 0;
-    li.innerHTML = `
-      <span class="pwr-suggestion-main">${item.name}</span>
-      <span class="pwr-suggestion-meta">
-        ${item.dataBrand ? `<span>${item.dataBrand}</span>` : ''}
-        ${item.dataDiet ? `<span>${item.dataDiet}</span>` : ''}
-      </span>
-    `;
-    li.dataset.slug = item.slug;
-    li.dataset.name = item.name;
+    if (item._brand) {
+      // Brand result (not Sport Dog Food)
+      li.innerHTML = `<span class="pwr-suggestion-main">See all <b>${item.brandName}</b> foods</span>
+        <span class="pwr-suggestion-meta">Brand page</span>`;
+      li.dataset.brandslug = item.Slug || item.slug;
+      li.dataset.brand = item.brandName;
+      li.dataset.type = "brand";
+    } else {
+      li.innerHTML = `
+        <span class="pwr-suggestion-main">${item.name}</span>
+        <span class="pwr-suggestion-meta">
+          ${item.dataBrand ? `<span>${item.dataBrand}</span>` : ''}
+          ${item.dataDiet ? `<span>${item.dataDiet}</span>` : ''}
+        </span>
+      `;
+      li.dataset.slug = item.slug;
+      li.dataset.name = item.name;
+      li.dataset.type = "ci";
+    }
     suggestionList.appendChild(li);
   });
   suggestionList.style.display = 'block';
@@ -156,6 +174,9 @@ function resetAll() {
   answerBox.style.display = 'none';
   suggestionList.style.display = 'none';
   initialSuggestions.style.display = 'flex';
+  // Pills row
+  const pillsRow = document.querySelector('.pwr-pills-row');
+  if (pillsRow) pillsRow.style.display = 'flex';
 }
 
 // --- Input triggers
@@ -170,47 +191,56 @@ input.addEventListener('input', e => {
     suggestionList.style.display = 'none';
     answerBox.style.display = 'none';
     initialSuggestions.style.display = 'flex';
+    const pillsRow = document.querySelector('.pwr-pills-row');
+    if (pillsRow) pillsRow.style.display = 'flex';
     return;
   }
   const suggestions = getSuggestions(val);
   renderSuggestions(suggestions);
 });
 
-// --- Suggestion click (show answer)
+// --- Suggestion click (show answer or brand) ---
 suggestionList.addEventListener('click', e => {
   const li = e.target.closest('li.pwr-suggestion-row');
   if (!li) return;
-  const name = li.dataset.name;
-  const slug = li.dataset.slug;
-  showAnswer(name, `https://www.sportdogfood.com/ci/${slug}`);
+  if (li.dataset.type === "brand" && li.dataset.brandslug) {
+    showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/brands/${li.dataset.brandslug}`);
+    return;
+  }
+  if (li.dataset.type === "ci" && li.dataset.name && li.dataset.slug) {
+    showAnswer(li.dataset.name, `https://www.sportdogfood.com/ci/${li.dataset.slug}`);
+  }
 });
 suggestionList.addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     const li = e.target.closest('li.pwr-suggestion-row');
     if (!li) return;
-    const name = li.dataset.name;
-    const slug = li.dataset.slug;
-    showAnswer(name, `https://www.sportdogfood.com/ci/${slug}`);
-  }
-});
-
-// --- Pill click (filter)
-initialSuggestions.addEventListener('click', e => {
-  if (e.target.classList.contains('pwr-pill')) {
-    const value = e.target.dataset.pillValue;
-    // Put pill text into input field
-    input.value = value;
-    updateButtons();
-    // Trigger filtering as if user typed the value
-    const suggestions = getSuggestions(value);
-    renderSuggestions(suggestions);
-    // Optionally, show the answer immediately if only one result
-    if (suggestions.length === 1) {
-      showAnswer(suggestions[0].name, `https://www.sportdogfood.com/ci/${suggestions[0].slug}`);
+    if (li.dataset.type === "brand" && li.dataset.brandslug) {
+      showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/brands/${li.dataset.brandslug}`);
+      return;
+    }
+    if (li.dataset.type === "ci" && li.dataset.name && li.dataset.slug) {
+      showAnswer(li.dataset.name, `https://www.sportdogfood.com/ci/${li.dataset.slug}`);
     }
   }
 });
 
+// --- Pill click (copy to input, trigger filter, show answer if one) ---
+initialSuggestions.addEventListener('click', e => {
+  if (e.target.classList.contains('pwr-pill')) {
+    e.preventDefault();
+    const value = e.target.dataset.pillValue;
+    input.value = value;
+    updateButtons();
+    const suggestions = getSuggestions(value);
+    renderSuggestions(suggestions);
+    // Auto-answer if exactly one (non-brand) CI result
+    const ciSuggestions = suggestions.filter(x => !x._brand);
+    if (ciSuggestions.length === 1) {
+      showAnswer(ciSuggestions[0].name, `https://www.sportdogfood.com/ci/${ciSuggestions[0].slug}`);
+    }
+  }
+});
 
 // --- Answer close/reset logic
 if (clearBtn)    clearBtn.addEventListener('click', resetAll);
@@ -218,5 +248,6 @@ if (answerClose) answerClose.addEventListener('click', resetAll);
 
 // --- Export for loader
 export function initSearchSuggestions() {
+  renderPills();
   resetAll();
 }
