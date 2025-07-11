@@ -7,8 +7,10 @@ const brandId = (document.getElementById('current-brand-five')?.value || '').tri
 const thisBrand = Object.values(BRANDS).find(b => String(b['data-five']) === brandId);
 
 // --- Normalize CI Data for this brand only ---
+
+
 const items = CI_DATA
-  .filter(row => String(row["data-brand"]) === brandId)
+  .filter(row => String(row["br-data-five"]) === brandId)
   .map(row => ({
     name: row["Name"] || row["name"] || "",
     slug: row["Slug"] || row["slug"] || "",
