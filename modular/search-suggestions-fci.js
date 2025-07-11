@@ -221,7 +221,7 @@ suggestionList.addEventListener('click', e => {
   if (li.dataset.type === "brand" && li.dataset.brandslug) {
     input.value = `All ${li.dataset.brand} foods`;
     updateButtons();
-    showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/brands/${li.dataset.brandslug}`);
+    showAnswer(`All ${li.dataset.brand} foods`, `https://www.sportdogfood.com/br/${li.dataset.brandslug}`);
     return;
   }
   if (li.dataset.type === "ci" && li.dataset.name && li.dataset.slug) {
