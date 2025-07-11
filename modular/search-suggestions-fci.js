@@ -80,7 +80,7 @@ function renderPills() {
     block.values.forEach(val => {
       if (!val) return;
       const pill = document.createElement('button');
-      pill.className = 'pwr-pill';
+     pill.className = 'pwr-pill pwr-suggestion-pill';
       pill.type = 'button';
       pill.dataset.pillType = block.key;
       pill.dataset.pillValue = val;
