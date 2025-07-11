@@ -273,28 +273,24 @@ document.addEventListener("DOMContentLoaded", function() {
   const next = document.querySelector('.pwr-arrow-next');
   const pillsRow = document.querySelector('.pwr-pills-row');
 
-  // Helper: Show/hide arrows if pills overflow
   function updateArrows() {
     if (!menu || !prev || !next) return;
-    // Pills overflow horizontally?
-    const overflow = menu.scrollWidth > menu.clientWidth + 10;
+    const overflow = menu.scrollWidth > menu.clientWidth + 2;
     prev.style.display = overflow ? 'flex' : 'none';
     next.style.display = overflow ? 'flex' : 'none';
   }
-  // Helper: Show/hide pills row if pills present
+
   function updatePillsRowDisplay() {
     if (!pillsRow || !menu) return;
     const pills = menu.querySelectorAll('.pwr-suggestion-pill');
     pillsRow.style.display = (pills.length > 0) ? 'flex' : 'none';
     updateArrows();
   }
-  // Initial check
   updatePillsRowDisplay();
 
-  // React to any changes in pills (for dynamic modules)
   new MutationObserver(updatePillsRowDisplay).observe(menu, {childList: true, subtree: false});
+  window.addEventListener('resize', updateArrows);
 
-  // Arrow click scroll
   function getScrollAmount() {
     const pill = menu.querySelector('.pwr-suggestion-pill');
     return pill ? pill.offsetWidth + 12 : 120;
@@ -302,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (prev) prev.addEventListener('click', () => menu.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' }));
   if (next) next.addEventListener('click', () => menu.scrollBy({ left: getScrollAmount(), behavior: 'smooth' }));
 
-  // Drag to scroll (mouse and touch)
+  // Drag/Touch Scroll
   let isDown = false, startX, scrollLeft;
 
   menu.addEventListener('mousedown', function(e) {
@@ -326,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var walk = (x - startX) * 1.5;
     menu.scrollLeft = scrollLeft - walk;
   });
-  // Mobile touch support
+
   menu.addEventListener('touchstart', function(e) {
     isDown = true;
     startX = e.touches[0].pageX - menu.offsetLeft;
@@ -342,7 +338,4 @@ document.addEventListener("DOMContentLoaded", function() {
     var walk = (x - startX) * 1.3;
     menu.scrollLeft = scrollLeft - walk;
   });
-
-  // Re-run on pills show/reset (optional, if called externally)
-  document.addEventListener('FCI_PILLS_UPDATE', updatePillsRowDisplay);
 });
