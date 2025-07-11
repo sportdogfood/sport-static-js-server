@@ -450,22 +450,27 @@ export function initSearchSuggestions() {
   console.log("[SI] Suggestions built:", suggestions.length);
 console.log("[SI] Suggestions:", suggestions);
 
-  function renderStarter() {
-    starter.innerHTML = '';
-    suggestions.slice(0, 6).forEach(item => {
-      const a = document.createElement('button');
-      a.className = 'pwr-suggestion-pill';
-      a.textContent = item.question;
-      a.addEventListener('click', e => {
-        e.preventDefault();
-        input.value = item.question;
-        list.style.display = 'none';
-        showAnswer(item.answer);
-      });
-      starter.appendChild(a);
+function renderPills(pills) {
+  const initialSuggestions = document.getElementById('pwr-initial-suggestions');
+  const pillsRow = document.querySelector('.pwr-pills-row');
+  initialSuggestions.innerHTML = '';
+  pills.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'pwr-pill pwr-suggestion-pill';
+    btn.type = 'button';
+    btn.textContent = item.question;
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      input.value = item.question;
+      suggestionList.style.display = 'none';
+      showAnswer(item.answer);
     });
-    starter.style.display = 'flex';
-  }
+    initialSuggestions.appendChild(btn);
+  });
+  initialSuggestions.style.display = 'flex';
+  if (pillsRow) pillsRow.style.display = pills.length ? 'flex' : 'none';
+}
+
 
   function showAnswer(text) {
     answerTxt.textContent = '';
