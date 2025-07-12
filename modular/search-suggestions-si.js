@@ -566,3 +566,33 @@ answerBox.style.display = 'none';
   renderPills(suggestions.slice(0, 6));   // <--- use this, not renderStarter()
   console.log("[SI] initSearchSuggestions finished.");
 }
+
+(function pillsRowAutoToggle() {
+  const pillsRow = document.querySelector('.pwr-pills-row');
+  const suggestionList = document.getElementById('pwr-suggestion-list');
+  const answerBox = document.getElementById('pwr-answer-output');
+
+  function togglePillsRow() {
+    if (!pillsRow) return;
+    if ((answerBox && answerBox.style.display === 'block') ||
+        (suggestionList && suggestionList.style.display === 'block')) {
+      pillsRow.style.display = 'none';
+    } else {
+      pillsRow.style.display = 'flex';
+    }
+  }
+
+  // Observe changes to answer box and suggestion list visibility
+  const observer = new MutationObserver(togglePillsRow);
+  if (answerBox) observer.observe(answerBox, { attributes: true, attributeFilter: ['style'] });
+  if (suggestionList) observer.observe(suggestionList, { attributes: true, attributeFilter: ['style'] });
+
+  // Also patch input and clear events to cover all bases
+  const input = document.getElementById('pwr-prompt-input');
+  const clearBtn = document.getElementById('pwr-clear-button');
+  if (input) input.addEventListener('input', togglePillsRow);
+  if (clearBtn) clearBtn.addEventListener('click', togglePillsRow);
+
+  // Run once at load
+  togglePillsRow();
+})();
