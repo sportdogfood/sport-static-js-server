@@ -496,19 +496,21 @@ function resetAll() {
   showPillsRow();
   starter.style.display = 'flex';
   answerBox.style.display = 'none';
+  list.style.display = 'none';
 }
 
 input.addEventListener('input', () => {
   const q = input.value.trim().toLowerCase();
   list.innerHTML = '';
   if (!q) {
-    showPillsRow();
-    list.style.display = 'none';
-    starter.style.display = 'flex';
+    showPillsRow();                 // Show the pills row + arrows
+    list.style.display = 'none';    // Hide suggestion list
+    starter.style.display = 'flex'; // Show the pills
     return;
   }
-  showSuggestionsList();
-  starter.style.display = 'none';
+  hidePillsRow();                  // Hide the pills row + arrows
+  list.style.display = 'block';    // Show suggestion list
+  starter.style.display = 'none';  // Hide the pills
 
   const queryWords = q.split(/\s+/).filter(Boolean);
   function matchItem(item) {
