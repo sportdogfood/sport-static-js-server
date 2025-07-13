@@ -379,12 +379,12 @@ export function renderComparePage() {
   // Build all required sections
   const section1 = section1DietSpecs(mainRow, sdfRow);
   const section2 = section2Macros(mainRow, sdfRow);
-  // (Skip section 3, you didn't want it here)
+  const section3 = section3Ingredients(mainRow, sdfRow);
   const section4 = section4Contentious(mainRow);
 
   // Drop in your HTML
   const compareRoot = document.getElementById('compare-root');
   if (compareRoot) {
-    compareRoot.innerHTML = section1 + section2 + section4;
+    compareRoot.innerHTML = section1 + section2 + section3 + section4;
   }
 }
