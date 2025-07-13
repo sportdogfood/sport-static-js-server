@@ -149,55 +149,149 @@ export function renderComparePage() {
   const sdfFive = getSdfFormula(mainRow);
   const sdfRow  = getCiRow(sdfFive);
 
-  // --- Section 1: Diet & Major Specs ---
+  // Section 1: Diet & Major Specs (side-by-side flavor, diet, poultry, legumes)
+  const sideBySide1 = `
+    <table class="ci-sidebyside-table">
+      <tr>
+        <th></th>
+        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
+        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
+      </tr>
+      <tr>
+        <td>Primary Flavor</td>
+        <td>${mainRow["specs_primary_flavor"] || ""}</td>
+        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
+      </tr>
+      <tr>
+        <td>Grain</td>
+        <td>${mainRow["data-grain"] || ""}</td>
+        <td>${sdfRow["data-grain"] || ""}</td>
+      </tr>
+      <tr>
+        <td>Poultry</td>
+        <td>${mainRow["data-poultry"] || ""}</td>
+        <td>${sdfRow["data-poultry"] || ""}</td>
+      </tr>
+      <tr>
+        <td>Legumes</td>
+        <td>${mainRow["data-legumes"] || ""}</td>
+        <td>${sdfRow["data-legumes"] || ""}</td>
+      </tr>
+    </table>
+  `;
+
   const section1 = buildSectionMarkup({
     id: "diet",
     title: "Diet & Key Specs",
-    subtitle: `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`,
-    pills: [
-      mainRow["specs_primary_flavor"],
-      mainRow["data-grain"],
-      mainRow["data-poultry"],
-      mainRow["data-legumes"]
-    ].filter(Boolean),
-    madlib: `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${mainRow["data-grain"] || "grain-inclusive"} formula with ${mainRow["ga_kcals_per_cup"] || "N/A"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is used for baseline comparison.`
+    subtitle: `Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>`,
+    madlib: sideBySide1,
   });
 
-  // --- Section 2: Protein, Fat, Calories ---
+  // Section 2: Protein, Fat, Calories, Flavor, tag (side-by-side)
+  function nutrientTag(val, tag) {
+    return tag && tag !== "" ? `<span class="ci-tag ${tag}">${tag}</span>` : "";
+  }
+  const sideBySide2 = `
+    <table class="ci-sidebyside-table">
+      <tr>
+        <th></th>
+        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
+        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
+      </tr>
+      <tr>
+        <td>Primary Flavor</td>
+        <td>${mainRow["specs_primary_flavor"] || ""}</td>
+        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
+      </tr>
+      <tr>
+        <td>Protein</td>
+        <td>${mainRow["ga_crude_protein_%"] || ""}%${nutrientTag(mainRow["ga_crude_protein_%"], mainRow["tag_protein"])}</td>
+        <td>${sdfRow["ga_crude_protein_%"] || ""}%${nutrientTag(sdfRow["ga_crude_protein_%"], sdfRow["tag_protein"])}</td>
+      </tr>
+      <tr>
+        <td>Fat</td>
+        <td>${mainRow["ga_crude_fat_%"] || ""}%${nutrientTag(mainRow["ga_crude_fat_%"], mainRow["tag_fat"])}</td>
+        <td>${sdfRow["ga_crude_fat_%"] || ""}%${nutrientTag(sdfRow["ga_crude_fat_%"], sdfRow["tag_fat"])}</td>
+      </tr>
+      <tr>
+        <td>Calories/cup</td>
+        <td>${mainRow["ga_kcals_per_cup"] || ""}${nutrientTag(mainRow["ga_kcals_per_cup"], mainRow["tag_kcalscup"])}</td>
+        <td>${sdfRow["ga_kcals_per_cup"] || ""}${nutrientTag(sdfRow["ga_kcals_per_cup"], sdfRow["tag_kcalscup"])}</td>
+      </tr>
+    </table>
+  `;
+  // Build readable text for tags (protein/fat/kcals)
+  function tagText(label, tag) {
+    return tag && tag !== "" ? `${label} is tagged as <span class="ci-tag-inline ${tag}">${tag}</span>. ` : "";
+  }
+  const nutSummary = `
+    ${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup.
+    ${tagText("Protein", mainRow["tag_protein"])}${tagText("Fat", mainRow["tag_fat"])}${tagText("Calories", mainRow["tag_kcalscup"])}
+  `.replace(/\s+/g, ' ').trim();
+
   const section2 = buildSectionMarkup({
     id: "specs",
     title: "Macronutrient Breakdown",
-    subtitle: "Protein, fat, and calorie details",
-    pills: [
-      mainRow["ga_crude_protein_%"] + "% Protein",
-      mainRow["ga_crude_fat_%"] + "% Fat",
-      mainRow["ga_kcals_per_cup"] + " kcals/cup"
-    ].filter(Boolean),
-    madlib: `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup. ${mainRow["tag_protein"] ? `Protein is tagged as ${mainRow["tag_protein"]}.` : ""}`
+    subtitle: "Protein, fat, calorie details, and flavor",
+    madlib: sideBySide2 + `<div class="ci-madlib-text">${nutSummary}</div>`
   });
 
-  // --- Section 3: Ingredients ---
-  const mainIngs = getIngredientsList(mainRow);
-  const sdfIngs  = getIngredientsList(sdfRow);
+  // Section 3: Ingredient List with tags/counts
+  function ingredientListWithTags(row) {
+    const ings = (row["ing-data-fives"] || []).map(id => ING_MAP[id]).filter(Boolean);
+    let tagsCount = { poultry: 0, allergy: 0, contentious: 0, total: ings.length };
+    const ingsHtml = ings.map(ing => {
+      let tags = [];
+      if (ing.tagPoultry)   { tags.push('<span class="ci-ing-tag poultry">poultry</span>'); tagsCount.poultry++; }
+      if (ing.tagAllergy)   { tags.push('<span class="ci-ing-tag allergy">allergy</span>'); tagsCount.allergy++; }
+      if (ing.tagContentious) { tags.push('<span class="ci-ing-tag contentious">contentious</span>'); tagsCount.contentious++; }
+      return `<span class="ci-ing">${ing.displayAs || ing.Name}${tags.length ? ' ' + tags.join(' ') : ''}</span>`;
+    }).join(', ');
+    return { html: ingsHtml, counts: tagsCount };
+  }
+
+  const mainIngs = ingredientListWithTags(mainRow);
+  const sdfIngs  = ingredientListWithTags(sdfRow);
+
   const section3 = buildSectionMarkup({
     id: "ingredients",
     title: "Ingredient List",
-    subtitle: "See what’s inside",
-    madlib: `Ingredients in ${mainRow["data-brand"]} ${mainRow["data-one"]}: ${mainIngs}.<br>Sport Dog Food ${sdfRow["data-one"]}: ${sdfIngs}.`
+    subtitle: "See what’s inside (hover tags for info)",
+    madlib: `
+      <b>${mainRow["data-brand"]} ${mainRow["data-one"]}</b> ingredients (${mainIngs.counts.total}):<br>${mainIngs.html}
+      <br><b>Sport Dog Food ${sdfRow["data-one"]}</b> ingredients (${sdfIngs.counts.total}):<br>${sdfIngs.html}
+    `
   });
 
-  // --- Section 4: Contentious/Excluded Ingredients ---
-  const contentious = getContentiousIngredients(mainRow);
+  // Section 4: Contentious Ingredients w/ smarter madlib
+  function prettyList(arr) {
+    if (!arr.length) return "";
+    if (arr.length === 1) return arr[0];
+    if (arr.length === 2) return arr[0] + " and " + arr[1];
+    return arr.slice(0, -1).join(", ") + " and " + arr[arr.length - 1];
+  }
+  const contentiousIngsArr = (mainRow["ing-data-fives"] || [])
+    .map(id => ING_MAP[id])
+    .filter(ing => ing?.tagContentious)
+    .map(ing => ing.displayAs);
+
+  let contMadlib = "";
+  if (!contentiousIngsArr.length) {
+    contMadlib = "No contentious ingredients in this formula.";
+  } else if (contentiousIngsArr.length === 1) {
+    contMadlib = `This formula contains <b>${contentiousIngsArr[0]}</b>, an ingredient not found in Sport Dog Food formulas.`;
+  } else {
+    contMadlib = `This formula contains the following ingredients not found in Sport Dog Food formulas: <b>${prettyList(contentiousIngsArr)}</b>.`;
+  }
+
   const section4 = buildSectionMarkup({
     id: "contentious",
     title: "Contentious Ingredients",
     subtitle: "Excluded by Sport Dog Food",
-    madlib: contentious
-      ? `This formula contains the following ingredients that are not found in Sport Dog Food formulas: ${contentious}.`
-      : "No contentious ingredients in this formula."
+    madlib: contMadlib
   });
 
-  // --- Section 5: Feeding Calculator (Stub; replace logic with CF if needed) ---
+  // Section 5: Feeding Calculator (unchanged)
   const section5 = buildSectionMarkup({
     id: "calcs",
     title: "Feeding Calculator",
@@ -205,9 +299,10 @@ export function renderComparePage() {
     madlib: `Enter your dog's weight to estimate feeding needs and cost per day.`
   });
 
-  // --- Render all sections (replace #compare-root) ---
+  // Render all sections (replace #compare-root)
   const compareRoot = document.getElementById('compare-root');
   if (compareRoot) {
     compareRoot.innerHTML = section1 + section2 + section3 + section4 + section5;
   }
 }
+
