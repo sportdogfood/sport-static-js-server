@@ -120,48 +120,61 @@ function joinWithAnd(arr) {
 // --- SECTION 1: Diet & Key Specs ---
 function section1DietSpecs(mainRow, sdfRow) {
   return `
-  <section id="diet" class="ci-section">
-    <div class="ci-section-header">
-      <h2 class="ci-section-title">Diet & Key Specs</h2>
+  <section class="ci-section" id="diet">
+    <div class="ci-section-title-wrapper">
+      <h2 class="ci-section-header ci-section-title">Diet & Key Specs</h2>
       <div class="ci-section-subtitle">
-        Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span>
-        vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>
+        <p class="subtitle-text">
+          Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span>
+          vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>
+        </p>
       </div>
     </div>
-    <table class="ci-sidebyside-table">
-      <tr>
-        <th></th>
-        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
-      </tr>
-      <tr>
-        <td>Primary Flavor</td>
-        <td>${mainRow["specs_primary_flavor"] || ""}</td>
-        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
-      </tr>
-      <tr>
-        <td>Grain Free</td>
-        <td>${(mainRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-        <td>${(sdfRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-      </tr>
-      <tr>
-        <td>Poultry Free</td>
-        <td>${(mainRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-        <td>${(sdfRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-      </tr>
-      <tr>
-        <td>Legumes Free</td>
-        <td>${(mainRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-        <td>${(sdfRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-      </tr>
-    </table>
-    <p class="ci-section-madlib">
-      ${(mainRow["data-brand"] || "This food")} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula${mainRow["ga_kcals_per_cup"] ? ` with ${mainRow["ga_kcals_per_cup"]} kcals/cup.` : '.'}
-      Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.
-    </p>
+    <div class="ci-sidebyside-wrapper">
+      <table class="ci-sidebyside-grid-1c4r">
+        <thead>
+          <tr class="ci-sidebyside-head-3c1r">
+            <th class="ci-sidebyside-col-head"></th>
+            <th class="ci-sidebyside-col-head">${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
+            <th class="ci-sidebyside-col-head">Sport Dog Food ${sdfRow["data-one"]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Primary Flavor</td>
+            <td class="ci-sidebyside-col-row">${mainRow["specs_primary_flavor"] || ""}</td>
+            <td class="ci-sidebyside-col-row">${sdfRow["specs_primary_flavor"] || ""}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Grain Free</td>
+            <td class="ci-sidebyside-col-row">${(mainRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+            <td class="ci-sidebyside-col-row">${(sdfRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Poultry Free</td>
+            <td class="ci-sidebyside-col-row">${(mainRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+            <td class="ci-sidebyside-col-row">${(sdfRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Legumes Free</td>
+            <td class="ci-sidebyside-col-row">${(mainRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+            <td class="ci-sidebyside-col-row">${(sdfRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ci-section-madlib-wrapper">
+      <div class="ci-section-madlib">
+        <p class="madlib-p">
+          ${(mainRow["data-brand"] || "This food")} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula${mainRow["ga_kcals_per_cup"] ? ` with ${mainRow["ga_kcals_per_cup"]} kcals/cup.` : '.'}
+          Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.
+        </p>
+      </div>
+    </div>
   </section>
   `;
 }
+
 
 // --- SECTION 2: Macronutrient Breakdown ---
 function section2Macros(mainRow, sdfRow) {
@@ -173,42 +186,55 @@ function section2Macros(mainRow, sdfRow) {
   `.replace(/\s+/g, ' ').trim();
 
   return `
-  <section id="specs" class="ci-section">
-    <div class="ci-section-header">
-      <h2 class="ci-section-title">Macronutrient Breakdown</h2>
-      <div class="ci-section-subtitle">Protein, fat, calorie details, and flavor</div>
+  <section class="ci-section" id="specs">
+    <div class="ci-section-title-wrapper">
+      <h2 class="ci-section-header ci-section-title">Macronutrient Breakdown</h2>
+      <div class="ci-section-subtitle">
+        <p class="subtitle-text">Protein, fat, calorie details, and flavor</p>
+      </div>
     </div>
-    <table class="ci-sidebyside-table">
-      <tr>
-        <th></th>
-        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
-      </tr>
-      <tr>
-        <td>Protein</td>
-        <td>${mainRow["ga_crude_protein_%"] || ""}%${nutrientTag(mainRow["ga_crude_protein_%"], mainRow["tag_protein"])}</td>
-        <td>${sdfRow["ga_crude_protein_%"] || ""}%${nutrientTag(sdfRow["ga_crude_protein_%"], sdfRow["tag_protein"])}</td>
-      </tr>
-      <tr>
-        <td>Fat</td>
-        <td>${mainRow["ga_crude_fat_%"] || ""}%${nutrientTag(mainRow["ga_crude_fat_%"], mainRow["tag_fat"])}</td>
-        <td>${sdfRow["ga_crude_fat_%"] || ""}%${nutrientTag(sdfRow["ga_crude_fat_%"], sdfRow["tag_fat"])}</td>
-      </tr>
-      <tr>
-        <td>Calories/cup</td>
-        <td>${mainRow["ga_kcals_per_cup"] || ""}${nutrientTag(mainRow["ga_kcals_per_cup"], mainRow["tag_kcalscup"])}</td>
-        <td>${sdfRow["ga_kcals_per_cup"] || ""}${nutrientTag(sdfRow["ga_kcals_per_cup"], sdfRow["tag_kcalscup"])}</td>
-      </tr>
-      <tr>
-        <td>Flavor</td>
-        <td>${mainRow["specs_primary_flavor"] || ""}</td>
-        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
-      </tr>
-    </table>
-    <div class="ci-madlib-text">${nutSummary}</div>
+    <div class="ci-sidebyside-wrapper">
+      <table class="ci-sidebyside-grid-1c4r">
+        <thead>
+          <tr class="ci-sidebyside-head-3c1r">
+            <th class="ci-sidebyside-col-head"></th>
+            <th class="ci-sidebyside-col-head">${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
+            <th class="ci-sidebyside-col-head">Sport Dog Food ${sdfRow["data-one"]}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Protein</td>
+            <td class="ci-sidebyside-col-row">${mainRow["ga_crude_protein_%"] || ""}%${nutrientTag(mainRow["ga_crude_protein_%"], mainRow["tag_protein"])}</td>
+            <td class="ci-sidebyside-col-row">${sdfRow["ga_crude_protein_%"] || ""}%${nutrientTag(sdfRow["ga_crude_protein_%"], sdfRow["tag_protein"])}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Fat</td>
+            <td class="ci-sidebyside-col-row">${mainRow["ga_crude_fat_%"] || ""}%${nutrientTag(mainRow["ga_crude_fat_%"], mainRow["tag_fat"])}</td>
+            <td class="ci-sidebyside-col-row">${sdfRow["ga_crude_fat_%"] || ""}%${nutrientTag(sdfRow["ga_crude_fat_%"], sdfRow["tag_fat"])}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Calories/cup</td>
+            <td class="ci-sidebyside-col-row">${mainRow["ga_kcals_per_cup"] || ""}${nutrientTag(mainRow["ga_kcals_per_cup"], mainRow["tag_kcalscup"])}</td>
+            <td class="ci-sidebyside-col-row">${sdfRow["ga_kcals_per_cup"] || ""}${nutrientTag(sdfRow["ga_kcals_per_cup"], sdfRow["tag_kcalscup"])}</td>
+          </tr>
+          <tr class="ci-sidebyside-row-3c1r">
+            <td class="ci-sidebyside-col-row">Flavor</td>
+            <td class="ci-sidebyside-col-row">${mainRow["specs_primary_flavor"] || ""}</td>
+            <td class="ci-sidebyside-col-row">${sdfRow["specs_primary_flavor"] || ""}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ci-section-madlib-wrapper">
+      <div class="ci-section-madlib">
+        <p class="madlib-p">${nutSummary}</p>
+      </div>
+    </div>
   </section>
   `;
 }
+
 // ------- SECTION 3: Ingredient List & Attribute Table -------
 
 // Ingredient attribute counts for a formula row
