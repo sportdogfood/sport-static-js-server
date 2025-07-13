@@ -1,3 +1,82 @@
+// compare-engine.js (initial shell paint for CCI)
+// Call this as soon as DOM is ready and hidden fields are set
+
+export function paintCompareShell({
+  containerSelector = '.pwr-section-container',
+  brand = 'the competition',
+  inputPresets = [
+    "Type: Purina Pro Plan",
+    "Try: Grain Free"
+  ]
+} = {}) {
+  const container = document.querySelector(containerSelector);
+  if (!container) {
+    console.error('[CCI] Container not found:', containerSelector);
+    return;
+  }
+
+  // --- HTML shell (matches your computed markup) ---
+  container.innerHTML = `
+    <div class="pwr-outer-shell">
+      <div class="pwr-search-title">
+        <div class="pwrs-subtitle-wrapper pwrs-btn-noshrink">
+          <div class="pwr-btn-txt-2 descption-none-4">Compare brands</div>
+        </div>
+        <div id="pwr-fake-label" class="pwr-fake-label">
+          See how our diets outwork <span class="brand-highlight">${brand}</span>
+        </div>
+        <div id="pwr-search-subtitle" class="pwr-search-subtitle">
+          <div>Pick a brand to compare against Sport Dog Food.</div>
+        </div>
+      </div>
+      <div class="pwr-chat-markup-wrapper">
+        <div class="chat-markeup w-embed">
+          <div class="pwr-chat-content">
+            <div class="pwr-search-input-bar">
+              <input id="pwr-prompt-input" class="pwr-search-input" type="text" placeholder="${inputPresets[0]}" autocomplete="off">
+              <button id="pwr-clear-button" class="pwr-clear-button" aria-label="Clear input" style="display: none;">×</button>
+            </div>
+            <div class="pwr-pills-row" style="display: flex;">
+              <button class="pwr-arrow pwr-arrow-prev" aria-label="Scroll left" tabindex="0">&lt;</button>
+              <div id="pwr-initial-suggestions" class="pwr-starter-menu" style="display: flex;"></div>
+              <button class="pwr-arrow pwr-arrow-next" aria-label="Scroll right" tabindex="0">&gt;</button>
+            </div>
+            <ul id="pwr-suggestion-list" class="pwr-suggestion-list" style="display: none;"></ul>
+            <div id="pwr-answer-output" class="pwr-answer-output" style="display:none;">
+              <button class="pwr-answer-close" aria-label="Close answer">×</button>
+              <div class="pwr-answer-output-flex">
+                <span id="pwr-answer-text" class="pwr-answer-text"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // --- Dynamic hero label (randomized) ---
+  const heroPresets = [
+    `See how our diets outwork <span class='brand-highlight'>${brand}</span>`,
+    `Discover what sets us apart from <span class='brand-highlight'>${brand}</span>`
+  ];
+  const label = container.querySelector('#pwr-fake-label');
+  if (label) label.innerHTML = heroPresets[Math.floor(Math.random() * heroPresets.length)];
+
+  // --- Animated placeholder for search input ---
+  const input = container.querySelector('#pwr-prompt-input');
+  let i = 0;
+  if (input && inputPresets.length > 1) {
+    input.placeholder = inputPresets[0];
+    setInterval(() => {
+      i = (i + 1) % inputPresets.length;
+      input.placeholder = inputPresets[i];
+    }, 4000);
+  }
+}
+
+// Usage:
+// paintCompareShell();
+// Then initialize the rest of your engine/logic (pills, suggestions, handlers)
 // compare-engine.js
 import { CI_DATA } from './ci.js';
 import { CF_DATA } from './cf.js';
