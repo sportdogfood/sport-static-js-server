@@ -237,7 +237,16 @@ function section2Macros(mainRow, sdfRow) {
 
 // ------- SECTION 3: Ingredient List & Attribute Table -------
 
-// Ingredient attribute counts for a formula row
+// --- Helper: Consumer-facing tag for recordType ---
+function getConsumerTypeTag(type) {
+  if (!type) return "Ingredient";
+  if (type.toLowerCase() === "animal") return "Animal Protein";
+  if (type.toLowerCase() === "plant")  return "Plant Ingredient";
+  if (type.toLowerCase() === "supplemental") return "Nutrient";
+  return "Ingredient";
+}
+
+// --- Ingredient attribute counts for a formula row ---
 function getIngredientCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -256,7 +265,7 @@ function getIngredientCounts(row) {
   };
 }
 
-// Build attribute count table for main and SDF
+// --- Build attribute count table for both sides ---
 function buildIngredientTable(mainRow, sdfRow) {
   const mainCounts = getIngredientCounts(mainRow);
   const sdfCounts  = getIngredientCounts(sdfRow);
@@ -284,7 +293,7 @@ function buildIngredientTable(mainRow, sdfRow) {
   `;
 }
 
-// Madlib summary for ingredient evaluation
+// --- Madlib summary for ingredient evaluation ---
 function buildIngredientMadlib(row, counts) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -293,14 +302,12 @@ function buildIngredientMadlib(row, counts) {
   if (ings[0]) madlib += ` First ingredient: ${ings[0].displayAs || ings[0].Name}.`;
   if (ings[1]) madlib += ` Second ingredient: ${ings[1].displayAs || ings[1].Name}.`;
 
-  // Allergy/contentious logic
   const allergyIngs = ings.filter(ing => ing.tagAllergy).map(ing => ing.displayAs).join(', ');
   const contentiousIngs = ings.filter(ing => ing.tagContentious).map(ing => ing.displayAs).join(', ');
 
   if (allergyIngs) madlib += ` Contains allergy ingredients (${allergyIngs}).`;
   if (contentiousIngs) madlib += ` Contains contentious ingredients (${contentiousIngs}).`;
 
-  // Upgraded minerals logic
   const hasUpgraded = ings.some(ing =>
     (ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
     (ing.supplementalAssist || "").toLowerCase().includes("complex")
@@ -310,62 +317,82 @@ function buildIngredientMadlib(row, counts) {
   return madlib;
 }
 
-// Styled, tagged ingredient list (for mainRow or sdfRow)
-function buildIngredientList(row) {
+// --- Render list of ingredients as divs/chips ---
+function renderIngListDivs(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
-  return ings.map(ing => {
-    let tags = [];
-    if (ing.tagPoultry)      tags.push(`<span class="ci-tag ci-tag-poultry">poultry</span>`);
-    if (ing.tagAllergy)      tags.push(`<span class="ci-tag ci-tag-allergy">allergy</span>`);
-    if (ing.tagContentious)  tags.push(`<span class="ci-tag ci-tag-contentious">contentious</span>`);
-    if (ing.supplementalType === "Minerals")   tags.push(`<span class="ci-tag ci-tag-mineral">mineral</span>`);
-    if (ing.supplementalType === "Vitamins")   tags.push(`<span class="ci-tag ci-tag-vitamin">vitamin</span>`);
-    if (ing.supplementalType === "Probiotics") tags.push(`<span class="ci-tag ci-tag-probiotic">probiotic</span>`);
-    if ((ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
-        (ing.supplementalAssist || "").toLowerCase().includes("complex")) {
-      tags.push(`<span class="ci-tag ci-tag-upgraded">upgraded mineral</span>`);
-    }
-    return `${ing.displayAs || ing.Name}${tags.length ? " " + tags.join("") : ""}`;
-  }).join(', ');
+  return `
+    <div class="ci-ings-list">
+      ${ings.map(ing => {
+        let tagDivs = [];
+        // Always include type tag first
+        if (ing.recordType) {
+          tagDivs.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${ing.recordType.toLowerCase()}">${getConsumerTypeTag(ing.recordType)}</div>`);
+        }
+        if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry">poultry</div>`);
+        if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy">allergy</div>`);
+        if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious">contentious</div>`);
+        if (ing.supplementalType === "Minerals")   tagDivs.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
+        if (ing.supplementalType === "Vitamins")   tagDivs.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
+        if (ing.supplementalType === "Probiotics") tagDivs.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
+        if ((ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
+            (ing.supplementalAssist || "").toLowerCase().includes("complex")) {
+          tagDivs.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
+        }
+        return `
+          <div class="ci-ing-wrapper">
+            <div class="ci-ing-displayas">${ing.displayAs || ing.Name}</div>
+            <div class="ci-ing-tag-wrapper">
+              ${tagDivs.join("")}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
-// ---------- SECTION 3 RENDER FUNCTION ----------
+// --- SECTION 3 MAIN RENDER FUNCTION ---
 function section3Ingredients(mainRow, sdfRow) {
-  // Build attribute count table for both sides
   const mainCounts = getIngredientCounts(mainRow);
   const sdfCounts  = getIngredientCounts(sdfRow);
 
-  // Render individual ingredient chips
-  function renderIngList(row) {
-    const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
-    const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
-    return `
-      <div class="ci-ings-list">
-        ${ings.map(ing => {
-          let tags = [];
-          if (ing.tagPoultry)      tags.push(`<span class="ci-ing-tag ci-tag-poultry">poultry</span>`);
-          if (ing.tagAllergy)      tags.push(`<span class="ci-ing-tag ci-tag-allergy">allergy</span>`);
-          if (ing.tagContentious)  tags.push(`<span class="ci-ing-tag ci-tag-contentious">contentious</span>`);
-          if (ing.supplementalType === "Minerals")   tags.push(`<span class="ci-ing-tag ci-tag-mineral">mineral</span>`);
-          if (ing.supplementalType === "Vitamins")   tags.push(`<span class="ci-ing-tag ci-tag-vitamin">vitamin</span>`);
-          if (ing.supplementalType === "Probiotics") tags.push(`<span class="ci-ing-tag ci-tag-probiotic">probiotic</span>`);
-          if ((ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
-              (ing.supplementalAssist || "").toLowerCase().includes("complex")) {
-            tags.push(`<span class="ci-ing-tag ci-tag-upgraded">upgraded mineral</span>`);
-          }
-          return `
-            <span class="ci-ing-wrapper">
-              <span class="ci-ing-displayas">${ing.displayAs || ing.Name}</span>
-              ${tags.length ? tags.join("") : ""}
-            </span>
-          `;
-        }).join('')}
+  return `
+    <section class="ci-section" id="ingredients">
+      <div class="ci-section-title-wrapper">
+        <h2 class="ci-section-header ci-section-title">Ingredient List</h2>
+        <div class="ci-section-subtitle">
+          <p class="subtitle-text">See what’s inside (hover tags for info)</p>
+        </div>
       </div>
-    `;
-  }
+      <div class="ci-sidebyside-wrapper">
+        ${buildIngredientTable(mainRow, sdfRow)}
+      </div>
+      <div class="ci-section-madlib-wrapper">
+        <div class="ci-section-madlib">
+          <p class="madlib-p">${buildIngredientMadlib(mainRow, mainCounts)}</p>
+        </div>
+      </div>
+      <div class="ci-ings-container">
+        <div class="ci-ings-wrapper">
+          <div class="ci-ings-label"><b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b></div>
+          ${renderIngListDivs(mainRow)}
+        </div>
+        <div class="ci-ings-wrapper">
+          <div class="ci-ings-label"><b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b></div>
+          ${renderIngListDivs(sdfRow)}
+        </div>
+      </div>
+    </section>
+  `;
+}
 
+
+
+
+
+----
   return `
     <section class="ci-section" id="ingredients">
       <div class="ci-section-title-wrapper">
