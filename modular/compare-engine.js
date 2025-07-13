@@ -180,18 +180,16 @@ export function renderComparePage() {
     </table>
   `;
 
-  const section1 = buildSectionMarkup({
-    id: "diet",
-    title: "Diet & Key Specs",
-    subtitle: `Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>`,
-    madlib: sideBySide1,
-  });
-
-  // Section 2: Protein, Fat, Calories, Flavor, tag (side-by-side)
-  function nutrientTag(val, tag) {
-    return tag && tag !== "" ? `<span class="ci-tag ${tag}">${tag}</span>` : "";
-  }
-  const sideBySide2 = `
+function section1DietSpecs(mainRow, sdfRow) {
+  return `
+  <section id="diet" class="ci-section">
+    <div class="ci-section-header">
+      <h2 class="ci-section-title">Diet & Key Specs</h2>
+      <div class="ci-section-subtitle">
+        Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span>
+        vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>
+      </div>
+    </div>
     <table class="ci-sidebyside-table">
       <tr>
         <th></th>
@@ -202,6 +200,59 @@ export function renderComparePage() {
         <td>Primary Flavor</td>
         <td>${mainRow["specs_primary_flavor"] || ""}</td>
         <td>${sdfRow["specs_primary_flavor"] || ""}</td>
+      </tr>
+      <tr>
+        <td>Grain Free</td>
+        <td>${(mainRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+        <td>${(sdfRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+      </tr>
+      <tr>
+        <td>Poultry Free</td>
+        <td>${(mainRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+        <td>${(sdfRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+      </tr>
+      <tr>
+        <td>Legumes Free</td>
+        <td>${(mainRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+        <td>${(sdfRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
+      </tr>
+    </table>
+    <p class="ci-section-madlib">
+      ${(mainRow["data-brand"] || "This food")} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula${mainRow["ga_kcals_per_cup"] ? ` with ${mainRow["ga_kcals_per_cup"]} kcals/cup.` : '.'}
+      Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.
+    </p>
+  </section>
+  `;
+}
+
+function nutrientTag(val, tag) {
+  if (!tag) return "";
+  return `<span class="ci-tag ci-tag-${tag.toLowerCase()}">${tag}</span>`;
+}
+function tagText(label, tag) {
+  if (!tag) return "";
+  return `${label} is tagged as <span class="ci-tag-inline ci-tag-${tag.toLowerCase()}">${tag}</span>. `;
+}
+
+function section2Macros(mainRow, sdfRow) {
+  const nutSummary = `
+    ${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup.
+    ${tagText("Protein", mainRow["tag_protein"])}
+    ${tagText("Fat", mainRow["tag_fat"])}
+    ${tagText("Calories", mainRow["tag_kcalscup"])}
+  `.replace(/\s+/g, ' ').trim();
+
+  return `
+  <section id="specs" class="ci-section">
+    <div class="ci-section-header">
+      <h2 class="ci-section-title">Macronutrient Breakdown</h2>
+      <div class="ci-section-subtitle">Protein, fat, calorie details, and flavor</div>
+    </div>
+    <table class="ci-sidebyside-table">
+      <tr>
+        <th></th>
+        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
+        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
       </tr>
       <tr>
         <td>Protein</td>
@@ -218,41 +269,16 @@ export function renderComparePage() {
         <td>${mainRow["ga_kcals_per_cup"] || ""}${nutrientTag(mainRow["ga_kcals_per_cup"], mainRow["tag_kcalscup"])}</td>
         <td>${sdfRow["ga_kcals_per_cup"] || ""}${nutrientTag(sdfRow["ga_kcals_per_cup"], sdfRow["tag_kcalscup"])}</td>
       </tr>
+      <tr>
+        <td>Flavor</td>
+        <td>${mainRow["specs_primary_flavor"] || ""}</td>
+        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
+      </tr>
     </table>
+    <div class="ci-madlib-text">${nutSummary}</div>
+  </section>
   `;
-  // Build readable text for tags (protein/fat/kcals)
-  function tagText(label, tag) {
-    return tag && tag !== "" ? `${label} is tagged as <span class="ci-tag-inline ${tag}">${tag}</span>. ` : "";
-  }
-  const nutSummary = `
-    ${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup.
-    ${tagText("Protein", mainRow["tag_protein"])}${tagText("Fat", mainRow["tag_fat"])}${tagText("Calories", mainRow["tag_kcalscup"])}
-  `.replace(/\s+/g, ' ').trim();
-
-  const section2 = buildSectionMarkup({
-    id: "specs",
-    title: "Macronutrient Breakdown",
-    subtitle: "Protein, fat, calorie details, and flavor",
-    madlib: sideBySide2 + `<div class="ci-madlib-text">${nutSummary}</div>`
-  });
-
-  // Section 3: Ingredient List with tags/counts
-  function ingredientListWithTags(row) {
-    const ings = (row["ing-data-fives"] || []).map(id => ING_MAP[id]).filter(Boolean);
-    let tagsCount = { poultry: 0, allergy: 0, contentious: 0, total: ings.length };
-    const ingsHtml = ings.map(ing => {
-      let tags = [];
-      if (ing.tagPoultry)   { tags.push('<span class="ci-ing-tag poultry">poultry</span>'); tagsCount.poultry++; }
-      if (ing.tagAllergy)   { tags.push('<span class="ci-ing-tag allergy">allergy</span>'); tagsCount.allergy++; }
-      if (ing.tagContentious) { tags.push('<span class="ci-ing-tag contentious">contentious</span>'); tagsCount.contentious++; }
-      return `<span class="ci-ing">${ing.displayAs || ing.Name}${tags.length ? ' ' + tags.join(' ') : ''}</span>`;
-    }).join(', ');
-    return { html: ingsHtml, counts: tagsCount };
-  }
-
-  const mainIngs = ingredientListWithTags(mainRow);
-  const sdfIngs  = ingredientListWithTags(sdfRow);
-
+}
 // ---------- Section 3: Ingredient List & Attribute Table (Full Render) ----------
 
 // Helper: merge all ingredient data
@@ -379,6 +405,7 @@ const section3 = `
   </section>
 `;
 
+// ...Then inject `section3` in your main page HTML output where needed
 
 // For example:
 const compareRoot = document.getElementById('compare-root');
@@ -387,13 +414,39 @@ if (compareRoot) {
   compareRoot.innerHTML += section3;
 }
 
-
-  const section4 = buildSectionMarkup({
-    id: "contentious",
-    title: "Contentious Ingredients",
-    subtitle: "Excluded by Sport Dog Food",
-    madlib: contMadlib
-  });
+function getContentiousIngredients(row) {
+  const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
+  const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
+  return ings.filter(ing => ing.tagContentious).map(ing => ing.displayAs).filter(Boolean);
+}
+function joinWithAnd(arr) {
+  if (arr.length <= 1) return arr.join('');
+  if (arr.length === 2) return arr[0] + " and " + arr[1];
+  return arr.slice(0, -1).join(", ") + " and " + arr.slice(-1);
+}
+function buildSection4Madlib(mainRow) {
+  const brand = mainRow["data-brand"];
+  const product = mainRow["data-one"];
+  const excluded = getContentiousIngredients(mainRow);
+  if (excluded.length === 0) {
+    return `There are no contentious ingredients in ${brand} ${product}.`;
+  }
+  if (excluded.length === 1) {
+    return `${brand} ${product} contains ${excluded[0]}, which is not found in any Sport Dog Food formula.`;
+  }
+  return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
+}
+function section4Contentious(mainRow) {
+  return `
+    <section id="contentious" class="ci-section">
+      <div class="ci-section-header">
+        <h2 class="ci-section-title">Contentious Ingredients</h2>
+        <div class="ci-section-subtitle">Excluded by Sport Dog Food</div>
+      </div>
+      <p class="ci-section-madlib">${buildSection4Madlib(mainRow)}</p>
+    </section>
+  `;
+}
 
   // Section 5: Feeding Calculator (unchanged)
   const section5 = buildSectionMarkup({
