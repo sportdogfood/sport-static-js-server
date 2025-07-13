@@ -389,35 +389,6 @@ function section3Ingredients(mainRow, sdfRow) {
 }
 
 
-  return `
-    <section class="ci-section" id="ingredients">
-      <div class="ci-section-title-wrapper">
-        <h2 class="ci-section-header ci-section-title">Ingredient List</h2>
-        <div class="ci-section-subtitle">
-          <p class="subtitle-text">See what’s inside (hover tags for info)</p>
-        </div>
-      </div>
-      <div class="ci-sidebyside-wrapper">
-        ${buildIngredientTable(mainRow, sdfRow)}
-      </div>
-      <div class="ci-section-madlib-wrapper">
-        <div class="ci-section-madlib">
-          <p class="madlib-p">${buildIngredientMadlib(mainRow, mainCounts)}</p>
-        </div>
-      </div>
-      <div class="ci-ings-container">
-        <div class="ci-ings-wrapper">
-          <div class="ci-ings-label"><b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b></div>
-          ${renderIngList(mainRow)}
-        </div>
-        <div class="ci-ings-wrapper">
-          <div class="ci-ings-label"><b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b></div>
-          ${renderIngList(sdfRow)}
-        </div>
-      </div>
-    </section>
-  `;
-}
 
 
 // --- SECTION 4: Contentious Ingredients ---
