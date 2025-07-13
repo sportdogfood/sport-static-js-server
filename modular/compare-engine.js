@@ -240,10 +240,10 @@ function section2Macros(mainRow, sdfRow) {
 // --- Helper: Consumer-facing tag for recordType ---
 function getConsumerTypeTag(type) {
   if (!type) return "Ingredient";
-  if (type.toLowerCase() === "animal") return "Animal Protein";
-  if (type.toLowerCase() === "plant")  return "Plant Ingredient";
-  if (type.toLowerCase() === "supplemental") return "Nutrient";
-  return "Ingredient";
+  if (type.toLowerCase() === "animal") return "Animal";
+  if (type.toLowerCase() === "plant")  return "Plant";
+  if (type.toLowerCase() === "supplemental") return "Supplement";
+  return "not";
 }
 
 // --- Ingredient attribute counts for a formula row ---
