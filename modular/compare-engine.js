@@ -333,25 +333,63 @@ function buildIngredientList(row) {
 
 // ---------- SECTION 3 RENDER FUNCTION ----------
 function section3Ingredients(mainRow, sdfRow) {
+  // Build attribute count table for both sides
   const mainCounts = getIngredientCounts(mainRow);
   const sdfCounts  = getIngredientCounts(sdfRow);
 
-  return `
-    <section id="ingredients" class="ci-section">
-      <div class="ci-section-header">
-        <h2 class="ci-section-title">Ingredient List</h2>
-        <div class="ci-section-subtitle">See what’s inside (hover tags for info)</div>
+  // Render individual ingredient chips
+  function renderIngList(row) {
+    const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
+    const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
+    return `
+      <div class="ci-ings-list">
+        ${ings.map(ing => {
+          let tags = [];
+          if (ing.tagPoultry)      tags.push(`<span class="ci-ing-tag ci-tag-poultry">poultry</span>`);
+          if (ing.tagAllergy)      tags.push(`<span class="ci-ing-tag ci-tag-allergy">allergy</span>`);
+          if (ing.tagContentious)  tags.push(`<span class="ci-ing-tag ci-tag-contentious">contentious</span>`);
+          if (ing.supplementalType === "Minerals")   tags.push(`<span class="ci-ing-tag ci-tag-mineral">mineral</span>`);
+          if (ing.supplementalType === "Vitamins")   tags.push(`<span class="ci-ing-tag ci-tag-vitamin">vitamin</span>`);
+          if (ing.supplementalType === "Probiotics") tags.push(`<span class="ci-ing-tag ci-tag-probiotic">probiotic</span>`);
+          if ((ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
+              (ing.supplementalAssist || "").toLowerCase().includes("complex")) {
+            tags.push(`<span class="ci-ing-tag ci-tag-upgraded">upgraded mineral</span>`);
+          }
+          return `
+            <span class="ci-ing-wrapper">
+              <span class="ci-ing-displayas">${ing.displayAs || ing.Name}</span>
+              ${tags.length ? tags.join("") : ""}
+            </span>
+          `;
+        }).join('')}
       </div>
-      ${buildIngredientTable(mainRow, sdfRow)}
-      <p class="ci-section-madlib">${buildIngredientMadlib(mainRow, mainCounts)}</p>
-      <div class="ci-section-ingredient-list">
-        <div>
-          <b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b><br>
-          ${buildIngredientList(mainRow)}
+    `;
+  }
+
+  return `
+    <section class="ci-section" id="ingredients">
+      <div class="ci-section-title-wrapper">
+        <h2 class="ci-section-header ci-section-title">Ingredient List</h2>
+        <div class="ci-section-subtitle">
+          <p class="subtitle-text">See what’s inside (hover tags for info)</p>
         </div>
-        <div>
-          <b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b><br>
-          ${buildIngredientList(sdfRow)}
+      </div>
+      <div class="ci-sidebyside-wrapper">
+        ${buildIngredientTable(mainRow, sdfRow)}
+      </div>
+      <div class="ci-section-madlib-wrapper">
+        <div class="ci-section-madlib">
+          <p class="madlib-p">${buildIngredientMadlib(mainRow, mainCounts)}</p>
+        </div>
+      </div>
+      <div class="ci-ings-container">
+        <div class="ci-ings-wrapper">
+          <div class="ci-ings-label"><b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b></div>
+          ${renderIngList(mainRow)}
+        </div>
+        <div class="ci-ings-wrapper">
+          <div class="ci-ings-label"><b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b></div>
+          ${renderIngList(sdfRow)}
         </div>
       </div>
     </section>
@@ -377,17 +415,26 @@ function buildSection4Madlib(mainRow) {
   }
   return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
 }
+
+
 function section4Contentious(mainRow) {
   return `
-    <section id="contentious" class="ci-section">
-      <div class="ci-section-header">
-        <h2 class="ci-section-title">Contentious Ingredients</h2>
-        <div class="ci-section-subtitle">Excluded by Sport Dog Food</div>
+    <section class="ci-section" id="contentious">
+      <div class="ci-section-title-wrapper">
+        <h2 class="ci-section-header ci-section-title">Contentious Ingredients</h2>
+        <div class="ci-section-subtitle">
+          <p class="subtitle-text">Excluded by Sport Dog Food</p>
+        </div>
       </div>
-      <p class="ci-section-madlib">${buildSection4Madlib(mainRow)}</p>
+      <div class="ci-section-madlib-wrapper">
+        <div class="ci-section-madlib">
+          <p class="madlib-p">${buildSection4Madlib(mainRow)}</p>
+        </div>
+      </div>
     </section>
   `;
 }
+
 
 // --- MAIN RENDER ---
 export function renderComparePage() {
