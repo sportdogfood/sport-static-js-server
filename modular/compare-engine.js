@@ -389,10 +389,6 @@ function section3Ingredients(mainRow, sdfRow) {
 }
 
 
-
-
-
-----
   return `
     <section class="ci-section" id="ingredients">
       <div class="ci-section-title-wrapper">
