@@ -74,112 +74,50 @@ export function paintCompareShell({
   }
 }
 
-// Usage:
-// paintCompareShell();
-// Then initialize the rest of your engine/logic (pills, suggestions, handlers)
-// compare-engine.js
-import { CI_DATA } from './ci.js';
-import { CF_DATA } from './cf.js';
-import { ING_ANIM } from './ingAnim.js';
+// compare-engine.js - Drop-in for CI compare pages
+
+// Import your datasets
+import { CI_DATA }   from './ci.js';
+import { ING_ANIM }  from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
-import { ING_SUPP } from './ingSupp.js';
+import { ING_SUPP }  from './ingSupp.js';
 
-// SDF data-fives
+// --- SDF "baseline" formulas by data-five
 const SDF_FORMULAS = {
-  cub: "29280",
-  dock: "29099",
-  herding: "28979",
+  cub:     "29280",
+  dock:    "29099",
+  herding: "28979"
 };
-const SDF_LIST = [SDF_FORMULAS.cub, SDF_FORMULAS.dock, SDF_FORMULAS.herding];
 
-function getSdfFormula(data) {
-  if (data["data-grain"]?.toLowerCase().includes("grain free")) return SDF_FORMULAS.herding;
-  if (+data["ga_kcals_per_cup"] > 490) return SDF_FORMULAS.cub;
+// --- INGREDIENT LOOKUP MAP
+const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+
+// --- UTILS ---
+function getSdfFormula(row) {
+  // Pick baseline SDF formula by grain/kcals
+  if ((row["data-grain"] || "").toLowerCase().includes("grain free")) return SDF_FORMULAS.herding;
+  if (+row["ga_kcals_per_cup"] > 490) return SDF_FORMULAS.cub;
   return SDF_FORMULAS.dock;
 }
-
 function getCiRow(dataFive) {
   return CI_DATA.find(row => String(row["data-five"]) === String(dataFive));
 }
-function getCfRow(dataFive) {
-  return CF_DATA.find(row => String(row["data-five"]) === String(dataFive));
+function safeStr(val) { return typeof val === "string" ? val : ""; }
+function nutrientTag(val, tag) {
+  if (!tag) return "";
+  return `<span class="ci-tag ci-tag-${tag.toLowerCase()}">${tag}</span>`;
+}
+function tagText(label, tag) {
+  if (!tag) return "";
+  return `${label} is tagged as <span class="ci-tag-inline ci-tag-${tag.toLowerCase()}">${tag}</span>. `;
+}
+function joinWithAnd(arr) {
+  if (arr.length <= 1) return arr.join('');
+  if (arr.length === 2) return arr[0] + " and " + arr[1];
+  return arr.slice(0, -1).join(", ") + " and " + arr.slice(-1);
 }
 
-// --- Ingredient map (merge all)
-const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
-
-function getIngredientsList(row) {
-  return (row["ing-data-fives"] || [])
-    .map(id => ING_MAP[id])
-    .filter(Boolean)
-    .map(ing => ing.displayAs || ing.Name)
-    .join(", ");
-}
-
-function getContentiousIngredients(row) {
-  return (row["ing-data-fives"] || [])
-    .map(id => ING_MAP[id])
-    .filter(ing => ing?.tagContentious)
-    .map(ing => ing.displayAs)
-    .join(", ");
-}
-
-function buildSectionMarkup({ id, title, subtitle, madlib, pills }) {
-  return `
-    <section id="${id}" class="ci-section">
-      <div class="ci-section-header">
-        <h2 class="ci-section-title">${title}</h2>
-        <div class="ci-section-subtitle">${subtitle}</div>
-        <div class="ci-section-pills">${(pills || []).map(p => `<button class="ci-pill">${p}</button>`).join('')}</div>
-      </div>
-      <p class="ci-section-madlib">${madlib}</p>
-    </section>
-  `;
-}
-
-// --- Main Compare Logic ---
-export function renderComparePage() {
-  const ciFive  = document.getElementById('item-faq-five')?.value;
-  const ciType  = document.getElementById('item-faq-type')?.value;
-  if (!ciFive || !ciType) return;
-  const mainRow = getCiRow(ciFive);
-  if (!mainRow) return;
-
-  // Select comparison SDF formula
-  const sdfFive = getSdfFormula(mainRow);
-  const sdfRow  = getCiRow(sdfFive);
-
-  // Section 1: Diet & Major Specs (side-by-side flavor, diet, poultry, legumes)
-  const sideBySide1 = `
-    <table class="ci-sidebyside-table">
-      <tr>
-        <th></th>
-        <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-        <th>Sport Dog Food ${sdfRow["data-one"]}</th>
-      </tr>
-      <tr>
-        <td>Primary Flavor</td>
-        <td>${mainRow["specs_primary_flavor"] || ""}</td>
-        <td>${sdfRow["specs_primary_flavor"] || ""}</td>
-      </tr>
-      <tr>
-        <td>Grain</td>
-        <td>${mainRow["data-grain"] || ""}</td>
-        <td>${sdfRow["data-grain"] || ""}</td>
-      </tr>
-      <tr>
-        <td>Poultry</td>
-        <td>${mainRow["data-poultry"] || ""}</td>
-        <td>${sdfRow["data-poultry"] || ""}</td>
-      </tr>
-      <tr>
-        <td>Legumes</td>
-        <td>${mainRow["data-legumes"] || ""}</td>
-        <td>${sdfRow["data-legumes"] || ""}</td>
-      </tr>
-    </table>
-  `;
-
+// --- SECTION 1: Diet & Key Specs ---
 function section1DietSpecs(mainRow, sdfRow) {
   return `
   <section id="diet" class="ci-section">
@@ -225,15 +163,7 @@ function section1DietSpecs(mainRow, sdfRow) {
   `;
 }
 
-function nutrientTag(val, tag) {
-  if (!tag) return "";
-  return `<span class="ci-tag ci-tag-${tag.toLowerCase()}">${tag}</span>`;
-}
-function tagText(label, tag) {
-  if (!tag) return "";
-  return `${label} is tagged as <span class="ci-tag-inline ci-tag-${tag.toLowerCase()}">${tag}</span>. `;
-}
-
+// --- SECTION 2: Macronutrient Breakdown ---
 function section2Macros(mainRow, sdfRow) {
   const nutSummary = `
     ${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup.
@@ -279,12 +209,9 @@ function section2Macros(mainRow, sdfRow) {
   </section>
   `;
 }
-// ---------- Section 3: Ingredient List & Attribute Table (Full Render) ----------
+// ------- SECTION 3: Ingredient List & Attribute Table -------
 
-// Helper: merge all ingredient data
-const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
-
-// Helper: Get ingredient attribute counts for a formula row
+// Ingredient attribute counts for a formula row
 function getIngredientCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -303,7 +230,7 @@ function getIngredientCounts(row) {
   };
 }
 
-// Helper: Attribute count table for main vs SDF
+// Build attribute count table for main and SDF
 function buildIngredientTable(mainRow, sdfRow) {
   const mainCounts = getIngredientCounts(mainRow);
   const sdfCounts  = getIngredientCounts(sdfRow);
@@ -318,20 +245,20 @@ function buildIngredientTable(mainRow, sdfRow) {
         </tr>
       </thead>
       <tbody>
-        <tr><td>Total ingredients</td><td>${mainCounts.total}</td><td>${sdfCounts.total}</td></tr>
-        <tr><td>Poultry</td><td>${mainCounts.poultry}</td><td>${sdfCounts.poultry}</td></tr>
-        <tr><td>Allergy</td><td>${mainCounts.allergy}</td><td>${sdfCounts.allergy}</td></tr>
-        <tr><td>Contentious</td><td>${mainCounts.contentious}</td><td>${sdfCounts.contentious}</td></tr>
-        <tr><td>Minerals</td><td>${mainCounts.minerals}</td><td>${sdfCounts.minerals}</td></tr>
-        <tr><td>Vitamins</td><td>${mainCounts.vitamins}</td><td>${sdfCounts.vitamins}</td></tr>
-        <tr><td>Probiotics</td><td>${mainCounts.probiotics}</td><td>${sdfCounts.probiotics}</td></tr>
-        <tr><td>Upgraded Minerals</td><td>${mainCounts.upgradedMinerals}</td><td>${sdfCounts.upgradedMinerals}</td></tr>
+        <tr><td>Total ingredients</td>   <td>${mainCounts.total}</td><td>${sdfCounts.total}</td></tr>
+        <tr><td>Poultry</td>             <td>${mainCounts.poultry}</td><td>${sdfCounts.poultry}</td></tr>
+        <tr><td>Allergy</td>             <td>${mainCounts.allergy}</td><td>${sdfCounts.allergy}</td></tr>
+        <tr><td>Contentious</td>         <td>${mainCounts.contentious}</td><td>${sdfCounts.contentious}</td></tr>
+        <tr><td>Minerals</td>            <td>${mainCounts.minerals}</td><td>${sdfCounts.minerals}</td></tr>
+        <tr><td>Vitamins</td>            <td>${mainCounts.vitamins}</td><td>${sdfCounts.vitamins}</td></tr>
+        <tr><td>Probiotics</td>          <td>${mainCounts.probiotics}</td><td>${sdfCounts.probiotics}</td></tr>
+        <tr><td>Upgraded Minerals</td>   <td>${mainCounts.upgradedMinerals}</td><td>${sdfCounts.upgradedMinerals}</td></tr>
       </tbody>
     </table>
   `;
 }
 
-// Helper: Madlib summary for main formula
+// Madlib summary for ingredient evaluation
 function buildIngredientMadlib(row, counts) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -357,7 +284,7 @@ function buildIngredientMadlib(row, counts) {
   return madlib;
 }
 
-// Helper: Styled list of all ingredients with tags (main OR SDF)
+// Styled, tagged ingredient list (for mainRow or sdfRow)
 function buildIngredientList(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -378,51 +305,39 @@ function buildIngredientList(row) {
   }).join(', ');
 }
 
-// ----------- Drop this in your renderComparePage -----------
+// ---------- SECTION 3 RENDER FUNCTION ----------
+function section3Ingredients(mainRow, sdfRow) {
+  const mainCounts = getIngredientCounts(mainRow);
+  const sdfCounts  = getIngredientCounts(sdfRow);
 
-// Inside renderComparePage (after you have mainRow and sdfRow):
-const mainCounts = getIngredientCounts(mainRow);
-const sdfCounts = getIngredientCounts(sdfRow);
-
-const section3 = `
-  <section id="ingredients" class="ci-section">
-    <div class="ci-section-header">
-      <h2 class="ci-section-title">Ingredient List</h2>
-      <div class="ci-section-subtitle">See what’s inside (hover tags for info)</div>
-    </div>
-    ${buildIngredientTable(mainRow, sdfRow)}
-    <p class="ci-section-madlib">${buildIngredientMadlib(mainRow, mainCounts)}</p>
-    <div class="ci-section-ingredient-list">
-      <div>
-        <b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b><br>
-        ${buildIngredientList(mainRow)}
+  return `
+    <section id="ingredients" class="ci-section">
+      <div class="ci-section-header">
+        <h2 class="ci-section-title">Ingredient List</h2>
+        <div class="ci-section-subtitle">See what’s inside (hover tags for info)</div>
       </div>
-      <div>
-        <b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b><br>
-        ${buildIngredientList(sdfRow)}
+      ${buildIngredientTable(mainRow, sdfRow)}
+      <p class="ci-section-madlib">${buildIngredientMadlib(mainRow, mainCounts)}</p>
+      <div class="ci-section-ingredient-list">
+        <div>
+          <b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b><br>
+          ${buildIngredientList(mainRow)}
+        </div>
+        <div>
+          <b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b><br>
+          ${buildIngredientList(sdfRow)}
+        </div>
       </div>
-    </div>
-  </section>
-`;
-
-// ...Then inject `section3` in your main page HTML output where needed
-
-// For example:
-const compareRoot = document.getElementById('compare-root');
-if (compareRoot) {
-  // ...build section1, section2 first...
-  compareRoot.innerHTML += section3;
+    </section>
+  `;
 }
 
+
+// --- SECTION 4: Contentious Ingredients ---
 function getContentiousIngredients(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
   return ings.filter(ing => ing.tagContentious).map(ing => ing.displayAs).filter(Boolean);
-}
-function joinWithAnd(arr) {
-  if (arr.length <= 1) return arr.join('');
-  if (arr.length === 2) return arr[0] + " and " + arr[1];
-  return arr.slice(0, -1).join(", ") + " and " + arr.slice(-1);
 }
 function buildSection4Madlib(mainRow) {
   const brand = mainRow["data-brand"];
@@ -448,18 +363,28 @@ function section4Contentious(mainRow) {
   `;
 }
 
-  // Section 5: Feeding Calculator (unchanged)
-  const section5 = buildSectionMarkup({
-    id: "calcs",
-    title: "Feeding Calculator",
-    subtitle: "Estimate daily cost & portions",
-    madlib: `Enter your dog's weight to estimate feeding needs and cost per day.`
-  });
+// --- MAIN RENDER ---
+export function renderComparePage() {
+  // Grab which CI item is being viewed
+  const ciFive  = document.getElementById('item-faq-five')?.value;
+  const ciType  = document.getElementById('item-faq-type')?.value;
+  if (!ciFive || !ciType) return;
+  const mainRow = getCiRow(ciFive);
+  if (!mainRow) return;
 
-  // Render all sections (replace #compare-root)
+  // Pick which SDF formula to use for baseline
+  const sdfFive = getSdfFormula(mainRow);
+  const sdfRow  = getCiRow(sdfFive);
+
+  // Build all required sections
+  const section1 = section1DietSpecs(mainRow, sdfRow);
+  const section2 = section2Macros(mainRow, sdfRow);
+  // (Skip section 3, you didn't want it here)
+  const section4 = section4Contentious(mainRow);
+
+  // Drop in your HTML
   const compareRoot = document.getElementById('compare-root');
   if (compareRoot) {
-    compareRoot.innerHTML = section1 + section2 + section3 + section4 + section5;
+    compareRoot.innerHTML = section1 + section2 + section4;
   }
 }
-
