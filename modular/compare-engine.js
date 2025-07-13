@@ -443,15 +443,19 @@ export function renderComparePage() {
   const sdfFive = getSdfFormula(mainRow);
   const sdfRow  = getCiRow(sdfFive);
 
-  // Build all required sections
-  const section1 = section1DietSpecs(mainRow, sdfRow);
-  const section2 = section2Macros(mainRow, sdfRow);
-  const section3 = section3Ingredients(mainRow, sdfRow);
-  const section4 = section4Contentious(mainRow);
-
-  // Drop in your HTML
+  // Drop in empty containers for each section (this is only done once per load)
   const compareRoot = document.getElementById('compare-root');
-  if (compareRoot) {
-    compareRoot.innerHTML = section1 + section2 + section3 + section4;
-  }
+  if (!compareRoot) return;
+  compareRoot.innerHTML = `
+    <div id="section-1"></div>
+    <div id="section-2"></div>
+    <div id="section-3"></div>
+    <div id="section-4"></div>
+  `;
+
+  // Now render each section as soon as the data is ready
+  document.getElementById('section-1').innerHTML = section1DietSpecs(mainRow, sdfRow);
+  document.getElementById('section-2').innerHTML = section2Macros(mainRow, sdfRow);
+  document.getElementById('section-3').innerHTML = section3Ingredients(mainRow, sdfRow);
+  document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
 }
