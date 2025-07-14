@@ -118,61 +118,52 @@ function joinWithAnd(arr) {
 }
 
 // --- SECTION 1: Diet & Key Specs ---
-function section1DietSpecs(mainRow, sdfRow) {
-  return `
-  <section class="ci-section" id="diet">
-    <div class="ci-section-title-wrapper">
-      <h2 class="ci-section-header ci-section-title">Diet & Key Specs</h2>
-      <div class="ci-section-subtitle">
-        <p class="subtitle-text">
-          Comparing <span class="ci-prod">${mainRow["data-brand"]} ${mainRow["data-one"]}</span>
-          vs. <span class="ci-prod">Sport Dog Food ${sdfRow["data-one"]}</span>
-        </p>
-      </div>
-    </div>
-    <div class="ci-sidebyside-wrapper">
-      <table class="ci-sidebyside-grid-1c4r">
-        <thead>
-          <tr class="ci-sidebyside-head-3c1r">
-            <th class="ci-sidebyside-col-head"></th>
-            <th class="ci-sidebyside-col-head">${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-            <th class="ci-sidebyside-col-head">Sport Dog Food ${sdfRow["data-one"]}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Primary Flavor</td>
-            <td class="ci-sidebyside-col-row">${mainRow["specs_primary_flavor"] || ""}</td>
-            <td class="ci-sidebyside-col-row">${sdfRow["specs_primary_flavor"] || ""}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Grain Free</td>
-            <td class="ci-sidebyside-col-row">${(mainRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-            <td class="ci-sidebyside-col-row">${(sdfRow["data-grain"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Poultry Free</td>
-            <td class="ci-sidebyside-col-row">${(mainRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-            <td class="ci-sidebyside-col-row">${(sdfRow["data-poultry"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Legumes Free</td>
-            <td class="ci-sidebyside-col-row">${(mainRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-            <td class="ci-sidebyside-col-row">${(sdfRow["data-legumes"]||"").toLowerCase().includes("free") ? "✔" : ""}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ci-section-madlib-wrapper">
-      <div class="ci-section-madlib">
-        <p class="madlib-p">
-          ${(mainRow["data-brand"] || "This food")} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula${mainRow["ga_kcals_per_cup"] ? ` with ${mainRow["ga_kcals_per_cup"]} kcals/cup.` : '.'}
-          Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.
-        </p>
-      </div>
-    </div>
-  </section>
-  `;
+// Update only the content of pre-existing elements in your Webflow HTML
+function paintSection1(mainRow, sdfRow) {
+  // Section Header/Title
+  document.querySelector('[data-var="section1-header"]')?.textContent =
+    "Diet & Key Specs";
+  // Section Subtitle
+  document.querySelector('[data-var="section1-subtitle"]')?.textContent =
+    `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+  // Section Madlib
+  document.querySelector('[data-var="section1-madlib"]')?.textContent =
+    `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
+
+  // Brand 1 (main/competitor)
+  document.querySelector('[data-var="brand-1-name"]')?.textContent = mainRow["data-one"] || "";
+  document.querySelector('[data-var="brand-1-brand"]')?.textContent = mainRow["data-brand"] || "";
+  document.querySelector('[data-var="brand-1-flavor"]')?.textContent = mainRow["specs_primary_flavor"] || "";
+  document.querySelector('[data-var="brand-1-firsting"]')?.textContent = mainRow["ing-first"] || "";
+  document.querySelector('[data-var="brand-1-seconding"]')?.textContent = mainRow["ing-second"] || "";
+  document.querySelector('[data-var="brand-1-diet"]')?.textContent = mainRow["data-grain"] || "";
+  // Optional: preview image
+  document.querySelector('[data-var="brand-1-previewimg"]')?.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
+  // Status icons
+  paintStatusIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintStatusIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintStatusIcon('[data-var="brand-1-upgradedmin"]',  mainRow.hasUpgradedMinerals);
+
+  // Sport Dog Food (SDF)
+  document.querySelector('[data-var="sport-1-name"]')?.textContent = sdfRow["data-one"] || "";
+  document.querySelector('[data-var="sport-1-brand"]')?.textContent = "Sport Dog Food";
+  document.querySelector('[data-var="sport-1-flavor"]')?.textContent = sdfRow["specs_primary_flavor"] || "";
+  document.querySelector('[data-var="sport-1-firsting"]')?.textContent = sdfRow["ing-first"] || "";
+  document.querySelector('[data-var="sport-1-seconding"]')?.textContent = sdfRow["ing-second"] || "";
+  document.querySelector('[data-var="sport-1-diet"]')?.textContent = sdfRow["data-grain"] || "";
+  document.querySelector('[data-var="sport-1-previewimg"]')?.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
+  paintStatusIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintStatusIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintStatusIcon('[data-var="sport-1-upgradedmin"]',  sdfRow.hasUpgradedMinerals);
+}
+
+// Utility to paint a check/cross icon (for icon containers)
+function paintStatusIcon(selector, isPositive) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.innerHTML = isPositive
+    ? `<div class="pwr-icon-status pwr-icon-green"></div>`
+    : `<div class="pwr-icon-status pwr-icon-red"></div>`;
 }
 
 
