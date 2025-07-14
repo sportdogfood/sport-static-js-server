@@ -400,6 +400,7 @@ function buildSection4Madlib(mainRow) {
 }
 
 // --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
+// --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
 function paintSection3(mainRow, sdfRow) {
   // Headline and subtitle
   let el;
@@ -411,7 +412,9 @@ function paintSection3(mainRow, sdfRow) {
   // Madlib summary for mainRow
   el = document.querySelector('[data-var="section3-madlib"]');
   if (el) {
-    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
+    // You must pass both row and counts to buildIngredientMadlib if required
+    const counts = getIngredientCategoryCounts(mainRow);
+    el.setAttribute('data-text', buildIngredientMadlib(mainRow, counts));
     el.textContent = '';
   }
 
@@ -421,12 +424,12 @@ function paintSection3(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
 
-// Counts (one per brand)
-el = document.querySelector('[data-var="brand-1-sec3-counts"]');
-if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
+  // Counts (one per brand)
+  el = document.querySelector('[data-var="brand-1-sec3-counts"]');
+  if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
 
-el = document.querySelector('[data-var="sport-1-sec3-counts"]');
-if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
+  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
+  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
 
   // Ingredient lists (chip tags) for each side
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
@@ -441,6 +444,7 @@ if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-o
     el.textContent = '';
   }
 }
+
 
 
 
