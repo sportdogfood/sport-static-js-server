@@ -238,38 +238,33 @@ function section2Macros(mainRow, sdfRow) {
 // ------- SECTION 3: Ingredient List & Attribute Table -------
 
 // --- Helper: Consumer-facing tag for recordType ---
-function getConsumerTypeTag(type) {
-  if (!type) return "Ingredient";
-  if (type.toLowerCase() === "animal") return "Animal";
-  if (type.toLowerCase() === "plant")  return "Plant";
-  if (type.toLowerCase() === "supplemental") return "Supplement";
-  return "not";
+// Helper: Get consumer-facing ingredient group for each ingredient
+function getConsumerGroup(ing) {
+  const type = (ing["data-type"] || "").toLowerCase();
+  if (["fish", "meat", "poultry"].includes(type)) return "Protein";
+  if (["legumes", "botanical", "fruit", "grain", "roots", "seed oil", "vegetable", "fiber", "seeds", "herb", "fish oil"].includes(type)) return "Plants";
+  if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(type)) return "Supplemental";
+  return "Other";
 }
 
-// --- Ingredient attribute counts for a formula row ---
-function getIngredientCounts(row) {
+// Get counts per category for a formula
+function getIngredientCategoryCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
-  return {
-    total: ings.length,
-    poultry: ings.filter(ing => ing.tagPoultry).length,
-    allergy: ings.filter(ing => ing.tagAllergy).length,
-    contentious: ings.filter(ing => ing.tagContentious).length,
-    minerals: ings.filter(ing => ing.supplementalType === "Minerals").length,
-    vitamins: ings.filter(ing => ing.supplementalType === "Vitamins").length,
-    probiotics: ings.filter(ing => ing.supplementalType === "Probiotics").length,
-    upgradedMinerals: ings.filter(ing =>
-      (ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
-      (ing.supplementalAssist || "").toLowerCase().includes("complex")
-    ).length
-  };
+  const counts = { Protein: 0, Plants: 0, Supplemental: 0, Other: 0, total: ings.length };
+  ings.forEach(ing => {
+    const group = getConsumerGroup(ing);
+    if (counts[group] !== undefined) counts[group]++;
+    else counts.Other++;
+  });
+  return counts;
 }
 
-// --- Build attribute count table for both sides ---
-function buildIngredientTable(mainRow, sdfRow) {
-  const mainCounts = getIngredientCounts(mainRow);
-  const sdfCounts  = getIngredientCounts(sdfRow);
 
+// --- Build attribute count table for both sides ---
+function buildIngredientCategoryTable(mainRow, sdfRow) {
+  const mainCounts = getIngredientCategoryCounts(mainRow);
+  const sdfCounts  = getIngredientCategoryCounts(sdfRow);
   return `
     <table class="ci-ingredient-attr-table">
       <thead>
@@ -281,17 +276,15 @@ function buildIngredientTable(mainRow, sdfRow) {
       </thead>
       <tbody>
         <tr><td>Total ingredients</td>   <td>${mainCounts.total}</td><td>${sdfCounts.total}</td></tr>
-        <tr><td>Poultry</td>             <td>${mainCounts.poultry}</td><td>${sdfCounts.poultry}</td></tr>
-        <tr><td>Allergy</td>             <td>${mainCounts.allergy}</td><td>${sdfCounts.allergy}</td></tr>
-        <tr><td>Contentious</td>         <td>${mainCounts.contentious}</td><td>${sdfCounts.contentious}</td></tr>
-        <tr><td>Minerals</td>            <td>${mainCounts.minerals}</td><td>${sdfCounts.minerals}</td></tr>
-        <tr><td>Vitamins</td>            <td>${mainCounts.vitamins}</td><td>${sdfCounts.vitamins}</td></tr>
-        <tr><td>Probiotics</td>          <td>${mainCounts.probiotics}</td><td>${sdfCounts.probiotics}</td></tr>
-        <tr><td>Upgraded Minerals</td>   <td>${mainCounts.upgradedMinerals}</td><td>${sdfCounts.upgradedMinerals}</td></tr>
+        <tr><td>Protein</td>             <td>${mainCounts.Protein}</td><td>${sdfCounts.Protein}</td></tr>
+        <tr><td>Plants</td>              <td>${mainCounts.Plants}</td><td>${sdfCounts.Plants}</td></tr>
+        <tr><td>Supplemental</td>        <td>${mainCounts.Supplemental}</td><td>${sdfCounts.Supplemental}</td></tr>
+        ${mainCounts.Other || sdfCounts.Other ? `<tr><td>Other</td><td>${mainCounts.Other}</td><td>${sdfCounts.Other}</td></tr>` : ""}
       </tbody>
     </table>
   `;
 }
+
 
 // --- Madlib summary for ingredient evaluation ---
 function buildIngredientMadlib(row, counts) {
