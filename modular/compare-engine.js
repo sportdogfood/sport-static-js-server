@@ -431,7 +431,7 @@ function section4Contentious(mainRow) {
 }
 
 
-// --- MAIN RENDER ---
+// --- MAIN RENDER --- 
 export function renderComparePage() {
   // Grab which CI item is being viewed
   const ciFive  = document.getElementById('item-faq-five')?.value;
@@ -454,8 +454,10 @@ export function renderComparePage() {
     <div id="section-4"></div>
   `;
 
-  // Now render each section as soon as the data is ready
-  document.getElementById('section-1').innerHTML = section1DietSpecs(mainRow, sdfRow);
+  // --- NEW: Paint Section 1 via slot/vars, not HTML injection
+  paintSection1(mainRow, sdfRow);  // <-- Use your data-var method here
+
+  // --- OLD: Paint Sections 2/3/4 via innerHTML
   document.getElementById('section-2').innerHTML = section2Macros(mainRow, sdfRow);
   document.getElementById('section-3').innerHTML = section3Ingredients(mainRow, sdfRow);
   document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
