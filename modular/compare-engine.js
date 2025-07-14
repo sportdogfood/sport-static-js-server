@@ -150,7 +150,13 @@ function paintSection1(mainRow, sdfRow) {
   // Show "Grain" or "Grain-Free" or whatever is in data-diet, fallback to data-grain
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
   el = document.querySelector('[data-var="brand-1-previewimg"]');
-  if (el) el.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
+console.log("Setting preview img:", mainRow.previewengine);  // DEBUG
+if (el && mainRow.previewengine) {
+  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+  el.style.setProperty("background-size", "cover");
+  el.style.setProperty("background-position", "center");
+
+
 
   paintSvgIcon('[data-var="brand-1-legumesfree"]', mainRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
