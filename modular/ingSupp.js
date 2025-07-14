@@ -1,4 +1,4 @@
-export const ING_SUPP = {
+export const ING_SUPP ={
   "ELK1I": {
     "Name": "Mixed Tocopherol",
     "Slug": "mixed-tocopherol",
@@ -152,11 +152,7 @@ export const ING_SUPP = {
     "canonical": "animal-digest",
     "recordId": "recfsWR8ZQBmTDpRO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selLqItKBnIzCCZqU",
-      "name": "Digestive Enzyme",
-      "color": "blueLight2"
-    },
+    "data-type": "Digestive Enzyme",
     "recordStatus": "",
     "calcSlug": "animal-digest",
     "ingredientTerm": "Animal Digest",
@@ -220,11 +216,7 @@ export const ING_SUPP = {
     "canonical": "hydrolyzed-protein",
     "recordId": "recqIKKO3aBNQt1fj",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selLqItKBnIzCCZqU",
-      "name": "Digestive Enzyme",
-      "color": "blueLight2"
-    },
+    "data-type": "Digestive Enzyme",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-protein",
     "ingredientTerm": "Hydrolyzed Protein",
@@ -288,11 +280,7 @@ export const ING_SUPP = {
     "canonical": "ascorbic-acid",
     "recordId": "recP1elPrzeljUDBS",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "ascorbic-acid",
     "ingredientTerm": "Ascorbic Acid",
@@ -368,11 +356,7 @@ export const ING_SUPP = {
     "canonical": "biotin",
     "recordId": "rec80Xq1OPX9yd8cG",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "biotin",
     "ingredientTerm": "Biotin",
@@ -484,11 +468,7 @@ export const ING_SUPP = {
     "canonical": "calcium-pantothenate",
     "recordId": "recfR1Qy8IZ4UIc8H",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "calcium-pantothenate",
     "ingredientTerm": "Calcium Pantothenate",
@@ -562,11 +542,7 @@ export const ING_SUPP = {
     "canonical": "d-calcium-pantothenate",
     "recordId": "reccBa8FQOzu8Uwmc",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "d-calcium-pantothenate",
     "ingredientTerm": "D-Calcium Pantothenate",
@@ -644,11 +620,7 @@ export const ING_SUPP = {
     "canonical": "d-calcium-pantothenate",
     "recordId": "recVIU1tGVeJsq0xJ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "d-calcium-pantothenate",
     "ingredientTerm": "D-calcium Pantothenate",
@@ -747,11 +719,7 @@ export const ING_SUPP = {
     "canonical": "folic-acid",
     "recordId": "recAK1yEKecUMbfOa",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "folic-acid",
     "ingredientTerm": "Folic Acid",
@@ -859,11 +827,7 @@ export const ING_SUPP = {
     "canonical": "niacin",
     "recordId": "rec4IPWnV6PKYrwGG",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "niacin",
     "ingredientTerm": "Niacin",
@@ -971,11 +935,7 @@ export const ING_SUPP = {
     "canonical": "niacin-supplement",
     "recordId": "recosVMzjLpk8lGUT",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "niacin-supplement",
     "ingredientTerm": "Niacin Supplement",
@@ -1053,11 +1013,7 @@ export const ING_SUPP = {
     "canonical": "pyridoxine",
     "recordId": "recSoSkOZKkMaBJvi",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "pyridoxine",
     "ingredientTerm": "Pyridoxine",
@@ -1153,11 +1109,7 @@ export const ING_SUPP = {
     "canonical": "pyridoxine-hydrochloride",
     "recordId": "recSzrBEzLZOmlAa7",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "pyridoxine-hydrochloride",
     "ingredientTerm": "Pyridoxine Hydrochloride",
@@ -1245,11 +1197,7 @@ export const ING_SUPP = {
     "canonical": "riboflavin",
     "recordId": "recuySB55h5f81XCu",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "riboflavin",
     "ingredientTerm": "Riboflavin",
@@ -1354,11 +1302,7 @@ export const ING_SUPP = {
     "canonical": "riboflavin-supplement",
     "recordId": "recnMBvrQBKKcOvuX",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "riboflavin-supplement",
     "ingredientTerm": "Riboflavin Supplement",
@@ -1439,11 +1383,7 @@ export const ING_SUPP = {
     "canonical": "thiamine",
     "recordId": "recZnSOfCJdV5eLBD",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "thiamine",
     "ingredientTerm": "Thiamine",
@@ -1539,11 +1479,7 @@ export const ING_SUPP = {
     "canonical": "thiamine-mononitrate",
     "recordId": "reck3MYQRaXqYHgzY",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "thiamine-mononitrate",
     "ingredientTerm": "Thiamine Mononitrate",
@@ -1631,11 +1567,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-a",
     "recordId": "receZDVGom9BXGd4z",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-a",
     "ingredientTerm": "Vitamin A",
@@ -1725,11 +1657,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-a-acetate",
     "recordId": "recGYIbAQ0iXhBtua",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-a-acetate",
     "ingredientTerm": "Vitamin A Acetate",
@@ -1793,11 +1721,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-a-supplement",
     "recordId": "recl0P42ZrrTeKBtq",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-a-supplement",
     "ingredientTerm": "Vitamin A Supplement",
@@ -1887,11 +1811,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b",
     "recordId": "reclWWICppVc72xqk",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b",
     "ingredientTerm": "Vitamin B",
@@ -1955,11 +1875,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-2",
     "recordId": "recWKtLM0tvnogDuy",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-2",
     "ingredientTerm": "Vitamin B 2",
@@ -2023,11 +1939,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-3",
     "recordId": "recqMRvShO9glBGOD",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-3",
     "ingredientTerm": "Vitamin B 3",
@@ -2091,11 +2003,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-5",
     "recordId": "recQzoJgEmRzIsoKh",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-5",
     "ingredientTerm": "Vitamin B 5",
@@ -2159,11 +2067,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-6",
     "recordId": "recT9LVAl677uo3qV",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-6",
     "ingredientTerm": "Vitamin B 6",
@@ -2227,11 +2131,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-7",
     "recordId": "recZPe3cqeiB6AxPl",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-7",
     "ingredientTerm": "Vitamin B 7",
@@ -2295,11 +2195,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-8",
     "recordId": "reclJI50zk5wc09yO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-8",
     "ingredientTerm": "Vitamin B 8",
@@ -2363,11 +2259,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-9",
     "recordId": "rec9Xcd8PLy5YXCZK",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-9",
     "ingredientTerm": "Vitamin B 9",
@@ -2431,11 +2323,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-12",
     "recordId": "recqDdChRcjIV4J22",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-12",
     "ingredientTerm": "Vitamin B 12",
@@ -2499,11 +2387,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-supplement",
     "recordId": "recTLLtiFANOy4ItI",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-supplement",
     "ingredientTerm": "Vitamin B Supplement",
@@ -2567,11 +2451,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-1",
     "recordId": "recsG9iwVaWkz7yMP",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-1",
     "ingredientTerm": "Vitamin B-1",
@@ -2635,11 +2515,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-2",
     "recordId": "rec3cnmKPbOsuwf2r",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-2",
     "ingredientTerm": "Vitamin B-2",
@@ -2703,11 +2579,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-3",
     "recordId": "recSzBAtU1Jx2NESk",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-3",
     "ingredientTerm": "Vitamin B-3",
@@ -2771,11 +2643,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-5",
     "recordId": "recWRzC4gj1SVVlXm",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-5",
     "ingredientTerm": "Vitamin B-5",
@@ -2839,11 +2707,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-6",
     "recordId": "rec0ainCnDX9WGo0k",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-6",
     "ingredientTerm": "Vitamin B-6",
@@ -2907,11 +2771,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-7",
     "recordId": "recNlp04ZzJlsAVP3",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-7",
     "ingredientTerm": "Vitamin B-7",
@@ -2975,11 +2835,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-8",
     "recordId": "recTArtObMFLmwALO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-8",
     "ingredientTerm": "Vitamin B-8",
@@ -3043,11 +2899,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-9",
     "recordId": "rece2S9cZWVsiTrqE",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-9",
     "ingredientTerm": "Vitamin B-9",
@@ -3111,11 +2963,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b-12",
     "recordId": "recqAz0t9NyrXPfOV",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b-12",
     "ingredientTerm": "Vitamin B-12",
@@ -3179,11 +3027,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b1",
     "recordId": "recALujlsv0MhKofV",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b1",
     "ingredientTerm": "Vitamin B1",
@@ -3247,11 +3091,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b1-supplement",
     "recordId": "rec5j0QY1NKzkRZ9I",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b1-supplement",
     "ingredientTerm": "Vitamin B1 Supplement",
@@ -3315,11 +3155,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b2",
     "recordId": "recJITYkFi9vEZIa4",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b2",
     "ingredientTerm": "Vitamin B2",
@@ -3383,11 +3219,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b2-supplement",
     "recordId": "reclEH5UNxzGX5PS4",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b2-supplement",
     "ingredientTerm": "Vitamin B2 Supplement",
@@ -3451,11 +3283,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b3",
     "recordId": "reck9fdYKvIUp0lJ3",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b3",
     "ingredientTerm": "Vitamin B3",
@@ -3519,11 +3347,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b3-supplement",
     "recordId": "recJOIr54WtLngtFz",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b3-supplement",
     "ingredientTerm": "Vitamin B3 Supplement",
@@ -3587,11 +3411,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b5",
     "recordId": "recNWFIIMPQxZv6KQ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b5",
     "ingredientTerm": "Vitamin B5",
@@ -3655,11 +3475,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b5-supplement",
     "recordId": "recNKLtNAdX7MnSem",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b5-supplement",
     "ingredientTerm": "Vitamin B5 Supplement",
@@ -3723,11 +3539,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b6",
     "recordId": "recwn4ceQ7ald6BTd",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b6",
     "ingredientTerm": "Vitamin B6",
@@ -3791,11 +3603,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b6-supplement",
     "recordId": "recUuGFzVvRoRlwjl",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b6-supplement",
     "ingredientTerm": "Vitamin B6 Supplement",
@@ -3859,11 +3667,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b7",
     "recordId": "rec3DyJpojItky9KL",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b7",
     "ingredientTerm": "Vitamin B7",
@@ -3927,11 +3731,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b7-supplement",
     "recordId": "recapWXFmFhiN9Buv",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b7-supplement",
     "ingredientTerm": "Vitamin B7 Supplement",
@@ -3995,11 +3795,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b8",
     "recordId": "receltTeDAocqpLje",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b8",
     "ingredientTerm": "Vitamin B8",
@@ -4063,11 +3859,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b8-supplement",
     "recordId": "recE9xIOVulAVS7nc",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b8-supplement",
     "ingredientTerm": "Vitamin B8 Supplement",
@@ -4131,11 +3923,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b9",
     "recordId": "recPzj4B7u8GjYSyg",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b9",
     "ingredientTerm": "Vitamin B9",
@@ -4199,11 +3987,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b9-supplement",
     "recordId": "recIfuRzvHxGJK8kH",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b9-supplement",
     "ingredientTerm": "Vitamin B9 Supplement",
@@ -4267,11 +4051,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b12",
     "recordId": "recvJ0WpHJ5kzAPVO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b12",
     "ingredientTerm": "Vitamin B12",
@@ -4367,11 +4147,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-b12-supplement",
     "recordId": "rec5dgJs7zJjqX1uz",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-b12-supplement",
     "ingredientTerm": "Vitamin B12 Supplement",
@@ -4460,11 +4236,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-c",
     "recordId": "recwEYuZoJs7S50Xy",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-c",
     "ingredientTerm": "Vitamin C",
@@ -4528,11 +4300,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-d",
     "recordId": "recvREL8FE7P4blZB",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-d",
     "ingredientTerm": "Vitamin D",
@@ -4596,11 +4364,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-d-3",
     "recordId": "reczNinqDTAnRxpVM",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-d-3",
     "ingredientTerm": "Vitamin D 3",
@@ -4664,11 +4428,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-d-3",
     "recordId": "recCUgA9dguTJGiRZ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-d-3",
     "ingredientTerm": "Vitamin D-3",
@@ -4732,11 +4492,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-d3",
     "recordId": "recY45pmCqw0UdMzm",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-d3",
     "ingredientTerm": "Vitamin D3",
@@ -4828,11 +4584,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-d3-supplement",
     "recordId": "recbcSskzYnSCocpi",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-d3-supplement",
     "ingredientTerm": "Vitamin D3 Supplement",
@@ -4921,11 +4673,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-e",
     "recordId": "recBSlOQC0wIEK1nu",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-e",
     "ingredientTerm": "Vitamin E",
@@ -5014,11 +4762,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-e-supplement",
     "recordId": "recvQuRAc5Sq04zOO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-e-supplement",
     "ingredientTerm": "Vitamin E Supplement",
@@ -5100,11 +4844,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-k",
     "recordId": "recPRWNgw9E5egJ3G",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-k",
     "ingredientTerm": "Vitamin K",
@@ -5168,11 +4908,7 @@ export const ING_SUPP = {
     "canonical": "vitamin-k-supplement",
     "recordId": "recP4QyGyWEXzAjPG",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selXyQmBxIU9iu0fK",
-      "name": "Vitamins",
-      "color": "cyanLight2"
-    },
+    "data-type": "Vitamins",
     "recordStatus": "",
     "calcSlug": "vitamin-k-supplement",
     "ingredientTerm": "Vitamin K Supplement",
@@ -5236,11 +4972,7 @@ export const ING_SUPP = {
     "canonical": "autolyzed-yeast",
     "recordId": "recCLYKkvuY5QJO9S",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "autolyzed-yeast",
     "ingredientTerm": "Autolyzed Yeast",
@@ -5304,11 +5036,7 @@ export const ING_SUPP = {
     "canonical": "brewers-dried-yeast",
     "recordId": "recoXfaQdwVMlnDrx",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "brewers-dried-yeast",
     "ingredientTerm": "Brewers Dried Yeast",
@@ -5388,11 +5116,7 @@ export const ING_SUPP = {
     "canonical": "brewers-yeast",
     "recordId": "recLGQqUP8GIgl5KA",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "brewers-yeast",
     "ingredientTerm": "Brewers Yeast",
@@ -5456,11 +5180,7 @@ export const ING_SUPP = {
     "canonical": "hydrolyzed-yeast",
     "recordId": "rectkwBDjzdzpg8TP",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-yeast",
     "ingredientTerm": "Hydrolyzed Yeast",
@@ -5554,11 +5274,7 @@ export const ING_SUPP = {
     "canonical": "yeast-culture",
     "recordId": "recIegRUoTYFETXUl",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "yeast-culture",
     "ingredientTerm": "Yeast Culture",
@@ -5631,11 +5347,7 @@ export const ING_SUPP = {
     "canonical": "yeast-cultures",
     "recordId": "recJXAFxL1zimDI1T",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "yeast-cultures",
     "ingredientTerm": "Yeast Cultures",
@@ -5711,11 +5423,7 @@ export const ING_SUPP = {
     "canonical": "yeast-extract",
     "recordId": "recVBaEI6TZwjJTVJ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "yeast-extract",
     "ingredientTerm": "Yeast Extract",
@@ -5783,11 +5491,7 @@ export const ING_SUPP = {
     "canonical": "yeast-extracts",
     "recordId": "rec3t2edOSubxzBdL",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selW8bfHiLYwztnr2",
-      "name": "Yeast",
-      "color": "tealLight2"
-    },
+    "data-type": "Yeast",
     "recordStatus": "",
     "calcSlug": "yeast-extracts",
     "ingredientTerm": "Yeast Extracts",
@@ -5851,11 +5555,7 @@ export const ING_SUPP = {
     "canonical": "bacillus-coagulans-fermentation",
     "recordId": "recjZ6uGL512eS2bJ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "bacillus-coagulans-fermentation",
     "ingredientTerm": "Bacillus Coagulans Fermentation",
@@ -5919,11 +5619,7 @@ export const ING_SUPP = {
     "canonical": "bacillus-subtilis-fermentation",
     "recordId": "recrarl1XW7TpsCog",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "bacillus-subtilis-fermentation",
     "ingredientTerm": "Bacillus Subtilis Fermentation",
@@ -5987,11 +5683,7 @@ export const ING_SUPP = {
     "canonical": "bifido-bacterium-bifidium-fermentation",
     "recordId": "recJfBgCr7ycJtsry",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "bifido-bacterium-bifidium-fermentation",
     "ingredientTerm": "Bifido Bacterium Bifidium Fermentation",
@@ -6088,11 +5780,7 @@ export const ING_SUPP = {
     "canonical": "bifidobacterium-animalis-fermentation",
     "recordId": "recdgcN6x5A1T6w2r",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "bifidobacterium-animalis-fermentation",
     "ingredientTerm": "Bifidobacterium Animalis Fermentation ",
@@ -6156,11 +5844,7 @@ export const ING_SUPP = {
     "canonical": "dried-aspergillus-oryzae-fermentation-extract",
     "recordId": "rec2FnirGkreqy3Ix",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-aspergillus-oryzae-fermentation-extract",
     "ingredientTerm": "Dried Aspergillus Oryzae Fermentation Extract",
@@ -6233,11 +5917,7 @@ export const ING_SUPP = {
     "canonical": "dried-bacillus-coagulans-fermentation-product",
     "recordId": "recSwSxMqkDI4GgMj",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-coagulans-fermentation-product",
     "ingredientTerm": "Dried Bacillus Coagulans Fermentation Product",
@@ -6312,11 +5992,7 @@ export const ING_SUPP = {
     "canonical": "dried-bacillus-subtilis-fermentation-extract",
     "recordId": "rechV78zJwvoYjslD",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-subtilis-fermentation-extract",
     "ingredientTerm": "Dried Bacillus Subtilis Fermentation Extract",
@@ -6389,11 +6065,7 @@ export const ING_SUPP = {
     "canonical": "dried-bacillus-subtilis-fermentation-product",
     "recordId": "reczCW2tcvmg6Gx4D",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-bacillus-subtilis-fermentation-product",
     "ingredientTerm": "Dried Bacillus Subtilis Fermentation Product",
@@ -6457,11 +6129,7 @@ export const ING_SUPP = {
     "canonical": "dried-bacterium-bifidium-fermentation-product",
     "recordId": "rec8KDTsSsRwcTlAE",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-bacterium-bifidium-fermentation-product",
     "ingredientTerm": "Dried Bacterium Bifidium Fermentation Product",
@@ -6525,11 +6193,7 @@ export const ING_SUPP = {
     "canonical": "dried-bifidobacterium-animalis-fermentation-product",
     "recordId": "recFVFZIIHeik8dK5",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-bifidobacterium-animalis-fermentation-product",
     "ingredientTerm": "Dried Bifidobacterium Animalis Fermentation Product",
@@ -6593,11 +6257,7 @@ export const ING_SUPP = {
     "canonical": "dried-enterococcus-faecium-fermentation-product",
     "recordId": "recUUQLqrH73RrO5G",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-enterococcus-faecium-fermentation-product",
     "ingredientTerm": "Dried Enterococcus Faecium Fermentation Product",
@@ -6670,11 +6330,7 @@ export const ING_SUPP = {
     "canonical": "dried-lactobacillus-acidophilus-fermentation-product",
     "recordId": "recVxAO3UhIoDq78w",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-acidophilus-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Acidophilus Fermentation Product",
@@ -6750,11 +6406,7 @@ export const ING_SUPP = {
     "canonical": "dried-lactobacillus-casei-fermentation",
     "recordId": "reckEbrSQYrbih84b",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-casei-fermentation",
     "ingredientTerm": "Dried Lactobacillus Casei Fermentation",
@@ -6818,11 +6470,7 @@ export const ING_SUPP = {
     "canonical": "dried-lactobacillus-casei-fermentation-product",
     "recordId": "recnbupAf3WmMuQqg",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-casei-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Casei Fermentation Product",
@@ -6886,11 +6534,7 @@ export const ING_SUPP = {
     "canonical": "dried-lactobacillus-plantarum-fermentation-product",
     "recordId": "recPBBlSn5iocofRg",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "dried-lactobacillus-plantarum-fermentation-product",
     "ingredientTerm": "Dried Lactobacillus Plantarum Fermentation Product",
@@ -6954,11 +6598,7 @@ export const ING_SUPP = {
     "canonical": "enterococcus-faecium-fermentation",
     "recordId": "recKT0Irj8P6hFcYr",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "enterococcus-faecium-fermentation",
     "ingredientTerm": "Enterococcus Faecium Fermentation",
@@ -7055,11 +6695,7 @@ export const ING_SUPP = {
     "canonical": "lactobacillus-acidophilus-fermentation",
     "recordId": "recbpR8lWmI3rUapK",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "lactobacillus-acidophilus-fermentation",
     "ingredientTerm": "Lactobacillus Acidophilus Fermentation",
@@ -7157,11 +6793,7 @@ export const ING_SUPP = {
     "canonical": "lactobacillus-casei-fermentation",
     "recordId": "recY6CpZjLb7uQhtp",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "lactobacillus-casei-fermentation",
     "ingredientTerm": "Lactobacillus Casei Fermentation",
@@ -7259,11 +6891,7 @@ export const ING_SUPP = {
     "canonical": "lactobacillus-plantarum-fermentation",
     "recordId": "recBnebv9qM4ag2D0",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selfmlucNmKNdMuau",
-      "name": "Probiotics",
-      "color": "greenLight2"
-    },
+    "data-type": "Probiotics",
     "recordStatus": "",
     "calcSlug": "lactobacillus-plantarum-fermentation",
     "ingredientTerm": "Lactobacillus Plantarum Fermentation",
@@ -7327,11 +6955,7 @@ export const ING_SUPP = {
     "canonical": "calcium-carbonate",
     "recordId": "rec3aBgkSyNZkZc6H",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "calcium-carbonate",
     "ingredientTerm": "Calcium Carbonate",
@@ -7416,11 +7040,7 @@ export const ING_SUPP = {
     "canonical": "calcium-iodate",
     "recordId": "recRDOiSWeW5awE1M",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "calcium-iodate",
     "ingredientTerm": "Calcium Iodate",
@@ -7501,11 +7121,7 @@ export const ING_SUPP = {
     "canonical": "copper-amino-acid-chelate",
     "recordId": "rec3O6zc8NrkxyXi3",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-amino-acid-chelate",
     "ingredientTerm": "Copper Amino Acid Chelate",
@@ -7569,11 +7185,7 @@ export const ING_SUPP = {
     "canonical": "copper-amino-acid-complex",
     "recordId": "recoYAQ8sCpmwoIoX",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-amino-acid-complex",
     "ingredientTerm": "Copper Amino Acid Complex",
@@ -7637,11 +7249,7 @@ export const ING_SUPP = {
     "canonical": "copper-amino-acids-chelate",
     "recordId": "recTLJhoDvE97tIg4",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-amino-acids-chelate",
     "ingredientTerm": "Copper Amino Acids Chelate",
@@ -7705,11 +7313,7 @@ export const ING_SUPP = {
     "canonical": "copper-amino-acids-complex",
     "recordId": "reckhdIUDttqJ76f7",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-amino-acids-complex",
     "ingredientTerm": "Copper Amino Acids Complex",
@@ -7808,11 +7412,7 @@ export const ING_SUPP = {
     "canonical": "copper-proteinate",
     "recordId": "rec7zgb2TCUxK3wTW",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-proteinate",
     "ingredientTerm": "Copper Proteinate",
@@ -7888,11 +7488,7 @@ export const ING_SUPP = {
     "canonical": "copper-sulfate",
     "recordId": "recqiQF92glP555iX",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "copper-sulfate",
     "ingredientTerm": "Copper Sulfate",
@@ -7978,11 +7574,7 @@ export const ING_SUPP = {
     "canonical": "ferrous-glycine",
     "recordId": "rec7jUaTxQKDcAird",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "ferrous-glycine",
     "ingredientTerm": "Ferrous Glycine",
@@ -8050,11 +7642,7 @@ export const ING_SUPP = {
     "canonical": "ferrous-proteinate",
     "recordId": "recssaBSTXFOrSkUH",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "ferrous-proteinate",
     "ingredientTerm": "Ferrous Proteinate",
@@ -8118,11 +7706,7 @@ export const ING_SUPP = {
     "canonical": "ferrous-sulfate",
     "recordId": "rec9aDEoQkcABOL4j",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "ferrous-sulfate",
     "ingredientTerm": "Ferrous Sulfate",
@@ -8211,11 +7795,7 @@ export const ING_SUPP = {
     "canonical": "glucosamine",
     "recordId": "recArlto0WaoiPptH",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "glucosamine",
     "ingredientTerm": "Glucosamine",
@@ -8282,11 +7862,7 @@ export const ING_SUPP = {
     "canonical": "glucosamine-hydrochloride",
     "recordId": "recsDvnheIyqv43xM",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "glucosamine-hydrochloride",
     "ingredientTerm": "Glucosamine Hydrochloride",
@@ -8362,11 +7938,7 @@ export const ING_SUPP = {
     "canonical": "iron-amino-acid-chelate",
     "recordId": "reczaEOd5THTTJl90",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-amino-acid-chelate",
     "ingredientTerm": "Iron Amino Acid Chelate",
@@ -8430,11 +8002,7 @@ export const ING_SUPP = {
     "canonical": "iron-amino-acid-complex",
     "recordId": "reckm3n6IfI6iDqas",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-amino-acid-complex",
     "ingredientTerm": "Iron Amino Acid Complex",
@@ -8508,11 +8076,7 @@ export const ING_SUPP = {
     "canonical": "iron-amino-acids-chelate",
     "recordId": "recctZE7IwwowddhT",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-amino-acids-chelate",
     "ingredientTerm": "Iron Amino Acids Chelate",
@@ -8576,11 +8140,7 @@ export const ING_SUPP = {
     "canonical": "iron-amino-acids-complex",
     "recordId": "rec1sIqGt0OXJebp3",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-amino-acids-complex",
     "ingredientTerm": "Iron Amino Acids Complex",
@@ -8682,11 +8242,7 @@ export const ING_SUPP = {
     "canonical": "iron-proteinate",
     "recordId": "recNdCco4XXmeClSm",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-proteinate",
     "ingredientTerm": "Iron Proteinate",
@@ -8753,11 +8309,7 @@ export const ING_SUPP = {
     "canonical": "iron-sulfate",
     "recordId": "recdl1E0i6ZnayYHz",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "iron-sulfate",
     "ingredientTerm": "Iron Sulfate",
@@ -8833,11 +8385,7 @@ export const ING_SUPP = {
     "canonical": "magnesium-proteinate",
     "recordId": "rec0RVmAW6P0JzhrB",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "magnesium-proteinate",
     "ingredientTerm": "Magnesium Proteinate",
@@ -8901,11 +8449,7 @@ export const ING_SUPP = {
     "canonical": "magnesium-sulfate",
     "recordId": "recKW7QRsYaotrfpO",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "magnesium-sulfate",
     "ingredientTerm": "Magnesium Sulfate",
@@ -8969,11 +8513,7 @@ export const ING_SUPP = {
     "canonical": "manganese",
     "recordId": "recbNSD7Qzo06LjTn",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese",
     "ingredientTerm": "Manganese",
@@ -9037,11 +8577,7 @@ export const ING_SUPP = {
     "canonical": "manganese-amino-acid-chelate",
     "recordId": "rec3ryi3TGluIjbbW",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acid-chelate",
     "ingredientTerm": "Manganese Amino Acid Chelate",
@@ -9105,11 +8641,7 @@ export const ING_SUPP = {
     "canonical": "manganese-amino-acids-chelate",
     "recordId": "recGXAcQCAiwt8qHb",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acids-chelate",
     "ingredientTerm": "Manganese Amino Acids Chelate",
@@ -9173,11 +8705,7 @@ export const ING_SUPP = {
     "canonical": "manganese-amino-acids-complex",
     "recordId": "recAFucBnAJgmrstt",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese-amino-acids-complex",
     "ingredientTerm": "Manganese Amino Acids Complex",
@@ -9276,11 +8804,7 @@ export const ING_SUPP = {
     "canonical": "manganese-proteinate",
     "recordId": "reclcXMkGezzBwnCe",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese-proteinate",
     "ingredientTerm": "Manganese Proteinate",
@@ -9354,11 +8878,7 @@ export const ING_SUPP = {
     "canonical": "manganese-sulfate",
     "recordId": "rec7DBHa9w0bnRX8Q",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "manganese-sulfate",
     "ingredientTerm": "Manganese Sulfate",
@@ -9429,11 +8949,7 @@ export const ING_SUPP = {
     "canonical": "potassium",
     "recordId": "recqfxUEkmOe17zqk",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "potassium",
     "ingredientTerm": "Potassium",
@@ -9497,11 +9013,7 @@ export const ING_SUPP = {
     "canonical": "potassium-chloride",
     "recordId": "recmJ80yciUFAH4gG",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "potassium-chloride",
     "ingredientTerm": "Potassium Chloride",
@@ -9598,11 +9110,7 @@ export const ING_SUPP = {
     "canonical": "potassium-citrate",
     "recordId": "recG1KqAaDiM5s0xF",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "potassium-citrate",
     "ingredientTerm": "Potassium Citrate",
@@ -9669,11 +9177,7 @@ export const ING_SUPP = {
     "canonical": "potassium-iodide",
     "recordId": "recDHIVneh5KmVxmr",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "potassium-iodide",
     "ingredientTerm": "Potassium Iodide",
@@ -9737,11 +9241,7 @@ export const ING_SUPP = {
     "canonical": "salt",
     "recordId": "recyPLyfoqLr9umlW",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "salt",
     "ingredientTerm": "Salt",
@@ -9844,11 +9344,7 @@ export const ING_SUPP = {
     "canonical": "selenium",
     "recordId": "recwdxMBMra2sfo7X",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "selenium",
     "ingredientTerm": "Selenium",
@@ -9912,11 +9408,7 @@ export const ING_SUPP = {
     "canonical": "selenium-yeast",
     "recordId": "recMgT2KT6wRxv780",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "selenium-yeast",
     "ingredientTerm": "Selenium Yeast",
@@ -10026,11 +9518,7 @@ export const ING_SUPP = {
     "canonical": "sodium-hex",
     "recordId": "recddCMDiUtkxvc1b",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "sodium-hex",
     "ingredientTerm": "Sodium Hex",
@@ -10094,11 +9582,7 @@ export const ING_SUPP = {
     "canonical": "sodium-hexametaphosphate",
     "recordId": "reclm3u2u03BGjA6Y",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "sodium-hexametaphosphate",
     "ingredientTerm": "Sodium Hexametaphosphate",
@@ -10162,11 +9646,7 @@ export const ING_SUPP = {
     "canonical": "sodium-selenite",
     "recordId": "recKPJ22edILoqE8v",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "sodium-selenite",
     "ingredientTerm": "Sodium Selenite",
@@ -10239,11 +9719,7 @@ export const ING_SUPP = {
     "canonical": "zinc-amino-acid-chelate",
     "recordId": "rechSVgJvLqC2Ixn8",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acid-chelate",
     "ingredientTerm": "Zinc Amino Acid Chelate",
@@ -10307,11 +9783,7 @@ export const ING_SUPP = {
     "canonical": "zinc-amino-acid-complex",
     "recordId": "recKvArNBWVTz3xcg",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acid-complex",
     "ingredientTerm": "Zinc Amino Acid Complex",
@@ -10375,11 +9847,7 @@ export const ING_SUPP = {
     "canonical": "zinc-amino-acids-chelate",
     "recordId": "recR9d6hrgMgm5pNo",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acids-chelate",
     "ingredientTerm": "Zinc Amino Acids Chelate",
@@ -10443,11 +9911,7 @@ export const ING_SUPP = {
     "canonical": "zinc-amino-acids-complex",
     "recordId": "recwTVt7g1Fepn28c",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-amino-acids-complex",
     "ingredientTerm": "Zinc Amino Acids Complex",
@@ -10547,11 +10011,7 @@ export const ING_SUPP = {
     "canonical": "zinc-proteinate",
     "recordId": "recLUyPXg4JvZPgID",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-proteinate",
     "ingredientTerm": "Zinc Proteinate",
@@ -10624,11 +10084,7 @@ export const ING_SUPP = {
     "canonical": "zinc-sulfate",
     "recordId": "recoZv7blS1VkSouf",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selA42ngKoSczIFOg",
-      "name": "Minerals",
-      "color": "yellowLight2"
-    },
+    "data-type": "Minerals",
     "recordStatus": "",
     "calcSlug": "zinc-sulfate",
     "ingredientTerm": "Zinc Sulfate",
@@ -10706,11 +10162,7 @@ export const ING_SUPP = {
     "canonical": "calcium-propionate",
     "recordId": "recW7aBSzbGn8CbAD",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "calcium-propionate",
     "ingredientTerm": "Calcium Propionate",
@@ -10786,11 +10238,7 @@ export const ING_SUPP = {
     "canonical": "calcium-stearate",
     "recordId": "recrurtDHURkMiCcw",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "calcium-stearate",
     "ingredientTerm": "Calcium Stearate",
@@ -10864,11 +10312,7 @@ export const ING_SUPP = {
     "canonical": "calcium-sulfate",
     "recordId": "recyDWHVmU0gxrOAQ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "calcium-sulfate",
     "ingredientTerm": "Calcium Sulfate",
@@ -10932,11 +10376,7 @@ export const ING_SUPP = {
     "canonical": "citric-acid",
     "recordId": "recdux3U38bUKe2JS",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "citric-acid",
     "ingredientTerm": "Citric Acid",
@@ -11000,11 +10440,7 @@ export const ING_SUPP = {
     "canonical": "natural-flavors",
     "recordId": "recGTsSruZCrz9I0H",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "natural-flavors",
     "ingredientTerm": "Natural Flavors",
@@ -11084,11 +10520,7 @@ export const ING_SUPP = {
     "canonical": "rosemary-extract",
     "recordId": "reckI9buDeSLL5O6A",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sellHwwgaOOTyoUZ0",
-      "name": "Preservative",
-      "color": "orangeLight2"
-    },
+    "data-type": "Preservative",
     "recordStatus": "",
     "calcSlug": "rosemary-extract",
     "ingredientTerm": "Rosemary Extract",
@@ -11189,11 +10621,7 @@ export const ING_SUPP = {
     "canonical": "caramel",
     "recordId": "recEBcjtE0mztnj5k",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selqtDepr0Ox0ZjMW",
-      "name": "Colorant",
-      "color": "redLight2"
-    },
+    "data-type": "Colorant",
     "recordStatus": "",
     "calcSlug": "caramel",
     "ingredientTerm": "Caramel",
@@ -11257,11 +10685,7 @@ export const ING_SUPP = {
     "canonical": "cellulose",
     "recordId": "recrRBFGotdqWjehA",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sel4tGrU0sPFMiLIz",
-      "name": "Fiber",
-      "color": "pinkLight2"
-    },
+    "data-type": "Fiber",
     "recordStatus": "",
     "calcSlug": "cellulose",
     "ingredientTerm": "Cellulose",
@@ -11325,11 +10749,7 @@ export const ING_SUPP = {
     "canonical": "powdered-cellulose",
     "recordId": "recjbEC87b3r9fk4M",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sel4tGrU0sPFMiLIz",
-      "name": "Fiber",
-      "color": "pinkLight2"
-    },
+    "data-type": "Fiber",
     "recordStatus": "",
     "calcSlug": "powdered-cellulose",
     "ingredientTerm": "Powdered Cellulose",
@@ -11397,11 +10817,7 @@ export const ING_SUPP = {
     "canonical": "choline",
     "recordId": "recQlwVwCFTxgJdKZ",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selZuUjLyfz05isoD",
-      "name": "Nutrient",
-      "color": "purpleLight2"
-    },
+    "data-type": "Nutrient",
     "recordStatus": "",
     "calcSlug": "choline",
     "ingredientTerm": "Choline",
@@ -11465,11 +10881,7 @@ export const ING_SUPP = {
     "canonical": "choline-chloride",
     "recordId": "recUAB8cDPzMQkPny",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selZuUjLyfz05isoD",
-      "name": "Nutrient",
-      "color": "purpleLight2"
-    },
+    "data-type": "Nutrient",
     "recordStatus": "",
     "calcSlug": "choline-chloride",
     "ingredientTerm": "Choline Chloride",
@@ -11574,11 +10986,7 @@ export const ING_SUPP = {
     "canonical": "chondroitin",
     "recordId": "rec3gBrZm4AfXQLsB",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selWGNyqdwOdMEcrG",
-      "name": "Joint Support",
-      "color": "grayLight2"
-    },
+    "data-type": "Joint Support",
     "recordStatus": "",
     "calcSlug": "chondroitin",
     "ingredientTerm": "Chondroitin",
@@ -11642,11 +11050,7 @@ export const ING_SUPP = {
     "canonical": "chondroitin-sulfate",
     "recordId": "recnSvurvrGW9WqMn",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selWGNyqdwOdMEcrG",
-      "name": "Joint Support",
-      "color": "grayLight2"
-    },
+    "data-type": "Joint Support",
     "recordStatus": "",
     "calcSlug": "chondroitin-sulfate",
     "ingredientTerm": "Chondroitin Sulfate",
@@ -11722,11 +11126,7 @@ export const ING_SUPP = {
     "canonical": "fructooligosaccharides",
     "recordId": "recHBAZm0eAp4GUVa",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selqrX7SpujGYTDSY",
-      "name": "Prebiotic",
-      "color": "blueLight1"
-    },
+    "data-type": "Prebiotic",
     "recordStatus": "",
     "calcSlug": "fructooligosaccharides",
     "ingredientTerm": "Fructooligosaccharides",
@@ -11797,11 +11197,7 @@ export const ING_SUPP = {
     "canonical": "inulin",
     "recordId": "reckPKAXS2Om90DOH",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selqrX7SpujGYTDSY",
-      "name": "Prebiotic",
-      "color": "blueLight1"
-    },
+    "data-type": "Prebiotic",
     "recordStatus": "",
     "calcSlug": "inulin",
     "ingredientTerm": "Inulin",
@@ -11881,11 +11277,7 @@ export const ING_SUPP = {
     "canonical": "l-carnitine",
     "recordId": "recJ48fG1s0wswMvA",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selpKNdya7oKAt5Yj",
-      "name": "Amino Acid",
-      "color": "cyanLight1"
-    },
+    "data-type": "Amino Acid",
     "recordStatus": "",
     "calcSlug": "l-carnitine",
     "ingredientTerm": "L-Carnitine",
@@ -11968,11 +11360,7 @@ export const ING_SUPP = {
     "canonical": "l-carnitine",
     "recordId": "rec2UzvsrfNW3U0K4",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selpKNdya7oKAt5Yj",
-      "name": "Amino Acid",
-      "color": "cyanLight1"
-    },
+    "data-type": "Amino Acid",
     "recordStatus": "",
     "calcSlug": "l-carnitine",
     "ingredientTerm": "L-carnitine",
@@ -12048,11 +11436,7 @@ export const ING_SUPP = {
     "canonical": "l-lysine",
     "recordId": "recfgE7xoXpeKzyKM",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selpKNdya7oKAt5Yj",
-      "name": "Amino Acid",
-      "color": "cyanLight1"
-    },
+    "data-type": "Amino Acid",
     "recordStatus": "",
     "calcSlug": "l-lysine",
     "ingredientTerm": "L-Lysine",
@@ -12119,11 +11503,7 @@ export const ING_SUPP = {
     "canonical": "taurine",
     "recordId": "recbakX933ZHM0bM4",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "selpKNdya7oKAt5Yj",
-      "name": "Amino Acid",
-      "color": "cyanLight1"
-    },
+    "data-type": "Amino Acid",
     "recordStatus": "",
     "calcSlug": "taurine",
     "ingredientTerm": "Taurine",
@@ -12212,11 +11592,7 @@ export const ING_SUPP = {
     "canonical": "monopotassium-glutamate",
     "recordId": "recpnrk5y3Ou759sv",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sel0v7qn6kN4mYQfW",
-      "name": "Flavor Enhancer",
-      "color": "tealLight1"
-    },
+    "data-type": "Flavor Enhancer",
     "recordStatus": "",
     "calcSlug": "monopotassium-glutamate",
     "ingredientTerm": "Monopotassium Glutamate",
@@ -12280,11 +11656,7 @@ export const ING_SUPP = {
     "canonical": "monosodium-glutamate",
     "recordId": "rec5jdNXyBWzoweo0",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "sel0v7qn6kN4mYQfW",
-      "name": "Flavor Enhancer",
-      "color": "tealLight1"
-    },
+    "data-type": "Flavor Enhancer",
     "recordStatus": "",
     "calcSlug": "monosodium-glutamate",
     "ingredientTerm": "Monosodium Glutamate",
@@ -12348,11 +11720,7 @@ export const ING_SUPP = {
     "canonical": "turmeric",
     "recordId": "recS93P1IaKyW0hAM",
     "recordType": "Supplemental",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "turmeric",
     "ingredientTerm": "Turmeric",
@@ -12416,5 +11784,6 @@ export const ING_SUPP = {
     "vitamins_derived": "Curcumin",
     "termDescription": "Botanical; provides antioxidant and anti-inflammatory effects."
   }
+
 
   };
