@@ -324,7 +324,8 @@ function buildIngredientCategoryTable(mainRow, sdfRow) {
 }
 
 // Madlib for ingredient summary
-function buildIngredientMadlib(row, counts) {
+function buildIngredientMadlib(row) {
+  const counts = getIngredientCategoryCounts(row);
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
@@ -356,13 +357,11 @@ function renderIngListDivs(row) {
     <div class="ci-ings-list">
       ${ings.map(ing => {
         let tagDivs = [];
-        // New consumer group tag (from data-type)
         if (ing["data-type"]) {
           tagDivs.push(
             `<div class="ci-ing-tag ci-tag-default ci-tag-${getConsumerTypeTag(ing["data-type"]).toLowerCase()}">${getConsumerTypeTag(ing["data-type"])}</div>`
           );
         }
-        // Old/classic tags
         if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry">poultry</div>`);
         if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy">allergy</div>`);
         if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious">contentious</div>`);
@@ -403,21 +402,19 @@ function buildSection4Madlib(mainRow) {
   return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
 }
 
-// --- SECTION 3 MAIN PAINT FUNCTION ---
-// (This version assumes you have data-vars in your HTML to receive each field!)
+// --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
 function paintSection3(mainRow, sdfRow) {
-  // Section header, subtitle
-  var el;
+  // Headline and subtitle
+  let el;
   el = document.querySelector('[data-var="section3-header"]');
   if (el) el.textContent = "Ingredient List & Tags";
   el = document.querySelector('[data-var="section3-subtitle"]');
   if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
-  // Madlib summary (type with Typed.js if needed)
+  // Madlib summary for mainRow
   el = document.querySelector('[data-var="section3-madlib"]');
   if (el) {
-    const counts = getIngredientCategoryCounts(mainRow);
-    el.setAttribute('data-text', buildIngredientMadlib(mainRow, counts));
+    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
     el.textContent = '';
   }
 
@@ -427,18 +424,17 @@ function paintSection3(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
 
-  // Inject the counts table (side-by-side)
+  // Ingredient counts table (side-by-side, single slot/table)
   el = document.querySelector('[data-var="section3-counts-table"]');
   if (el) el.innerHTML = buildIngredientCategoryTable(mainRow, sdfRow);
 
-  // Inject ingredient lists for both brands (this block should exist in markup)
+  // Ingredient lists (chip tags) for each side
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(mainRow);
-
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 
-  // Optionally: also show the "contentious" madlib from section 4 here:
+  // Contentious madlib (section 4 logic, if you want it here too)
   el = document.querySelector('[data-var="section3-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
@@ -446,24 +442,8 @@ function paintSection3(mainRow, sdfRow) {
   }
 }
 
-// --- SECTION 4 remains unchanged if still needed as a standalone section ---
-function section4Contentious(mainRow) {
-  return `
-    <section class="ci-section" id="contentious">
-      <div class="ci-section-title-wrapper">
-        <h2 class="ci-section-header ci-section-title">Contentious Ingredients</h2>
-        <div class="ci-section-subtitle">
-          <p class="subtitle-text">Excluded by Sport Dog Food</p>
-        </div>
-      </div>
-      <div class="ci-section-madlib-wrapper">
-        <div class="ci-section-madlib">
-          <p class="madlib-p">${buildSection4Madlib(mainRow)}</p>
-        </div>
-      </div>
-    </section>
-  `;
-}
+
+
 
 // --- MAIN RENDER ---
 export function renderComparePage() {
@@ -485,7 +465,7 @@ export function renderComparePage() {
     <div id="section-1"></div>
     <div id="section-2"></div>
     <div id="section-3"></div>
-    <div id="section-4"></div>
+ 
   `;
 
   paintSection1(mainRow, sdfRow);
