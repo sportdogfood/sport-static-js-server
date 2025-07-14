@@ -8,11 +8,7 @@ export const ING_PLANT = {
     "canonical": "alfalfa",
     "recordId": "rec2pm85dcBDpJZgh",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "alfalfa",
     "ingredientTerm": "Alfalfa",
@@ -76,11 +72,7 @@ export const ING_PLANT = {
     "canonical": "alfalfa-concentrate",
     "recordId": "recpbrDCHJ0DVQ8y7",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "alfalfa-concentrate",
     "ingredientTerm": "Alfalfa Concentrate",
@@ -144,11 +136,7 @@ export const ING_PLANT = {
     "canonical": "alfalfa-meal",
     "recordId": "recbGXqBCScRG9hw5",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "alfalfa-meal",
     "ingredientTerm": "Alfalfa Meal",
@@ -212,11 +200,7 @@ export const ING_PLANT = {
     "canonical": "alfalfa-nutrient-concentrate",
     "recordId": "recjM04n7u2yWot9j",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "alfalfa-nutrient-concentrate",
     "ingredientTerm": "Alfalfa Nutrient Concentrate",
@@ -280,11 +264,7 @@ export const ING_PLANT = {
     "canonical": "dehydrated-alfalfa-meal",
     "recordId": "reck6vjhK6giBs8ea",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "dehydrated-alfalfa-meal",
     "ingredientTerm": "Dehydrated Alfalfa Meal",
@@ -358,11 +338,7 @@ export const ING_PLANT = {
     "canonical": "sun-cured-alfalfa-meal",
     "recordId": "recvbZNYJmF3yhSjR",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "sun-cured-alfalfa-meal",
     "ingredientTerm": "Sun-Cured Alfalfa Meal",
@@ -429,11 +405,7 @@ export const ING_PLANT = {
     "canonical": "suncured-alfalfa-meal",
     "recordId": "rec6VVaWh6eSzoEIR",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "suncured-alfalfa-meal",
     "ingredientTerm": "Suncured Alfalfa Meal",
@@ -497,11 +469,7 @@ export const ING_PLANT = {
     "canonical": "algae",
     "recordId": "recl3osyGipWsr2th",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "algae",
     "ingredientTerm": "Algae",
@@ -565,11 +533,7 @@ export const ING_PLANT = {
     "canonical": "dried-golden-algae",
     "recordId": "recYba7oJJzLxAGfv",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "dried-golden-algae",
     "ingredientTerm": "Dried Golden Algae",
@@ -633,11 +597,7 @@ export const ING_PLANT = {
     "canonical": "aloe-vera-concentrate",
     "recordId": "recpG9RXNDn6uEJq0",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "aloe-vera-concentrate",
     "ingredientTerm": "Aloe Vera Concentrate",
@@ -701,11 +661,7 @@ export const ING_PLANT = {
     "canonical": "aloe-vera-gel-concentrate",
     "recordId": "recHZVHn3wMLVM56i",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "aloe-vera-gel-concentrate",
     "ingredientTerm": "Aloe Vera Gel Concentrate",
@@ -773,11 +729,7 @@ export const ING_PLANT = {
     "canonical": "apple",
     "recordId": "recHU0AYvwyw2hFzq",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "apple",
     "ingredientTerm": "Apple",
@@ -841,11 +793,7 @@ export const ING_PLANT = {
     "canonical": "apples",
     "recordId": "recUvgkWjC5qfZR9B",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "apples",
     "ingredientTerm": "Apples",
@@ -917,11 +865,7 @@ export const ING_PLANT = {
     "canonical": "dried-apple",
     "recordId": "rec7i6wdv16fHjjwj",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "dried-apple",
     "ingredientTerm": "Dried Apple",
@@ -989,11 +933,7 @@ export const ING_PLANT = {
     "canonical": "barley",
     "recordId": "recq5ULxKKaAb2Wbk",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "barley",
     "ingredientTerm": "Barley",
@@ -1061,11 +1001,7 @@ export const ING_PLANT = {
     "canonical": "barley-grass",
     "recordId": "recBE4JOcdPdRPnUo",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "barley-grass",
     "ingredientTerm": "Barley Grass",
@@ -1129,11 +1065,7 @@ export const ING_PLANT = {
     "canonical": "pearled-barley",
     "recordId": "rec7cPi9PCyfVfUPe",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "pearled-barley",
     "ingredientTerm": "Pearled Barley",
@@ -1201,11 +1133,7 @@ export const ING_PLANT = {
     "canonical": "navy-beans",
     "recordId": "recxm0V2q89CY70qf",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "navy-beans",
     "ingredientTerm": "Navy Beans",
@@ -1269,11 +1197,7 @@ export const ING_PLANT = {
     "canonical": "pinto-beans",
     "recordId": "recuA3tFTXS5GkFyQ",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pinto-beans",
     "ingredientTerm": "Pinto Beans",
@@ -1337,11 +1261,7 @@ export const ING_PLANT = {
     "canonical": "garbanzo-beans",
     "recordId": "recGw2pJJn4bG2yvH",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "garbanzo-beans",
     "ingredientTerm": "Garbanzo Beans",
@@ -1420,11 +1340,7 @@ export const ING_PLANT = {
     "canonical": "beans",
     "recordId": "recjBALsVouhDONFw",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "beans",
     "ingredientTerm": "Beans",
@@ -1488,11 +1404,7 @@ export const ING_PLANT = {
     "canonical": "bean",
     "recordId": "recrExC6v5MQEQ1iW",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "bean",
     "ingredientTerm": "Bean",
@@ -1556,11 +1468,7 @@ export const ING_PLANT = {
     "canonical": "beet-pulp",
     "recordId": "rect0bfcw2OptDEIo",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "beet-pulp",
     "ingredientTerm": "Beet Pulp",
@@ -1646,11 +1554,7 @@ export const ING_PLANT = {
     "canonical": "dried-beet-pulp",
     "recordId": "recHU2ZfXS2U1vEVt",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-beet-pulp",
     "ingredientTerm": "Dried Beet Pulp",
@@ -1723,11 +1627,7 @@ export const ING_PLANT = {
     "canonical": "dried-plain-beet-pulp",
     "recordId": "recSHO4YUglmRr0IK",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-plain-beet-pulp",
     "ingredientTerm": "Dried Plain Beet Pulp",
@@ -1794,11 +1694,7 @@ export const ING_PLANT = {
     "canonical": "beet",
     "recordId": "recByXhbrjGSzX5Fx",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "beet",
     "ingredientTerm": "Beet",
@@ -1862,11 +1758,7 @@ export const ING_PLANT = {
     "canonical": "beets",
     "recordId": "recYYIqPkvbbQjdEF",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "beets",
     "ingredientTerm": "Beets",
@@ -1930,11 +1822,7 @@ export const ING_PLANT = {
     "canonical": "dried-beets",
     "recordId": "recnQ8rshSnaVF4Wm",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-beets",
     "ingredientTerm": "Dried Beets",
@@ -1998,11 +1886,7 @@ export const ING_PLANT = {
     "canonical": "blueberries",
     "recordId": "recXMb7JbDn1XoRst",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "blueberries",
     "ingredientTerm": "Blueberries",
@@ -2092,11 +1976,7 @@ export const ING_PLANT = {
     "canonical": "blueberry",
     "recordId": "rec8XrlWT7j1YL9Eg",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "blueberry",
     "ingredientTerm": "Blueberry",
@@ -2160,11 +2040,7 @@ export const ING_PLANT = {
     "canonical": "blueberry-powder",
     "recordId": "recKu2hePCyWU3rU8",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "blueberry-powder",
     "ingredientTerm": "Blueberry Powder",
@@ -2228,11 +2104,7 @@ export const ING_PLANT = {
     "canonical": "dried-blueberry",
     "recordId": "recBwWqHMetMXr8Eh",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "dried-blueberry",
     "ingredientTerm": "Dried Blueberry",
@@ -2300,11 +2172,7 @@ export const ING_PLANT = {
     "canonical": "brewers-rice",
     "recordId": "recrl40NOpFYjEcbd",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "brewers-rice",
     "ingredientTerm": "Brewers Rice",
@@ -2368,11 +2236,7 @@ export const ING_PLANT = {
     "canonical": "buckwheat",
     "recordId": "recOHRcoG2QHrTygD",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "buckwheat",
     "ingredientTerm": "Buckwheat",
@@ -2436,11 +2300,7 @@ export const ING_PLANT = {
     "canonical": "canola",
     "recordId": "rectNmcU0Ufn5q7AU",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "canola",
     "ingredientTerm": "Canola",
@@ -2504,11 +2364,7 @@ export const ING_PLANT = {
     "canonical": "canola-meal",
     "recordId": "recWTtscHV24cqSjS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "canola-meal",
     "ingredientTerm": "Canola Meal",
@@ -2572,11 +2428,7 @@ export const ING_PLANT = {
     "canonical": "canola-oil",
     "recordId": "rec9ClrixR1URI3Or",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "canola-oil",
     "ingredientTerm": "Canola Oil",
@@ -2640,11 +2492,7 @@ export const ING_PLANT = {
     "canonical": "carrot",
     "recordId": "recYfEeozNvKyE10p",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "carrot",
     "ingredientTerm": "Carrot",
@@ -2708,11 +2556,7 @@ export const ING_PLANT = {
     "canonical": "carrot-powder",
     "recordId": "recqXN1X12EywG5DM",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "carrot-powder",
     "ingredientTerm": "Carrot Powder",
@@ -2786,11 +2630,7 @@ export const ING_PLANT = {
     "canonical": "carrots",
     "recordId": "recxuqMCOF0MiiDS9",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "carrots",
     "ingredientTerm": "Carrots",
@@ -2888,11 +2728,7 @@ export const ING_PLANT = {
     "canonical": "dried-carrot",
     "recordId": "recFrzJE7ik4rW1BB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-carrot",
     "ingredientTerm": "Dried Carrot",
@@ -2956,11 +2792,7 @@ export const ING_PLANT = {
     "canonical": "dried-carrots",
     "recordId": "reczGjJDLeu8Iqe13",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-carrots",
     "ingredientTerm": "Dried Carrots",
@@ -3030,11 +2862,7 @@ export const ING_PLANT = {
     "canonical": "cassava",
     "recordId": "recIn0rv18bHg35Cc",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "cassava",
     "ingredientTerm": "Cassava",
@@ -3098,11 +2926,7 @@ export const ING_PLANT = {
     "canonical": "cassava-root",
     "recordId": "reckSHMp1bUqreAuC",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "cassava-root",
     "ingredientTerm": "Cassava Root",
@@ -3178,11 +3002,7 @@ export const ING_PLANT = {
     "canonical": "celery",
     "recordId": "rec2H8pynPuVFXO5C",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "celery",
     "ingredientTerm": "Celery",
@@ -3250,11 +3070,7 @@ export const ING_PLANT = {
     "canonical": "dried-celery",
     "recordId": "recAb9gWHpoe92Umi",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-celery",
     "ingredientTerm": "Dried Celery",
@@ -3318,11 +3134,7 @@ export const ING_PLANT = {
     "canonical": "chia",
     "recordId": "recKwnny6xV6E5gd0",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "chia",
     "ingredientTerm": "Chia",
@@ -3386,11 +3198,7 @@ export const ING_PLANT = {
     "canonical": "chickpeas",
     "recordId": "recI3DFAg5at5khTt",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "chickpeas",
     "ingredientTerm": "Chickpeas",
@@ -3463,11 +3271,7 @@ export const ING_PLANT = {
     "canonical": "chickpea",
     "recordId": "recvnaywnzRKGTa4t",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "chickpea",
     "ingredientTerm": "Chickpea",
@@ -3531,11 +3335,7 @@ export const ING_PLANT = {
     "canonical": "whole-chickpeas",
     "recordId": "recfmHPnlh7gSs0iU",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "whole-chickpeas",
     "ingredientTerm": "Whole Chickpeas",
@@ -3599,11 +3399,7 @@ export const ING_PLANT = {
     "canonical": "chicory",
     "recordId": "reca4Yb1LTlOGVE6I",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "chicory",
     "ingredientTerm": "Chicory",
@@ -3667,11 +3463,7 @@ export const ING_PLANT = {
     "canonical": "chicory-root",
     "recordId": "rec9QODaS8dmqFRjn",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "chicory-root",
     "ingredientTerm": "Chicory Root",
@@ -3771,11 +3563,7 @@ export const ING_PLANT = {
     "canonical": "dried-chicory-root",
     "recordId": "recBE2Md30rfF1iNB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-chicory-root",
     "ingredientTerm": "Dried Chicory Root",
@@ -3842,11 +3630,7 @@ export const ING_PLANT = {
     "canonical": "clover",
     "recordId": "recjlqLaKWOtwjg4W",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "clover",
     "ingredientTerm": "Clover",
@@ -3910,11 +3694,7 @@ export const ING_PLANT = {
     "canonical": "coconut-meal",
     "recordId": "recRx1lkxLMFn3IGS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "coconut-meal",
     "ingredientTerm": "Coconut Meal",
@@ -3978,11 +3758,7 @@ export const ING_PLANT = {
     "canonical": "coconut-oil",
     "recordId": "rec3I000vmjWNvHw0",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "coconut-oil",
     "ingredientTerm": "Coconut Oil",
@@ -4080,11 +3856,7 @@ export const ING_PLANT = {
     "canonical": "corn",
     "recordId": "recUIHo1WyPgMdiZk",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn",
     "ingredientTerm": "Corn",
@@ -4160,11 +3932,7 @@ export const ING_PLANT = {
     "canonical": "corn-flour",
     "recordId": "recXZsj2iLOtOk30h",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn-flour",
     "ingredientTerm": "Corn flour",
@@ -4228,11 +3996,7 @@ export const ING_PLANT = {
     "canonical": "corn-germ-meal",
     "recordId": "recLhtG8jYcENQ4lr",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn-germ-meal",
     "ingredientTerm": "Corn Germ Meal",
@@ -4300,11 +4064,7 @@ export const ING_PLANT = {
     "canonical": "corn-gluten",
     "recordId": "recQo9Ofc4SinlwI3",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn-gluten",
     "ingredientTerm": "Corn Gluten",
@@ -4368,11 +4128,7 @@ export const ING_PLANT = {
     "canonical": "corn-gluten-meal",
     "recordId": "recAGzPIDHHPhwiWE",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn-gluten-meal",
     "ingredientTerm": "Corn Gluten Meal",
@@ -4440,11 +4196,7 @@ export const ING_PLANT = {
     "canonical": "corn-protein-meal",
     "recordId": "recuNlpgmqMsq99Om",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "corn-protein-meal",
     "ingredientTerm": "Corn Protein Meal",
@@ -4520,11 +4272,7 @@ export const ING_PLANT = {
     "canonical": "cornmeal",
     "recordId": "recKUJSh83vogmKSI",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "cornmeal",
     "ingredientTerm": "Cornmeal",
@@ -4588,11 +4336,7 @@ export const ING_PLANT = {
     "canonical": "whole-grain-corn",
     "recordId": "recDuU0ABd23OaYOn",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-grain-corn",
     "ingredientTerm": "Whole Grain Corn",
@@ -4661,11 +4405,7 @@ export const ING_PLANT = {
     "canonical": "cranberries",
     "recordId": "recDVmZCPOoixuUyo",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "cranberries",
     "ingredientTerm": "Cranberries",
@@ -4756,11 +4496,7 @@ export const ING_PLANT = {
     "canonical": "cranberry",
     "recordId": "recCH9YLmpIjeWpqx",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "cranberry",
     "ingredientTerm": "Cranberry",
@@ -4824,11 +4560,7 @@ export const ING_PLANT = {
     "canonical": "cranberry-powder",
     "recordId": "reciW0e0V2x6CsYlS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "cranberry-powder",
     "ingredientTerm": "Cranberry Powder",
@@ -4892,11 +4624,7 @@ export const ING_PLANT = {
     "canonical": "whole-cranberries",
     "recordId": "recULKzDXjAdjeEdS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "whole-cranberries",
     "ingredientTerm": "Whole Cranberries",
@@ -4960,11 +4688,7 @@ export const ING_PLANT = {
     "canonical": "flax",
     "recordId": "recclmrLPZUep2Nvn",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "flax",
     "ingredientTerm": "Flax",
@@ -5028,11 +4752,7 @@ export const ING_PLANT = {
     "canonical": "flaxseed",
     "recordId": "recVutFAHypKvT96P",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "flaxseed",
     "ingredientTerm": "Flaxseed",
@@ -5099,11 +4819,7 @@ export const ING_PLANT = {
     "canonical": "flaxseed-meal",
     "recordId": "rec6iOyxftCQEJMrl",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "flaxseed-meal",
     "ingredientTerm": "Flaxseed Meal",
@@ -5167,11 +4883,7 @@ export const ING_PLANT = {
     "canonical": "ground-flaxseed",
     "recordId": "recsikzifyYz2LcaZ",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "ground-flaxseed",
     "ingredientTerm": "Ground Flaxseed",
@@ -5235,11 +4947,7 @@ export const ING_PLANT = {
     "canonical": "ground-whole-flaxseed",
     "recordId": "recl2HLO4b8eveYMa",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "ground-whole-flaxseed",
     "ingredientTerm": "Ground Whole Flaxseed",
@@ -5303,11 +5011,7 @@ export const ING_PLANT = {
     "canonical": "flaxseed-oil",
     "recordId": "recluAwJwEMdztWXv",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "flaxseed-oil",
     "ingredientTerm": "Flaxseed Oil",
@@ -5371,11 +5075,7 @@ export const ING_PLANT = {
     "canonical": "garlic",
     "recordId": "recvCoR43PNkUQt4S",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "garlic",
     "ingredientTerm": "Garlic",
@@ -5439,11 +5139,7 @@ export const ING_PLANT = {
     "canonical": "garlic-oil",
     "recordId": "recOjwldOUlkjvsIW",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "garlic-oil",
     "ingredientTerm": "Garlic Oil",
@@ -5507,11 +5203,7 @@ export const ING_PLANT = {
     "canonical": "gluten",
     "recordId": "recBWvNiifUeEXOJP",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "gluten",
     "ingredientTerm": "Gluten",
@@ -5575,11 +5267,7 @@ export const ING_PLANT = {
     "canonical": "gluten-meal",
     "recordId": "recMalAnyv6nN7TQB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "gluten-meal",
     "ingredientTerm": "Gluten Meal",
@@ -5643,11 +5331,7 @@ export const ING_PLANT = {
     "canonical": "green-tea",
     "recordId": "recdGAYPbAyiMtcfG",
     "recordType": "Plants",
-    "data-type": {
-      "id": "sel0om2BII12pYr47",
-      "name": "Herb",
-      "color": "cyanLight1"
-    },
+    "data-type": "Herb",
     "recordStatus": "",
     "calcSlug": "green-tea",
     "ingredientTerm": "Green Tea",
@@ -5711,11 +5395,7 @@ export const ING_PLANT = {
     "canonical": "green-tea-extract",
     "recordId": "reczVsFIFMQTnvuq6",
     "recordType": "Plants",
-    "data-type": {
-      "id": "sel0om2BII12pYr47",
-      "name": "Herb",
-      "color": "cyanLight1"
-    },
+    "data-type": "Herb",
     "recordStatus": "",
     "calcSlug": "green-tea-extract",
     "ingredientTerm": "Green Tea Extract",
@@ -5810,11 +5490,7 @@ export const ING_PLANT = {
     "canonical": "kale",
     "recordId": "recHAd0N8CJECwrah",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "kale",
     "ingredientTerm": "Kale",
@@ -5878,11 +5554,7 @@ export const ING_PLANT = {
     "canonical": "dried-kelp",
     "recordId": "recT5eQSDjssnIA5u",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "dried-kelp",
     "ingredientTerm": "Dried Kelp",
@@ -5949,11 +5621,7 @@ export const ING_PLANT = {
     "canonical": "kelp",
     "recordId": "recGVEqzUoD3Gp3HX",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "kelp",
     "ingredientTerm": "Kelp",
@@ -6021,11 +5689,7 @@ export const ING_PLANT = {
     "canonical": "kelp-meal",
     "recordId": "recWL6WND0K5UQ30T",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "kelp-meal",
     "ingredientTerm": "Kelp Meal",
@@ -6128,11 +5792,7 @@ export const ING_PLANT = {
     "canonical": "green-lentils",
     "recordId": "recDD1ynLUX2z16Pm",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "green-lentils",
     "ingredientTerm": "Green Lentils",
@@ -6196,11 +5856,7 @@ export const ING_PLANT = {
     "canonical": "red-lentils",
     "recordId": "recuMTo7PNSnoTNQp",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "red-lentils",
     "ingredientTerm": "Red Lentils",
@@ -6264,11 +5920,7 @@ export const ING_PLANT = {
     "canonical": "lentil",
     "recordId": "recwGELXjW9LMfUQY",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "lentil",
     "ingredientTerm": "Lentil",
@@ -6332,11 +5984,7 @@ export const ING_PLANT = {
     "canonical": "lentils",
     "recordId": "recib8Hvy0wlXJaAa",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "lentils",
     "ingredientTerm": "Lentils",
@@ -6404,11 +6052,7 @@ export const ING_PLANT = {
     "canonical": "whole-lentils",
     "recordId": "reco13tu0I7KCtQW9",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "whole-lentils",
     "ingredientTerm": "Whole Lentils",
@@ -6472,11 +6116,7 @@ export const ING_PLANT = {
     "canonical": "lentil-fiber",
     "recordId": "recYZAZ7Zrh3sYGQb",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "lentil-fiber",
     "ingredientTerm": "Lentil Fiber",
@@ -6544,11 +6184,7 @@ export const ING_PLANT = {
     "canonical": "dried-lettuce",
     "recordId": "recFOUyOaAb9JLM8p",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-lettuce",
     "ingredientTerm": "Dried Lettuce",
@@ -6612,11 +6248,7 @@ export const ING_PLANT = {
     "canonical": "lettuce",
     "recordId": "recnohbCluf01JDzj",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "lettuce",
     "ingredientTerm": "Lettuce",
@@ -6684,11 +6316,7 @@ export const ING_PLANT = {
     "canonical": "ground-millet",
     "recordId": "recF89VThIXVdo7ZH",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-millet",
     "ingredientTerm": "Ground Millet",
@@ -6752,11 +6380,7 @@ export const ING_PLANT = {
     "canonical": "millet",
     "recordId": "rec3d00DOZRE2bQ0H",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "millet",
     "ingredientTerm": "Millet",
@@ -6820,11 +6444,7 @@ export const ING_PLANT = {
     "canonical": "whole-grain-millet",
     "recordId": "recLOe53rLK2VjD3i",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-grain-millet",
     "ingredientTerm": "Whole Grain Millet",
@@ -6892,11 +6512,7 @@ export const ING_PLANT = {
     "canonical": "whole-ground-millet",
     "recordId": "recBmy5jfuUXk4izA",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-ground-millet",
     "ingredientTerm": "Whole Ground Millet",
@@ -6960,11 +6576,7 @@ export const ING_PLANT = {
     "canonical": "ground-milo",
     "recordId": "rec9CkVOCp46nVIzZ",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-milo",
     "ingredientTerm": "Ground Milo",
@@ -7028,11 +6640,7 @@ export const ING_PLANT = {
     "canonical": "milo",
     "recordId": "recwmww17egNQuDfT",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "milo",
     "ingredientTerm": "Milo",
@@ -7096,11 +6704,7 @@ export const ING_PLANT = {
     "canonical": "whole-ground-milo",
     "recordId": "recPnCSD66HaTGsye",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-ground-milo",
     "ingredientTerm": "Whole Ground Milo",
@@ -7164,11 +6768,7 @@ export const ING_PLANT = {
     "canonical": "miscanthus-grass",
     "recordId": "recJN27oVSbEz384X",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "miscanthus-grass",
     "ingredientTerm": "Miscanthus Grass",
@@ -7232,11 +6832,7 @@ export const ING_PLANT = {
     "canonical": "oatmeal",
     "recordId": "recmV3SK70tCkeb4Z",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "oatmeal",
     "ingredientTerm": "Oatmeal",
@@ -7327,11 +6923,7 @@ export const ING_PLANT = {
     "canonical": "oat",
     "recordId": "recf5BZ7I8btpFLZ3",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "oat",
     "ingredientTerm": "Oat",
@@ -7395,11 +6987,7 @@ export const ING_PLANT = {
     "canonical": "oats",
     "recordId": "recEhscKkaUL72y0R",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "oats",
     "ingredientTerm": "Oats",
@@ -7478,11 +7066,7 @@ export const ING_PLANT = {
     "canonical": "whole-oat-groats",
     "recordId": "recYfxvutb9Ng62TE",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-oat-groats",
     "ingredientTerm": "Whole Oat Groats",
@@ -7546,11 +7130,7 @@ export const ING_PLANT = {
     "canonical": "whole-oats",
     "recordId": "recrHFF5cNdydzya6",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-oats",
     "ingredientTerm": "Whole Oats",
@@ -7618,11 +7198,7 @@ export const ING_PLANT = {
     "canonical": "olive-oil",
     "recordId": "recp5SaBgkOWg9Xh8",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "olive-oil",
     "ingredientTerm": "Olive Oil",
@@ -7686,11 +7262,7 @@ export const ING_PLANT = {
     "canonical": "orange",
     "recordId": "recRdVBN6ZU3tMVgb",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "orange",
     "ingredientTerm": "Orange",
@@ -7754,11 +7326,7 @@ export const ING_PLANT = {
     "canonical": "oranges",
     "recordId": "recOvik96xEvD32VQ",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "oranges",
     "ingredientTerm": "Oranges",
@@ -7822,11 +7390,7 @@ export const ING_PLANT = {
     "canonical": "dried-parsley",
     "recordId": "recVoLBNh12rqpH0n",
     "recordType": "Plants",
-    "data-type": {
-      "id": "sel0om2BII12pYr47",
-      "name": "Herb",
-      "color": "cyanLight1"
-    },
+    "data-type": "Herb",
     "recordStatus": "",
     "calcSlug": "dried-parsley",
     "ingredientTerm": "Dried Parsley",
@@ -7890,11 +7454,7 @@ export const ING_PLANT = {
     "canonical": "parsley",
     "recordId": "recKNSFeJVUYhdFqp",
     "recordType": "Plants",
-    "data-type": {
-      "id": "sel0om2BII12pYr47",
-      "name": "Herb",
-      "color": "cyanLight1"
-    },
+    "data-type": "Herb",
     "recordStatus": "",
     "calcSlug": "parsley",
     "ingredientTerm": "Parsley",
@@ -7962,11 +7522,7 @@ export const ING_PLANT = {
     "canonical": "yellow-peas",
     "recordId": "rec22se9UItTVmt2Y",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "yellow-peas",
     "ingredientTerm": "Yellow Peas",
@@ -8030,11 +7586,7 @@ export const ING_PLANT = {
     "canonical": "pea",
     "recordId": "recsang2qnPMlZtRD",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pea",
     "ingredientTerm": "Pea",
@@ -8098,11 +7650,7 @@ export const ING_PLANT = {
     "canonical": "peas",
     "recordId": "recJcrf5ETMjljBto",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "peas",
     "ingredientTerm": "Peas",
@@ -8197,11 +7745,7 @@ export const ING_PLANT = {
     "canonical": "green-peas",
     "recordId": "recigZRGDlcINCLgw",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "green-peas",
     "ingredientTerm": "Green Peas",
@@ -8265,11 +7809,7 @@ export const ING_PLANT = {
     "canonical": "pea-flour",
     "recordId": "recdkqlIhCRby3TAf",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pea-flour",
     "ingredientTerm": "Pea Flour",
@@ -8333,11 +7873,7 @@ export const ING_PLANT = {
     "canonical": "pea-fiber",
     "recordId": "reccveXMzZ8gwhf79",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pea-fiber",
     "ingredientTerm": "Pea Fiber",
@@ -8405,11 +7941,7 @@ export const ING_PLANT = {
     "canonical": "pea-protein",
     "recordId": "recM2FLVqgVU6iAGO",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pea-protein",
     "ingredientTerm": "Pea Protein",
@@ -8473,11 +8005,7 @@ export const ING_PLANT = {
     "canonical": "pea-starch",
     "recordId": "recPq86F1OMYzrEdX",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "pea-starch",
     "ingredientTerm": "Pea Starch",
@@ -8541,11 +8069,7 @@ export const ING_PLANT = {
     "canonical": "field-peas",
     "recordId": "recQcnTTyBXbmDzez",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "field-peas",
     "ingredientTerm": "Field Peas",
@@ -8609,11 +8133,7 @@ export const ING_PLANT = {
     "canonical": "dried-pomegranate",
     "recordId": "recOKNNJdBfCtSxy8",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "dried-pomegranate",
     "ingredientTerm": "Dried Pomegranate",
@@ -8681,11 +8201,7 @@ export const ING_PLANT = {
     "canonical": "pomegranate",
     "recordId": "recAcpp4XCVkPnlKq",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "pomegranate",
     "ingredientTerm": "Pomegranate",
@@ -8749,11 +8265,7 @@ export const ING_PLANT = {
     "canonical": "pomegranates",
     "recordId": "recRjkNtzFJsxezvd",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "pomegranates",
     "ingredientTerm": "Pomegranates",
@@ -8817,11 +8329,7 @@ export const ING_PLANT = {
     "canonical": "dried-white-potatoes",
     "recordId": "rech1NfeROVUdnnwR",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-white-potatoes",
     "ingredientTerm": "Dried White Potatoes",
@@ -8885,11 +8393,7 @@ export const ING_PLANT = {
     "canonical": "potato",
     "recordId": "reci66ynDLHyXe8il",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "potato",
     "ingredientTerm": "Potato",
@@ -8953,11 +8457,7 @@ export const ING_PLANT = {
     "canonical": "potato-fiber",
     "recordId": "recS5WWZSNs8coBUk",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "potato-fiber",
     "ingredientTerm": "Potato Fiber",
@@ -9021,11 +8521,7 @@ export const ING_PLANT = {
     "canonical": "potato-protein",
     "recordId": "recmc4yWRo1CrEaiP",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "potato-protein",
     "ingredientTerm": "Potato Protein",
@@ -9089,11 +8585,7 @@ export const ING_PLANT = {
     "canonical": "potatoes",
     "recordId": "rec6YTFkSR92K5VFa",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "potatoes",
     "ingredientTerm": "Potatoes",
@@ -9170,11 +8662,7 @@ export const ING_PLANT = {
     "canonical": "white-potatoes",
     "recordId": "recAqVizHhSHCWfiK",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "white-potatoes",
     "ingredientTerm": "White Potatoes",
@@ -9238,11 +8726,7 @@ export const ING_PLANT = {
     "canonical": "psyllium-seed-husk",
     "recordId": "recJ1jpXRAHwPRW8l",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "psyllium-seed-husk",
     "ingredientTerm": "Psyllium Seed Husk",
@@ -9315,11 +8799,7 @@ export const ING_PLANT = {
     "canonical": "dried-pumpkin",
     "recordId": "recybv95VXbWuoyP3",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-pumpkin",
     "ingredientTerm": "Dried Pumpkin",
@@ -9383,11 +8863,7 @@ export const ING_PLANT = {
     "canonical": "pumpkin",
     "recordId": "rec38QVqhAm84CQVy",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "pumpkin",
     "ingredientTerm": "Pumpkin",
@@ -9479,11 +8955,7 @@ export const ING_PLANT = {
     "canonical": "whole-pumpkin",
     "recordId": "recjMTqRMMit8mUoi",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "whole-pumpkin",
     "ingredientTerm": "Whole Pumpkin",
@@ -9547,11 +9019,7 @@ export const ING_PLANT = {
     "canonical": "quinoa",
     "recordId": "recSmFLAq0JBNHhPN",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "quinoa",
     "ingredientTerm": "Quinoa",
@@ -9615,11 +9083,7 @@ export const ING_PLANT = {
     "canonical": "raspberries",
     "recordId": "recMeS9jHcB18M28G",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "raspberries",
     "ingredientTerm": "Raspberries",
@@ -9683,11 +9147,7 @@ export const ING_PLANT = {
     "canonical": "raspberry",
     "recordId": "recwsP9JCsIarl7dV",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "raspberry",
     "ingredientTerm": "Raspberry",
@@ -9751,11 +9211,7 @@ export const ING_PLANT = {
     "canonical": "brown-rice",
     "recordId": "recwLixoGCd3gkL4j",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "brown-rice",
     "ingredientTerm": "Brown Rice",
@@ -9838,11 +9294,7 @@ export const ING_PLANT = {
     "canonical": "rice",
     "recordId": "rec0AOUs6syjCDqcK",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "rice",
     "ingredientTerm": "Rice",
@@ -9921,11 +9373,7 @@ export const ING_PLANT = {
     "canonical": "white-rice",
     "recordId": "recGO1EHnEnANa2wG",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "white-rice",
     "ingredientTerm": "White Rice",
@@ -9989,11 +9437,7 @@ export const ING_PLANT = {
     "canonical": "whole-grain-brown-rice",
     "recordId": "recNbwHM9n9Le9MiY",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-grain-brown-rice",
     "ingredientTerm": "Whole Grain Brown Rice",
@@ -10060,11 +9504,7 @@ export const ING_PLANT = {
     "canonical": "safflower",
     "recordId": "recORX8XxCDr1B69x",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "safflower",
     "ingredientTerm": "Safflower",
@@ -10128,11 +9568,7 @@ export const ING_PLANT = {
     "canonical": "safflower-oil",
     "recordId": "recpLkuknzQHi1o6k",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selbTqnWlEyoGdmbv",
-      "name": "Seeds",
-      "color": "blueLight1"
-    },
+    "data-type": "Seeds",
     "recordStatus": "",
     "calcSlug": "safflower-oil",
     "ingredientTerm": "Safflower Oil",
@@ -10196,11 +9632,7 @@ export const ING_PLANT = {
     "canonical": "dried-seaweed",
     "recordId": "recoXDtKC2HaelnMS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "dried-seaweed",
     "ingredientTerm": "Dried Seaweed",
@@ -10264,11 +9696,7 @@ export const ING_PLANT = {
     "canonical": "organic-dried-seaweed",
     "recordId": "recjD7UwA7KairLyg",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "organic-dried-seaweed",
     "ingredientTerm": "Organic Dried Seaweed",
@@ -10332,11 +9760,7 @@ export const ING_PLANT = {
     "canonical": "organic-dried-seaweed-meal",
     "recordId": "recPYbv610iVUHYts",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "organic-dried-seaweed-meal",
     "ingredientTerm": "Organic Dried Seaweed Meal",
@@ -10410,11 +9834,7 @@ export const ING_PLANT = {
     "canonical": "seaweed",
     "recordId": "recX14AiZuzpWcSkI",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "seaweed",
     "ingredientTerm": "Seaweed",
@@ -10478,11 +9898,7 @@ export const ING_PLANT = {
     "canonical": "seaweed-meal",
     "recordId": "recmhgvox9FDbQath",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "seaweed-meal",
     "ingredientTerm": "Seaweed Meal",
@@ -10546,11 +9962,7 @@ export const ING_PLANT = {
     "canonical": "grain-sorghum",
     "recordId": "recycjObFrC0ge6GU",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "grain-sorghum",
     "ingredientTerm": "Grain Sorghum",
@@ -10619,11 +10031,7 @@ export const ING_PLANT = {
     "canonical": "ground-grain-sorghum",
     "recordId": "recIPsoxCPjmlvj4H",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-grain-sorghum",
     "ingredientTerm": "Ground Grain Sorghum",
@@ -10687,11 +10095,7 @@ export const ING_PLANT = {
     "canonical": "ground-sorghum",
     "recordId": "reczAcBzA2kJqMALN",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-sorghum",
     "ingredientTerm": "Ground Sorghum",
@@ -10755,11 +10159,7 @@ export const ING_PLANT = {
     "canonical": "sorghum",
     "recordId": "recPcUT3jxbGInGB4",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "sorghum",
     "ingredientTerm": "Sorghum",
@@ -10823,11 +10223,7 @@ export const ING_PLANT = {
     "canonical": "whole-ground-sorghum",
     "recordId": "rec979lNKRcxwM4N5",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-ground-sorghum",
     "ingredientTerm": "Whole Ground Sorghum",
@@ -10891,11 +10287,7 @@ export const ING_PLANT = {
     "canonical": "soybean-meal",
     "recordId": "recRsSmVwMsDGouRu",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "soybean-meal",
     "ingredientTerm": "Soybean Meal",
@@ -10968,11 +10360,7 @@ export const ING_PLANT = {
     "canonical": "soy",
     "recordId": "recAiFavZRYUbNnwS",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "soy",
     "ingredientTerm": "Soy",
@@ -11036,11 +10424,7 @@ export const ING_PLANT = {
     "canonical": "soybean",
     "recordId": "recPAMysnbWtkUobW",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "soybean",
     "ingredientTerm": "Soybean",
@@ -11104,11 +10488,7 @@ export const ING_PLANT = {
     "canonical": "soy-extracts",
     "recordId": "recBkGqwqXX0xUg35",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "soy-extracts",
     "ingredientTerm": "Soy Extracts",
@@ -11172,11 +10552,7 @@ export const ING_PLANT = {
     "canonical": "soybean-oil",
     "recordId": "rec3bcUOd8ULR8pif",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selvbfFLspjhGqPgI",
-      "name": "Legumes",
-      "color": "yellowLight2"
-    },
+    "data-type": "Legumes",
     "recordStatus": "",
     "calcSlug": "soybean-oil",
     "ingredientTerm": "Soybean Oil",
@@ -11255,11 +10631,7 @@ export const ING_PLANT = {
     "canonical": "spearmint-extract",
     "recordId": "recvh7BWEOWNZAtji",
     "recordType": "Plants",
-    "data-type": {
-      "id": "sel0om2BII12pYr47",
-      "name": "Herb",
-      "color": "cyanLight1"
-    },
+    "data-type": "Herb",
     "recordStatus": "",
     "calcSlug": "spearmint-extract",
     "ingredientTerm": "Spearmint Extract",
@@ -11333,11 +10705,7 @@ export const ING_PLANT = {
     "canonical": "ground-spelt",
     "recordId": "recUHRnsqPo3QLxdB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-spelt",
     "ingredientTerm": "Ground Spelt",
@@ -11401,11 +10769,7 @@ export const ING_PLANT = {
     "canonical": "spelt",
     "recordId": "recy2lhUxUvhqvqOL",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "spelt",
     "ingredientTerm": "Spelt",
@@ -11477,11 +10841,7 @@ export const ING_PLANT = {
     "canonical": "whole-ground-spelt",
     "recordId": "recUJfFR3qEdYbH0A",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-ground-spelt",
     "ingredientTerm": "Whole Ground Spelt",
@@ -11545,11 +10905,7 @@ export const ING_PLANT = {
     "canonical": "whole-spelt",
     "recordId": "recAT3uYrNQ0g4Zmu",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-spelt",
     "ingredientTerm": "Whole Spelt",
@@ -11617,11 +10973,7 @@ export const ING_PLANT = {
     "canonical": "dried-spinach",
     "recordId": "recDUxDH1pWS17YZ3",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-spinach",
     "ingredientTerm": "Dried Spinach",
@@ -11692,11 +11044,7 @@ export const ING_PLANT = {
     "canonical": "spinach",
     "recordId": "recjU5d2ppLecal2I",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "spinach",
     "ingredientTerm": "Spinach",
@@ -11760,11 +11108,7 @@ export const ING_PLANT = {
     "canonical": "sprout",
     "recordId": "recaqcO5SUQVjgakk",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "sprout",
     "ingredientTerm": "Sprout",
@@ -11828,11 +11172,7 @@ export const ING_PLANT = {
     "canonical": "sprouts",
     "recordId": "recwbNqJdJ6kyU0EB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "sprouts",
     "ingredientTerm": "Sprouts",
@@ -11896,11 +11236,7 @@ export const ING_PLANT = {
     "canonical": "lecithin",
     "recordId": "recNaNxMUomLooUXY",
     "recordType": "Plants",
-    "data-type": {
-      "id": "seljFQX7wamiVQIXI",
-      "name": "Botanical",
-      "color": "greenLight1"
-    },
+    "data-type": "Botanical",
     "recordStatus": "",
     "calcSlug": "lecithin",
     "ingredientTerm": "Lecithin",
@@ -11996,11 +11332,7 @@ export const ING_PLANT = {
     "canonical": "sunflower-oil",
     "recordId": "reczDCVVGnBn0NLPz",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "sunflower-oil",
     "ingredientTerm": "Sunflower Oil",
@@ -12064,11 +11396,7 @@ export const ING_PLANT = {
     "canonical": "dried-sweet-orange",
     "recordId": "recSBltH4xJmyPL1J",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "dried-sweet-orange",
     "ingredientTerm": "Dried Sweet Orange",
@@ -12144,11 +11472,7 @@ export const ING_PLANT = {
     "canonical": "sweet-orange",
     "recordId": "recNEs8VePiy3HWIo",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "sweet-orange",
     "ingredientTerm": "Sweet Orange",
@@ -12220,11 +11544,7 @@ export const ING_PLANT = {
     "canonical": "dried-sweet-potatoes",
     "recordId": "recdrzs6GLSK6L6Xn",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "dried-sweet-potatoes",
     "ingredientTerm": "Dried Sweet Potatoes",
@@ -12288,11 +11608,7 @@ export const ING_PLANT = {
     "canonical": "sweet-potato",
     "recordId": "rec6cc7I62jsv9ApU",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "sweet-potato",
     "ingredientTerm": "Sweet Potato",
@@ -12364,11 +11680,7 @@ export const ING_PLANT = {
     "canonical": "sweet-potatoes",
     "recordId": "receQDL71ZiN5e1NB",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "sweet-potatoes",
     "ingredientTerm": "Sweet Potatoes",
@@ -12472,11 +11784,7 @@ export const ING_PLANT = {
     "canonical": "tapioca",
     "recordId": "recGJIrhg6VeOS8o5",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selIF4l0ZOZSLrius",
-      "name": "Roots",
-      "color": "pinkLight2"
-    },
+    "data-type": "Roots",
     "recordStatus": "",
     "calcSlug": "tapioca",
     "ingredientTerm": "Tapioca",
@@ -12540,11 +11848,7 @@ export const ING_PLANT = {
     "canonical": "dried-tomato-pomace",
     "recordId": "reca6FafD2SHr7jU0",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "dried-tomato-pomace",
     "ingredientTerm": "Dried Tomato Pomace",
@@ -12608,11 +11912,7 @@ export const ING_PLANT = {
     "canonical": "tomato-pomace",
     "recordId": "recB6YIyc5YVBsL2E",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "tomato-pomace",
     "ingredientTerm": "Tomato Pomace",
@@ -12708,11 +12008,7 @@ export const ING_PLANT = {
     "canonical": "tomato",
     "recordId": "recZI8HlFZOkLh12e",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "tomato",
     "ingredientTerm": "Tomato",
@@ -12776,11 +12072,7 @@ export const ING_PLANT = {
     "canonical": "tomatoes",
     "recordId": "recikqWdkON0mrZ1k",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selAPvYkZ1eoSfeDG",
-      "name": "Fruit",
-      "color": "orangeLight2"
-    },
+    "data-type": "Fruit",
     "recordStatus": "",
     "calcSlug": "tomatoes",
     "ingredientTerm": "Tomatoes",
@@ -12844,11 +12136,7 @@ export const ING_PLANT = {
     "canonical": "vegetable-oil",
     "recordId": "recAsXKXETiNHnlVZ",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selqIMtHXd8fNjgLn",
-      "name": "Seed Oil",
-      "color": "purpleLight2"
-    },
+    "data-type": "Seed Oil",
     "recordStatus": "",
     "calcSlug": "vegetable-oil",
     "ingredientTerm": "Vegetable Oil",
@@ -12939,11 +12227,7 @@ export const ING_PLANT = {
     "canonical": "dried-watercress",
     "recordId": "recl96XAmG4T6KQtc",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "dried-watercress",
     "ingredientTerm": "Dried Watercress",
@@ -13007,11 +12291,7 @@ export const ING_PLANT = {
     "canonical": "watercress",
     "recordId": "recPAGWisXaoKqB77",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selMhxPMTLjCvzqkY",
-      "name": "Vegetable",
-      "color": "grayLight2"
-    },
+    "data-type": "Vegetable",
     "recordStatus": "",
     "calcSlug": "watercress",
     "ingredientTerm": "Watercress",
@@ -13075,11 +12355,7 @@ export const ING_PLANT = {
     "canonical": "ground-wheat",
     "recordId": "recuYVvjGK3i0aNOa",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "ground-wheat",
     "ingredientTerm": "Ground Wheat",
@@ -13143,11 +12419,7 @@ export const ING_PLANT = {
     "canonical": "wheat",
     "recordId": "reclIrnr6kypjGoFi",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "wheat",
     "ingredientTerm": "Wheat",
@@ -13223,11 +12495,7 @@ export const ING_PLANT = {
     "canonical": "wheat-bran",
     "recordId": "rec9FHY29BH0G0IoG",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "wheat-bran",
     "ingredientTerm": "Wheat Bran",
@@ -13312,11 +12580,7 @@ export const ING_PLANT = {
     "canonical": "whole-grain-wheat",
     "recordId": "recs1lNiHwvCUyDpf",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-grain-wheat",
     "ingredientTerm": "Whole Grain Wheat",
@@ -13385,11 +12649,7 @@ export const ING_PLANT = {
     "canonical": "whole-ground-wheat",
     "recordId": "recKUFG5rpm074YbP",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "whole-ground-wheat",
     "ingredientTerm": "Whole Ground Wheat",
@@ -13453,11 +12713,7 @@ export const ING_PLANT = {
     "canonical": "yucca-schidigera-extract",
     "recordId": "rec8TdpLdytDYlNYf",
     "recordType": "Plants",
-    "data-type": {
-      "id": "selmXt20DYGjQ0PbA",
-      "name": "Grain",
-      "color": "redLight2"
-    },
+    "data-type": "Grain",
     "recordStatus": "",
     "calcSlug": "yucca-schidigera-extract",
     "ingredientTerm": "Yucca Schidigera Extract",
@@ -13552,5 +12808,6 @@ export const ING_PLANT = {
     "vitamins_derived": "Saponins, Trace minerals",
     "termDescription": "Plant extract often used to reduce stool odor and aid digestion."
   }
+
 
 };
