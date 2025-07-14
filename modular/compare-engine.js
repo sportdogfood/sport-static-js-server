@@ -200,64 +200,48 @@ function paintSvgIcon(selector, isPositive) {
 
 
 
-// --- SECTION 2: Macronutrient Breakdown ---
-function section2Macros(mainRow, sdfRow) {
-  const nutSummary = `
-    ${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"]}% protein, ${mainRow["ga_crude_fat_%"]}% fat, and ${mainRow["ga_kcals_per_cup"]} kcals/cup.
-    ${tagText("Protein", mainRow["tag_protein"])}
-    ${tagText("Fat", mainRow["tag_fat"])}
-    ${tagText("Calories", mainRow["tag_kcalscup"])}
-  `.replace(/\s+/g, ' ').trim();
+// --- SECTION 2: Macronutrient Breakdown & Energy ---
+function paintSection2(mainRow, sdfRow) {
+  // Section Header/Title
+  var headerEl = document.querySelector('[data-var="section2-header"]');
+  if (headerEl) headerEl.textContent = "Macronutrient Breakdown";
 
-  return `
-  <section class="ci-section" id="specs">
-    <div class="ci-section-title-wrapper">
-      <h2 class="ci-section-header ci-section-title">Macronutrient Breakdown</h2>
-      <div class="ci-section-subtitle">
-        <p class="subtitle-text">Protein, fat, calorie details, and flavor</p>
-      </div>
-    </div>
-    <div class="ci-sidebyside-wrapper">
-      <table class="ci-sidebyside-grid-1c4r">
-        <thead>
-          <tr class="ci-sidebyside-head-3c1r">
-            <th class="ci-sidebyside-col-head"></th>
-            <th class="ci-sidebyside-col-head">${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-            <th class="ci-sidebyside-col-head">Sport Dog Food ${sdfRow["data-one"]}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Protein</td>
-            <td class="ci-sidebyside-col-row">${mainRow["ga_crude_protein_%"] || ""}%${nutrientTag(mainRow["ga_crude_protein_%"], mainRow["tag_protein"])}</td>
-            <td class="ci-sidebyside-col-row">${sdfRow["ga_crude_protein_%"] || ""}%${nutrientTag(sdfRow["ga_crude_protein_%"], sdfRow["tag_protein"])}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Fat</td>
-            <td class="ci-sidebyside-col-row">${mainRow["ga_crude_fat_%"] || ""}%${nutrientTag(mainRow["ga_crude_fat_%"], mainRow["tag_fat"])}</td>
-            <td class="ci-sidebyside-col-row">${sdfRow["ga_crude_fat_%"] || ""}%${nutrientTag(sdfRow["ga_crude_fat_%"], sdfRow["tag_fat"])}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Calories/cup</td>
-            <td class="ci-sidebyside-col-row">${mainRow["ga_kcals_per_cup"] || ""}${nutrientTag(mainRow["ga_kcals_per_cup"], mainRow["tag_kcalscup"])}</td>
-            <td class="ci-sidebyside-col-row">${sdfRow["ga_kcals_per_cup"] || ""}${nutrientTag(sdfRow["ga_kcals_per_cup"], sdfRow["tag_kcalscup"])}</td>
-          </tr>
-          <tr class="ci-sidebyside-row-3c1r">
-            <td class="ci-sidebyside-col-row">Flavor</td>
-            <td class="ci-sidebyside-col-row">${mainRow["specs_primary_flavor"] || ""}</td>
-            <td class="ci-sidebyside-col-row">${sdfRow["specs_primary_flavor"] || ""}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="ci-section-madlib-wrapper">
-      <div class="ci-section-madlib">
-        <p class="madlib-p">${nutSummary}</p>
-      </div>
-    </div>
-  </section>
-  `;
+  // Section Subtitle
+  var subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
+  if (subtitleEl) subtitleEl.textContent =
+    `Protein, fat, and calories per cup for each diet.`;
+
+  // Section Madlib
+  var madlibEl = document.querySelector('[data-var="section2-madlib"]');
+  if (madlibEl) madlibEl.textContent =
+    `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"] || "?"}% protein, ${mainRow["ga_crude_fat_%"] || "?"}% fat, and ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} provides ${sdfRow["ga_crude_protein_%"] || "?"}% protein, ${sdfRow["ga_crude_fat_%"] || "?"}% fat, and ${sdfRow["ga_kcals_per_cup"] || "?"} kcals/cup.`;
+
+  // --- Brand 1 (main/competitor) ---
+  var el;
+  el = document.querySelector('[data-var="brand-1-sec2-name"]');
+  if (el) el.textContent = mainRow["data-one"] || "";
+  el = document.querySelector('[data-var="brand-1-protein"]');
+  if (el) el.textContent = mainRow["ga_crude_protein_%"] || "";
+  el = document.querySelector('[data-var="brand-1-fat"]');
+  if (el) el.textContent = mainRow["ga_crude_fat_%"] || "";
+  el = document.querySelector('[data-var="brand-1-kcalscup"]');
+  if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
+  el = document.querySelector('[data-var="brand-1-kcalskg"]');
+  if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
+
+  // --- Sport 1 (Sport Dog Food) ---
+  el = document.querySelector('[data-var="sport-1-sec2-name"]');
+  if (el) el.textContent = sdfRow["data-one"] || "";
+  el = document.querySelector('[data-var="sport-1-protein"]');
+  if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
+  el = document.querySelector('[data-var="sport-1-fat"]');
+  if (el) el.textContent = sdfRow["ga_crude_fat_%"] || "";
+  el = document.querySelector('[data-var="sport-1-kcalscup"]');
+  if (el) el.textContent = sdfRow["ga_kcals_per_cup"] || "";
+  el = document.querySelector('[data-var="sport-1-kcalskg"]');
+  if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
+
 
 
 // ------- SECTION 3: Ingredient List & Attribute Table -------
