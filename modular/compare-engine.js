@@ -141,10 +141,7 @@ function paintSection1(mainRow, sdfRow) {
   if (el) el.textContent = mainRow["data-brand"] || "";
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
-  el = document.querySelector('[data-var="brand-1-firsting"]');
-  if (el) el.textContent = mainRow["ing-first"] || "";
-  el = document.querySelector('[data-var="brand-1-seconding"]');
-  if (el) el.textContent = mainRow["ing-second"] || "";
+
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) el.textContent = mainRow["data-grain"] || "";
   el = document.querySelector('[data-var="brand-1-previewimg"]');
@@ -160,10 +157,7 @@ function paintSection1(mainRow, sdfRow) {
   if (el) el.textContent = "Sport Dog Food";
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
-  el = document.querySelector('[data-var="sport-1-firsting"]');
-  if (el) el.textContent = sdfRow["ing-first"] || "";
-  el = document.querySelector('[data-var="sport-1-seconding"]');
-  if (el) el.textContent = sdfRow["ing-second"] || "";
+
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-grain"] || "";
   el = document.querySelector('[data-var="sport-1-previewimg"]');
