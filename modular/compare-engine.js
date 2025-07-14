@@ -173,7 +173,7 @@ function paintSection1(mainRow, sdfRow) {
   paintStatusIcon('[data-var="sport-1-upgradedmin"]',  sdfRow.hasUpgradedMinerals);
 }
 
-}
+
 
 // Utility to paint a check/cross icon (for icon containers)
 function paintStatusIcon(selector, isPositive) {
