@@ -1,4 +1,4 @@
-export const ING_ANIM ={
+export const ING_ANIM = {
   "CBJVQ": {
     "Name": "Anchovy",
     "Slug": "anchovy",
@@ -7,11 +7,7 @@ export const ING_ANIM ={
     "canonical": "anchovy",
     "recordId": "recnjNROXG4zCbjVq",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "anchovy",
     "ingredientTerm": "Anchovy",
@@ -75,11 +71,7 @@ export const ING_ANIM ={
     "canonical": "anchovy-meal",
     "recordId": "reccIiDZBtwO4Riow",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "anchovy-meal",
     "ingredientTerm": "Anchovy Meal",
@@ -143,11 +135,7 @@ export const ING_ANIM ={
     "canonical": "animal-fat",
     "recordId": "recYOh7W4VMMFiVTY",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "animal-fat",
     "ingredientTerm": "Animal Fat",
@@ -211,11 +199,7 @@ export const ING_ANIM ={
     "canonical": "beef",
     "recordId": "recjCrvQptkgFlmra",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "beef",
     "ingredientTerm": "Beef",
@@ -285,11 +269,7 @@ export const ING_ANIM ={
     "canonical": "beef-fat",
     "recordId": "recTtnjESSdpaRhpV",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "beef-fat",
     "ingredientTerm": "Beef Fat",
@@ -353,11 +333,7 @@ export const ING_ANIM ={
     "canonical": "beef-liver",
     "recordId": "rectZTVg8uD1cqcMt",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "beef-liver",
     "ingredientTerm": "Beef Liver",
@@ -421,11 +397,7 @@ export const ING_ANIM ={
     "canonical": "beef-meal",
     "recordId": "recCF5lETccFgSJWC",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "beef-meal",
     "ingredientTerm": "Beef Meal",
@@ -500,11 +472,7 @@ export const ING_ANIM ={
     "canonical": "beef-tripe",
     "recordId": "recfmDhkFfwiBsarH",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "beef-tripe",
     "ingredientTerm": "Beef Tripe",
@@ -568,11 +536,7 @@ export const ING_ANIM ={
     "canonical": "bison",
     "recordId": "recl4jLV40Uu2NZMY",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "bison",
     "ingredientTerm": "Bison",
@@ -636,11 +600,7 @@ export const ING_ANIM ={
     "canonical": "bison-meal",
     "recordId": "rec6PLLyVrCwRUMCD",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "bison-meal",
     "ingredientTerm": "Bison Meal",
@@ -704,11 +664,7 @@ export const ING_ANIM ={
     "canonical": "blood-meal",
     "recordId": "reckbvabf0ScLcaLn",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "blood-meal",
     "ingredientTerm": "Blood Meal",
@@ -790,11 +746,7 @@ export const ING_ANIM ={
     "canonical": "boar",
     "recordId": "recJjzJbrUlKcboFC",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "boar",
     "ingredientTerm": "Boar",
@@ -858,11 +810,7 @@ export const ING_ANIM ={
     "canonical": "buffalo",
     "recordId": "reccgN42QtpFf1Qed",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "buffalo",
     "ingredientTerm": "Buffalo",
@@ -926,11 +874,7 @@ export const ING_ANIM ={
     "canonical": "buffalo-meal",
     "recordId": "recOq1QyzaEuC6hrl",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "buffalo-meal",
     "ingredientTerm": "Buffalo Meal",
@@ -1032,11 +976,7 @@ export const ING_ANIM ={
     "canonical": "catfish",
     "recordId": "reccOVa2IqBXzvHnd",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "catfish",
     "ingredientTerm": "Catfish",
@@ -1100,11 +1040,7 @@ export const ING_ANIM ={
     "canonical": "catfish-meal",
     "recordId": "recqKD8lE5D9u9eu7",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "catfish-meal",
     "ingredientTerm": "Catfish Meal",
@@ -1197,11 +1133,7 @@ export const ING_ANIM ={
     "canonical": "chicken",
     "recordId": "recgSBXNAZhWiUlX1",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken",
     "ingredientTerm": "Chicken",
@@ -1274,11 +1206,7 @@ export const ING_ANIM ={
     "canonical": "chicken-by-product",
     "recordId": "recWNbBIcWfgIQeva",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken-by-product",
     "ingredientTerm": "Chicken By-Product",
@@ -1342,11 +1270,7 @@ export const ING_ANIM ={
     "canonical": "chicken-by-product-meal",
     "recordId": "recaedTI7sR6i1fXe",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken-by-product-meal",
     "ingredientTerm": "Chicken By-Product Meal",
@@ -1414,11 +1338,7 @@ export const ING_ANIM ={
     "canonical": "chicken-cartilage",
     "recordId": "recFJ3FczgCPXMhnc",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken-cartilage",
     "ingredientTerm": "Chicken Cartilage",
@@ -1482,11 +1402,7 @@ export const ING_ANIM ={
     "canonical": "chicken-fat",
     "recordId": "recKZXK3xpD5VuyIW",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken-fat",
     "ingredientTerm": "Chicken Fat",
@@ -1602,11 +1518,7 @@ export const ING_ANIM ={
     "canonical": "chicken-meal",
     "recordId": "recafGf3T3bbcEVBh",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "chicken-meal",
     "ingredientTerm": "Chicken Meal",
@@ -1680,11 +1592,7 @@ export const ING_ANIM ={
     "canonical": "cod",
     "recordId": "reczECJSnoXKJrLXe",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "cod",
     "ingredientTerm": "Cod",
@@ -1748,11 +1656,7 @@ export const ING_ANIM ={
     "canonical": "deboned-chicken",
     "recordId": "rec1AsvYGr8soExO1",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "deboned-chicken",
     "ingredientTerm": "Deboned Chicken",
@@ -1816,11 +1720,7 @@ export const ING_ANIM ={
     "canonical": "dehydrated-chicken",
     "recordId": "rec4Rk4w0l4IGaMg6",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "dehydrated-chicken",
     "ingredientTerm": "Dehydrated Chicken",
@@ -1884,11 +1784,7 @@ export const ING_ANIM ={
     "canonical": "dehydrated-cod",
     "recordId": "recwqB40ynKJCiPvY",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "dehydrated-cod",
     "ingredientTerm": "Dehydrated Cod",
@@ -1952,11 +1848,7 @@ export const ING_ANIM ={
     "canonical": "dehydrated-herring",
     "recordId": "recUQKB6V7Vbht5Zk",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "dehydrated-herring",
     "ingredientTerm": "Dehydrated Herring",
@@ -2023,11 +1915,7 @@ export const ING_ANIM ={
     "canonical": "dehydrated-lamb",
     "recordId": "rec58z09I3VuC2Twm",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "dehydrated-lamb",
     "ingredientTerm": "Dehydrated Lamb",
@@ -2091,11 +1979,7 @@ export const ING_ANIM ={
     "canonical": "dehydrated-salmon",
     "recordId": "recfKBt6SlROy7oDL",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "dehydrated-salmon",
     "ingredientTerm": "Dehydrated Salmon",
@@ -2159,11 +2043,7 @@ export const ING_ANIM ={
     "canonical": "dried-egg-product",
     "recordId": "recnVKZRfaHY8KbDy",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "dried-egg-product",
     "ingredientTerm": "Dried Egg Product",
@@ -2232,11 +2112,7 @@ export const ING_ANIM ={
     "canonical": "dried-eggs",
     "recordId": "receQz3L6eNL8AlHU",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "dried-eggs",
     "ingredientTerm": "Dried Eggs",
@@ -2300,11 +2176,7 @@ export const ING_ANIM ={
     "canonical": "dried-porcine-plasma",
     "recordId": "recVut6bM0IzShJRO",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "dried-porcine-plasma",
     "ingredientTerm": "Dried Porcine Plasma",
@@ -2368,11 +2240,7 @@ export const ING_ANIM ={
     "canonical": "dried-whole-eggs",
     "recordId": "recDQOs9iqe6xc0bR",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "dried-whole-eggs",
     "ingredientTerm": "Dried Whole Eggs",
@@ -2439,11 +2307,7 @@ export const ING_ANIM ={
     "canonical": "duck",
     "recordId": "recB6u81JbJhH8Hep",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "duck",
     "ingredientTerm": "Duck",
@@ -2507,11 +2371,7 @@ export const ING_ANIM ={
     "canonical": "duck-fat",
     "recordId": "recl4d5TTyBZWSbE2",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "duck-fat",
     "ingredientTerm": "Duck Fat",
@@ -2575,11 +2435,7 @@ export const ING_ANIM ={
     "canonical": "duck-meal",
     "recordId": "recAsQ6RKCmFdH0D2",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "duck-meal",
     "ingredientTerm": "Duck Meal",
@@ -2643,11 +2499,7 @@ export const ING_ANIM ={
     "canonical": "egg",
     "recordId": "rec0EgKIOrWtZ1Dxf",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "egg",
     "ingredientTerm": "Egg",
@@ -2711,11 +2563,7 @@ export const ING_ANIM ={
     "canonical": "egg-product",
     "recordId": "recRVPKUDqm7zTMyl",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "egg-product",
     "ingredientTerm": "Egg Product",
@@ -2806,11 +2654,7 @@ export const ING_ANIM ={
     "canonical": "eggs",
     "recordId": "recyJP5YGXre8otuY",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "eggs",
     "ingredientTerm": "Eggs",
@@ -2882,11 +2726,7 @@ export const ING_ANIM ={
     "canonical": "fish-meal",
     "recordId": "recYkS5jyCW9Sz9o3",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "fish-meal",
     "ingredientTerm": "Fish Meal",
@@ -2965,11 +2805,7 @@ export const ING_ANIM ={
     "canonical": "fish-oil",
     "recordId": "reci5cw8ywJzrD1WV",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "fish-oil",
     "ingredientTerm": "Fish Oil",
@@ -3052,11 +2888,7 @@ export const ING_ANIM ={
     "canonical": "freeze-dried-beef",
     "recordId": "recbqO6SbDg6GzjhS",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "freeze-dried-beef",
     "ingredientTerm": "Freeze-Dried Beef",
@@ -3120,11 +2952,7 @@ export const ING_ANIM ={
     "canonical": "fresh-herring",
     "recordId": "recP17R84Ic3Z7Z8a",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "fresh-herring",
     "ingredientTerm": "Fresh Herring",
@@ -3191,11 +3019,7 @@ export const ING_ANIM ={
     "canonical": "haddock",
     "recordId": "recTRqI61zYauNeJr",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "haddock",
     "ingredientTerm": "Haddock",
@@ -3259,11 +3083,7 @@ export const ING_ANIM ={
     "canonical": "herring",
     "recordId": "recXdG81lgzkguYlG",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "herring",
     "ingredientTerm": "Herring",
@@ -3327,11 +3147,7 @@ export const ING_ANIM ={
     "canonical": "herring-meal",
     "recordId": "recs9JWmVIFfbcPgm",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "herring-meal",
     "ingredientTerm": "Herring Meal",
@@ -3395,11 +3211,7 @@ export const ING_ANIM ={
     "canonical": "herring-oil",
     "recordId": "recHa7dugdariQTt3",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "herring-oil",
     "ingredientTerm": "Herring Oil",
@@ -3475,11 +3287,7 @@ export const ING_ANIM ={
     "canonical": "hydrolyzed-porcine",
     "recordId": "recORxIjG2E4gHqd5",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "hydrolyzed-porcine",
     "ingredientTerm": "Hydrolyzed Porcine",
@@ -3543,11 +3351,7 @@ export const ING_ANIM ={
     "canonical": "lamb",
     "recordId": "recDb4l0dfTT7SziB",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "lamb",
     "ingredientTerm": "Lamb",
@@ -3611,11 +3415,7 @@ export const ING_ANIM ={
     "canonical": "lamb-meal",
     "recordId": "recFIIO2YD1kb9rzp",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "lamb-meal",
     "ingredientTerm": "Lamb Meal",
@@ -3679,11 +3479,7 @@ export const ING_ANIM ={
     "canonical": "mackerel",
     "recordId": "recqWw4bw6JRDJlBw",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "mackerel",
     "ingredientTerm": "Mackerel",
@@ -3747,11 +3543,7 @@ export const ING_ANIM ={
     "canonical": "meat-by-product",
     "recordId": "recIYmIGXmHUqgLwj",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "meat-by-product",
     "ingredientTerm": "Meat by Product",
@@ -3815,11 +3607,7 @@ export const ING_ANIM ={
     "canonical": "meat-by-product-meal",
     "recordId": "recY3Ki30lRmLIlLF",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "meat-by-product-meal",
     "ingredientTerm": "Meat by Product Meal",
@@ -3883,11 +3671,7 @@ export const ING_ANIM ={
     "canonical": "meat-parts",
     "recordId": "recFaXBEOp5yZI96x",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "meat-parts",
     "ingredientTerm": "Meat Parts",
@@ -3951,11 +3735,7 @@ export const ING_ANIM ={
     "canonical": "menhaden",
     "recordId": "rec8ShKzHygtMEEDO",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "menhaden",
     "ingredientTerm": "Menhaden Fish",
@@ -4019,11 +3799,7 @@ export const ING_ANIM ={
     "canonical": "menhaden-fish-meal",
     "recordId": "recNRdKtvTZRLnUmu",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "menhaden-fish-meal",
     "ingredientTerm": "Menhaden Fish Meal",
@@ -4107,11 +3883,7 @@ export const ING_ANIM ={
     "canonical": "menhaden-fish-oil",
     "recordId": "recbGq1Y5dKOhqgYf",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selTnhIqXTFDnrqbF",
-      "name": "Fish Oil",
-      "color": "greenLight2"
-    },
+    "data-type": "Fish Oil",
     "recordStatus": "",
     "calcSlug": "menhaden-fish-oil",
     "ingredientTerm": "Menhaden Fish Oil",
@@ -4184,11 +3956,7 @@ export const ING_ANIM ={
     "canonical": "menhaden-meal",
     "recordId": "recN16uaktgMyXPAm",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "menhaden-meal",
     "ingredientTerm": "Menhaden Meal",
@@ -4252,11 +4020,7 @@ export const ING_ANIM ={
     "canonical": "menhaden-oil",
     "recordId": "recgcv9Kato8sasQ6",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selTnhIqXTFDnrqbF",
-      "name": "Fish Oil",
-      "color": "greenLight2"
-    },
+    "data-type": "Fish Oil",
     "recordStatus": "",
     "calcSlug": "menhaden-oil",
     "ingredientTerm": "Menhaden Oil",
@@ -4320,11 +4084,7 @@ export const ING_ANIM ={
     "canonical": "mussel",
     "recordId": "recQ5EXRHQ9F4T3Ai",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "mussel",
     "ingredientTerm": "Mussel",
@@ -4388,11 +4148,7 @@ export const ING_ANIM ={
     "canonical": "oceanfish",
     "recordId": "recxhAjRnD12fU4by",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "oceanfish",
     "ingredientTerm": "Oceanfish",
@@ -4456,11 +4212,7 @@ export const ING_ANIM ={
     "canonical": "oceanfish-meal",
     "recordId": "recJdiYv0KbHPzN5Y",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "oceanfish-meal",
     "ingredientTerm": "Oceanfish Meal",
@@ -4524,11 +4276,7 @@ export const ING_ANIM ={
     "canonical": "pollock",
     "recordId": "recEPnelbcqSGMEkJ",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "pollock",
     "ingredientTerm": "Pollock",
@@ -4592,11 +4340,7 @@ export const ING_ANIM ={
     "canonical": "pollock-oil",
     "recordId": "recb78n26Q6STb00X",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "pollock-oil",
     "ingredientTerm": "Pollock Oil",
@@ -4660,11 +4404,7 @@ export const ING_ANIM ={
     "canonical": "porcine-fat",
     "recordId": "recpGI7Rz3uAzUjdk",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "porcine-fat",
     "ingredientTerm": "Porcine Fat",
@@ -4728,11 +4468,7 @@ export const ING_ANIM ={
     "canonical": "porcine-gelatin",
     "recordId": "recUiUCR2842FKp0A",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "porcine-gelatin",
     "ingredientTerm": "Porcine Gelatin",
@@ -4796,11 +4532,7 @@ export const ING_ANIM ={
     "canonical": "porcine-meal",
     "recordId": "recejcJjllY5qYxqO",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "porcine-meal",
     "ingredientTerm": "Porcine Meal ",
@@ -4864,11 +4596,7 @@ export const ING_ANIM ={
     "canonical": "porcine-plasma",
     "recordId": "recXcnFBVZeeNcE9F",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "porcine-plasma",
     "ingredientTerm": "Porcine Plasma",
@@ -4941,11 +4669,7 @@ export const ING_ANIM ={
     "canonical": "porcine-protein",
     "recordId": "recrNB58VVfgc6L27",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "porcine-protein",
     "ingredientTerm": "Porcine Protein",
@@ -5009,11 +4733,7 @@ export const ING_ANIM ={
     "canonical": "pork",
     "recordId": "recgPK8eFVpPh80rE",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "pork",
     "ingredientTerm": "Pork",
@@ -5077,11 +4797,7 @@ export const ING_ANIM ={
     "canonical": "pork-fat",
     "recordId": "recpTA17YbhdFObgf",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "pork-fat",
     "ingredientTerm": "Pork Fat",
@@ -5145,11 +4861,7 @@ export const ING_ANIM ={
     "canonical": "pork-meal",
     "recordId": "recffVZxGjQCH0nsG",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "pork-meal",
     "ingredientTerm": "Pork Meal",
@@ -5242,11 +4954,7 @@ export const ING_ANIM ={
     "canonical": "poultry",
     "recordId": "rec5vIhHI1HJplmtN",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry",
     "ingredientTerm": "Poultry",
@@ -5310,11 +5018,7 @@ export const ING_ANIM ={
     "canonical": "poultry-by-product",
     "recordId": "reccki7VBE3ZMYrTC",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry-by-product",
     "ingredientTerm": "Poultry by Product",
@@ -5388,11 +5092,7 @@ export const ING_ANIM ={
     "canonical": "poultry-by-product-meal",
     "recordId": "recSGlOPaIjTpd7TZ",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry-by-product-meal",
     "ingredientTerm": "Poultry by Product Meal",
@@ -5456,11 +5156,7 @@ export const ING_ANIM ={
     "canonical": "poultry-by-product",
     "recordId": "rec3rfoLHx04M1LGj",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry-by-product",
     "ingredientTerm": "Poultry By-Product",
@@ -5524,11 +5220,7 @@ export const ING_ANIM ={
     "canonical": "poultry-by-product-meal",
     "recordId": "recR9j3rzuhmQhDuj",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry-by-product-meal",
     "ingredientTerm": "Poultry By-Product Meal",
@@ -5607,11 +5299,7 @@ export const ING_ANIM ={
     "canonical": "poultry-parts",
     "recordId": "recMkfLCzGs2QElps",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "poultry-parts",
     "ingredientTerm": "Poultry Parts",
@@ -5675,11 +5363,7 @@ export const ING_ANIM ={
     "canonical": "rabbit",
     "recordId": "recVLew2b5ENOF1iY",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "rabbit",
     "ingredientTerm": "Rabbit",
@@ -5743,11 +5427,7 @@ export const ING_ANIM ={
     "canonical": "salmon",
     "recordId": "recl5jep8PXXthzVq",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "salmon",
     "ingredientTerm": "Salmon",
@@ -5811,11 +5491,7 @@ export const ING_ANIM ={
     "canonical": "salmon-meal",
     "recordId": "reco3Bjr59nlLhlHB",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "salmon-meal",
     "ingredientTerm": "Salmon Meal",
@@ -5882,11 +5558,7 @@ export const ING_ANIM ={
     "canonical": "salmon-oil",
     "recordId": "reccvsggDI4Wowc0W",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selTnhIqXTFDnrqbF",
-      "name": "Fish Oil",
-      "color": "greenLight2"
-    },
+    "data-type": "Fish Oil",
     "recordStatus": "",
     "calcSlug": "salmon-oil",
     "ingredientTerm": "Salmon Oil",
@@ -5974,11 +5646,7 @@ export const ING_ANIM ={
     "canonical": "sardine",
     "recordId": "recdpQUaMuBTZcsMT",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "sardine",
     "ingredientTerm": "Sardine",
@@ -6042,11 +5710,7 @@ export const ING_ANIM ={
     "canonical": "sardine-meal",
     "recordId": "recJV6cO34wA6INDn",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "sardine-meal",
     "ingredientTerm": "Sardine Meal",
@@ -6110,11 +5774,7 @@ export const ING_ANIM ={
     "canonical": "trout",
     "recordId": "recpg7Qn2oUJ36uoN",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "trout",
     "ingredientTerm": "Trout",
@@ -6178,11 +5838,7 @@ export const ING_ANIM ={
     "canonical": "trout-meal",
     "recordId": "recrClAHUzaLY3ETC",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "trout-meal",
     "ingredientTerm": "Trout Meal",
@@ -6246,11 +5902,7 @@ export const ING_ANIM ={
     "canonical": "turkey",
     "recordId": "recT3XV0zNzqUngGH",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "turkey",
     "ingredientTerm": "Turkey",
@@ -6314,11 +5966,7 @@ export const ING_ANIM ={
     "canonical": "turkey-meal",
     "recordId": "reczvwsqcIM8NZA1U",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selxvu88fAt6baP6O",
-      "name": "Poultry",
-      "color": "tealLight2"
-    },
+    "data-type": "Poultry",
     "recordStatus": "",
     "calcSlug": "turkey-meal",
     "ingredientTerm": "Turkey Meal",
@@ -6382,11 +6030,7 @@ export const ING_ANIM ={
     "canonical": "venison",
     "recordId": "recGCjgS7HlBfEBfL",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "venison",
     "ingredientTerm": "Venison",
@@ -6450,11 +6094,7 @@ export const ING_ANIM ={
     "canonical": "venison-meal",
     "recordId": "recwaT0Y6eYy9dX7S",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selAIenwFQqeU6SaM",
-      "name": "Meat",
-      "color": "cyanLight2"
-    },
+    "data-type": "Meat",
     "recordStatus": "",
     "calcSlug": "venison-meal",
     "ingredientTerm": "Venison Meal",
@@ -6518,11 +6158,7 @@ export const ING_ANIM ={
     "canonical": "whitefish",
     "recordId": "rec50ID8hOMj0uppm",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "whitefish",
     "ingredientTerm": "Whitefish",
@@ -6586,11 +6222,7 @@ export const ING_ANIM ={
     "canonical": "whitefish-meal",
     "recordId": "recVtnXJV8GxPdJ3U",
     "recordType": "Animal",
-    "data-type": {
-      "id": "selcyNfSSJ2gSSTIt",
-      "name": "Fish",
-      "color": "blueLight2"
-    },
+    "data-type": "Fish",
     "recordStatus": "",
     "calcSlug": "whitefish-meal",
     "ingredientTerm": "Whitefish Meal",
