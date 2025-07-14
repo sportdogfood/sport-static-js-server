@@ -118,6 +118,7 @@ function joinWithAnd(arr) {
 }
 
 // --- SECTION 1: Diet & Key Specs ---
+// --- SECTION 1: Diet & Key Specs ---
 function paintSection1(mainRow, sdfRow) {
   // Section Header/Title
   var headerEl = document.querySelector('[data-var="section1-header"]');
@@ -133,7 +134,7 @@ function paintSection1(mainRow, sdfRow) {
   if (madlibEl) madlibEl.textContent =
     `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
 
-  // Brand 1 (main/competitor)
+  // --- Brand 1 (main/competitor) ---
   var el;
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -141,43 +142,51 @@ function paintSection1(mainRow, sdfRow) {
   if (el) el.textContent = mainRow["data-brand"] || "";
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
-
-document.querySelector('[data-var="brand-1-diet"]')?.textContent = mainRow["data-diet"] || "";
-
-  if (el) el.textContent = mainRow["data-grain"] || "";
+  el = document.querySelector('[data-var="brand-1-firsting"]');
+  if (el) el.textContent = mainRow["ing-first"] || "";
+  el = document.querySelector('[data-var="brand-1-seconding"]');
+  if (el) el.textContent = mainRow["ing-second"] || "";
+  el = document.querySelector('[data-var="brand-1-diet"]');
+  // Show "Grain" or "Grain-Free" or whatever is in data-diet, fallback to data-grain
+  if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
   el = document.querySelector('[data-var="brand-1-previewimg"]');
   if (el) el.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
-  paintStatusIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintStatusIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintStatusIcon('[data-var="brand-1-upgradedmin"]',  mainRow.hasUpgradedMinerals);
 
-  // Sport Dog Food (SDF)
+  paintSvgIcon('[data-var="brand-1-legumesfree"]', mainRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-upgradedmin"]', !!mainRow.hasUpgradedMinerals);
+
+  // --- Sport Dog Food (SDF) ---
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-brand"]');
   if (el) el.textContent = "Sport Dog Food";
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
-
-document.querySelector('[data-var="sport-1-diet"]')?.textContent = sdfRow["data-diet"] || "";
-
+  el = document.querySelector('[data-var="sport-1-firsting"]');
+  if (el) el.textContent = sdfRow["ing-first"] || "";
+  el = document.querySelector('[data-var="sport-1-seconding"]');
+  if (el) el.textContent = sdfRow["ing-second"] || "";
+  el = document.querySelector('[data-var="sport-1-diet"]');
+  if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
   el = document.querySelector('[data-var="sport-1-previewimg"]');
   if (el) el.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
-  paintStatusIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintStatusIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintStatusIcon('[data-var="sport-1-upgradedmin"]',  sdfRow.hasUpgradedMinerals);
+
+  paintSvgIcon('[data-var="sport-1-legumesfree"]', sdfRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-upgradedmin"]', !!sdfRow.hasUpgradedMinerals);
 }
 
-
-
-// Utility to paint a check/cross icon (for icon containers)
-function paintStatusIcon(selector, isPositive) {
+// --- Utility: Paint SVG icon for check/X status ---
+function paintSvgIcon(selector, isPositive) {
   const el = document.querySelector(selector);
   if (!el) return;
-  el.innerHTML = isPositive
-    ? `<div class="pwr-icon-status pwr-icon-green"></div>`
-    : `<div class="pwr-icon-status pwr-icon-red"></div>`;
+  el.innerHTML =
+    isPositive
+      ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
+      : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
 }
+
 
 
 // --- SECTION 2: Macronutrient Breakdown ---
