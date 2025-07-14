@@ -121,8 +121,8 @@ function joinWithAnd(arr) {
 // Update only the content of pre-existing elements in your Webflow HTML
 function paintSection1(mainRow, sdfRow) {
   // Section Header/Title
-  document.querySelector('[data-var="section1-header"]')?.textContent =
-    "Diet & Key Specs";
+ // document.querySelector('[data-var="section1-header"]')?.textContent =
+  //  "Diet & Key Specs";
   // Section Subtitle
   document.querySelector('[data-var="section1-subtitle"]')?.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
