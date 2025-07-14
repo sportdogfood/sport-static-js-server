@@ -235,33 +235,33 @@ function section2Macros(mainRow, sdfRow) {
   `;
 }
 
+
 // ------- SECTION 3: Ingredient List & Attribute Table -------
 
-// --- Helper: Consumer-facing tag for recordType ---
-// Helper: Get consumer-facing ingredient group for each ingredient
-function getConsumerGroup(ing) {
-  const type = (ing["data-type"] || "").toLowerCase();
-  if (["fish", "meat", "poultry"].includes(type)) return "Protein";
-  if (["legumes", "botanical", "fruit", "grain", "roots", "seed oil", "vegetable", "fiber", "seeds", "herb", "fish oil"].includes(type)) return "Plants";
-  if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(type)) return "Supplemental";
+// Map granular data-type to consumer-facing group label
+function getConsumerTypeTag(type) {
+  if (!type) return "";
+  const t = type.toLowerCase();
+  if (["fish", "meat", "poultry"].includes(t)) return "Protein";
+  if (["legumes", "botanical", "fruit", "grain", "roots", "seed oil", "vegetable", "fiber", "seeds", "herb", "fish oil"].includes(t)) return "Plants";
+  if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(t)) return "Supplemental";
   return "Other";
 }
 
-// Get counts per category for a formula
+// Count ingredients by group (for your "data-type" values)
 function getIngredientCategoryCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
   const counts = { Protein: 0, Plants: 0, Supplemental: 0, Other: 0, total: ings.length };
   ings.forEach(ing => {
-    const group = getConsumerGroup(ing);
+    const group = getConsumerTypeTag(ing["data-type"]);
     if (counts[group] !== undefined) counts[group]++;
     else counts.Other++;
   });
   return counts;
 }
 
-
-// --- Build attribute count table for both sides ---
+// Build ingredient count table (side-by-side, by group)
 function buildIngredientCategoryTable(mainRow, sdfRow) {
   const mainCounts = getIngredientCategoryCounts(mainRow);
   const sdfCounts  = getIngredientCategoryCounts(sdfRow);
@@ -279,14 +279,13 @@ function buildIngredientCategoryTable(mainRow, sdfRow) {
         <tr><td>Protein</td>             <td>${mainCounts.Protein}</td><td>${sdfCounts.Protein}</td></tr>
         <tr><td>Plants</td>              <td>${mainCounts.Plants}</td><td>${sdfCounts.Plants}</td></tr>
         <tr><td>Supplemental</td>        <td>${mainCounts.Supplemental}</td><td>${sdfCounts.Supplemental}</td></tr>
-        ${mainCounts.Other || sdfCounts.Other ? `<tr><td>Other</td><td>${mainCounts.Other}</td><td>${sdfCounts.Other}</td></tr>` : ""}
+        ${(mainCounts.Other || sdfCounts.Other) ? `<tr><td>Other</td><td>${mainCounts.Other}</td><td>${sdfCounts.Other}</td></tr>` : ""}
       </tbody>
     </table>
   `;
 }
 
-
-// --- Madlib summary for ingredient evaluation ---
+// Madlib for ingredient summary
 function buildIngredientMadlib(row, counts) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -310,7 +309,7 @@ function buildIngredientMadlib(row, counts) {
   return madlib;
 }
 
-// --- Render list of ingredients as divs/chips ---
+// Render ingredient divs (all tags included, no span)
 function renderIngListDivs(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -319,10 +318,13 @@ function renderIngListDivs(row) {
     <div class="ci-ings-list">
       ${ings.map(ing => {
         let tagDivs = [];
-        // Always include type tag first
-        if (ing.recordType) {
-          tagDivs.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${ing.recordType.toLowerCase()}">${getConsumerTypeTag(ing.recordType)}</div>`);
+        // New consumer group tag (from data-type)
+        if (ing["data-type"]) {
+          tagDivs.push(
+            `<div class="ci-ing-tag ci-tag-default ci-tag-${getConsumerTypeTag(ing["data-type"]).toLowerCase()}">${getConsumerTypeTag(ing["data-type"])}</div>`
+          );
         }
+        // Old/classic tags
         if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry">poultry</div>`);
         if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy">allergy</div>`);
         if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious">contentious</div>`);
@@ -336,9 +338,7 @@ function renderIngListDivs(row) {
         return `
           <div class="ci-ing-wrapper">
             <div class="ci-ing-displayas">${ing.displayAs || ing.Name}</div>
-            <div class="ci-ing-tag-wrapper">
-              ${tagDivs.join("")}
-            </div>
+            <div class="ci-ing-tag-wrapper">${tagDivs.join("")}</div>
           </div>
         `;
       }).join('')}
@@ -348,8 +348,8 @@ function renderIngListDivs(row) {
 
 // --- SECTION 3 MAIN RENDER FUNCTION ---
 function section3Ingredients(mainRow, sdfRow) {
-  const mainCounts = getIngredientCounts(mainRow);
-  const sdfCounts  = getIngredientCounts(sdfRow);
+  const mainCounts = getIngredientCategoryCounts(mainRow);
+  const sdfCounts  = getIngredientCategoryCounts(sdfRow);
 
   return `
     <section class="ci-section" id="ingredients">
@@ -360,7 +360,7 @@ function section3Ingredients(mainRow, sdfRow) {
         </div>
       </div>
       <div class="ci-sidebyside-wrapper">
-        ${buildIngredientTable(mainRow, sdfRow)}
+        ${buildIngredientCategoryTable(mainRow, sdfRow)}
       </div>
       <div class="ci-section-madlib-wrapper">
         <div class="ci-section-madlib">
@@ -380,7 +380,6 @@ function section3Ingredients(mainRow, sdfRow) {
     </section>
   `;
 }
-
 
 
 
