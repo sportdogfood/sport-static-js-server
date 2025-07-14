@@ -299,29 +299,26 @@ function getIngredientCategoryCounts(row) {
   return counts;
 }
 
-// Build ingredient count table (side-by-side, by group)
-function buildIngredientCategoryTable(mainRow, sdfRow) {
-  const mainCounts = getIngredientCategoryCounts(mainRow);
-  const sdfCounts  = getIngredientCategoryCounts(sdfRow);
+function buildCountsTable(row, label) {
+  const counts = getIngredientCategoryCounts(row);
   return `
     <table class="ci-ingredient-attr-table">
       <thead>
         <tr>
-          <th>&nbsp;</th>
-          <th>${mainRow["data-brand"]} ${mainRow["data-one"]}</th>
-          <th>Sport Dog Food ${sdfRow["data-one"]}</th>
+          <th colspan="2">${label}</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>Total ingredients</td>   <td>${mainCounts.total}</td><td>${sdfCounts.total}</td></tr>
-        <tr><td>Protein</td>             <td>${mainCounts.Protein}</td><td>${sdfCounts.Protein}</td></tr>
-        <tr><td>Plants</td>              <td>${mainCounts.Plants}</td><td>${sdfCounts.Plants}</td></tr>
-        <tr><td>Supplemental</td>        <td>${mainCounts.Supplemental}</td><td>${sdfCounts.Supplemental}</td></tr>
-        ${(mainCounts.Other || sdfCounts.Other) ? `<tr><td>Other</td><td>${mainCounts.Other}</td><td>${sdfCounts.Other}</td></tr>` : ""}
+        <tr><td>Total ingredients</td> <td>${counts.total}</td></tr>
+        <tr><td>Protein</td>          <td>${counts.Protein}</td></tr>
+        <tr><td>Plants</td>           <td>${counts.Plants}</td></tr>
+        <tr><td>Supplemental</td>     <td>${counts.Supplemental}</td></tr>
+        ${counts.Other ? `<tr><td>Other</td><td>${counts.Other}</td></tr>` : ""}
       </tbody>
     </table>
   `;
 }
+
 
 // Madlib for ingredient summary
 function buildIngredientMadlib(row) {
@@ -424,9 +421,12 @@ function paintSection3(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
 
-  // Ingredient counts table (side-by-side, single slot/table)
-  el = document.querySelector('[data-var="section3-counts-table"]');
-  if (el) el.innerHTML = buildIngredientCategoryTable(mainRow, sdfRow);
+// Counts (one per brand)
+el = document.querySelector('[data-var="brand-1-sec3-counts"]');
+if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
+
+el = document.querySelector('[data-var="sport-1-sec3-counts"]');
+if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
 
   // Ingredient lists (chip tags) for each side
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
@@ -444,6 +444,20 @@ function paintSection3(mainRow, sdfRow) {
 
 
 
+import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
+
+// Helper to safely init Typed.js for a given data-var
+function runTypedForMadlib(dataVar) {
+  const el = document.querySelector(`[data-var="${dataVar}"]`);
+  if (el && el.getAttribute('data-text')) {
+    el.textContent = '';
+    new Typed(el, {
+      strings: [el.getAttribute('data-text')],
+      typeSpeed: 28,
+      showCursor: false,
+    });
+  }
+}
 
 // --- MAIN RENDER ---
 export function renderComparePage() {
@@ -465,12 +479,16 @@ export function renderComparePage() {
     <div id="section-1"></div>
     <div id="section-2"></div>
     <div id="section-3"></div>
- 
   `;
 
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
   paintSection3(mainRow, sdfRow);
-  // Optionally, keep section 4 as standalone:
-  // document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
+
+  // After all paintSectionX calls, run Typed.js for each madlib
+  runTypedForMadlib('section1-madlib');
+  runTypedForMadlib('section2-madlib');
+  runTypedForMadlib('section3-madlib');
+  runTypedForMadlib('section3-contentious-madlib'); // if used in Section 3
 }
+
