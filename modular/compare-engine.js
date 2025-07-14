@@ -142,7 +142,8 @@ function paintSection1(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
 
-  el = document.querySelector('[data-var="brand-1-diet"]');
+document.querySelector('[data-var="brand-1-diet"]')?.textContent = mainRow["data-diet"] || "";
+
   if (el) el.textContent = mainRow["data-grain"] || "";
   el = document.querySelector('[data-var="brand-1-previewimg"]');
   if (el) el.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
@@ -158,8 +159,8 @@ function paintSection1(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
 
-  el = document.querySelector('[data-var="sport-1-diet"]');
-  if (el) el.textContent = sdfRow["data-grain"] || "";
+document.querySelector('[data-var="sport-1-diet"]')?.textContent = sdfRow["data-diet"] || "";
+
   el = document.querySelector('[data-var="sport-1-previewimg"]');
   if (el) el.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
   paintStatusIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
