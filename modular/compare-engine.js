@@ -132,7 +132,7 @@ function paintSection1(mainRow, sdfRow) {
   // Section Madlib
   var madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) madlibEl.textContent =
-    `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
+    `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"] || "grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
 
   // --- Brand 1 (main/competitor) ---
   var el;
@@ -147,19 +147,18 @@ function paintSection1(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-seconding"]');
   if (el) el.textContent = mainRow["ing-second"] || "";
   el = document.querySelector('[data-var="brand-1-diet"]');
-  // Show "Grain" or "Grain-Free" or whatever is in data-diet, fallback to data-grain
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
+
   el = document.querySelector('[data-var="brand-1-previewimg"]');
-console.log("Setting preview img:", mainRow.previewengine);  // DEBUG
-if (el && mainRow.previewengine) {
-  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-  el.style.setProperty("background-size", "cover");
-  el.style.setProperty("background-position", "center");
+  // Use previewengine
+  if (el && mainRow.previewengine) {
+    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
 
-
-
-  paintSvgIcon('[data-var="brand-1-legumesfree"]', mainRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-legumesfree"]', !!mainRow["data-legumes"] && mainRow["data-legumes"].toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-poultryfree"]', !!mainRow["data-poultry"] && mainRow["data-poultry"].toLowerCase().includes("free"));
   paintSvgIcon('[data-var="brand-1-upgradedmin"]', !!mainRow.hasUpgradedMinerals);
 
   // --- Sport Dog Food (SDF) ---
@@ -175,11 +174,17 @@ if (el && mainRow.previewengine) {
   if (el) el.textContent = sdfRow["ing-second"] || "";
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
-  el = document.querySelector('[data-var="sport-1-previewimg"]');
-  if (el) el.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
 
-  paintSvgIcon('[data-var="sport-1-legumesfree"]', sdfRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  el = document.querySelector('[data-var="sport-1-previewimg"]');
+  // Use previewengine for SDF also if you have it, otherwise fallback to "" (blank)
+  if (el && sdfRow.previewengine) {
+    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
+
+  paintSvgIcon('[data-var="sport-1-legumesfree"]', !!sdfRow["data-legumes"] && sdfRow["data-legumes"].toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-poultryfree"]', !!sdfRow["data-poultry"] && sdfRow["data-poultry"].toLowerCase().includes("free"));
   paintSvgIcon('[data-var="sport-1-upgradedmin"]', !!sdfRow.hasUpgradedMinerals);
 }
 
