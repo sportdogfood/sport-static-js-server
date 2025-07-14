@@ -274,7 +274,6 @@ function runTypedMadlibForSection2() {
 // paintSection2(mainRow, sdfRow);
 // runTypedMadlibForSection2();
 
-
 // ------- SECTION 3: Ingredient List & Attribute Table -------
 
 // Map granular data-type to consumer-facing group label
@@ -385,44 +384,7 @@ function renderIngListDivs(row) {
   `;
 }
 
-// --- SECTION 3 MAIN RENDER FUNCTION ---
-function section3Ingredients(mainRow, sdfRow) {
-  const mainCounts = getIngredientCategoryCounts(mainRow);
-  const sdfCounts  = getIngredientCategoryCounts(sdfRow);
-
-  return `
-    <section class="ci-section" id="ingredients">
-      <div class="ci-section-title-wrapper">
-        <h2 class="ci-section-header ci-section-title">Ingredient List</h2>
-        <div class="ci-section-subtitle">
-          <p class="subtitle-text">See what’s inside (hover tags for info)</p>
-        </div>
-      </div>
-      <div class="ci-sidebyside-wrapper">
-        ${buildIngredientCategoryTable(mainRow, sdfRow)}
-      </div>
-      <div class="ci-section-madlib-wrapper">
-        <div class="ci-section-madlib">
-          <p class="madlib-p">${buildIngredientMadlib(mainRow, mainCounts)}</p>
-        </div>
-      </div>
-      <div class="ci-ings-container">
-        <div class="ci-ings-wrapper">
-          <div class="ci-ings-label"><b>${mainRow["data-brand"]} ${mainRow["data-one"]} ingredients (${mainCounts.total}):</b></div>
-          ${renderIngListDivs(mainRow)}
-        </div>
-        <div class="ci-ings-wrapper">
-          <div class="ci-ings-label"><b>Sport Dog Food ${sdfRow["data-one"]} ingredients (${sdfCounts.total}):</b></div>
-          ${renderIngListDivs(sdfRow)}
-        </div>
-      </div>
-    </section>
-  `;
-}
-
-
-
-// --- SECTION 4: Contentious Ingredients ---
+// --- Contentious madlib logic for Section 3 ---
 function getContentiousIngredients(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -441,7 +403,50 @@ function buildSection4Madlib(mainRow) {
   return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
 }
 
+// --- SECTION 3 MAIN PAINT FUNCTION ---
+// (This version assumes you have data-vars in your HTML to receive each field!)
+function paintSection3(mainRow, sdfRow) {
+  // Section header, subtitle
+  var el;
+  el = document.querySelector('[data-var="section3-header"]');
+  if (el) el.textContent = "Ingredient List & Tags";
+  el = document.querySelector('[data-var="section3-subtitle"]');
+  if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
+  // Madlib summary (type with Typed.js if needed)
+  el = document.querySelector('[data-var="section3-madlib"]');
+  if (el) {
+    const counts = getIngredientCategoryCounts(mainRow);
+    el.setAttribute('data-text', buildIngredientMadlib(mainRow, counts));
+    el.textContent = '';
+  }
+
+  // Brand names
+  el = document.querySelector('[data-var="brand-1-sec3-name"]');
+  if (el) el.textContent = mainRow["data-one"] || "";
+  el = document.querySelector('[data-var="sport-1-sec3-name"]');
+  if (el) el.textContent = sdfRow["data-one"] || "";
+
+  // Inject the counts table (side-by-side)
+  el = document.querySelector('[data-var="section3-counts-table"]');
+  if (el) el.innerHTML = buildIngredientCategoryTable(mainRow, sdfRow);
+
+  // Inject ingredient lists for both brands (this block should exist in markup)
+  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(mainRow);
+
+  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(sdfRow);
+
+  // Optionally: also show the "contentious" madlib from section 4 here:
+  el = document.querySelector('[data-var="section3-contentious-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildSection4Madlib(mainRow));
+    el.textContent = '';
+  }
+}
+
+// --- SECTION 4 remains unchanged if still needed as a standalone section ---
 function section4Contentious(mainRow) {
   return `
     <section class="ci-section" id="contentious">
@@ -460,8 +465,7 @@ function section4Contentious(mainRow) {
   `;
 }
 
-
-// --- MAIN RENDER --- 
+// --- MAIN RENDER ---
 export function renderComparePage() {
   // Grab which CI item is being viewed
   const ciFive  = document.getElementById('item-faq-five')?.value;
@@ -474,7 +478,7 @@ export function renderComparePage() {
   const sdfFive = getSdfFormula(mainRow);
   const sdfRow  = getCiRow(sdfFive);
 
-  // Drop in empty containers for each section (this is only done once per load)
+  // Drop in empty containers for each section (once per load)
   const compareRoot = document.getElementById('compare-root');
   if (!compareRoot) return;
   compareRoot.innerHTML = `
@@ -484,14 +488,9 @@ export function renderComparePage() {
     <div id="section-4"></div>
   `;
 
-  // --- NEW: Paint Section 1 via slot/vars, not HTML injection
- paintSection1(mainRow, sdfRow);  // fills in all [data-var="..."] for section 1
-paintSection2(mainRow, sdfRow);  // fills in all [data-var="..."] for section 2
-// etc.
-
-
-  // --- OLD: Paint Sections 2/3/4 via innerHTML
-
-  document.getElementById('section-3').innerHTML = section3Ingredients(mainRow, sdfRow);
-  document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
+  paintSection1(mainRow, sdfRow);
+  paintSection2(mainRow, sdfRow);
+  paintSection3(mainRow, sdfRow);
+  // Optionally, keep section 4 as standalone:
+  // document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
 }
