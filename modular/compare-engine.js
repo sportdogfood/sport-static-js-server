@@ -118,43 +118,61 @@ function joinWithAnd(arr) {
 }
 
 // --- SECTION 1: Diet & Key Specs ---
-// Update only the content of pre-existing elements in your Webflow HTML
 function paintSection1(mainRow, sdfRow) {
   // Section Header/Title
- // document.querySelector('[data-var="section1-header"]')?.textContent =
-  //  "Diet & Key Specs";
+  var headerEl = document.querySelector('[data-var="section1-header"]');
+  if (headerEl) headerEl.textContent = "Diet & Key Specs";
+
   // Section Subtitle
-  document.querySelector('[data-var="section1-subtitle"]')?.textContent =
+  var subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
+  if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+
   // Section Madlib
-  document.querySelector('[data-var="section1-madlib"]')?.textContent =
+  var madlibEl = document.querySelector('[data-var="section1-madlib"]');
+  if (madlibEl) madlibEl.textContent =
     `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
 
   // Brand 1 (main/competitor)
-  document.querySelector('[data-var="brand-1-name"]')?.textContent = mainRow["data-one"] || "";
-  document.querySelector('[data-var="brand-1-brand"]')?.textContent = mainRow["data-brand"] || "";
-  document.querySelector('[data-var="brand-1-flavor"]')?.textContent = mainRow["specs_primary_flavor"] || "";
-  document.querySelector('[data-var="brand-1-firsting"]')?.textContent = mainRow["ing-first"] || "";
-  document.querySelector('[data-var="brand-1-seconding"]')?.textContent = mainRow["ing-second"] || "";
-  document.querySelector('[data-var="brand-1-diet"]')?.textContent = mainRow["data-grain"] || "";
-  // Optional: preview image
-  document.querySelector('[data-var="brand-1-previewimg"]')?.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
-  // Status icons
+  var el;
+  el = document.querySelector('[data-var="brand-1-name"]');
+  if (el) el.textContent = mainRow["data-one"] || "";
+  el = document.querySelector('[data-var="brand-1-brand"]');
+  if (el) el.textContent = mainRow["data-brand"] || "";
+  el = document.querySelector('[data-var="brand-1-flavor"]');
+  if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
+  el = document.querySelector('[data-var="brand-1-firsting"]');
+  if (el) el.textContent = mainRow["ing-first"] || "";
+  el = document.querySelector('[data-var="brand-1-seconding"]');
+  if (el) el.textContent = mainRow["ing-second"] || "";
+  el = document.querySelector('[data-var="brand-1-diet"]');
+  if (el) el.textContent = mainRow["data-grain"] || "";
+  el = document.querySelector('[data-var="brand-1-previewimg"]');
+  if (el) el.style.setProperty("background-image", `url(${mainRow.previewImg || ""})`);
   paintStatusIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
   paintStatusIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
   paintStatusIcon('[data-var="brand-1-upgradedmin"]',  mainRow.hasUpgradedMinerals);
 
   // Sport Dog Food (SDF)
-  document.querySelector('[data-var="sport-1-name"]')?.textContent = sdfRow["data-one"] || "";
-  document.querySelector('[data-var="sport-1-brand"]')?.textContent = "Sport Dog Food";
-  document.querySelector('[data-var="sport-1-flavor"]')?.textContent = sdfRow["specs_primary_flavor"] || "";
-  document.querySelector('[data-var="sport-1-firsting"]')?.textContent = sdfRow["ing-first"] || "";
-  document.querySelector('[data-var="sport-1-seconding"]')?.textContent = sdfRow["ing-second"] || "";
-  document.querySelector('[data-var="sport-1-diet"]')?.textContent = sdfRow["data-grain"] || "";
-  document.querySelector('[data-var="sport-1-previewimg"]')?.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
+  el = document.querySelector('[data-var="sport-1-name"]');
+  if (el) el.textContent = sdfRow["data-one"] || "";
+  el = document.querySelector('[data-var="sport-1-brand"]');
+  if (el) el.textContent = "Sport Dog Food";
+  el = document.querySelector('[data-var="sport-1-flavor"]');
+  if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
+  el = document.querySelector('[data-var="sport-1-firsting"]');
+  if (el) el.textContent = sdfRow["ing-first"] || "";
+  el = document.querySelector('[data-var="sport-1-seconding"]');
+  if (el) el.textContent = sdfRow["ing-second"] || "";
+  el = document.querySelector('[data-var="sport-1-diet"]');
+  if (el) el.textContent = sdfRow["data-grain"] || "";
+  el = document.querySelector('[data-var="sport-1-previewimg"]');
+  if (el) el.style.setProperty("background-image", `url(${sdfRow.previewImg || ""})`);
   paintStatusIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
   paintStatusIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
   paintStatusIcon('[data-var="sport-1-upgradedmin"]',  sdfRow.hasUpgradedMinerals);
+}
+
 }
 
 // Utility to paint a check/cross icon (for icon containers)
