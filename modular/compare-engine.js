@@ -130,9 +130,13 @@ function paintSection1(mainRow, sdfRow) {
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
   // Section Madlib
-  var madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) madlibEl.textContent =
-    `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"] || "grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`;
+// In your paintSection1...
+var madlibEl = document.querySelector('[data-var="section1-madlib"]');
+if (madlibEl) {
+  madlibEl.setAttribute('data-text', `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`);
+  madlibEl.textContent = ''; // Hide real text until Typed.js triggers
+}
+
 
   // --- Brand 1 (main/competitor) ---
   var el;
