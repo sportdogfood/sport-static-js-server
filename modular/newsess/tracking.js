@@ -1,9 +1,9 @@
 // tracking.js
 
-import sessionMakeCookies from './sessionMakeCookies.js';
+//import sessionMakeCookies from './sessionMakeCookies.js';
 
-function setTrackingCookie() {
-    sessionMakeCookies.setCustomCookie({
+//function setTrackingCookie() {
+   // sessionMakeCookies.setCustomCookie({
         name: 'tracking_id',
         value: generateUniqueId(),
         days: 365,
