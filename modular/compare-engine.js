@@ -129,17 +129,17 @@ function paintSection1(mainRow, sdfRow) {
   if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
-  // Section Madlib with Typed.js setup
+  // Section Madlib
   var madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text',
       `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`
     );
     madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed'); // Allow re-typing if needed (dev/test)
+    madlibEl.removeAttribute('data-typed'); // reset so typing works on re-render
   }
 
-  // --- Brand 1 (main/competitor) ---
+  // Brand 1 (main/competitor)
   var el;
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -159,11 +159,11 @@ function paintSection1(mainRow, sdfRow) {
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
-  paintSvgIcon('[data-var="brand-1-legumesfree"]', mainRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-upgradedmin"]', !!mainRow.hasUpgradedMinerals);
+  paintSvgIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-upgradedmin"]',  !!mainRow.hasUpgradedMinerals);
 
-  // --- Sport Dog Food (SDF) ---
+  // Sport Dog Food (SDF)
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-brand"]');
@@ -182,54 +182,12 @@ function paintSection1(mainRow, sdfRow) {
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
-  paintSvgIcon('[data-var="sport-1-legumesfree"]', sdfRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-upgradedmin"]', !!sdfRow.hasUpgradedMinerals);
+  paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-upgradedmin"]',  !!sdfRow.hasUpgradedMinerals);
 }
 
-// --- Utility: Paint SVG icon for check/X status ---
-function paintSvgIcon(selector, isPositive) {
-  const el = document.querySelector(selector);
-  if (!el) return;
-  el.innerHTML =
-    isPositive
-      ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
-      : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
-}
-
-// --- Typed.js animation on scroll into view (run once) ---
-function typeMadlibOnce(el) {
-  if (!el || el.getAttribute('data-typed') === 'true') return;
-  const text = el.getAttribute('data-text');
-  if (!text) return;
-
-  new Typed(el, {
-    strings: [text],
-    typeSpeed: 24,
-    showCursor: false,
-    onComplete: () => {
-      el.setAttribute('data-typed', 'true');
-    }
-  });
-}
-
-function observeTypedMadlibs() {
-  const madlibEls = document.querySelectorAll('[data-var$="-madlib"]');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        typeMadlibOnce(entry.target);
-      }
-    });
-  }, { threshold: 0.5 });
-
-  madlibEls.forEach(el => observer.observe(el));
-}
-
-
-
-
-// --- SECTION 2: Macronutrient Breakdown & Energy ---
+// --- SECTION 2: Macronutrient Breakdown ---
 function paintSection2(mainRow, sdfRow) {
   // Section Header/Title
   var headerEl = document.querySelector('[data-var="section2-header"]');
@@ -238,14 +196,19 @@ function paintSection2(mainRow, sdfRow) {
   // Section Subtitle
   var subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
-    `Protein, fat, and calories per cup for each diet.`;
+    `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
   // Section Madlib
   var madlibEl = document.querySelector('[data-var="section2-madlib"]');
-  if (madlibEl) madlibEl.textContent =
-    `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"] || "?"}% protein, ${mainRow["ga_crude_fat_%"] || "?"}% fat, and ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} provides ${sdfRow["ga_crude_protein_%"] || "?"}% protein, ${sdfRow["ga_crude_fat_%"] || "?"}% fat, and ${sdfRow["ga_kcals_per_cup"] || "?"} kcals/cup.`;
+  if (madlibEl) {
+    madlibEl.setAttribute('data-text',
+      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"] || "?"}% protein, ${mainRow["ga_crude_fat_%"] || "?"}% fat, and ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is shown for comparison.`
+    );
+    madlibEl.textContent = '';
+    madlibEl.removeAttribute('data-typed');
+  }
 
-  // --- Brand 1 (main/competitor) ---
+  // Brand 1
   var el;
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -258,8 +221,8 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
-  // --- Sport 1 (Sport Dog Food) ---
-  el = document.querySelector('[data-var="sport-1-sec2-name"]');
+  // SDF
+  el = document.querySelector('[data-var="sport1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
   if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
@@ -271,6 +234,45 @@ function paintSection2(mainRow, sdfRow) {
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
 
+// --- Utility: Paint SVG icon for check/X status ---
+function paintSvgIcon(selector, isPositive) {
+  const el = document.querySelector(selector);
+  if (!el) return;
+  el.innerHTML =
+    isPositive
+      ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
+      : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
+}
+
+// --- Utility: Run Typed.js on a madlib element (only once) ---
+function typeMadlibOnce(el) {
+  if (!el || el.getAttribute('data-typed') === 'true') return;
+  const text = el.getAttribute('data-text');
+  if (!text) return;
+  el.textContent = "";
+  new Typed(el, {
+    strings: [text],
+    typeSpeed: 22,
+    showCursor: false,
+    onComplete: () => el.setAttribute('data-typed', 'true')
+  });
+}
+
+// --- Public hooks ---
+function runTypedMadlibForSection1() {
+  var el = document.querySelector('[data-var="section1-madlib"]');
+  if (el) typeMadlibOnce(el);
+}
+function runTypedMadlibForSection2() {
+  var el = document.querySelector('[data-var="section2-madlib"]');
+  if (el) typeMadlibOnce(el);
+}
+
+// --- Example usage after rendering each section ---
+// paintSection1(mainRow, sdfRow);
+// runTypedMadlibForSection1();
+// paintSection2(mainRow, sdfRow);
+// runTypedMadlibForSection2();
 
 
 // ------- SECTION 3: Ingredient List & Attribute Table -------
