@@ -455,9 +455,9 @@ export function renderComparePage() {
 
   // --- NEW: Paint Section 1 via slot/vars, not HTML injection
   paintSection1(mainRow, sdfRow);  // <-- Use your data-var method here
-  paintSection2(mainRow, sdfRow);  // <-- Use your data-var method here
-  // --- OLD: Paint Sections 2/3/4 via innerHTML
 
+  // --- OLD: Paint Sections 2/3/4 via innerHTML
+document.getElementById('section-2').innerHTML = section2Macros(mainRow, sdfRow);
   document.getElementById('section-3').innerHTML = section3Ingredients(mainRow, sdfRow);
   document.getElementById('section-4').innerHTML = section4Contentious(mainRow);
 }
