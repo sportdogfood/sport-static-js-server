@@ -450,28 +450,43 @@ function runTypedForMadlib(dataVar) {
   }
 }
 
+// --- MAIN RENDER ---
 export function renderComparePage() {
-  const ciFive  = document.getElementById('item-faq-five')?.value;
-  const ciType  = document.getElementById('item-faq-type')?.value;
-  if (!ciFive || !ciType) return;
-  const mainRow = getCiRow(ciFive);
-  if (!mainRow) return;
-  const sdfFive = getSdfFormula(mainRow);
-  const sdfRow  = getCiRow(sdfFive);
-  const compareRoot = document.getElementById('compare-root');
-  if (!compareRoot) return;
-  compareRoot.innerHTML = `
-    <div id="section-1"></div>
-    <div id="section-2"></div>
-    <div id="section-3"></div>
-  `;
+import { CI_DATA }   from './ci.js';
+import { ING_ANIM }  from './ingAnim.js';
+import { ING_PLANT } from './ingPlant.js';
+import { ING_SUPP }  from './ingSupp.js';
+
+import { paintSection1 } from './section1.js';
+import { paintSection2 } from './section2.js';
+import { paintSection3 } from './section3.js';
+import { paintSectionK } from './sectionK.js';
+
+export function renderComparePage() {
+  const mainFive = document.getElementById('item-faq-five')?.value?.trim();
+  const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
+  const sdfRow = CI_DATA.find(row =>
+    row['data-brand'] === 'Sport Dog Food' &&
+    row['isdefault']?.toLowerCase?.() === 'true'
+  );
+
+  if (!mainRow || !sdfRow) {
+    console.error('[CCI] Unable to find required rows', { mainFive, mainRow, sdfRow });
+    return;
+  }
+
+  window.CCI = {
+    mainRow,
+    sdfRow,
+    ING_ANIM,
+    ING_PLANT,
+    ING_SUPP
+  };
+
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
   paintSection3(mainRow, sdfRow);
-  runTypedForMadlib('section1-madlib');
-  runTypedForMadlib('section2-madlib');
-  runTypedForMadlib('section3-madlib');
-  runTypedForMadlib('section3-contentious-madlib');
-  runTypedForMadlib('section3-sport-madlib');
-  runTypedForMadlib('section3-sport-contentious-madlib');
+  paintSectionK(mainRow, sdfRow);
 }
+
+
