@@ -226,6 +226,44 @@ function paintSection1(mainRow, sdfRow) {
   paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
 }
+function buildSectionKMadlib(mainRow, sdfRows) {
+  // mainRow: CI formula row
+  // sdfRows: array of all 3 SDF formula rows, e.g. [cubRow, dockRow, herdingRow]
+  const mainBrand = mainRow["data-brand"] || "Brand";
+  const mainName  = mainRow["data-one"]   || "Product";
+  const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
+
+  // Find SDF min/max kcals/cup
+  const sdfKcals = sdfRows
+    .map(r => parseInt(r["ga_kcals_per_cup"], 10))
+    .filter(n => !isNaN(n));
+  const minKcal = Math.min(...sdfKcals);
+  const maxKcal = Math.max(...sdfKcals);
+
+  // Build main phrase
+  let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
+  if (mainKcal !== "?" && mainKcal < 410) {
+    kcalLine += " This is not particularly high if you are feeding a highly active dog.";
+  } else if (mainKcal !== "?" && mainKcal > 500) {
+    kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
+  }
+
+  const sdfLine = `Sport formulas range from ${minKcal} kcals to as high as ${maxKcal} kcals per cup.`;
+
+  return `${kcalLine} ${sdfLine}`;
+}
+
+// Example usage:
+const madlib = buildSectionKMadlib(mainRow, [cubRow, dockRow, herdingRow]);
+// Then paint to your madlib slot with Typed.js if desired:
+const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
+if (madlibEl) {
+  madlibEl.setAttribute('data-text', madlib);
+  madlibEl.textContent = '';
+  madlibEl.removeAttribute('data-typed');
+  // If using Typed.js:
+  // new Typed(madlibEl, { strings: [madlib], typeSpeed: 26, showCursor: false });
+}
 
 
 // --- SECTION 2: Macronutrient Breakdown ---
