@@ -468,9 +468,31 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
   };
 
   const sectionMap = [
-    { id: '#section-1', fn: () => { paintSection1(mainRow, sdfRow); runTypedForMadlib('section1-madlib'); } },
-    { id: '#section-2', fn: () => { paintSection2(mainRow, sdfRow); runTypedForMadlib('section2-madlib'); } },
-    { id: '#section-3', fn: () => { paintSection3(mainRow, sdfRow); runTypedForMadlib('section3-madlib'); } },
+    {
+      id: '#section-1',
+      fn: () => {
+        paintSection1(mainRow, sdfRow);
+        runTypedForMadlib('section1-madlib');
+      }
+    },
+    {
+      id: '#section-2',
+      fn: () => {
+        paintSection2(mainRow, sdfRow);
+        runTypedForMadlib('section2-madlib');
+      }
+    },
+    {
+      id: '#section-3',
+      fn: () => {
+        // 1) paint all of Section 3’s content
+        paintSection3(mainRow, sdfRow);
+        // 2) run Typed.js for each of its three madlibs
+        runTypedForMadlib('section3-madlib');
+        runTypedForMadlib('section3-sport-madlib');
+        runTypedForMadlib('section3-sport-contentious-madlib');
+      }
+    },
     {
       id: '#section-k',
       fn: () => {
@@ -502,6 +524,7 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
     observer.observe(target);
   });
 }
+
 
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
