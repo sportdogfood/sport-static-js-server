@@ -2,7 +2,7 @@ import { CI_DATA }   from './ci.js';
 import { ING_ANIM }  from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
 import { ING_SUPP }  from './ingSupp.js';
-import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
+
 
 export function paintCompareShell({
   containerSelector = '.pwr-section-container',
