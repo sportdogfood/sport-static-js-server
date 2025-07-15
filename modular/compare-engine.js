@@ -446,7 +446,7 @@ function paintSection3(mainRow, sdfRow) {
 }
 
 
-import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
+//import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
 
 // Helper to safely init Typed.js for a given data-var
 function runTypedForMadlib(dataVar) {
