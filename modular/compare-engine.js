@@ -175,32 +175,18 @@ function paintSection1(mainRow, sdfRow) {
   paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
 }
 
-function buildSectionKMadlib(mainRow, sdfRows) {
-  const mainBrand = mainRow["data-brand"] || "Brand";
-  const mainName  = mainRow["data-one"]   || "Product";
-  const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
-  const sdfKcals = sdfRows
-    .map(r => parseInt(r["ga_kcals_per_cup"], 10))
-    .filter(n => !isNaN(n));
-  const minKcal = Math.min(...sdfKcals);
-  const maxKcal = Math.max(...sdfKcals);
-  let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
-  if (mainKcal !== "?" && mainKcal < 410) {
-    kcalLine += " This is not particularly high if you are feeding a highly active dog.";
-  } else if (mainKcal !== "?" && mainKcal > 500) {
-    kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
-  }
-  const sdfLine = `Sport formulas range from ${minKcal} kcals to as high as ${maxKcal} kcals per cup.`;
-  return `${kcalLine} ${sdfLine}`;
-}
-
 function paintSection2(mainRow, sdfRow) {
-  var headerEl = document.querySelector('[data-var="section2-header"]');
+  // Section header
+  const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Macronutrient Breakdown";
-  var subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
+
+  // Subtitle
+  const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
     `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-  var madlibEl = document.querySelector('[data-var="section2-madlib"]');
+
+  // Madlib
+  const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text',
       `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"] || "?"}% protein, ${mainRow["ga_crude_fat_%"] || "?"}% fat, and ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is shown for comparison.`
@@ -208,21 +194,25 @@ function paintSection2(mainRow, sdfRow) {
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
-// In paintSection2 (for example)
-var el;
-el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-if (el && mainRow.previewengine) {
-  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-  el.style.setProperty("background-size", "cover");
-  el.style.setProperty("background-position", "center");
-}
-el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-if (el && sdfRow.previewengine) {
-  el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-  el.style.setProperty("background-size", "cover");
-  el.style.setProperty("background-position", "center");
-}
-  var el;
+
+  // Brand preview image
+  const brandPreview = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
+  if (brandPreview && mainRow.previewengine) {
+    brandPreview.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+    brandPreview.style.setProperty("background-size", "cover");
+    brandPreview.style.setProperty("background-position", "center");
+  }
+
+  // SDF preview image
+  const sdfPreview = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
+  if (sdfPreview && sdfRow.previewengine) {
+    sdfPreview.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+    sdfPreview.style.setProperty("background-size", "cover");
+    sdfPreview.style.setProperty("background-position", "center");
+  }
+
+  // Brand numbers
+  let el;
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
@@ -233,6 +223,8 @@ if (el && sdfRow.previewengine) {
   if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
+
+  // SDF numbers
   el = document.querySelector('[data-var="sport1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
@@ -244,6 +236,7 @@ if (el && sdfRow.previewengine) {
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
+
 
 function paintSvgIcon(selector, isPositive) {
   const el = document.querySelector(selector);
