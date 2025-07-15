@@ -1,5 +1,8 @@
-// compare-engine.js (initial shell paint for CCI)
-// Call this as soon as DOM is ready and hidden fields are set
+import { CI_DATA }   from './ci.js';
+import { ING_ANIM }  from './ingAnim.js';
+import { ING_PLANT } from './ingPlant.js';
+import { ING_SUPP }  from './ingSupp.js';
+import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
 
 export function paintCompareShell({
   containerSelector = '.pwr-section-container',
@@ -10,12 +13,7 @@ export function paintCompareShell({
   ]
 } = {}) {
   const container = document.querySelector(containerSelector);
-  if (!container) {
-    console.error('[CCI] Container not found:', containerSelector);
-    return;
-  }
-
-  // --- HTML shell (matches your computed markup) ---
+  if (!container) return;
   container.innerHTML = `
     <div class="pwr-outer-shell">
       <div class="pwr-search-title">
@@ -53,16 +51,12 @@ export function paintCompareShell({
       </div>
     </div>
   `;
-
-  // --- Dynamic hero label (randomized) ---
   const heroPresets = [
     `See how our diets outwork <span class='brand-highlight'>${brand}</span>`,
     `Discover what sets us apart from <span class='brand-highlight'>${brand}</span>`
   ];
   const label = container.querySelector('#pwr-fake-label');
   if (label) label.innerHTML = heroPresets[Math.floor(Math.random() * heroPresets.length)];
-
-  // --- Animated placeholder for search input ---
   const input = container.querySelector('#pwr-prompt-input');
   let i = 0;
   if (input && inputPresets.length > 1) {
@@ -74,27 +68,14 @@ export function paintCompareShell({
   }
 }
 
-// compare-engine.js - Drop-in for CI compare pages
-
-// Import your datasets
-import { CI_DATA }   from './ci.js';
-import { ING_ANIM }  from './ingAnim.js';
-import { ING_PLANT } from './ingPlant.js';
-import { ING_SUPP }  from './ingSupp.js';
-
-// --- SDF "baseline" formulas by data-five
 const SDF_FORMULAS = {
   cub:     "29280",
   dock:    "29099",
   herding: "28979"
 };
-
-// --- INGREDIENT LOOKUP MAP
 const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
 
-// --- UTILS ---
 function getSdfFormula(row) {
-  // Pick baseline SDF formula by grain/kcals
   if ((row["data-grain"] || "").toLowerCase().includes("grain free")) return SDF_FORMULAS.herding;
   if (+row["ga_kcals_per_cup"] > 490) return SDF_FORMULAS.cub;
   return SDF_FORMULAS.dock;
@@ -102,68 +83,43 @@ function getSdfFormula(row) {
 function getCiRow(dataFive) {
   return CI_DATA.find(row => String(row["data-five"]) === String(dataFive));
 }
-function safeStr(val) { return typeof val === "string" ? val : ""; }
-function nutrientTag(val, tag) {
-  if (!tag) return "";
-  return `<span class="ci-tag ci-tag-${tag.toLowerCase()}">${tag}</span>`;
-}
-function tagText(label, tag) {
-  if (!tag) return "";
-  return `${label} is tagged as <span class="ci-tag-inline ci-tag-${tag.toLowerCase()}">${tag}</span>. `;
-}
 function joinWithAnd(arr) {
   if (arr.length <= 1) return arr.join('');
   if (arr.length === 2) return arr[0] + " and " + arr[1];
   return arr.slice(0, -1).join(", ") + " and " + arr.slice(-1);
 }
 
-
-// --- SECTION 1: Diet & Key Specs ---
-// --- SECTION 1: Diet & Key Specs ---
 function paintSection1(mainRow, sdfRow) {
-  // Section Header/Title
   var headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Diet & Key Specs";
-
-  // Section Subtitle
   var subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-
-  // --- Enhanced Madlib Construction ---
   function getGrainPhrase(row) {
-    // Prefer data-diet, fallback to data-grain
     const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
     if (g.includes("free")) return "grain-free";
     if (g.includes("grain")) return "grain-inclusive";
-    return "grain-inclusive"; // fallback default
+    return "grain-inclusive";
   }
   function getMeatPhrase(row) {
-    // Try to infer if formula is meat-based (you can expand this)
     const flavor = (row["specs_primary_flavor"] || "").toLowerCase();
     if (flavor.includes("chicken") || flavor.includes("beef") || flavor.includes("fish") || flavor.includes("meat")) {
       return "meat-based";
     }
-    // fallback
     return "animal-based";
   }
   function getLegumePhrase(row) {
     const val = (row["data-legumes"] || "").toLowerCase();
-    if (val.includes("free")) return "It is legumes free";
-    if (val.includes("no")) return "It is legumes free";
+    if (val.includes("free") || val.includes("no")) return "It is legumes free";
     if (val.includes("yes")) return "It contains legumes";
     return "Legume content not specified";
   }
   function getPoultryPhrase(row) {
     const val = (row["data-poultry"] || "").toLowerCase();
-    if (val.includes("free")) return "and it is poultry free";
-    if (val.includes("no")) return "and it is poultry free";
-    if (val.includes("yes")) return "and it contains poultry";
-    if (val.includes("contain")) return "and it contains poultry";
+    if (val.includes("free") || val.includes("no")) return "and it is poultry free";
+    if (val.includes("yes") || val.includes("contain")) return "and it contains poultry";
     return "and poultry content not specified";
   }
-
-  // --- Brand phrases ---
   const mainBrand   = mainRow["data-brand"] || "Brand";
   const mainName    = mainRow["data-one"] || "Product";
   const sdfName     = sdfRow["data-one"] || "Sport Dog Food";
@@ -175,21 +131,15 @@ function paintSection1(mainRow, sdfRow) {
   const sdfLegume   = getLegumePhrase(sdfRow);
   const mainPoultry = getPoultryPhrase(mainRow);
   const sdfPoultry  = getPoultryPhrase(sdfRow);
-
-  // --- Build Madlib Text ---
   const madlib = 
     `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula. ${mainLegume} ${mainPoultry}. ` +
     `${sdfName} is also a ${sdfGrain}, ${sdfMeat} formula. ${sdfLegume} ${sdfPoultry}.`;
-
-  // Section Madlib (Typed.js)
   var madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text', madlib);
     madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed'); // reset for Typed.js if needed
+    madlibEl.removeAttribute('data-typed');
   }
-
-  // --- Brand 1 (main/competitor) ---
   var el;
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -207,8 +157,6 @@ function paintSection1(mainRow, sdfRow) {
   }
   paintSvgIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
-
-  // --- Sport Dog Food (SDF) ---
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-brand"]');
@@ -226,58 +174,32 @@ function paintSection1(mainRow, sdfRow) {
   paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
 }
+
 function buildSectionKMadlib(mainRow, sdfRows) {
-  // mainRow: CI formula row
-  // sdfRows: array of all 3 SDF formula rows, e.g. [cubRow, dockRow, herdingRow]
   const mainBrand = mainRow["data-brand"] || "Brand";
   const mainName  = mainRow["data-one"]   || "Product";
   const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
-
-  // Find SDF min/max kcals/cup
   const sdfKcals = sdfRows
     .map(r => parseInt(r["ga_kcals_per_cup"], 10))
     .filter(n => !isNaN(n));
   const minKcal = Math.min(...sdfKcals);
   const maxKcal = Math.max(...sdfKcals);
-
-  // Build main phrase
   let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
   if (mainKcal !== "?" && mainKcal < 410) {
     kcalLine += " This is not particularly high if you are feeding a highly active dog.";
   } else if (mainKcal !== "?" && mainKcal > 500) {
     kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
   }
-
   const sdfLine = `Sport formulas range from ${minKcal} kcals to as high as ${maxKcal} kcals per cup.`;
-
   return `${kcalLine} ${sdfLine}`;
 }
 
-// Example usage:
-const madlib = buildSectionKMadlib(mainRow, [cubRow, dockRow, herdingRow]);
-// Then paint to your madlib slot with Typed.js if desired:
-const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
-if (madlibEl) {
-  madlibEl.setAttribute('data-text', madlib);
-  madlibEl.textContent = '';
-  madlibEl.removeAttribute('data-typed');
-  // If using Typed.js:
-  // new Typed(madlibEl, { strings: [madlib], typeSpeed: 26, showCursor: false });
-}
-
-
-// --- SECTION 2: Macronutrient Breakdown ---
 function paintSection2(mainRow, sdfRow) {
-  // Section Header/Title
   var headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Macronutrient Breakdown";
-
-  // Section Subtitle
   var subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
     `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-
-  // Section Madlib
   var madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text',
@@ -286,8 +208,6 @@ function paintSection2(mainRow, sdfRow) {
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
-
-  // Brand 1
   var el;
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -299,8 +219,6 @@ function paintSection2(mainRow, sdfRow) {
   if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
-
-  // SDF
   el = document.querySelector('[data-var="sport1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
@@ -313,7 +231,6 @@ function paintSection2(mainRow, sdfRow) {
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
 
-// --- Utility: Paint SVG icon for check/X status ---
 function paintSvgIcon(selector, isPositive) {
   const el = document.querySelector(selector);
   if (!el) return;
@@ -323,39 +240,6 @@ function paintSvgIcon(selector, isPositive) {
       : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
 }
 
-// --- Utility: Run Typed.js on a madlib element (only once) ---
-function typeMadlibOnce(el) {
-  if (!el || el.getAttribute('data-typed') === 'true') return;
-  const text = el.getAttribute('data-text');
-  if (!text) return;
-  el.textContent = "";
-  new Typed(el, {
-    strings: [text],
-    typeSpeed: 22,
-    showCursor: false,
-    onComplete: () => el.setAttribute('data-typed', 'true')
-  });
-}
-
-// --- Public hooks ---
-function runTypedMadlibForSection1() {
-  var el = document.querySelector('[data-var="section1-madlib"]');
-  if (el) typeMadlibOnce(el);
-}
-function runTypedMadlibForSection2() {
-  var el = document.querySelector('[data-var="section2-madlib"]');
-  if (el) typeMadlibOnce(el);
-}
-
-// --- Example usage after rendering each section ---
-// paintSection1(mainRow, sdfRow);
-// runTypedMadlibForSection1();
-// paintSection2(mainRow, sdfRow);
-// runTypedMadlibForSection2();
-
-// ------- SECTION 3: Ingredient List & Attribute Table -------
-
-// Map granular data-type to consumer-facing group label
 function getConsumerTypeTag(type) {
   if (!type) return "";
   const t = type.toLowerCase();
@@ -364,8 +248,6 @@ function getConsumerTypeTag(type) {
   if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(t)) return "Supplemental";
   return "Other";
 }
-
-// Count ingredients by group (for your "data-type" values)
 function getIngredientCategoryCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -377,7 +259,6 @@ function getIngredientCategoryCounts(row) {
   });
   return counts;
 }
-
 function buildCountsTable(row, label) {
   const counts = getIngredientCategoryCounts(row);
   return `
@@ -417,9 +298,6 @@ function buildCountsTable(row, label) {
   `;
 }
 
-
-
-// Madlib for ingredient summary
 function buildIngredientMadlib(row) {
   const counts = getIngredientCategoryCounts(row);
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
@@ -444,7 +322,6 @@ function buildIngredientMadlib(row) {
   return madlib;
 }
 
-// Render ingredient divs (all tags included, no span)
 function renderIngListDivs(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -479,7 +356,6 @@ function renderIngListDivs(row) {
   `;
 }
 
-// --- Contentious madlib logic for Section 3 ---
 function getContentiousIngredients(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -498,76 +374,48 @@ function buildSection4Madlib(mainRow) {
   return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
 }
 
-// --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
-// --- SECTION 3 MAIN PAINT FUNCTION (vertical/slot approach) ---
 function paintSection3(mainRow, sdfRow) {
   let el;
-
-  // --- Headline & Subtitle (keep as before) ---
   el = document.querySelector('[data-var="section3-header"]');
   if (el) el.textContent = "Ingredient List & Tags";
   el = document.querySelector('[data-var="section3-subtitle"]');
   if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
-  // --- COMPETITOR FORMULA BLOCK ---
-  // Name
   el = document.querySelector('[data-var="brand-1-sec3-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
-
-  // Ingredient madlib
   el = document.querySelector('[data-var="section3-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildIngredientMadlib(mainRow));
     el.textContent = '';
   }
-
-  // Counts
   el = document.querySelector('[data-var="brand-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
-
-  // Contentious madlib
   el = document.querySelector('[data-var="section3-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
     el.textContent = '';
   }
-
-  // Ingredient list
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(mainRow);
 
-  // --- SDF FORMULA BLOCK ---
-  // Name
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
-
-  // Ingredient madlib (for SDF)
   el = document.querySelector('[data-var="section3-sport-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
     el.textContent = '';
   }
-
-  // Counts
   el = document.querySelector('[data-var="sport-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
-
-  // Contentious madlib (for SDF)
   el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(sdfRow));
     el.textContent = '';
   }
-
-  // Ingredient list
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
 
-
-//import Typed from "https://cdn.jsdelivr.net/npm/typed.js@2.0.12/dist/typed.umd.js";
-
-// Helper to safely init Typed.js for a given data-var
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
   if (el && el.getAttribute('data-text')) {
@@ -580,20 +428,14 @@ function runTypedForMadlib(dataVar) {
   }
 }
 
-// --- MAIN RENDER ---
 export function renderComparePage() {
-  // Grab which CI item is being viewed
   const ciFive  = document.getElementById('item-faq-five')?.value;
   const ciType  = document.getElementById('item-faq-type')?.value;
   if (!ciFive || !ciType) return;
   const mainRow = getCiRow(ciFive);
   if (!mainRow) return;
-
-  // Pick which SDF formula to use for baseline
   const sdfFive = getSdfFormula(mainRow);
   const sdfRow  = getCiRow(sdfFive);
-
-  // Drop in empty containers for each section (once per load)
   const compareRoot = document.getElementById('compare-root');
   if (!compareRoot) return;
   compareRoot.innerHTML = `
@@ -601,15 +443,13 @@ export function renderComparePage() {
     <div id="section-2"></div>
     <div id="section-3"></div>
   `;
-
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
   paintSection3(mainRow, sdfRow);
-
-  // After all paintSectionX calls, run Typed.js for each madlib
   runTypedForMadlib('section1-madlib');
   runTypedForMadlib('section2-madlib');
   runTypedForMadlib('section3-madlib');
-  runTypedForMadlib('section3-contentious-madlib'); // if used in Section 3
+  runTypedForMadlib('section3-contentious-madlib');
+  runTypedForMadlib('section3-sport-madlib');
+  runTypedForMadlib('section3-sport-contentious-madlib');
 }
-
