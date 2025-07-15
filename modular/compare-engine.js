@@ -461,7 +461,6 @@ import { paintSection2 } from './section2.js';
 import { paintSection3 } from './section3.js';
 import { paintSectionK } from './sectionK.js';
 
-// --- MAIN RENDER ---
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
@@ -488,5 +487,3 @@ export function renderComparePage() {
   paintSection3(mainRow, sdfRow);
   paintSectionK(mainRow, sdfRow);
 }
-
-
