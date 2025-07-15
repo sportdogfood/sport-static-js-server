@@ -208,6 +208,20 @@ function paintSection2(mainRow, sdfRow) {
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
+// In paintSection2 (for example)
+var el;
+el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
+if (el && mainRow.previewengine) {
+  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+  el.style.setProperty("background-size", "cover");
+  el.style.setProperty("background-position", "center");
+}
+el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
+if (el && sdfRow.previewengine) {
+  el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+  el.style.setProperty("background-size", "cover");
+  el.style.setProperty("background-position", "center");
+}
   var el;
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -395,6 +409,21 @@ function paintSection3(mainRow, sdfRow) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
     el.textContent = '';
   }
+
+// In paintSection2 (for example)
+var el;
+el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
+if (el && mainRow.previewengine) {
+  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+  el.style.setProperty("background-size", "cover");
+  el.style.setProperty("background-position", "center");
+}
+el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
+if (el && sdfRow.previewengine) {
+  el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+  el.style.setProperty("background-size", "cover");
+  el.style.setProperty("background-position", "center");
+}
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(mainRow);
 
