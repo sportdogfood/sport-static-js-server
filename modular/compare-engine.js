@@ -392,7 +392,7 @@ function renderIngListDivs(row) {
         return `
           <div class="ci-ing-wrapper">
             <div class="ci-ing-displayas">${ing.displayAs || ing.Name}</div>
-            <div class="ci-ing-tag-wrapper">${tagDivs.join("")}</div>
+            <div class="ci-ing-tag-wrapper hide-scrollbar">${tagDivs.join("")}</div>
           </div>
         `;
       }).join('')}
