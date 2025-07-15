@@ -519,54 +519,50 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
     threshold: 0.1
   };
 
-  const sectionMap = [
-    {
-      id: '#section-1',
-      fn: () => {
-        paintSection1(mainRow, sdfRow);
-        runTypedForMadlib('section1-madlib');
-      }
-    },
-    {
-      id: '#section-2',
-      fn: () => {
-        paintSection2(mainRow, sdfRow);
-        runTypedForMadlib('section2-madlib');
-      }
-    },
-    {
-  id: '#section-3',
-  fn: () => {
-    // paint all of Section 3
-    paintSection3(mainRow, sdfRow);
-
-    // animate each madlib slot
-    runTypedForMadlib('section3-madlib');                   // Diet & Key Specs madlib
-    runTypedForMadlib('section3-sport-madlib');             // Sport Dog Food ingredient madlib
-    runTypedForMadlib('section3-contentious-madlib');       // Competitor contentious madlib
-    runTypedForMadlib('section3-sport-contentious-madlib'); // SDF contentious madlib
-  }
-
-   
-    },
-
-
+ const sectionMap = [
   {
-  id: '#section-k',
-  fn: () => {
-    if (typeof paintSectionK === 'function') {
-      paintSectionK(mainRow, [
-        getCiRow(SDF_FORMULAS.cub),
-        getCiRow(SDF_FORMULAS.dock),
-        getCiRow(SDF_FORMULAS.herding)
-      ]);
-    } else {
-      console.warn('[CCI] paintSectionK not defined—skipping Section K');
+    id: '#section-1',
+    fn: () => {
+      paintSection1(mainRow, sdfRow);
+      runTypedForMadlib('section1-madlib');
+    }
+  },
+  {
+    id: '#section-2',
+    fn: () => {
+      paintSection2(mainRow, sdfRow);
+      runTypedForMadlib('section2-madlib');
+    }
+  },
+  {
+    id: '#section-3',
+    fn: () => {
+      // paint all of Section 3
+      paintSection3(mainRow, sdfRow);
+
+      // animate each madlib slot
+      runTypedForMadlib('section3-madlib');
+      runTypedForMadlib('section3-sport-madlib');
+      runTypedForMadlib('section3-contentious-madlib');
+      runTypedForMadlib('section3-sport-contentious-madlib');
+    }
+  },
+  {
+    id: '#section-k',
+    fn: () => {
+      if (typeof paintSectionK === 'function') {
+        paintSectionK(mainRow, [
+          getCiRow(SDF_FORMULAS.cub),
+          getCiRow(SDF_FORMULAS.dock),
+          getCiRow(SDF_FORMULAS.herding)
+        ]);
+      } else {
+        console.warn('[CCI] paintSectionK not defined—skipping Section K');
+      }
     }
   }
-}
+];
 
-  ];
 
   sectionMap.forEach(({ id, fn }) => {
     const target = document.querySelector(id);
