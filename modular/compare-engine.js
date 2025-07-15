@@ -307,6 +307,53 @@ function paintSvgIcon(selector, isPositive) {
     ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
     : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
 }
+// ——————————————
+// 1) Build the Section K madlib string
+function buildSectionKMadlib(mainRow, sdfRows) {
+  const mainBrand = mainRow["data-brand"] || "Brand";
+  const mainName  = mainRow["data-one"]   || "Product";
+  const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
+
+  const sdfKcals = sdfRows
+    .map(r => parseInt(r["ga_kcals_per_cup"], 10))
+    .filter(n => !isNaN(n));
+  const minKcal = sdfKcals.length ? Math.min(...sdfKcals) : "?";
+  const maxKcal = sdfKcals.length ? Math.max(...sdfKcals) : "?";
+
+  let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
+  if (mainKcal !== "?" && mainKcal < 410) {
+    kcalLine += " This is not particularly high if you are feeding a highly active dog.";
+  } else if (mainKcal !== "?" && mainKcal > 500) {
+    kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
+  }
+
+  const sdfLine = `Sport formulas range from ${minKcal} kcals to as high as ${maxKcal} kcals per cup.`;
+  return `${kcalLine} ${sdfLine}`;
+}
+
+// ——————————————
+// 2) Paint Section K and immediately fire Typed.js
+function paintSectionK(mainRow, sdfRows) {
+  // Optional: set a header
+  const headerEl = document.querySelector('[data-var="sectionk-header"]');
+  if (headerEl) headerEl.textContent = "Overall Formula Comparison";
+
+  // Build and inject the text
+  const text = buildSectionKMadlib(mainRow, sdfRows);
+  const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
+  if (!madlibEl) return;
+
+  madlibEl.setAttribute('data-text', text);
+  madlibEl.textContent = '';
+  madlibEl.removeAttribute('data-typed');
+
+  // Kick off Typed.js
+  new Typed(madlibEl, {
+    strings: [text],
+    typeSpeed: 26,
+    showCursor: false
+  });
+}
 
 function getConsumerTypeTag(type) {
   if (!type) return "";
@@ -493,21 +540,23 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
         runTypedForMadlib('section3-sport-contentious-madlib');
       }
     },
-    {
-      id: '#section-k',
-      fn: () => {
-        if (typeof paintSectionK === 'function') {
-          paintSectionK(mainRow, [
-            getCiRow(SDF_FORMULAS.cub),
-            getCiRow(SDF_FORMULAS.dock),
-            getCiRow(SDF_FORMULAS.herding)
-          ]);
-          runTypedForMadlib('sectionk-madlib');
-        } else {
-          console.warn('[CCI] paintSectionK not defined—skipping Section K');
-        }
-      }
+
+
+  {
+  id: '#section-k',
+  fn: () => {
+    if (typeof paintSectionK === 'function') {
+      paintSectionK(mainRow, [
+        getCiRow(SDF_FORMULAS.cub),
+        getCiRow(SDF_FORMULAS.dock),
+        getCiRow(SDF_FORMULAS.herding)
+      ]);
+    } else {
+      console.warn('[CCI] paintSectionK not defined—skipping Section K');
     }
+  }
+}
+
   ];
 
   sectionMap.forEach(({ id, fn }) => {
