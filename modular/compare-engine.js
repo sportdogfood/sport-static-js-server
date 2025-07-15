@@ -437,17 +437,58 @@ function paintSection3(mainRow, sdfRow) {
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
 
-
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
-  if (el && el.getAttribute('data-text')) {
-    el.textContent = '';
-    new Typed(el, {
-      strings: [el.getAttribute('data-text')],
-      typeSpeed: 28,
-      showCursor: false,
-    });
-  }
+  if (!el) return;
+  const str = el.getAttribute("data-text");
+  if (!str || el.getAttribute("data-typed") === "true") return;
+
+  el.textContent = ''; // Clear any existing content
+  el.setAttribute("data-typed", "true");
+  new Typed(el, {
+    strings: [str],
+    typeSpeed: 24,
+    showCursor: false
+  });
+}
+
+function lazyLoadCompareSections(mainRow, sdfRow) {
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -30% 0px',
+    threshold: 0.1
+  };
+
+  const sectionMap = [
+    { id: '#section-1', fn: () => { paintSection1(mainRow, sdfRow); runTypedForMadlib('section1-madlib'); } },
+    { id: '#section-2', fn: () => { paintSection2(mainRow, sdfRow); runTypedForMadlib('section2-madlib'); } },
+    { id: '#section-3', fn: () => { paintSection3(mainRow, sdfRow); runTypedForMadlib('section3-madlib'); } },
+    { id: '#section-k', fn: () => {
+        paintSectionK(mainRow, [
+          getCiRow(SDF_FORMULAS.cub),
+          getCiRow(SDF_FORMULAS.dock),
+          getCiRow(SDF_FORMULAS.herding)
+        ]);
+        runTypedForMadlib('sectionk-madlib');
+      }
+    }
+  ];
+
+  sectionMap.forEach(({ id, fn }) => {
+    const target = document.querySelector(id);
+    if (!target) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          fn(); // Paint and run typed
+          obs.unobserve(entry.target); // Only run once
+        }
+      });
+    }, observerOptions);
+
+    observer.observe(target);
+  });
 }
 
 // --- MAIN RENDER ---
@@ -455,7 +496,7 @@ export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
   const sdfId = getSdfFormula(mainRow);
-const sdfRow = getCiRow(sdfId);
+  const sdfRow = getCiRow(sdfId);
 
   if (!mainRow || !sdfRow) {
     console.error('[CCI] Unable to find required rows', { mainFive, mainRow, sdfRow });
@@ -470,8 +511,7 @@ const sdfRow = getCiRow(sdfId);
     ING_SUPP
   };
 
-  paintSection1(mainRow, sdfRow);
-  paintSection2(mainRow, sdfRow);
-  paintSection3(mainRow, sdfRow);
- // paintSectionK(mainRow, sdfRow);
+  // Instead of painting everything immediately, use scroll-based lazy loading
+  lazyLoadCompareSections(mainRow, sdfRow);
 }
+
