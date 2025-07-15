@@ -387,26 +387,31 @@ function buildCountsTable(row, label) {
       </div>
       <div class="ci-ing-table-body">
         <div class="ci-ing-table-row">
-          <div class="ci-ing-table-col">Total ingredients</div>
-          <div class="ci-ing-table-col">${counts.total}</div>
+ <div class="ci-ing-table-col-val">${counts.total}</div>
+          <div class="ci-ing-table-col">Total</div>
+         
         </div>
         <div class="ci-ing-table-row">
+        <div class="ci-ing-table-col-val">${counts.Protein}</div>
           <div class="ci-ing-table-col">Protein</div>
-          <div class="ci-ing-table-col">${counts.Protein}</div>
+  
         </div>
         <div class="ci-ing-table-row">
+    <div class="ci-ing-table-col-val">${counts.Plants}</div>
           <div class="ci-ing-table-col">Plants</div>
-          <div class="ci-ing-table-col">${counts.Plants}</div>
+      
         </div>
         <div class="ci-ing-table-row">
+        <div class="ci-ing-table-col-val">${counts.Supplemental}</div>
           <div class="ci-ing-table-col">Supplemental</div>
-          <div class="ci-ing-table-col">${counts.Supplemental}</div>
+  
         </div>
         ${
           counts.Other
             ? `<div class="ci-ing-table-row">
+   <div class="ci-ing-table-col-val">${counts.Other}</div>
                 <div class="ci-ing-table-col">Other</div>
-                <div class="ci-ing-table-col">${counts.Other}</div>
+             
                </div>`
             : ""
         }
