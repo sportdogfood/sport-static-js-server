@@ -473,5 +473,5 @@ const sdfRow = getCiRow(sdfId);
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
   paintSection3(mainRow, sdfRow);
-  paintSectionK(mainRow, sdfRow);
+ // paintSectionK(mainRow, sdfRow);
 }
