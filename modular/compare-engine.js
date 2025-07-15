@@ -450,17 +450,6 @@ function runTypedForMadlib(dataVar) {
   }
 }
 
-// --- IMPORTS ---
-import { CI_DATA }   from './ci.js';
-import { ING_ANIM }  from './ingAnim.js';
-import { ING_PLANT } from './ingPlant.js';
-import { ING_SUPP }  from './ingSupp.js';
-
-import { paintSection1 } from './section1.js';
-import { paintSection2 } from './section2.js';
-import { paintSection3 } from './section3.js';
-import { paintSectionK } from './sectionK.js';
-
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
