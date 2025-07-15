@@ -117,7 +117,7 @@ function joinWithAnd(arr) {
   return arr.slice(0, -1).join(", ") + " and " + arr.slice(-1);
 }
 
-// --- SECTION 1: Diet & Key Specs ---
+
 // --- SECTION 1: Diet & Key Specs ---
 function paintSection1(mainRow, sdfRow) {
   // Section Header/Title
@@ -302,22 +302,42 @@ function getIngredientCategoryCounts(row) {
 function buildCountsTable(row, label) {
   const counts = getIngredientCategoryCounts(row);
   return `
-    <table class="ci-ingredient-attr-table">
-      <thead>
-        <tr>
-          <th colspan="2">${label}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>Total ingredients</td> <td>${counts.total}</td></tr>
-        <tr><td>Protein</td>          <td>${counts.Protein}</td></tr>
-        <tr><td>Plants</td>           <td>${counts.Plants}</td></tr>
-        <tr><td>Supplemental</td>     <td>${counts.Supplemental}</td></tr>
-        ${counts.Other ? `<tr><td>Other</td><td>${counts.Other}</td></tr>` : ""}
-      </tbody>
-    </table>
+    <div class="ci-ing-table-cont">
+      <div class="ci-ing-table-head">
+        <div class="ci-ing-table-row">
+          <div class="ci-ing-table-col" style="font-weight:bold;" colspan="2">${label}</div>
+        </div>
+      </div>
+      <div class="ci-ing-table-body">
+        <div class="ci-ing-table-row">
+          <div class="ci-ing-table-col">Total ingredients</div>
+          <div class="ci-ing-table-col">${counts.total}</div>
+        </div>
+        <div class="ci-ing-table-row">
+          <div class="ci-ing-table-col">Protein</div>
+          <div class="ci-ing-table-col">${counts.Protein}</div>
+        </div>
+        <div class="ci-ing-table-row">
+          <div class="ci-ing-table-col">Plants</div>
+          <div class="ci-ing-table-col">${counts.Plants}</div>
+        </div>
+        <div class="ci-ing-table-row">
+          <div class="ci-ing-table-col">Supplemental</div>
+          <div class="ci-ing-table-col">${counts.Supplemental}</div>
+        </div>
+        ${
+          counts.Other
+            ? `<div class="ci-ing-table-row">
+                <div class="ci-ing-table-col">Other</div>
+                <div class="ci-ing-table-col">${counts.Other}</div>
+               </div>`
+            : ""
+        }
+      </div>
+    </div>
   `;
 }
+
 
 
 // Madlib for ingredient summary
