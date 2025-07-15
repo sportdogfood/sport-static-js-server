@@ -382,12 +382,13 @@ function buildSection4Madlib(mainRow) {
 }
 
 function paintSection3(mainRow, sdfRow) {
-  let el;
-  el = document.querySelector('[data-var="section3-header"]');
+  // Headline & subtitle
+  let el = document.querySelector('[data-var="section3-header"]');
   if (el) el.textContent = "Ingredient List & Tags";
   el = document.querySelector('[data-var="section3-subtitle"]');
   if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
+  // Brand block (Competitor)
   el = document.querySelector('[data-var="brand-1-sec3-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="section3-madlib"]');
@@ -402,24 +403,16 @@ function paintSection3(mainRow, sdfRow) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
     el.textContent = '';
   }
-
-// In paintSection2 (for example)
-var el;
-el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
-if (el && mainRow.previewengine) {
-  el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-  el.style.setProperty("background-size", "cover");
-  el.style.setProperty("background-position", "center");
-}
-el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
-if (el && sdfRow.previewengine) {
-  el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-  el.style.setProperty("background-size", "cover");
-  el.style.setProperty("background-position", "center");
-}
+  el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
+  if (el && mainRow.previewengine) {
+    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(mainRow);
 
+  // SDF block
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="section3-sport-madlib"]');
@@ -434,9 +427,16 @@ if (el && sdfRow.previewengine) {
     el.setAttribute('data-text', buildSection4Madlib(sdfRow));
     el.textContent = '';
   }
+  el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
+  if (el && sdfRow.previewengine) {
+    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
+
 
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
