@@ -2,7 +2,7 @@ import { CI_DATA }   from './ci.js';
 import { ING_ANIM }  from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
 import { ING_SUPP }  from './ingSupp.js';
-
+import Typed         from 'typed.js'; // ← ensure typed.js is installed
 
 export function paintCompareShell({
   containerSelector = '.pwr-section-container',
@@ -14,6 +14,7 @@ export function paintCompareShell({
 } = {}) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
+
   container.innerHTML = `
     <div class="pwr-outer-shell">
       <div class="pwr-search-title">
@@ -51,16 +52,21 @@ export function paintCompareShell({
       </div>
     </div>
   `;
+
+  // Randomize hero label
   const heroPresets = [
     `See how our diets outwork <span class='brand-highlight'>${brand}</span>`,
     `Discover what sets us apart from <span class='brand-highlight'>${brand}</span>`
   ];
   const label = container.querySelector('#pwr-fake-label');
-  if (label) label.innerHTML = heroPresets[Math.floor(Math.random() * heroPresets.length)];
+  if (label) {
+    label.innerHTML = heroPresets[Math.floor(Math.random() * heroPresets.length)];
+  }
+
+  // Rotate input placeholders
   const input = container.querySelector('#pwr-prompt-input');
   let i = 0;
   if (input && inputPresets.length > 1) {
-    input.placeholder = inputPresets[0];
     setInterval(() => {
       i = (i + 1) % inputPresets.length;
       input.placeholder = inputPresets[i];
@@ -76,13 +82,16 @@ const SDF_FORMULAS = {
 const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
 
 function getSdfFormula(row) {
+  if (!row) return SDF_FORMULAS.dock;
   if ((row["data-grain"] || "").toLowerCase().includes("grain free")) return SDF_FORMULAS.herding;
   if (+row["ga_kcals_per_cup"] > 490) return SDF_FORMULAS.cub;
   return SDF_FORMULAS.dock;
 }
+
 function getCiRow(dataFive) {
   return CI_DATA.find(row => String(row["data-five"]) === String(dataFive));
 }
+
 function joinWithAnd(arr) {
   if (arr.length <= 1) return arr.join('');
   if (arr.length === 2) return arr[0] + " and " + arr[1];
@@ -90,11 +99,13 @@ function joinWithAnd(arr) {
 }
 
 function paintSection1(mainRow, sdfRow) {
-  var headerEl = document.querySelector('[data-var="section1-header"]');
+  const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Diet & Key Specs";
-  var subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
+
+  const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+
   function getGrainPhrase(row) {
     const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
     if (g.includes("free")) return "grain-free";
@@ -120,6 +131,7 @@ function paintSection1(mainRow, sdfRow) {
     if (val.includes("yes") || val.includes("contain")) return "and it contains poultry";
     return "and poultry content not specified";
   }
+
   const mainBrand   = mainRow["data-brand"] || "Brand";
   const mainName    = mainRow["data-one"] || "Product";
   const sdfName     = sdfRow["data-one"] || "Sport Dog Food";
@@ -131,16 +143,19 @@ function paintSection1(mainRow, sdfRow) {
   const sdfLegume   = getLegumePhrase(sdfRow);
   const mainPoultry = getPoultryPhrase(mainRow);
   const sdfPoultry  = getPoultryPhrase(sdfRow);
-  const madlib = 
+
+  const madlib =
     `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula. ${mainLegume} ${mainPoultry}. ` +
     `${sdfName} is also a ${sdfGrain}, ${sdfMeat} formula. ${sdfLegume} ${sdfPoultry}.`;
-  var madlibEl = document.querySelector('[data-var="section1-madlib"]');
+
+  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text', madlib);
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
-  var el;
+
+  let el;
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-brand"]');
@@ -156,7 +171,8 @@ function paintSection1(mainRow, sdfRow) {
     el.style.setProperty("background-position", "center");
   }
   paintSvgIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
+
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-brand"]');
@@ -172,20 +188,17 @@ function paintSection1(mainRow, sdfRow) {
     el.style.setProperty("background-position", "center");
   }
   paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
 }
 
 function paintSection2(mainRow, sdfRow) {
-  // Section header
-  const headerEl = document.querySelector('[data-var="section2-header"]');
+  const headerEl   = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Macronutrient Breakdown";
 
-  // Subtitle
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
     `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
-  // Madlib
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute('data-text',
@@ -195,24 +208,21 @@ function paintSection2(mainRow, sdfRow) {
     madlibEl.removeAttribute('data-typed');
   }
 
-  // Brand preview image
-  const brandPreview = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-  if (brandPreview && mainRow.previewengine) {
-    brandPreview.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-    brandPreview.style.setProperty("background-size", "cover");
-    brandPreview.style.setProperty("background-position", "center");
-  }
-
-  // SDF preview image
-  const sdfPreview = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-  if (sdfPreview && sdfRow.previewengine) {
-    sdfPreview.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-    sdfPreview.style.setProperty("background-size", "cover");
-    sdfPreview.style.setProperty("background-position", "center");
-  }
-
-  // Brand numbers
   let el;
+  el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
+  if (el && mainRow.previewengine) {
+    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
+
+  el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
+  if (el && sdfRow.previewengine) {
+    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
+
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
@@ -224,8 +234,8 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
-  // SDF numbers
-  el = document.querySelector('[data-var="sport1-sec2-name"]');
+  // ← corrected selector here (added missing dash)
+  el = document.querySelector('[data-var="sport-1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
   if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
@@ -237,14 +247,65 @@ function paintSection2(mainRow, sdfRow) {
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
 
+function paintSection3(mainRow, sdfRow) {
+  let el = document.querySelector('[data-var="section3-header"]');
+  if (el) el.textContent = "Ingredient List & Tags";
+  el = document.querySelector('[data-var="section3-subtitle"]');
+  if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
+
+  el = document.querySelector('[data-var="brand-1-sec3-name"]');
+  if (el) el.textContent = mainRow["data-one"] || "";
+  el = document.querySelector('[data-var="section3-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
+    el.textContent = '';
+  }
+  el = document.querySelector('[data-var="brand-1-sec3-counts"]');
+  if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
+  el = document.querySelector('[data-var="section3-contentious-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildSection4Madlib(mainRow));
+    el.textContent = '';
+  }
+  el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
+  if (el && mainRow.previewengine) {
+    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
+  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(mainRow);
+
+  el = document.querySelector('[data-var="sport-1-sec3-name"]');
+  if (el) el.textContent = sdfRow["data-one"] || "";
+  el = document.querySelector('[data-var="section3-sport-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
+    el.textContent = '';
+  }
+  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
+  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
+  el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildSection4Madlib(sdfRow));
+    el.textContent = '';
+  }
+  el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
+  if (el && sdfRow.previewengine) {
+    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
+    el.style.setProperty("background-size", "cover");
+    el.style.setProperty("background-position", "center");
+  }
+  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(sdfRow);
+}
 
 function paintSvgIcon(selector, isPositive) {
   const el = document.querySelector(selector);
   if (!el) return;
-  el.innerHTML =
-    isPositive
-      ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
-      : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
+  el.innerHTML = isPositive
+    ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
+    : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
 }
 
 function getConsumerTypeTag(type) {
@@ -255,6 +316,7 @@ function getConsumerTypeTag(type) {
   if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(t)) return "Supplemental";
   return "Other";
 }
+
 function getIngredientCategoryCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -266,6 +328,7 @@ function getIngredientCategoryCounts(row) {
   });
   return counts;
 }
+
 function buildCountsTable(row, label) {
   const counts = getIngredientCategoryCounts(row);
   return `
@@ -368,6 +431,7 @@ function getContentiousIngredients(row) {
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
   return ings.filter(ing => ing.tagContentious).map(ing => ing.displayAs).filter(Boolean);
 }
+
 function buildSection4Madlib(mainRow) {
   const brand = mainRow["data-brand"];
   const product = mainRow["data-one"];
@@ -381,69 +445,13 @@ function buildSection4Madlib(mainRow) {
   return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
 }
 
-function paintSection3(mainRow, sdfRow) {
-  // Headline & subtitle
-  let el = document.querySelector('[data-var="section3-header"]');
-  if (el) el.textContent = "Ingredient List & Tags";
-  el = document.querySelector('[data-var="section3-subtitle"]');
-  if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
-
-  // Brand block (Competitor)
-  el = document.querySelector('[data-var="brand-1-sec3-name"]');
-  if (el) el.textContent = mainRow["data-one"] || "";
-  el = document.querySelector('[data-var="section3-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
-    el.textContent = '';
-  }
-  el = document.querySelector('[data-var="brand-1-sec3-counts"]');
-  if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
-  el = document.querySelector('[data-var="section3-contentious-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildSection4Madlib(mainRow));
-    el.textContent = '';
-  }
-  el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
-  if (el && mainRow.previewengine) {
-    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
-  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(mainRow);
-
-  // SDF block
-  el = document.querySelector('[data-var="sport-1-sec3-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
-  el = document.querySelector('[data-var="section3-sport-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
-    el.textContent = '';
-  }
-  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
-  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
-  el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildSection4Madlib(sdfRow));
-    el.textContent = '';
-  }
-  el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
-  if (el && sdfRow.previewengine) {
-    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
-  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(sdfRow);
-}
-
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
-  if (!el) return;
+  if (!el || el.getAttribute("data-typed") === "true") return;
   const str = el.getAttribute("data-text");
-  if (!str || el.getAttribute("data-typed") === "true") return;
+  if (!str) return;
 
-  el.textContent = ''; // Clear any existing content
+  el.textContent = '';
   el.setAttribute("data-typed", "true");
   new Typed(el, {
     strings: [str],
@@ -463,13 +471,19 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
     { id: '#section-1', fn: () => { paintSection1(mainRow, sdfRow); runTypedForMadlib('section1-madlib'); } },
     { id: '#section-2', fn: () => { paintSection2(mainRow, sdfRow); runTypedForMadlib('section2-madlib'); } },
     { id: '#section-3', fn: () => { paintSection3(mainRow, sdfRow); runTypedForMadlib('section3-madlib'); } },
-    { id: '#section-k', fn: () => {
-        paintSectionK(mainRow, [
-          getCiRow(SDF_FORMULAS.cub),
-          getCiRow(SDF_FORMULAS.dock),
-          getCiRow(SDF_FORMULAS.herding)
-        ]);
-        runTypedForMadlib('sectionk-madlib');
+    {
+      id: '#section-k',
+      fn: () => {
+        if (typeof paintSectionK === 'function') {
+          paintSectionK(mainRow, [
+            getCiRow(SDF_FORMULAS.cub),
+            getCiRow(SDF_FORMULAS.dock),
+            getCiRow(SDF_FORMULAS.herding)
+          ]);
+          runTypedForMadlib('sectionk-madlib');
+        } else {
+          console.warn('[CCI] paintSectionK not defined—skipping Section K');
+        }
       }
     }
   ];
@@ -477,41 +491,30 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
   sectionMap.forEach(({ id, fn }) => {
     const target = document.querySelector(id);
     if (!target) return;
-
     const observer = new IntersectionObserver((entries, obs) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          fn(); // Paint and run typed
-          obs.unobserve(entry.target); // Only run once
+          fn();
+          obs.unobserve(entry.target);
         }
       });
     }, observerOptions);
-
     observer.observe(target);
   });
 }
 
-// --- MAIN RENDER ---
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
-  const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
-  const sdfId = getSdfFormula(mainRow);
-  const sdfRow = getCiRow(sdfId);
+  const mainRow  = CI_DATA.find(row => row['data-five'] === mainFive);
+  const sdfId    = getSdfFormula(mainRow);
+  const sdfRow   = getCiRow(sdfId);
 
   if (!mainRow || !sdfRow) {
     console.error('[CCI] Unable to find required rows', { mainFive, mainRow, sdfRow });
     return;
   }
 
-  window.CCI = {
-    mainRow,
-    sdfRow,
-    ING_ANIM,
-    ING_PLANT,
-    ING_SUPP
-  };
+  window.CCI = { mainRow, sdfRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
-  // Instead of painting everything immediately, use scroll-based lazy loading
   lazyLoadCompareSections(mainRow, sdfRow);
 }
-
