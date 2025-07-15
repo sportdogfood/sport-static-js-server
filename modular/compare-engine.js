@@ -499,49 +499,69 @@ function buildSection4Madlib(mainRow) {
 }
 
 // --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
-// --- SECTION 3 MAIN PAINT FUNCTION (slot approach) ---
+// --- SECTION 3 MAIN PAINT FUNCTION (vertical/slot approach) ---
 function paintSection3(mainRow, sdfRow) {
-  // Headline and subtitle
   let el;
+
+  // --- Headline & Subtitle (keep as before) ---
   el = document.querySelector('[data-var="section3-header"]');
   if (el) el.textContent = "Ingredient List & Tags";
   el = document.querySelector('[data-var="section3-subtitle"]');
   if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
-  // Madlib summary for mainRow
+  // --- COMPETITOR FORMULA BLOCK ---
+  // Name
+  el = document.querySelector('[data-var="brand-1-sec3-name"]');
+  if (el) el.textContent = mainRow["data-one"] || "";
+
+  // Ingredient madlib
   el = document.querySelector('[data-var="section3-madlib"]');
   if (el) {
-    // You must pass both row and counts to buildIngredientMadlib if required
-    const counts = getIngredientCategoryCounts(mainRow);
-    el.setAttribute('data-text', buildIngredientMadlib(mainRow, counts));
+    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
     el.textContent = '';
   }
 
-  // Brand names
-  el = document.querySelector('[data-var="brand-1-sec3-name"]');
-  if (el) el.textContent = mainRow["data-one"] || "";
-  el = document.querySelector('[data-var="sport-1-sec3-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
-
-  // Counts (one per brand)
+  // Counts
   el = document.querySelector('[data-var="brand-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
 
-  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
-  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
-
-  // Ingredient lists (chip tags) for each side
-  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(mainRow);
-  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(sdfRow);
-
-  // Contentious madlib (section 4 logic, if you want it here too)
+  // Contentious madlib
   el = document.querySelector('[data-var="section3-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
     el.textContent = '';
   }
+
+  // Ingredient list
+  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(mainRow);
+
+  // --- SDF FORMULA BLOCK ---
+  // Name
+  el = document.querySelector('[data-var="sport-1-sec3-name"]');
+  if (el) el.textContent = sdfRow["data-one"] || "";
+
+  // Ingredient madlib (for SDF)
+  el = document.querySelector('[data-var="section3-sport-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
+    el.textContent = '';
+  }
+
+  // Counts
+  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
+  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
+
+  // Contentious madlib (for SDF)
+  el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
+  if (el) {
+    el.setAttribute('data-text', buildSection4Madlib(sdfRow));
+    el.textContent = '';
+  }
+
+  // Ingredient list
+  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
+  if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
 
 
