@@ -450,6 +450,7 @@ function runTypedForMadlib(dataVar) {
   }
 }
 
+// --- MAIN RENDER ---
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
