@@ -535,15 +535,19 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
       }
     },
     {
-      id: '#section-3',
-      fn: () => {
-        // 1) paint all of Section 3’s content
-        paintSection3(mainRow, sdfRow);
-        // 2) run Typed.js for each of its three madlibs
-        runTypedForMadlib('section3-madlib');
-        runTypedForMadlib('section3-sport-madlib');
-        runTypedForMadlib('section3-sport-contentious-madlib');
-      }
+  id: '#section-3',
+  fn: () => {
+    // paint all of Section 3
+    paintSection3(mainRow, sdfRow);
+
+    // animate each madlib slot
+    runTypedForMadlib('section3-madlib');                   // Diet & Key Specs madlib
+    runTypedForMadlib('section3-sport-madlib');             // Sport Dog Food ingredient madlib
+    runTypedForMadlib('section3-contentious-madlib');       // Competitor contentious madlib
+    runTypedForMadlib('section3-sport-contentious-madlib'); // SDF contentious madlib
+  }
+
+   
     },
 
 
