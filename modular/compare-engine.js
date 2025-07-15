@@ -454,10 +454,8 @@ function runTypedForMadlib(dataVar) {
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow = CI_DATA.find(row => row['data-five'] === mainFive);
-  const sdfRow = CI_DATA.find(row =>
-    row['data-brand'] === 'Sport Dog Food' &&
-    row['isdefault']?.toLowerCase?.() === 'true'
-  );
+  const sdfId = getSdfFormula(mainRow);
+const sdfRow = getCiRow(sdfId);
 
   if (!mainRow || !sdfRow) {
     console.error('[CCI] Unable to find required rows', { mainFive, mainRow, sdfRow });
