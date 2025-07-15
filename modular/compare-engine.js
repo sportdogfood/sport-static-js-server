@@ -119,6 +119,7 @@ function joinWithAnd(arr) {
 
 
 // --- SECTION 1: Diet & Key Specs ---
+// --- SECTION 1: Diet & Key Specs ---
 function paintSection1(mainRow, sdfRow) {
   // Section Header/Title
   var headerEl = document.querySelector('[data-var="section1-header"]');
@@ -129,17 +130,66 @@ function paintSection1(mainRow, sdfRow) {
   if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
-  // Section Madlib
-  var madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) {
-    madlibEl.setAttribute('data-text',
-      `${mainRow["data-brand"]} ${mainRow["data-one"]} is a ${(mainRow["data-grain"]||"grain-inclusive").toLowerCase()} formula with ${mainRow["ga_kcals_per_cup"]||"?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is the comparison baseline.`
-    );
-    madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed'); // reset so typing works on re-render
+  // --- Enhanced Madlib Construction ---
+  function getGrainPhrase(row) {
+    // Prefer data-diet, fallback to data-grain
+    const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
+    if (g.includes("free")) return "grain-free";
+    if (g.includes("grain")) return "grain-inclusive";
+    return "grain-inclusive"; // fallback default
+  }
+  function getMeatPhrase(row) {
+    // Try to infer if formula is meat-based (you can expand this)
+    const flavor = (row["specs_primary_flavor"] || "").toLowerCase();
+    if (flavor.includes("chicken") || flavor.includes("beef") || flavor.includes("fish") || flavor.includes("meat")) {
+      return "meat-based";
+    }
+    // fallback
+    return "animal-based";
+  }
+  function getLegumePhrase(row) {
+    const val = (row["data-legumes"] || "").toLowerCase();
+    if (val.includes("free")) return "It is legumes free";
+    if (val.includes("no")) return "It is legumes free";
+    if (val.includes("yes")) return "It contains legumes";
+    return "Legume content not specified";
+  }
+  function getPoultryPhrase(row) {
+    const val = (row["data-poultry"] || "").toLowerCase();
+    if (val.includes("free")) return "and it is poultry free";
+    if (val.includes("no")) return "and it is poultry free";
+    if (val.includes("yes")) return "and it contains poultry";
+    if (val.includes("contain")) return "and it contains poultry";
+    return "and poultry content not specified";
   }
 
-  // Brand 1 (main/competitor)
+  // --- Brand phrases ---
+  const mainBrand   = mainRow["data-brand"] || "Brand";
+  const mainName    = mainRow["data-one"] || "Product";
+  const sdfName     = sdfRow["data-one"] || "Sport Dog Food";
+  const mainGrain   = getGrainPhrase(mainRow);
+  const sdfGrain    = getGrainPhrase(sdfRow);
+  const mainMeat    = getMeatPhrase(mainRow);
+  const sdfMeat     = getMeatPhrase(sdfRow);
+  const mainLegume  = getLegumePhrase(mainRow);
+  const sdfLegume   = getLegumePhrase(sdfRow);
+  const mainPoultry = getPoultryPhrase(mainRow);
+  const sdfPoultry  = getPoultryPhrase(sdfRow);
+
+  // --- Build Madlib Text ---
+  const madlib = 
+    `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula. ${mainLegume} ${mainPoultry}. ` +
+    `${sdfName} is also a ${sdfGrain}, ${sdfMeat} formula. ${sdfLegume} ${sdfPoultry}.`;
+
+  // Section Madlib (Typed.js)
+  var madlibEl = document.querySelector('[data-var="section1-madlib"]');
+  if (madlibEl) {
+    madlibEl.setAttribute('data-text', madlib);
+    madlibEl.textContent = '';
+    madlibEl.removeAttribute('data-typed'); // reset for Typed.js if needed
+  }
+
+  // --- Brand 1 (main/competitor) ---
   var el;
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
@@ -147,10 +197,6 @@ function paintSection1(mainRow, sdfRow) {
   if (el) el.textContent = mainRow["data-brand"] || "";
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
-  el = document.querySelector('[data-var="brand-1-firsting"]');
-  if (el) el.textContent = mainRow["ing-first"] || "";
-  el = document.querySelector('[data-var="brand-1-seconding"]');
-  if (el) el.textContent = mainRow["ing-second"] || "";
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
   el = document.querySelector('[data-var="brand-1-previewimg"]');
@@ -161,19 +207,14 @@ function paintSection1(mainRow, sdfRow) {
   }
   paintSvgIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="brand-1-poultryfree"]',  mainRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-upgradedmin"]',  !!mainRow.hasUpgradedMinerals);
 
-  // Sport Dog Food (SDF)
+  // --- Sport Dog Food (SDF) ---
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-brand"]');
   if (el) el.textContent = "Sport Dog Food";
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
-  el = document.querySelector('[data-var="sport-1-firsting"]');
-  if (el) el.textContent = sdfRow["ing-first"] || "";
-  el = document.querySelector('[data-var="sport-1-seconding"]');
-  if (el) el.textContent = sdfRow["ing-second"] || "";
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
   el = document.querySelector('[data-var="sport-1-previewimg"]');
@@ -184,8 +225,8 @@ function paintSection1(mainRow, sdfRow) {
   }
   paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
   paintSvgIcon('[data-var="sport-1-poultryfree"]',  sdfRow["data-poultry"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-upgradedmin"]',  !!sdfRow.hasUpgradedMinerals);
 }
+
 
 // --- SECTION 2: Macronutrient Breakdown ---
 function paintSection2(mainRow, sdfRow) {
