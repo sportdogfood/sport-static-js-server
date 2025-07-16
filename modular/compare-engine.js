@@ -120,7 +120,7 @@ if (thisMarkValue) {
   }
 }
   const headerEl = document.querySelector('[data-var="section1-header"]');
-  if (headerEl) headerEl.textContent = "Diet & Key Specs";
+  if (headerEl) headerEl.textContent = "Nutrition Profile";
 
   const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
@@ -231,7 +231,7 @@ const sdfSentence = `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span
 
 function paintSection2(mainRow, sdfRow) {
   const headerEl   = document.querySelector('[data-var="section2-header"]');
-  if (headerEl) headerEl.textContent = "Macronutrient Breakdown";
+  if (headerEl) headerEl.textContent = "Performance Essentials";
 
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) subtitleEl.textContent =
@@ -296,10 +296,10 @@ function paintSection2(mainRow, sdfRow) {
 function paintSection3(mainRow, sdfRow) {
   // Headline & subtitle
   let el = document.querySelector('[data-var="section3-header"]');
-  if (el) el.textContent = "Ingredient List & Tags";
+  if (el) el.textContent = "Under the Hood";
 
   el = document.querySelector('[data-var="section3-subtitle"]');
-  if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
+  if (el) el.textContent = "let the ingredients do the talking..";
 
   // Competitor block
   el = document.querySelector('[data-var="brand-1-sec3-name"]');
