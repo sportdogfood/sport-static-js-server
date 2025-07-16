@@ -149,7 +149,7 @@ function paintSection1(mainRow, sdfRow) {
   const mainSentence = 
     `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula that’s ${mainLegumeTerm} but ${mainPoultryTerm}.`;
   const sdfSentence  = 
-    `${sdfName} delivers a ${sdfGrain}, ${sdfMeat} diet that’s ${sdfLegumeTerm} and ${sdfPoultryTerm}.`;
+    `${sdfName} delivers a ${sdfGrain}, ${sdfMeat} diet that’s both ${sdfLegumeTerm} and ${sdfPoultryTerm}.`;
   const madlib = `${mainSentence} ${sdfSentence}`;
 
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
