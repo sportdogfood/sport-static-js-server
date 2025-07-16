@@ -2371,8 +2371,8 @@ export const CI_DATA = [
     "sd-data-fives": "",
     "ing-data-fives": [
       "C6HRL",
+    "5E1NB",
       "K5VFA",
-      "5E1NB",
       "NVHW0",
       "H0NSG",
       "U9EU7",
