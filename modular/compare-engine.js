@@ -597,36 +597,57 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
   });
 }
 
-
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
   const mainRow  = CI_DATA.find(row => row['data-five'] === mainFive);
-  const sdfId    = getSdfFormula(mainRow);
-  const sdfRow   = getCiRow(sdfId);
 
-  if (!mainRow || !sdfRow) {
-    console.error('[CCI] Unable to find required rows', { mainFive, mainRow, sdfRow });
+  if (!mainRow) {
+    console.error('[CCI] Unable to find mainRow for', mainFive);
     return;
   }
 
-  // seed globals for reuse
-  window.CCI = { mainRow, sdfRow, ING_ANIM, ING_PLANT, ING_SUPP };
+  // 1) Check URL override: look at everything after the "?" in the query string
+  const rawParam = window.location.search.slice(1); // e.g. "29280"
+  const overrideId = Object.values(SDF_FORMULAS).includes(rawParam) ? rawParam : null;
 
-  // binds click handlers and hides the “current” button
-  function setupSdfSwitcher() {
-    const buttons = Array.from(
-      document.querySelectorAll('button[data-var]')
-    ).filter(btn =>
-      Object.values(SDF_FORMULAS).includes(btn.getAttribute('data-var'))
-    );
+  // 2) Determine initial SDF ID (override or default)
+  const initialSdfId = overrideId || getSdfFormula(mainRow);
+  const initialSdfRow = getCiRow(initialSdfId);
+  if (!initialSdfRow) {
+    console.error('[CCI] Unable to find sdfRow for', initialSdfId);
+    return;
+  }
 
-    // hide the button that matches the initial sdfId
+  // 3) Seed the globals
+  window.CCI = {
+    mainRow,
+    sdfRow: initialSdfRow,
+    ING_ANIM,
+    ING_PLANT,
+    ING_SUPP
+  };
+
+  // 4) Paint on scroll as before
+  lazyLoadCompareSections(mainRow, initialSdfRow);
+
+  // 5) Switcher: binds click handlers, sets active class, hides current button
+  function setupSdfSwitcher(activeId) {
+    const buttons = Array.from(document.querySelectorAll('button[data-var]'))
+      .filter(btn => Object.values(SDF_FORMULAS).includes(btn.getAttribute('data-var')));
+
+    // Initialize: hide & mark the active button
     buttons.forEach(btn => {
-      if (btn.getAttribute('data-var') === sdfId) {
+      const id = btn.getAttribute('data-var');
+      if (id === activeId) {
         btn.style.display = 'none';
+        btn.classList.add('active');
+      } else {
+        btn.style.display = '';
+        btn.classList.remove('active');
       }
     });
 
+    // On click: repaint with the new SDF and update button states
     buttons.forEach(btn => {
       btn.addEventListener('click', () => {
         const newId     = btn.getAttribute('data-var');
@@ -636,22 +657,22 @@ export function renderComparePage() {
           return;
         }
 
-        // update global
+        // Update global
         window.CCI.sdfRow = newSdfRow;
 
-        // repaint every section
-        paintSection1(window.CCI.mainRow, newSdfRow);
-        paintSection2(window.CCI.mainRow, newSdfRow);
-        paintSection3(window.CCI.mainRow, newSdfRow);
+        // Repaint all sections immediately
+        paintSection1(mainRow, newSdfRow);
+        paintSection2(mainRow, newSdfRow);
+        paintSection3(mainRow, newSdfRow);
         if (typeof paintSectionK === 'function') {
-          paintSectionK(window.CCI.mainRow, [
+          paintSectionK(mainRow, [
             getCiRow(SDF_FORMULAS.cub),
             getCiRow(SDF_FORMULAS.dock),
             getCiRow(SDF_FORMULAS.herding)
           ]);
         }
 
-        // re-run Typed.js on all madlibs
+        // Re-fire all Typed.js madlibs
         runTypedForMadlib('section1-madlib');
         runTypedForMadlib('section2-madlib');
         runTypedForMadlib('section3-madlib');
@@ -660,17 +681,21 @@ export function renderComparePage() {
         runTypedForMadlib('section3-sport-contentious-madlib');
         runTypedForMadlib('sectionk-madlib');
 
-        // hide the clicked button, show the rest
+        // Update buttons: hide clicked, show others, toggle active class
         buttons.forEach(b => {
-          b.style.display = (b === btn ? 'none' : '');
+          const bid = b.getAttribute('data-var');
+          if (bid === newId) {
+            b.style.display = 'none';
+            b.classList.add('active');
+          } else {
+            b.style.display = '';
+            b.classList.remove('active');
+          }
         });
       });
     });
   }
 
-  // initial lazy‑load of sections on scroll
-  lazyLoadCompareSections(mainRow, sdfRow);
-
-  // wire up the switcher and hide the default button
-  setupSdfSwitcher();
+  // 6) Invoke switcher with the initial ID
+  setupSdfSwitcher(initialSdfId);
 }
