@@ -346,7 +346,7 @@ function buildSectionKMadlib(mainRow, sdfRows) {
     kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
   }
 
-  const sdfLine = `Sport formulas range from ${minKcal} kcals to as high as ${maxKcal} kcals per cup.`;
+  const sdfLine = `Sport formulas range from ${minKcal} kcals <span class="highlight">to as high as ${maxKcal} kcals per cup.</span>.`;
   return `${kcalLine} ${sdfLine}`;
 }
 
@@ -550,9 +550,10 @@ function buildSection4Madlib(mainRow) {
     ? excludedNames[0]
     : excludedNames.slice(0, -1).join(', ') + ' and ' + excludedNames.slice(-1);
 
-  return (
-    `${brand} ${product} includes ${list} — ingredients you won’t find in any Sport Dog Food formula.`
-  );
+return (
+  `${brand} ${product} includes ${list} — <span class="highlight">ingredients you won’t find in any Sport Dog Food formula</span>.`
+);
+
 }
 
 
