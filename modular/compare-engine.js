@@ -464,8 +464,8 @@ function renderIngListDivs(row) {
           );
         }
         if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry"><i class="fa-sharp-duotone fa-thin fa-drumstick"></i></div>`);
-        if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy">allergy</div>`);
-        if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious">contentious</div>`);
+        if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy"><i class="fa-regular fa-wind-warning"></i></div>`);
+        if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious"><i class="fa-solid fa-circle-exclamation"></i></div>`);
         if (ing.supplementalType === "Minerals")   tagDivs.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
         if (ing.supplementalType === "Vitamins")   tagDivs.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
         if (ing.supplementalType === "Probiotics") tagDivs.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
