@@ -299,7 +299,7 @@ function paintSection3(mainRow, sdfRow) {
   if (el) el.textContent = "Under the Hood";
 
   el = document.querySelector('[data-var="section3-subtitle"]');
-  if (el) el.textContent = "let the ingredients do the talking..";
+  if (el) el.textContent = "Will All the Ingredients Hold the Line?";
 
   // Competitor block
   el = document.querySelector('[data-var="brand-1-sec3-name"]');
