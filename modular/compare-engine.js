@@ -120,17 +120,23 @@ function paintSection1(mainRow, sdfRow) {
     return "animal-based";
   }
   function getLegumePhrase(row) {
-    const val = (row["data-legumes"] || "").toLowerCase();
-    if (val.includes("free") || val.includes("no")) return "It is legumes free";
-    if (val.includes("yes")) return "It contains legumes";
-    return "Legume content not specified";
+  const val = (row["data-legumes"] || "").toLowerCase();
+  if (val.includes("free") || val.includes("no")) {
+    return "It is legumes free";
   }
-  function getPoultryPhrase(row) {
-    const val = (row["data-poultry"] || "").toLowerCase();
-    if (val.includes("free") || val.includes("no")) return "and it is poultry free";
-    if (val.includes("yes") || val.includes("contain")) return "and it contains poultry";
-    return "and poultry content not specified";
+  // everything else counts as “contains legumes”
+  return "It contains legumes";
+}
+
+function getPoultryPhrase(row) {
+  const val = (row["data-poultry"] || "").toLowerCase();
+  if (val.includes("free") || val.includes("no")) {
+    return "and it is poultry free";
   }
+  // otherwise, it contains poultry
+  return "and it contains poultry";
+}
+
 
   const mainBrand   = mainRow["data-brand"] || "Brand";
   const mainName    = mainRow["data-one"] || "Product";
