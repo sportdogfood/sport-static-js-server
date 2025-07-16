@@ -99,6 +99,7 @@ function joinWithAnd(arr) {
 }
 
 function paintSection1(mainRow, sdfRow) {
+  // — Headers & subtitles —
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Diet & Key Specs";
 
@@ -106,53 +107,50 @@ function paintSection1(mainRow, sdfRow) {
   if (subtitleEl) subtitleEl.textContent =
     `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
+  // — Phrase helpers —
   function getGrainPhrase(row) {
     const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
-    if (g.includes("free")) return "grain-free";
-    if (g.includes("grain")) return "grain-inclusive";
-    return "grain-inclusive";
+    if (g.includes("free")) return "grain‑free";
+    if (g.includes("grain")) return "grain‑inclusive";
+    return "grain‑inclusive";
   }
   function getMeatPhrase(row) {
-    const flavor = (row["specs_primary_flavor"] || "").toLowerCase();
-    if (flavor.includes("chicken") || flavor.includes("beef") || flavor.includes("fish") || flavor.includes("meat")) {
-      return "meat-based";
+    const f = (row["specs_primary_flavor"] || "").toLowerCase();
+    if (["chicken","beef","fish","meat"].some(w => f.includes(w))) {
+      return "meat‑based";
     }
-    return "animal-based";
+    return "animal‑based";
   }
-  function getLegumePhrase(row) {
-  const val = (row["data-legumes"] || "").toLowerCase();
-  if (val.includes("free") || val.includes("no")) {
-    return "It is legumes free";
+  function getLegumeTerm(row) {
+    const v = (row["data-legumes"] || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return "legume‑free";
+    return "contains legumes";
   }
-  // everything else counts as “contains legumes”
-  return "It contains legumes";
-}
-
-function getPoultryPhrase(row) {
-  const val = (row["data-poultry"] || "").toLowerCase();
-  if (val.includes("free") || val.includes("no")) {
-    return "and it is poultry free";
+  function getPoultryTerm(row) {
+    const v = (row["data-poultry"] || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return "poultry free";
+    return "contains poultry";
   }
-  // otherwise, it contains poultry
-  return "and it contains poultry";
-}
 
+  // — Core values —
+  const mainBrand       = mainRow["data-brand"]           || "Brand";
+  const mainName        = mainRow["data-one"]             || "Product";
+  const sdfName         = sdfRow["data-one"]              || "Sport Dog Food";
+  const mainGrain       = getGrainPhrase(mainRow);
+  const mainMeat        = getMeatPhrase(mainRow);
+  const sdfGrain        = getGrainPhrase(sdfRow);
+  const sdfMeat         = getMeatPhrase(sdfRow);
+  const mainLegumeTerm  = getLegumeTerm(mainRow);
+  const mainPoultryTerm = getPoultryTerm(mainRow);
+  const sdfLegumeTerm   = getLegumeTerm(sdfRow);
+  const sdfPoultryTerm  = getPoultryTerm(sdfRow);
 
-  const mainBrand   = mainRow["data-brand"] || "Brand";
-  const mainName    = mainRow["data-one"] || "Product";
-  const sdfName     = sdfRow["data-one"] || "Sport Dog Food";
-  const mainGrain   = getGrainPhrase(mainRow);
-  const sdfGrain    = getGrainPhrase(sdfRow);
-  const mainMeat    = getMeatPhrase(mainRow);
-  const sdfMeat     = getMeatPhrase(sdfRow);
-  const mainLegume  = getLegumePhrase(mainRow);
-  const sdfLegume   = getLegumePhrase(sdfRow);
-  const mainPoultry = getPoultryPhrase(mainRow);
-  const sdfPoultry  = getPoultryPhrase(sdfRow);
-
-  const madlib =
-    `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula. ${mainLegume} ${mainPoultry}. ` +
-    `${sdfName} is also a ${sdfGrain}, ${sdfMeat} formula. ${sdfLegume} ${sdfPoultry}.`;
+  // — Two‑sentence madlib —
+  const mainSentence = 
+    `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula that’s ${mainLegumeTerm} but ${mainPoultryTerm}.`;
+  const sdfSentence  = 
+    `${sdfName} delivers a ${sdfGrain}, ${sdfMeat} diet that’s ${sdfLegumeTerm} and ${sdfPoultryTerm}.`;
+  const madlib = `${mainSentence} ${sdfSentence}`;
 
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
@@ -161,11 +159,12 @@ function getPoultryPhrase(row) {
     madlibEl.removeAttribute('data-typed');
   }
 
+  // — Rest of your DOM wiring (unchanged) —
   let el;
   el = document.querySelector('[data-var="brand-1-name"]');
-  if (el) el.textContent = mainRow["data-one"] || "";
+  if (el) el.textContent = mainName;
   el = document.querySelector('[data-var="brand-1-brand"]');
-  if (el) el.textContent = mainRow["data-brand"] || "";
+  if (el) el.textContent = mainBrand;
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
   el = document.querySelector('[data-var="brand-1-diet"]');
@@ -176,11 +175,17 @@ function getPoultryPhrase(row) {
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
-  paintSvgIcon('[data-var="brand-1-legumesfree"]',  mainRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon(
+    '[data-var="brand-1-legumesfree"]',
+    mainRow["data-legumes"]?.toLowerCase().includes("free")
+  );
+  paintSvgIcon(
+    '[data-var="brand-1-poultryfree"]',
+    mainRow["data-poultry"]?.toLowerCase().includes("free")
+  );
 
   el = document.querySelector('[data-var="sport-1-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
+  if (el) el.textContent = sdfName;
   el = document.querySelector('[data-var="sport-1-brand"]');
   if (el) el.textContent = "Sport Dog Food";
   el = document.querySelector('[data-var="sport-1-flavor"]');
@@ -193,9 +198,16 @@ function getPoultryPhrase(row) {
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
-  paintSvgIcon('[data-var="sport-1-legumesfree"]',  sdfRow["data-legumes"]?.toLowerCase().includes("free"));
-  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
+  paintSvgIcon(
+    '[data-var="sport-1-legumesfree"]',
+    sdfRow["data-legumes"]?.toLowerCase().includes("free")
+  );
+  paintSvgIcon(
+    '[data-var="sport-1-poultryfree"]',
+    sdfRow["data-poultry"]?.toLowerCase().includes("free")
+  );
 }
+
 
 function paintSection2(mainRow, sdfRow) {
   const headerEl   = document.querySelector('[data-var="section2-header"]');
