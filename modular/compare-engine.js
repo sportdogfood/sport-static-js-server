@@ -220,9 +220,17 @@ function paintSection2(mainRow, sdfRow) {
 
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    madlibEl.setAttribute('data-text',
-      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ${mainRow["ga_crude_protein_%"] || "?"}% protein, ${mainRow["ga_crude_fat_%"] || "?"}% fat, and ${mainRow["ga_kcals_per_cup"] || "?"} kcals/cup. Sport Dog Food ${sdfRow["data-one"]} is shown for comparison.`
-    );
+   madlibEl.setAttribute('data-text',
+  `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
+    `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+    `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+    `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
+  `Sport Dog Food ${sdfRow["data-one"]} provides ` +
+    `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+    `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+    `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
+);
+
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
@@ -267,57 +275,86 @@ function paintSection2(mainRow, sdfRow) {
 }
 
 function paintSection3(mainRow, sdfRow) {
+  // Headline & subtitle
   let el = document.querySelector('[data-var="section3-header"]');
   if (el) el.textContent = "Ingredient List & Tags";
+
   el = document.querySelector('[data-var="section3-subtitle"]');
   if (el) el.textContent = "Full ingredient list and tagged details for each formula.";
 
+  // Competitor block
   el = document.querySelector('[data-var="brand-1-sec3-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
+
+  // section3-madlib
   el = document.querySelector('[data-var="section3-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildIngredientMadlib(mainRow));
     el.textContent = '';
+    el.removeAttribute('data-typed');
   }
+
+  // table of counts
   el = document.querySelector('[data-var="brand-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
+
+  // section3-contentious-madlib
   el = document.querySelector('[data-var="section3-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(mainRow));
     el.textContent = '';
+    el.removeAttribute('data-typed');
   }
+
+  // preview image
   el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
   if (el && mainRow.previewengine) {
     el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
+
+  // ingredient list
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(mainRow);
 
+  // Sport Dog Food block
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
+
+  // section3-sport-madlib
   el = document.querySelector('[data-var="section3-sport-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
     el.textContent = '';
+    el.removeAttribute('data-typed');
   }
+
+  // sport counts table
   el = document.querySelector('[data-var="sport-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
+
+  // section3-sport-contentious-madlib
   el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
   if (el) {
     el.setAttribute('data-text', buildSection4Madlib(sdfRow));
     el.textContent = '';
+    el.removeAttribute('data-typed');
   }
+
+  // sport preview image
   el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
   if (el && sdfRow.previewengine) {
     el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
     el.style.setProperty("background-size", "cover");
     el.style.setProperty("background-position", "center");
   }
+
+  // sport ingredient list
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
+
 
 function paintSvgIcon(selector, isPositive) {
   const el = document.querySelector(selector);
@@ -343,7 +380,7 @@ function buildSectionKMadlib(mainRow, sdfRows) {
   if (mainKcal !== "?" && mainKcal < 410) {
     kcalLine += " This is not particularly high if you are feeding a highly active dog.";
   } else if (mainKcal !== "?" && mainKcal > 500) {
-    kcalLine += " This is a calorie-dense formula, suitable for high-performance dogs.";
+    kcalLine += " This is suitable for high-performance dogs.";
   }
 
   const sdfLine = `Sport formulas range from ${minKcal} kcals <span class="highlight">to as high as ${maxKcal} kcals per cup.</span>.`;
@@ -518,21 +555,27 @@ function getContentiousIngredients(row) {
 }
 
 function buildSection4Madlib(mainRow) {
-  const brand       = mainRow["data-brand"];
-  const product     = mainRow["data-one"];
-  const compIds     = Array.isArray(mainRow["ing-data-fives"]) ? mainRow["ing-data-fives"] : [];
+  const brand   = mainRow["data-brand"];
+  const product = mainRow["data-one"];
+  const compIds = Array.isArray(mainRow["ing-data-fives"])
+    ? mainRow["ing-data-fives"]
+    : [];
 
-  // gather all SDF ingredient IDs
-  const sdfRows     = [
+  // 1) Gather every ingredient ID used by ALL SDF formulas
+  const sdfRows  = [
     getCiRow(SDF_FORMULAS.cub),
     getCiRow(SDF_FORMULAS.dock),
     getCiRow(SDF_FORMULAS.herding)
   ].filter(Boolean);
-  const sdfIdSet    = new Set(
-    sdfRows.flatMap(r => Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : [])
+  const sdfIdSet = new Set(
+    sdfRows.flatMap(r =>
+      Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : []
+    )
   );
 
-  // unique-to-competitor AND flagged contentious
+  // 2) Find the competitor’s IDs that are BOTH:
+  //    a) not in any SDF formula
+  //    b) flagged as contentious
   const excludedNames = [...new Set(
     compIds
       .filter(id => !sdfIdSet.has(id))
@@ -541,20 +584,31 @@ function buildSection4Madlib(mainRow) {
   .map(id => ING_MAP[id].displayAs || ING_MAP[id].Name)
   .filter(Boolean);
 
+  // 3) Fallback if none remain
   if (excludedNames.length === 0) {
     return `There are no unique contentious ingredients in ${brand} ${product}.`;
   }
 
-  // join with commas + "and"
-  const list = excludedNames.length === 1
-    ? excludedNames[0]
-    : excludedNames.slice(0, -1).join(', ') + ' and ' + excludedNames.slice(-1);
+  // ←—— **NEW**: wrap each ingredient in a span
+  const spanItems = excludedNames.map(name =>
+    `<span class="cont-ingredient">${name}</span>`
+  );
 
-return (
-  `${brand} ${product} includes ${list} — <span class="highlight">ingredients you won’t find in any Sport Dog Food formula</span>.`
-);
+  // 4) Re-join with commas + "and"
+  const joined =
+    spanItems.length === 1
+      ? spanItems[0]
+      : spanItems.slice(0, -1).join(', ') +
+        ' and ' +
+        spanItems.slice(-1);
 
+  // 5) Return the sentence, highlighting the call‑out phrase
+  return (
+    `${brand} ${product} includes ${joined} — ` +
+    `<span class="highlight">ingredients you won’t find in any Sport Dog Food formula</span>.`
+  );
 }
+
 
 
 function runTypedForMadlib(dataVar) {
