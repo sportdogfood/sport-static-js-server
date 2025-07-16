@@ -100,7 +100,7 @@ export const CI_DATA = [
     "ga_crude_fat_%": 13,
     "ga_crude_fiber_%": 3.9,
     "ga_moisture_%": 10,
-    "ga_kcals_per_kg": 3122.6415094339623,
+    "ga_kcals_per_kg": 3122,
     "ga_kcals_per_cup": 331
   },
   {
@@ -212,7 +212,7 @@ export const CI_DATA = [
     "ga_crude_fat_%": 9,
     "ga_crude_fiber_%": 4,
     "ga_moisture_%": 10,
-    "ga_kcals_per_kg": 3207.547169811321,
+    "ga_kcals_per_kg": 3207,
     "ga_kcals_per_cup": 340
   },
   {
@@ -2326,7 +2326,7 @@ export const CI_DATA = [
     "ga_crude_fat_%": 12,
     "ga_crude_fiber_%": 4.5,
     "ga_moisture_%": 12,
-    "ga_kcals_per_kg": 4018.867924528302,
+    "ga_kcals_per_kg": 4018,
     "ga_kcals_per_cup": 426
   },
   {
@@ -2353,7 +2353,7 @@ export const CI_DATA = [
     "data-grain": "Grain Free",
     "brandId": "1000",
     "brandDisplay": "Sport Dog Food",
-    "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9x2e8c0d5fb67944a181f11640ec49ee51?version=1.0&width=2046&height=1536",
+      "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9xb6de6ad0806e49c182dbf11c72cb5bb2?version=1.0&width=2046&height=1536",
     "previewAlttag": " Dog Food Bag",
     "cf_description": "",
     "data-faqType": "ci",
@@ -2433,7 +2433,7 @@ export const CI_DATA = [
     "ga_crude_fat_%": 15,
     "ga_crude_fiber_%": 3.3,
     "ga_moisture_%": 8,
-    "ga_kcals_per_kg": 3603.0500000000006,
+    "ga_kcals_per_kg": 3603,
     "ga_kcals_per_cup": 460
   },
   {
@@ -2680,7 +2680,8 @@ export const CI_DATA = [
     "data-grain": "",
     "brandId": "1000",
     "brandDisplay": "Sport Dog Food",
-    "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9xb6de6ad0806e49c182dbf11c72cb5bb2?version=1.0&width=2046&height=1536",
+
+ "previewengine": "https://previewengine-accl.zoho.com/image/WD/iph9x2e8c0d5fb67944a181f11640ec49ee51?version=1.0&width=2046&height=1536",
     "previewAlttag": " Dog Food Bag",
     "cf_description": "",
     "data-faqType": "ci",
@@ -2758,7 +2759,7 @@ export const CI_DATA = [
     "ga_crude_fat_%": 20,
     "ga_crude_fiber_%": 3.3,
     "ga_moisture_%": 8,
-    "ga_kcals_per_kg": 3847.7000000000003,
+    "ga_kcals_per_kg": 3847,
     "ga_kcals_per_cup": 526
   }
 ];
