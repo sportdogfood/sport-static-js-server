@@ -609,7 +609,68 @@ export function renderComparePage() {
     return;
   }
 
+  // seed globals for reuse
   window.CCI = { mainRow, sdfRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
+  // binds click handlers and hides the “current” button
+  function setupSdfSwitcher() {
+    const buttons = Array.from(
+      document.querySelectorAll('button[data-var]')
+    ).filter(btn =>
+      Object.values(SDF_FORMULAS).includes(btn.getAttribute('data-var'))
+    );
+
+    // hide the button that matches the initial sdfId
+    buttons.forEach(btn => {
+      if (btn.getAttribute('data-var') === sdfId) {
+        btn.style.display = 'none';
+      }
+    });
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const newId     = btn.getAttribute('data-var');
+        const newSdfRow = getCiRow(newId);
+        if (!newSdfRow) {
+          console.error('[CCI] No SDF row for', newId);
+          return;
+        }
+
+        // update global
+        window.CCI.sdfRow = newSdfRow;
+
+        // repaint every section
+        paintSection1(window.CCI.mainRow, newSdfRow);
+        paintSection2(window.CCI.mainRow, newSdfRow);
+        paintSection3(window.CCI.mainRow, newSdfRow);
+        if (typeof paintSectionK === 'function') {
+          paintSectionK(window.CCI.mainRow, [
+            getCiRow(SDF_FORMULAS.cub),
+            getCiRow(SDF_FORMULAS.dock),
+            getCiRow(SDF_FORMULAS.herding)
+          ]);
+        }
+
+        // re-run Typed.js on all madlibs
+        runTypedForMadlib('section1-madlib');
+        runTypedForMadlib('section2-madlib');
+        runTypedForMadlib('section3-madlib');
+        runTypedForMadlib('section3-sport-madlib');
+        runTypedForMadlib('section3-contentious-madlib');
+        runTypedForMadlib('section3-sport-contentious-madlib');
+        runTypedForMadlib('sectionk-madlib');
+
+        // hide the clicked button, show the rest
+        buttons.forEach(b => {
+          b.style.display = (b === btn ? 'none' : '');
+        });
+      });
+    });
+  }
+
+  // initial lazy‑load of sections on scroll
   lazyLoadCompareSections(mainRow, sdfRow);
+
+  // wire up the switcher and hide the default button
+  setupSdfSwitcher();
 }
