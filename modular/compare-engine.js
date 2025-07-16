@@ -438,6 +438,7 @@ function buildCountsTable(row, label) {
   `;
 }
 
+// ── Updated section3‑madlib builder ──
 function buildIngredientMadlib(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -450,7 +451,7 @@ function buildIngredientMadlib(row) {
   const poultryCount  = ings.filter(ing => ing.tagPoultry).length;
   const legumeCount   = ings.filter(ing => {
     const dt = (ing["data-type"] || "").toLowerCase();
-    return dt.includes("legume") || dt.includes("legumes");
+    return dt.includes("legume");
   }).length;
 
   const upgradedCount = ings.filter(ing =>
@@ -458,16 +459,21 @@ function buildIngredientMadlib(row) {
     (ing.supplementalAssist || "").toLowerCase().includes("complex")
   ).length;
 
+  // choose mineral phrasing
+  const mineralPhrase = upgradedCount > 0
+    ? `(${upgradedCount}) upgraded minerals.`
+    : `No upgraded minerals were detected.`;
+
   return (
     `(${totalCount}) ingredients evaluated. ` +
     `${firstIng} is first, ${secondIng} is second. ` +
-    `(${allergyCount}) may attribute allergy, ` +
+    `(${allergyCount}) may trigger allergies, ` +
     `(${poultryCount}) are poultry, ` +
-    `(${legumeCount}) are legumes ` +
-    `and we could not identify upgraded minerals. ` +
-    `(${upgradedCount}) upgraded minerals.`
+    `(${legumeCount}) are legumes. ` +
+    mineralPhrase
   );
 }
+
 
 
 function renderIngListDivs(row) {
@@ -515,7 +521,7 @@ function buildSection4Madlib(mainRow) {
   const product     = mainRow["data-one"];
   const compIds     = Array.isArray(mainRow["ing-data-fives"]) ? mainRow["ing-data-fives"] : [];
 
-  // Gather every ing-id used across all SDF formulas
+  // gather all SDF ingredient IDs
   const sdfRows     = [
     getCiRow(SDF_FORMULAS.cub),
     getCiRow(SDF_FORMULAS.dock),
@@ -525,23 +531,27 @@ function buildSection4Madlib(mainRow) {
     sdfRows.flatMap(r => Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : [])
   );
 
-  // Filter competitor ids to only those NOT found in any SDF formula
-  const excludedIds = [...new Set(compIds.filter(id => !sdfIdSet.has(id)))];
-  const excluded    = excludedIds
-    .map(id => ING_MAP[id])
-    .filter(Boolean)
-    .map(ing => ing.displayAs || ing.Name);
+  // unique-to-competitor AND flagged contentious
+  const excludedNames = [...new Set(
+    compIds
+      .filter(id => !sdfIdSet.has(id))
+      .filter(id => ING_MAP[id]?.tagContentious)
+  )]
+  .map(id => ING_MAP[id].displayAs || ING_MAP[id].Name)
+  .filter(Boolean);
 
-  if (excluded.length === 0) {
-    return `There are no unique ingredients in ${brand} ${product} that aren’t found in any Sport Dog Food formula.`;
+  if (excludedNames.length === 0) {
+    return `There are no unique contentious ingredients in ${brand} ${product}.`;
   }
 
-  // Helper to join with commas and “and”
-  const phrase = excluded.length === 1
-    ? excluded[0]
-    : excluded.slice(0, -1).join(', ') + ' and ' + excluded.slice(-1);
+  // join with commas + "and"
+  const list = excludedNames.length === 1
+    ? excludedNames[0]
+    : excludedNames.slice(0, -1).join(', ') + ' and ' + excludedNames.slice(-1);
 
-  return `${brand} ${product} includes ${phrase} — ingredients you won’t find in any Sport Dog Food formula.`;
+  return (
+    `${brand} ${product} includes ${list} — ingredients you won’t find in any Sport Dog Food formula.`
+  );
 }
 
 
