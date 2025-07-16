@@ -557,25 +557,19 @@ function getContentiousIngredients(row) {
 function buildSection4Madlib(mainRow) {
   const brand   = mainRow["data-brand"];
   const product = mainRow["data-one"];
-  const compIds = Array.isArray(mainRow["ing-data-fives"])
-    ? mainRow["ing-data-fives"]
-    : [];
+  const compIds = Array.isArray(mainRow["ing-data-fives"]) ? mainRow["ing-data-fives"] : [];
 
-  // 1) Gather every ingredient ID used by ALL SDF formulas
+  // gather all SDF ingredient IDs
   const sdfRows  = [
     getCiRow(SDF_FORMULAS.cub),
     getCiRow(SDF_FORMULAS.dock),
     getCiRow(SDF_FORMULAS.herding)
   ].filter(Boolean);
   const sdfIdSet = new Set(
-    sdfRows.flatMap(r =>
-      Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : []
-    )
+    sdfRows.flatMap(r => Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : [])
   );
 
-  // 2) Find the competitor’s IDs that are BOTH:
-  //    a) not in any SDF formula
-  //    b) flagged as contentious
+  // find competitor-only, contentious ingredients
   const excludedNames = [...new Set(
     compIds
       .filter(id => !sdfIdSet.has(id))
@@ -584,28 +578,23 @@ function buildSection4Madlib(mainRow) {
   .map(id => ING_MAP[id].displayAs || ING_MAP[id].Name)
   .filter(Boolean);
 
-  // 3) Fallback if none remain
   if (excludedNames.length === 0) {
     return `There are no unique contentious ingredients in ${brand} ${product}.`;
   }
 
-  // ←—— **NEW**: wrap each ingredient in a span
+  // wrap each in a span
   const spanItems = excludedNames.map(name =>
     `<span class="cont-ingredient">${name}</span>`
   );
 
-  // 4) Re-join with commas + "and"
+  // join with commas and "and"
   const joined =
     spanItems.length === 1
       ? spanItems[0]
-      : spanItems.slice(0, -1).join(', ') +
-        ' and ' +
-        spanItems.slice(-1);
+      : spanItems.slice(0, -1).join(', ') + ' and ' + spanItems.slice(-1);
 
-  // 5) Return the sentence, highlighting the call‑out phrase
   return (
-    `${brand} ${product} includes ${joined} — ` +
-    `<span class="highlight">ingredients you won’t find in any Sport Dog Food formula</span>.`
+    `${brand} ${product} includes ${joined} — <span class="highlight">ingredients you won’t find in any Sport Dog Food formula</span>.`
   );
 }
 
