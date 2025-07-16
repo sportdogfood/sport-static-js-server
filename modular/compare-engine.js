@@ -439,28 +439,36 @@ function buildCountsTable(row, label) {
 }
 
 function buildIngredientMadlib(row) {
-  const counts = getIngredientCategoryCounts(row);
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
-  let madlib = `${counts.total} ingredients evaluated.`;
-  if (ings[0]) madlib += ` First ingredient: ${ings[0].displayAs || ings[0].Name}.`;
-  if (ings[1]) madlib += ` Second ingredient: ${ings[1].displayAs || ings[1].Name}.`;
+  const totalCount    = ings.length;
+  const firstIng      = ings[0]?.displayAs || ings[0]?.Name || "";
+  const secondIng     = ings[1]?.displayAs || ings[1]?.Name || "";
 
-  const allergyIngs = ings.filter(ing => ing.tagAllergy).map(ing => ing.displayAs).join(', ');
-  const contentiousIngs = ings.filter(ing => ing.tagContentious).map(ing => ing.displayAs).join(', ');
+  const allergyCount  = ings.filter(ing => ing.tagAllergy).length;
+  const poultryCount  = ings.filter(ing => ing.tagPoultry).length;
+  const legumeCount   = ings.filter(ing => {
+    const dt = (ing["data-type"] || "").toLowerCase();
+    return dt.includes("legume") || dt.includes("legumes");
+  }).length;
 
-  if (allergyIngs) madlib += ` Contains allergy ingredients (${allergyIngs}).`;
-  if (contentiousIngs) madlib += ` Contains contentious ingredients (${contentiousIngs}).`;
-
-  const hasUpgraded = ings.some(ing =>
+  const upgradedCount = ings.filter(ing =>
     (ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
     (ing.supplementalAssist || "").toLowerCase().includes("complex")
-  );
-  if (!hasUpgraded) madlib += ` This formula does not include upgraded minerals where Sport Dog Food does.`;
+  ).length;
 
-  return madlib;
+  return (
+    `(${totalCount}) ingredients evaluated. ` +
+    `${firstIng} is first, ${secondIng} is second. ` +
+    `(${allergyCount}) may attribute allergy, ` +
+    `(${poultryCount}) are poultry, ` +
+    `(${legumeCount}) are legumes ` +
+    `and we could not identify upgraded minerals. ` +
+    `(${upgradedCount}) upgraded minerals.`
+  );
 }
+
 
 function renderIngListDivs(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
@@ -503,17 +511,39 @@ function getContentiousIngredients(row) {
 }
 
 function buildSection4Madlib(mainRow) {
-  const brand = mainRow["data-brand"];
-  const product = mainRow["data-one"];
-  const excluded = getContentiousIngredients(mainRow);
+  const brand       = mainRow["data-brand"];
+  const product     = mainRow["data-one"];
+  const compIds     = Array.isArray(mainRow["ing-data-fives"]) ? mainRow["ing-data-fives"] : [];
+
+  // Gather every ing-id used across all SDF formulas
+  const sdfRows     = [
+    getCiRow(SDF_FORMULAS.cub),
+    getCiRow(SDF_FORMULAS.dock),
+    getCiRow(SDF_FORMULAS.herding)
+  ].filter(Boolean);
+  const sdfIdSet    = new Set(
+    sdfRows.flatMap(r => Array.isArray(r["ing-data-fives"]) ? r["ing-data-fives"] : [])
+  );
+
+  // Filter competitor ids to only those NOT found in any SDF formula
+  const excludedIds = [...new Set(compIds.filter(id => !sdfIdSet.has(id)))];
+  const excluded    = excludedIds
+    .map(id => ING_MAP[id])
+    .filter(Boolean)
+    .map(ing => ing.displayAs || ing.Name);
+
   if (excluded.length === 0) {
-    return `There are no contentious ingredients in ${brand} ${product}.`;
+    return `There are no unique ingredients in ${brand} ${product} that aren’t found in any Sport Dog Food formula.`;
   }
-  if (excluded.length === 1) {
-    return `${brand} ${product} contains ${excluded[0]}, which is not found in any Sport Dog Food formula.`;
-  }
-  return `With ${brand} ${product} you'll find ingredients like ${joinWithAnd(excluded)}. Those are ingredients you won't find in any Sport Dog Food formulas.`;
+
+  // Helper to join with commas and “and”
+  const phrase = excluded.length === 1
+    ? excluded[0]
+    : excluded.slice(0, -1).join(', ') + ' and ' + excluded.slice(-1);
+
+  return `${brand} ${product} includes ${phrase} — ingredients you won’t find in any Sport Dog Food formula.`;
 }
+
 
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
