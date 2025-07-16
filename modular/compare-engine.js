@@ -73,24 +73,7 @@ export function paintCompareShell({
     }, 4000);
   }
 }
-const thisMarkValue = mainRow["this-mark"];
-if (thisMarkValue) {
-  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-  if (thisMarkEl) {
-    // Plain text:
-    thisMarkEl.textContent = thisMarkValue;
 
-    // — Or, if you want it to type like your madlibs:
-    thisMarkEl.setAttribute('data-text', thisMarkValue);
-    thisMarkEl.textContent = '';
-    thisMarkEl.removeAttribute('data-typed');
-    new Typed(thisMarkEl, {
-      strings: [thisMarkValue],
-      typeSpeed: 24,
-      showCursor: false
-    });
-  }
-}
 const SDF_FORMULAS = {
   cub:     "29280",
   dock:    "29099",
@@ -117,6 +100,25 @@ function joinWithAnd(arr) {
 
 function paintSection1(mainRow, sdfRow) {
   // — Headers & subtitles —
+
+const thisMarkValue = mainRow["this-mark"];
+if (thisMarkValue) {
+  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
+  if (thisMarkEl) {
+    // Plain text:
+    thisMarkEl.textContent = thisMarkValue;
+
+    // — Or, if you want it to type like your madlibs:
+    thisMarkEl.setAttribute('data-text', thisMarkValue);
+    thisMarkEl.textContent = '';
+    thisMarkEl.removeAttribute('data-typed');
+    new Typed(thisMarkEl, {
+      strings: [thisMarkValue],
+      typeSpeed: 24,
+      showCursor: false
+    });
+  }
+}
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Diet & Key Specs";
 
