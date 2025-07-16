@@ -463,7 +463,7 @@ function renderIngListDivs(row) {
             `<div class="ci-ing-tag ci-tag-default ci-tag-${getConsumerTypeTag(ing["data-type"]).toLowerCase()}">${getConsumerTypeTag(ing["data-type"])}</div>`
           );
         }
-        if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry">poultry</div>`);
+        if (ing.tagPoultry)     tagDivs.push(`<div class="ci-ing-tag ci-tag-poultry"><i class="fa-sharp-duotone fa-thin fa-drumstick"></i></div>`);
         if (ing.tagAllergy)     tagDivs.push(`<div class="ci-ing-tag ci-tag-allergy">allergy</div>`);
         if (ing.tagContentious) tagDivs.push(`<div class="ci-ing-tag ci-tag-contentious">contentious</div>`);
         if (ing.supplementalType === "Minerals")   tagDivs.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
