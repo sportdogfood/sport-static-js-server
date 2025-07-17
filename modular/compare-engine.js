@@ -2,7 +2,35 @@ import { CI_DATA }   from './ci.js';
 import { ING_ANIM }  from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
 import { ING_SUPP }  from './ingSupp.js';
-//import Typed         from 'https://cdn.jsdelivr.net/npm/typed.js@2.0.12/lib/typed.esm.js';
+// (no import Typed.js here if you’re loading it via <script>)
+
+// ── Lazy-bg helpers ──
+function setLazyBackground(el, url) {
+  if (!el || !url) return;
+  el.dataset.bg = url;
+  // make sure your HTML element still has class="lazy-bg"
+}
+
+function lazyLoadBgImages() {
+  const els = document.querySelectorAll('.lazy-bg[data-bg]');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(el => {
+      el.style.backgroundImage = `url("${el.dataset.bg}")`;
+      el.classList.remove('lazy-bg');
+    });
+    return;
+  }
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (!isIntersecting) return;
+      target.style.backgroundImage = `url("${target.dataset.bg}")`;
+      target.classList.remove('lazy-bg');
+      obs.unobserve(target);
+    });
+  }, { root: null, rootMargin: '0px 0px -30% 0px', threshold: 0.1 });
+  els.forEach(el => io.observe(el));
+}
+
 
 export function paintCompareShell({
   containerSelector = '.pwr-section-container',
@@ -775,8 +803,10 @@ export function renderComparePage() {
     });
   }
 
-  // ——— 6. Finally, kick off the switcher ———
+   // ——— 6. Finally, kick off the switcher ———
   setupSdfSwitcher(initialId);
-}
 
+  // ——— 7. Finally, kick off the background lazy-loader ———
+  lazyLoadBgImages();
+}
 
