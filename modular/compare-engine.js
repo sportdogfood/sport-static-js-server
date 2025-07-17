@@ -485,13 +485,13 @@ function buildIngredientMadlib(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
-  const totalCount    = ings.length;
-  const firstIng      = ings[0]?.displayAs || ings[0]?.Name || "";
-  const secondIng     = ings[1]?.displayAs || ings[1]?.Name || "";
+  const totalCount = ings.length;
+  const firstIng   = ings[0]?.displayAs || ings[0]?.Name || "";
+  const secondIng  = ings[1]?.displayAs || ings[1]?.Name || "";
 
-  const allergyCount  = ings.filter(ing => ing.tagAllergy).length;
-  const poultryCount  = ings.filter(ing => ing.tagPoultry).length;
-  const legumeCount   = ings.filter(ing => {
+  const allergyCount = ings.filter(ing => ing.tagAllergy).length;
+  const poultryCount = ings.filter(ing => ing.tagPoultry).length;
+  const legumeCount  = ings.filter(ing => {
     const dt = (ing["data-type"] || "").toLowerCase();
     return dt.includes("legume");
   }).length;
@@ -501,20 +501,41 @@ function buildIngredientMadlib(row) {
     (ing.supplementalAssist || "").toLowerCase().includes("complex")
   ).length;
 
-  // choose mineral phrasing
+  // Grammar helpers
+  const pluralize = (count, singular, plural) =>
+    count === 1 ? singular.replace("{{n}}", count) : plural.replace("{{n}}", count);
+
+  const allergyPhrase = pluralize(
+    allergyCount,
+    `{{n}} may trigger an allergy`,
+    `{{n}} may trigger allergies`
+  );
+
+  const poultryPhrase = pluralize(
+    poultryCount,
+    `{{n}} is poultry`,
+    `{{n}} are poultry`
+  );
+
+  const legumePhrase = pluralize(
+    legumeCount,
+    `{{n}} is a legume`,
+    `{{n}} are legumes`
+  );
+
   const mineralPhrase = upgradedCount > 0
-    ? `(${upgradedCount}) upgraded minerals.`
+    ? pluralize(upgradedCount, `and {{n}} is an upgraded mineral.`, `and {{n}} are upgraded minerals.`)
     : `No upgraded minerals were detected.`;
 
   return (
     `(${totalCount}) ingredients evaluated. ` +
     `${firstIng} is first, ${secondIng} is second. ` +
-    `(${allergyCount}) may trigger allergies, ` +
-    `(${poultryCount}) are poultry, ` +
-    `(${legumeCount}) are legumes. ` +
-    mineralPhrase
+    `(${allergyCount}) ${allergyPhrase}, ` +
+    `(${poultryCount}) ${poultryPhrase}, ` +
+    `(${legumeCount}) ${legumePhrase} ${mineralPhrase}`
   );
 }
+
 
 
 
