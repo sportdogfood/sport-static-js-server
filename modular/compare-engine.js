@@ -243,7 +243,7 @@ function paintSection2(mainRow, sdfRow) {
       `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
       `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
       `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
-      `Sport Dog Food ${sdfRow["data-one"]} provides ` +
+      `Sport Dog Food ${sdfRow["data-one"]} packs ` +
       `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
       `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
       `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
