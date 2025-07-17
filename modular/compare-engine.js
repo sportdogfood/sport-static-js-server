@@ -2,10 +2,26 @@ import { CI_DATA }   from './ci.js';
 import { ING_ANIM }  from './ingAnim.js';
 import { ING_PLANT } from './ingPlant.js';
 import { ING_SUPP }  from './ingSupp.js';
-// (no import Typed.js here if you’re loading it via <script>)
+// Typed.js is loaded via your page’s <script> include
 
-// ── Lazy-bg helpers ──
-// 1) Instrument setLazyBackground
+// ── Persistent background-lazy observer ──
+const bgObserver = ('IntersectionObserver' in window)
+  ? new IntersectionObserver((entries, obs) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (!isIntersecting) return;
+        const url = target.dataset.bg;
+        if (url) {
+          target.style.backgroundImage    = `url("${url}")`;
+          target.style.backgroundSize     = 'cover';
+          target.style.backgroundPosition = 'center';
+          target.classList.remove('lazy-bg');
+          obs.unobserve(target);
+        }
+      });
+    }, { root: null, rootMargin: '0px 0px -30% 0px', threshold: 0 })
+  : null;
+
+// ── Helper to defer preview-image loading ──
 function setLazyBackground(el, url) {
   if (!el) {
     console.warn('[lazy] setLazyBackground: element is null');
@@ -17,38 +33,15 @@ function setLazyBackground(el, url) {
   }
   console.log('[lazy] setting data-bg on', el, '→', url);
   el.dataset.bg = url;
-  // make sure your HTML still has class="lazy-bg"
-}
-
-// 2) Instrument the loader
-function lazyLoadBgImages() {
-  const els = document.querySelectorAll('.lazy-bg[data-bg]');
-  console.log('[lazy] lazyLoadBgImages found', els.length, 'elements');
-  if (!('IntersectionObserver' in window)) {
-    console.log('[lazy] IO not supported, loading all now');
-    els.forEach(el => {
-      console.log('[lazy] fallback load:', el.dataset.bg);
-      el.style.backgroundImage = `url("${el.dataset.bg}")`;
-      el.classList.remove('lazy-bg');
-    });
-    return;
+  if (bgObserver) {
+    bgObserver.observe(el);
+  } else {
+    // fallback: load immediately
+    el.style.backgroundImage    = `url("${url}")`;
+    el.style.backgroundSize     = 'cover';
+    el.style.backgroundPosition = 'center';
+    el.classList.remove('lazy-bg');
   }
-
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach(({ target, isIntersecting }) => {
-      console.log('[lazy] entry:', target, 'isIntersecting=', isIntersecting);
-      if (!isIntersecting) return;
-      console.log('[lazy] loading image for', target.dataset.bg);
-      target.style.backgroundImage = `url("${target.dataset.bg}")`;
-      target.classList.remove('lazy-bg');
-      obs.unobserve(target);
-    });
-  }, { root: null, rootMargin: '0px 0px -30% 0px', threshold: 0.1 });
-
-  els.forEach(el => {
-    console.log('[lazy] observing', el);
-    io.observe(el);
-  });
 }
 
 
@@ -147,23 +140,17 @@ function joinWithAnd(arr) {
 }
 
 function paintSection1(mainRow, sdfRow) {
-  // — Render the "this-mark" value with Typed.js —
   const thisMarkValue = mainRow["this-mark"];
-  if (thisMarkValue) {
+  if (thisMarkValue && window.Typed) {
     const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-    if (thisMarkEl && window.Typed) {
+    if (thisMarkEl) {
       thisMarkEl.setAttribute('data-text', thisMarkValue);
       thisMarkEl.textContent = '';
       thisMarkEl.removeAttribute('data-typed');
-      new Typed(thisMarkEl, {
-        strings: [thisMarkValue],
-        typeSpeed: 24,
-        showCursor: false
-      });
+      new Typed(thisMarkEl, { strings: [thisMarkValue], typeSpeed: 24, showCursor: false });
     }
   }
 
-  // — Headers & subtitle —
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
@@ -173,7 +160,6 @@ function paintSection1(mainRow, sdfRow) {
       `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Phrase helpers —
   function getGrainPhrase(row) {
     const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
     if (g.includes("free")) return "grain-free";
@@ -182,38 +168,23 @@ function paintSection1(mainRow, sdfRow) {
   }
   function getMeatPhrase(row) {
     const f = (row["specs_primary_flavor"] || "").toLowerCase();
-    if (["chicken","beef","fish","meat"].some(w => f.includes(w))) return "meat-based";
-    return "animal-based";
+    return ["chicken","beef","fish","meat"].some(w => f.includes(w)) ? "meat-based" : "animal-based";
   }
   function getLegumeTerm(row) {
     const v = (row["data-legumes"] || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return "legume-free";
-    return "contains legumes";
+    return (v.includes("free") || v.includes("no")) ? "legume-free" : "contains legumes";
   }
   function getPoultryTerm(row) {
     const v = (row["data-poultry"] || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return "poultry-free";
-    return "contains poultry";
+    return (v.includes("free") || v.includes("no")) ? "poultry-free" : "contains poultry";
   }
 
-  // — Core values & madlib —
   const mainBrand       = mainRow["data-brand"]   || "Brand";
   const mainName        = mainRow["data-one"]     || "Product";
   const sdfName         = sdfRow["data-one"]      || "Sport Dog Food";
-  const mainGrain       = getGrainPhrase(mainRow);
-  const mainMeat        = getMeatPhrase(mainRow);
-  const sdfGrain        = getGrainPhrase(sdfRow);
-  const sdfMeat         = getMeatPhrase(sdfRow);
-  const mainLegumeTerm  = getLegumeTerm(mainRow);
-  const mainPoultryTerm = getPoultryTerm(mainRow);
-  const sdfLegumeTerm   = getLegumeTerm(sdfRow);
-  const sdfPoultryTerm  = getPoultryTerm(sdfRow);
-
-  const mainSentence = 
-    `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula that’s ${mainLegumeTerm} but ${mainPoultryTerm}.`;
-  const sdfSentence = 
-    `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span class="highlight">both ${sdfLegumeTerm} and ${sdfPoultryTerm}</span>.`;
-  const madlib = `${mainSentence} ${sdfSentence}`;
+  const mainSentence    = `${mainBrand} ${mainName} is a ${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula that’s ${getLegumeTerm(mainRow)} but ${getPoultryTerm(mainRow)}.`;
+  const sdfSentence     = `${sdfName} is a ${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet that’s <span class="highlight">both ${getLegumeTerm(sdfRow)} and ${getPoultryTerm(sdfRow)}</span>.`;
+  const madlib          = `${mainSentence} ${sdfSentence}`;
 
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
@@ -222,72 +193,52 @@ function paintSection1(mainRow, sdfRow) {
     madlibEl.removeAttribute('data-typed');
   }
 
-  // — Rest of DOM wiring —
-  let el;
-  el = document.querySelector('[data-var="brand-1-name"]');
+  let el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainName;
-
   el = document.querySelector('[data-var="brand-1-brand"]');
   if (el) el.textContent = mainBrand;
-
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
-
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
 
-  // lazy-load brand preview
   el = document.querySelector('[data-var="brand-1-previewimg"]');
   setLazyBackground(el, mainRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="brand-1-legumesfree"]',
-    mainRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="brand-1-poultryfree"]',
-    mainRow["data-poultry"]?.toLowerCase().includes("free")
-  );
+  paintSvgIcon('[data-var="brand-1-legumesfree"]', mainRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="brand-1-poultryfree"]', mainRow["data-poultry"]?.toLowerCase().includes("free"));
 
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfName;
-
   el = document.querySelector('[data-var="sport-1-brand"]');
   if (el) el.textContent = "Sport Dog Food";
-
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
-
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
-
-  // lazy-load sport preview
   el = document.querySelector('[data-var="sport-1-previewimg"]');
   setLazyBackground(el, sdfRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="sport-1-legumesfree"]',
-    sdfRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="sport-1-poultryfree"]',
-    sdfRow["data-poultry"]?.toLowerCase().includes("free")
-  );
+  paintSvgIcon('[data-var="sport-1-legumesfree"]', sdfRow["data-legumes"]?.toLowerCase().includes("free"));
+  paintSvgIcon('[data-var="sport-1-poultryfree"]', sdfRow["data-poultry"]?.toLowerCase().includes("free"));
 }
 
 
 // ——— Replace your entire paintSection2 with this ———
 function paintSection2(mainRow, sdfRow) {
-  const headerEl   = document.querySelector('[data-var="section2-header"]');
+  // — Section header & subtitle —
+  const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
 
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
-  if (subtitleEl) subtitleEl.textContent =
-    `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+  if (subtitleEl) {
+    subtitleEl.textContent =
+      `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+  }
 
+  // — Typed madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    madlibEl.setAttribute('data-text',
+    madlibEl.setAttribute(
+      'data-text',
       `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
       `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
       `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
@@ -301,16 +252,14 @@ function paintSection2(mainRow, sdfRow) {
     madlibEl.removeAttribute('data-typed');
   }
 
-  // —— replace immediate style.setProperty calls with setLazyBackground()
-  let el;
-
-  el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
+  // — Lazy-load preview images —
+  let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
   setLazyBackground(el, mainRow.previewengine);
 
   el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
   setLazyBackground(el, sdfRow.previewengine);
 
-  // —— rest of your DOM wiring unchanged ——
+  // — Numeric specs for mainRow —
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
@@ -322,6 +271,7 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
+  // — Numeric specs for sdfRow —
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
@@ -333,6 +283,7 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
+
 
 
 function paintSection3(mainRow, sdfRow) {
@@ -407,7 +358,6 @@ function paintSection3(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
-
 
 
 function paintSvgIcon(selector, isPositive) {
@@ -745,21 +695,17 @@ export function renderComparePage() {
     return;
   }
 
-  // ——— 1. Read & validate the “sdf” param ———
-  const params     = new URLSearchParams(window.location.search);
-  const paramId    = params.get('sdf');                         // e.g. “29280”
-  const isValidId  = Object.values(SDF_FORMULAS).includes(paramId);
-  const defaultId  = getSdfFormula(mainRow);
-  const initialId  = isValidId ? paramId : defaultId;
+  const params    = new URLSearchParams(window.location.search);
+  const paramId   = params.get('sdf');
+  const defaultId = getSdfFormula(mainRow);
+  const initialId = Object.values(SDF_FORMULAS).includes(paramId) ? paramId : defaultId;
 
-  // ——— 2. Lookup the row & bail if missing ———
   const initialRow = getCiRow(initialId);
   if (!initialRow) {
     console.error('[CCI] No SDF row for', initialId);
     return;
   }
 
-  // ——— 3. Seed globals ———
   window.CCI = {
     mainRow,
     sdfRow: initialRow,
@@ -768,10 +714,10 @@ export function renderComparePage() {
     ING_SUPP
   };
 
-   // ——— 4. Lazy-load painting on scroll ———
+  // 4. Lazy-load painting on scroll
   lazyLoadCompareSections(mainRow, initialRow);
 
-  // ——— 5. Wire up the buttons ———
+  // 5. Wire up the buttons
   function setupSdfSwitcher(activeId) {
     const controls = Array.from(
       document.querySelectorAll('.pwr-ci-button-row [data-var]')
@@ -793,14 +739,13 @@ export function renderComparePage() {
         const newId = el.getAttribute('data-var');
         if (!Object.values(SDF_FORMULAS).includes(newId)) return;
 
-        // 1) Update URL so users can bookmark/share
+        // 1) Update URL
         params.set('sdf', newId);
         window.history.replaceState({}, '', `${location.pathname}?${params}`);
 
         // 2) Lookup & paint
         const newRow = getCiRow(newId);
         window.CCI.sdfRow = newRow;
-
         paintSection1(mainRow, newRow);
         paintSection2(mainRow, newRow);
         paintSection3(mainRow, newRow);
@@ -820,10 +765,7 @@ export function renderComparePage() {
           'sectionk-madlib'
         ].forEach(runTypedForMadlib);
 
-        // 4) Lazy-load any new preview images
-        lazyLoadBgImages();
-
-        // 5) Update button states
+        // 4) Update button states
         controls.forEach(b => {
           const bid = b.getAttribute('data-var');
           b.classList.toggle('active', bid === newId);
@@ -833,9 +775,7 @@ export function renderComparePage() {
     });
   }
 
-  // ——— 6. Finally, kick off the switcher ———
+  // 6. Finally, kick off the switcher
   setupSdfSwitcher(initialId);
-
-  // ——— 7. Finally, kick off the background lazy-loader ———
-  lazyLoadBgImages();
 }
+
