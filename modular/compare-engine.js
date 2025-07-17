@@ -748,7 +748,7 @@ export function renderComparePage() {
     ING_SUPP
   };
 
-  // ——— 4. Lazy‑load painting on scroll ———
+   // ——— 4. Lazy-load painting on scroll ———
   lazyLoadCompareSections(mainRow, initialRow);
 
   // ——— 5. Wire up the buttons ———
@@ -762,13 +762,8 @@ export function renderComparePage() {
     // Initialize: mark & hide the active one
     controls.forEach(el => {
       const id = el.getAttribute('data-var');
-      if (id === activeId) {
-        el.classList.add('active');
-        el.style.display = 'none';
-      } else {
-        el.classList.remove('active');
-        el.style.display = '';
-      }
+      el.classList.toggle('active', id === activeId);
+      el.style.display = id === activeId ? 'none' : '';
     });
 
     // Handle clicks
@@ -797,7 +792,7 @@ export function renderComparePage() {
           ]);
         }
 
-        // 3) Re‑run Typed.js animations
+        // 3) Re-run Typed.js animations
         [
           'section1-madlib','section2-madlib',
           'section3-madlib','section3-sport-madlib',
@@ -805,25 +800,22 @@ export function renderComparePage() {
           'sectionk-madlib'
         ].forEach(runTypedForMadlib);
 
-        // 4) Update button states
+        // 4) Lazy-load any new preview images
+        lazyLoadBgImages();
+
+        // 5) Update button states
         controls.forEach(b => {
           const bid = b.getAttribute('data-var');
-          if (bid === newId) {
-            b.classList.add('active');
-            b.style.display = 'none';
-          } else {
-            b.classList.remove('active');
-            b.style.display = '';
-          }
+          b.classList.toggle('active', bid === newId);
+          b.style.display = bid === newId ? 'none' : '';
         });
       });
     });
   }
 
-   // ——— 6. Finally, kick off the switcher ———
+  // ——— 6. Finally, kick off the switcher ———
   setupSdfSwitcher(initialId);
 
   // ——— 7. Finally, kick off the background lazy-loader ———
   lazyLoadBgImages();
 }
-
