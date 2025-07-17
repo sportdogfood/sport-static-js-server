@@ -99,59 +99,39 @@ function joinWithAnd(arr) {
 }
 
 function paintSection1(mainRow, sdfRow) {
-  // — Headers & subtitles —
-
-const thisMarkValue = mainRow["this-mark"];
-if (thisMarkValue) {
-  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-  if (thisMarkEl) {
-    // Plain text:
-    thisMarkEl.textContent = thisMarkValue;
-
-    // — Or, if you want it to type like your madlibs:
-    thisMarkEl.setAttribute('data-text', thisMarkValue);
-    thisMarkEl.textContent = '';
-    thisMarkEl.removeAttribute('data-typed');
-    new Typed(thisMarkEl, {
-      strings: [thisMarkValue],
-      typeSpeed: 24,
-      showCursor: false
-    });
+  // — Render the "this-mark" value with Typed.js only —
+  const thisMarkValue = mainRow["this-mark"];
+  if (thisMarkValue) {
+    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
+    if (thisMarkEl && window.Typed) {
+      thisMarkEl.setAttribute('data-text', thisMarkValue);
+      thisMarkEl.textContent = '';
+      thisMarkEl.removeAttribute('data-typed');
+      new Typed(thisMarkEl, {
+        strings: [thisMarkValue],
+        typeSpeed: 24,
+        showCursor: false
+      });
+    }
   }
-}
+
+  // — Headers & subtitles —
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
   const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
-  if (subtitleEl) subtitleEl.textContent =
-    `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-
-  // — Phrase helpers —
-  function getGrainPhrase(row) {
-    const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
-    if (g.includes("free")) return "grain‑free";
-    if (g.includes("grain")) return "grain‑inclusive";
-    return "grain‑inclusive";
-  }
-  function getMeatPhrase(row) {
-    const f = (row["specs_primary_flavor"] || "").toLowerCase();
-    if (["chicken","beef","fish","meat"].some(w => f.includes(w))) {
-      return "meat‑based";
-    }
-    return "animal‑based";
-  }
-  function getLegumeTerm(row) {
-    const v = (row["data-legumes"] || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return "legume‑free";
-    return "contains legumes";
-  }
-  function getPoultryTerm(row) {
-    const v = (row["data-poultry"] || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return "poultry free";
-    return "contains poultry";
+  if (subtitleEl) {
+    subtitleEl.textContent =
+      `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Core values —
+  // — Phrase helpers — (keep these here or hoist them above)
+  function getGrainPhrase(row) { /* … */ }
+  function getMeatPhrase(row) { /* … */ }
+  function getLegumeTerm(row) { /* … */ }
+  function getPoultryTerm(row) { /* … */ }
+
+  // — Core values & madlib —
   const mainBrand       = mainRow["data-brand"]           || "Brand";
   const mainName        = mainRow["data-one"]             || "Product";
   const sdfName         = sdfRow["data-one"]              || "Sport Dog Food";
@@ -164,12 +144,10 @@ if (thisMarkValue) {
   const sdfLegumeTerm   = getLegumeTerm(sdfRow);
   const sdfPoultryTerm  = getPoultryTerm(sdfRow);
 
-  // — Two‑sentence madlib —
   const mainSentence = 
     `${mainBrand} ${mainName} is a ${mainGrain}, ${mainMeat} formula that’s ${mainLegumeTerm} but ${mainPoultryTerm}.`;
-const sdfSentence = `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span class="highlight">both ${sdfLegumeTerm} and ${sdfPoultryTerm}</span>.`;
-
-
+  const sdfSentence = 
+    `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span class="highlight">both ${sdfLegumeTerm} and ${sdfPoultryTerm}</span>.`;
   const madlib = `${mainSentence} ${sdfSentence}`;
 
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
@@ -179,22 +157,25 @@ const sdfSentence = `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span
     madlibEl.removeAttribute('data-typed');
   }
 
-  // — Rest of your DOM wiring (unchanged) —
+  // — Rest of DOM wiring —
   let el;
+
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainName;
+
   el = document.querySelector('[data-var="brand-1-brand"]');
   if (el) el.textContent = mainBrand;
+
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) el.textContent = mainRow["specs_primary_flavor"] || "";
+
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
+
+  // ← use shared helper instead of style.setProperty
   el = document.querySelector('[data-var="brand-1-previewimg"]');
-  if (el && mainRow.previewengine) {
-    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, mainRow.previewengine);
+
   paintSvgIcon(
     '[data-var="brand-1-legumesfree"]',
     mainRow["data-legumes"]?.toLowerCase().includes("free")
@@ -206,18 +187,20 @@ const sdfSentence = `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span
 
   el = document.querySelector('[data-var="sport-1-name"]');
   if (el) el.textContent = sdfName;
+
   el = document.querySelector('[data-var="sport-1-brand"]');
   if (el) el.textContent = "Sport Dog Food";
+
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) el.textContent = sdfRow["specs_primary_flavor"] || "";
+
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
+
+  // ← and here as well
   el = document.querySelector('[data-var="sport-1-previewimg"]');
-  if (el && sdfRow.previewengine) {
-    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, sdfRow.previewengine);
+
   paintSvgIcon(
     '[data-var="sport-1-legumesfree"]',
     sdfRow["data-legumes"]?.toLowerCase().includes("free")
@@ -228,7 +211,7 @@ const sdfSentence = `${sdfName} is a ${sdfGrain}, ${sdfMeat} diet that’s <span
   );
 }
 
-
+// ——— Replace your entire paintSection2 with this ———
 function paintSection2(mainRow, sdfRow) {
   const headerEl   = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
@@ -239,36 +222,30 @@ function paintSection2(mainRow, sdfRow) {
 
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-   madlibEl.setAttribute('data-text',
-  `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
-    `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-    `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-    `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
-  `Sport Dog Food ${sdfRow["data-one"]} provides ` +
-    `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-    `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-    `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
-);
-
+    madlibEl.setAttribute('data-text',
+      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
+      `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+      `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+      `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
+      `Sport Dog Food ${sdfRow["data-one"]} provides ` +
+      `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+      `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+      `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
+    );
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
 
+  // —— replace immediate style.setProperty calls with setLazyBackground()
   let el;
+
   el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-  if (el && mainRow.previewengine) {
-    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, mainRow.previewengine);
 
   el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-  if (el && sdfRow.previewengine) {
-    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, sdfRow.previewengine);
 
+  // —— rest of your DOM wiring unchanged ——
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
@@ -280,7 +257,6 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
-  // ← corrected selector here (added missing dash)
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
@@ -292,6 +268,7 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
+
 
 function paintSection3(mainRow, sdfRow) {
   // Headline & subtitle
@@ -325,13 +302,9 @@ function paintSection3(mainRow, sdfRow) {
     el.removeAttribute('data-typed');
   }
 
-  // preview image
+  // preview image (lazy)
   el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
-  if (el && mainRow.previewengine) {
-    el.style.setProperty("background-image", `url(${mainRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, mainRow.previewengine);
 
   // ingredient list
   el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
@@ -361,18 +334,15 @@ function paintSection3(mainRow, sdfRow) {
     el.removeAttribute('data-typed');
   }
 
-  // sport preview image
+  // sport preview image (lazy)
   el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
-  if (el && sdfRow.previewengine) {
-    el.style.setProperty("background-image", `url(${sdfRow.previewengine})`);
-    el.style.setProperty("background-size", "cover");
-    el.style.setProperty("background-position", "center");
-  }
+  setLazyBackground(el, sdfRow.previewengine);
 
   // sport ingredient list
   el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
   if (el) el.innerHTML = renderIngListDivs(sdfRow);
 }
+
 
 
 function paintSvgIcon(selector, isPositive) {
