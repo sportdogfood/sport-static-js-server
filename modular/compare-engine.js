@@ -276,7 +276,6 @@ function paintSection1(mainRow, sdfRow) {
   );
 }
 
-// ——— Replace your entire paintSection2 with this ———
 function paintSection2(mainRow, sdfRow) {
   // — Section header & subtitle —
   const headerEl = document.querySelector('[data-var="section2-header"]');
@@ -288,22 +287,22 @@ function paintSection2(mainRow, sdfRow) {
       `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Typed madlib —
+  // — Typed JS madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    const brandName   = mainRow["data-brand"];
-    const productName = mainRow["data-one"];
-    const sdfName     = sdfRow["data-one"];
-    const mp          = mainRow["ga_crude_protein_%"]   || "?";
-    const mf          = mainRow["ga_crude_fat_%"]       || "?";
-    const mk          = mainRow["ga_kcals_per_cup"]     || "?";
-    const sp          = sdfRow["ga_crude_protein_%"]    || "?";
-    const sf          = sdfRow["ga_crude_fat_%"]        || "?";
-    const sk          = sdfRow["ga_kcals_per_cup"]      || "?";
+    // pull each stat once so we don’t typo
+    const mainProtein = mainRow["ga_crude_protein_%"] || "?";
+    const mainFat     = mainRow["ga_crude_fat_%"]     || "?";
+    const mainKcal    = mainRow["ga_kcals_per_cup"]   || "?";
+    const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
+    const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
+    const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
 
     const text =
-      `${brandName} ${productName} provides ${mp}% protein, ${mf}% fat, and ${mk} kcals/cup. ` +
-      `Sport Dog Food ${sdfName} provides ${sp}% protein, ${sf}% fat, and ${sk} kcals/cup for comparison.`;
+      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
+      `${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup. ` +
+      `Sport Dog Food ${sdfRow["data-one"]} provides ` +
+      `${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup for comparison.`;
 
     madlibEl.setAttribute('data-text', text);
     madlibEl.textContent = '';
@@ -312,32 +311,32 @@ function paintSection2(mainRow, sdfRow) {
 
   // — Lazy-load preview images —
   let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-  setLazyBackground(el, mainRow.previewengine);
+  if (el) setLazyBackground(el, mainRow.previewengine);
 
   el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-  setLazyBackground(el, sdfRow.previewengine);
+  if (el) setLazyBackground(el, sdfRow.previewengine);
 
   // — Numeric specs for mainRow —
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
-  if (el) el.textContent = mp;
+  if (el) el.textContent = mainProtein;
   el = document.querySelector('[data-var="brand-1-fat"]');
-  if (el) el.textContent = mf;
+  if (el) el.textContent = mainFat;
   el = document.querySelector('[data-var="brand-1-kcalscup"]');
-  if (el) el.textContent = mk;
+  if (el) el.textContent = mainKcal;
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
   // — Numeric specs for sdfRow —
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
-  if (el) el.textContent = sdfName;
+  if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
-  if (el) el.textContent = sp;
+  if (el) el.textContent = sdfProtein;
   el = document.querySelector('[data-var="sport-1-fat"]');
-  if (el) el.textContent = sf;
+  if (el) el.textContent = sdfFat;
   el = document.querySelector('[data-var="sport-1-kcalscup"]');
-  if (el) el.textContent = sk;
+  if (el) el.textContent = sdfKcal;
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
