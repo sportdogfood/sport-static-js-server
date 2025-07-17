@@ -445,7 +445,10 @@ function buildSectionKMadlib(mainRow, sdfRows) {
     kcalLine += " This is suitable for high-performance dogs.";
   }
 
-  const sdfLine = `Sport formulas range from ${minKcal} kcals <span class="highlight">to as high as ${maxKcal} kcals per cup.</span>.`;
+  // NEW, flatter phrasing:
+  const sdfLine = 
+    `Sport formulas range from <span class="highlight">${minKcal}–${maxKcal}</span> kcals per cup for comparison.`;
+
   return `${kcalLine} ${sdfLine}`;
 }
 
