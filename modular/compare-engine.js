@@ -291,17 +291,21 @@ function paintSection2(mainRow, sdfRow) {
   // — Typed madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    madlibEl.setAttribute(
-      'data-text',
-      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
-      `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-      `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-      `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
-      `Sport Dog Food ${sdfRow["data-one"]} packs ` +
-      `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-      `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-      `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
-    );
+    const brandName   = mainRow["data-brand"];
+    const productName = mainRow["data-one"];
+    const sdfName     = sdfRow["data-one"];
+    const mp          = mainRow["ga_crude_protein_%"]   || "?";
+    const mf          = mainRow["ga_crude_fat_%"]       || "?";
+    const mk          = mainRow["ga_kcals_per_cup"]     || "?";
+    const sp          = sdfRow["ga_crude_protein_%"]    || "?";
+    const sf          = sdfRow["ga_crude_fat_%"]        || "?";
+    const sk          = sdfRow["ga_kcals_per_cup"]      || "?";
+
+    const text =
+      `${brandName} ${productName} provides ${mp}% protein, ${mf}% fat, and ${mk} kcals/cup. ` +
+      `Sport Dog Food ${sdfName} provides ${sp}% protein, ${sf}% fat, and ${sk} kcals/cup for comparison.`;
+
+    madlibEl.setAttribute('data-text', text);
     madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
@@ -317,23 +321,23 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
-  if (el) el.textContent = mainRow["ga_crude_protein_%"] || "";
+  if (el) el.textContent = mp;
   el = document.querySelector('[data-var="brand-1-fat"]');
-  if (el) el.textContent = mainRow["ga_crude_fat_%"] || "";
+  if (el) el.textContent = mf;
   el = document.querySelector('[data-var="brand-1-kcalscup"]');
-  if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
+  if (el) el.textContent = mk;
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
   // — Numeric specs for sdfRow —
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
+  if (el) el.textContent = sdfName;
   el = document.querySelector('[data-var="sport-1-protein"]');
-  if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
+  if (el) el.textContent = sp;
   el = document.querySelector('[data-var="sport-1-fat"]');
-  if (el) el.textContent = sdfRow["ga_crude_fat_%"] || "";
+  if (el) el.textContent = sf;
   el = document.querySelector('[data-var="sport-1-kcalscup"]');
-  if (el) el.textContent = sdfRow["ga_kcals_per_cup"] || "";
+  if (el) el.textContent = sk;
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 }
@@ -698,19 +702,20 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
       runTypedForMadlib('section2-madlib');
     }
   },
-  {
-    id: '#section-3',
-    fn: () => {
-      // paint all of Section 3
-      paintSection3(mainRow, sdfRow);
+ {
+  id: '#section-3',
+  fn: () => {
+    paintSection3(mainRow, sdfRow);
+    // animate each madlib slot
+    [
+      'section3-madlib',
+      'section3-sport-madlib',
+      'section3-contentious-madlib',
+      'section3-sport-contentious-madlib'
+    ].forEach(runTypedForMadlib);
+  }
+},
 
-      // animate each madlib slot
-      runTypedForMadlib('section3-madlib');
-      runTypedForMadlib('section3-sport-madlib');
-      runTypedForMadlib('section3-contentious-madlib');
-      runTypedForMadlib('section3-sport-contentious-madlib');
-    }
-  },
   {
     id: '#section-k',
     fn: () => {
