@@ -5,30 +5,50 @@ import { ING_SUPP }  from './ingSupp.js';
 // (no import Typed.js here if you’re loading it via <script>)
 
 // ── Lazy-bg helpers ──
+// 1) Instrument setLazyBackground
 function setLazyBackground(el, url) {
-  if (!el || !url) return;
+  if (!el) {
+    console.warn('[lazy] setLazyBackground: element is null');
+    return;
+  }
+  if (!url) {
+    console.warn('[lazy] setLazyBackground: no URL for', el);
+    return;
+  }
+  console.log('[lazy] setting data-bg on', el, '→', url);
   el.dataset.bg = url;
-  // make sure your HTML element still has class="lazy-bg"
+  // make sure your HTML still has class="lazy-bg"
 }
 
+// 2) Instrument the loader
 function lazyLoadBgImages() {
   const els = document.querySelectorAll('.lazy-bg[data-bg]');
+  console.log('[lazy] lazyLoadBgImages found', els.length, 'elements');
   if (!('IntersectionObserver' in window)) {
+    console.log('[lazy] IO not supported, loading all now');
     els.forEach(el => {
+      console.log('[lazy] fallback load:', el.dataset.bg);
       el.style.backgroundImage = `url("${el.dataset.bg}")`;
       el.classList.remove('lazy-bg');
     });
     return;
   }
+
   const io = new IntersectionObserver((entries, obs) => {
     entries.forEach(({ target, isIntersecting }) => {
+      console.log('[lazy] entry:', target, 'isIntersecting=', isIntersecting);
       if (!isIntersecting) return;
+      console.log('[lazy] loading image for', target.dataset.bg);
       target.style.backgroundImage = `url("${target.dataset.bg}")`;
       target.classList.remove('lazy-bg');
       obs.unobserve(target);
     });
   }, { root: null, rootMargin: '0px 0px -30% 0px', threshold: 0.1 });
-  els.forEach(el => io.observe(el));
+
+  els.forEach(el => {
+    console.log('[lazy] observing', el);
+    io.observe(el);
+  });
 }
 
 
