@@ -542,40 +542,40 @@ function buildIngredientMadlib(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
-  const totalCount = ings.length;
-  const firstIng   = ings[0]?.displayAs || ings[0]?.Name || "";
-  const secondIng  = ings[1]?.displayAs || ings[1]?.Name || "";
+  const totalCount    = ings.length;
+  const firstIng      = ings[0]?.displayAs || ings[0]?.Name || "";
+  const secondIng     = ings[1]?.displayAs || ings[1]?.Name || "";
 
-  const allergyCount = ings.filter(ing => ing.tagAllergy).length;
-  const poultryCount = ings.filter(ing => ing.tagPoultry).length;
-  const legumeCount  = ings.filter(ing => {
+  const allergyCount  = ings.filter(ing => ing.tagAllergy).length;
+  const poultryCount  = ings.filter(ing => ing.tagPoultry).length;
+  const legumeCount   = ings.filter(ing => {
     const dt = (ing["data-type"] || "").toLowerCase();
     return dt.includes("legume");
   }).length;
-
   const upgradedCount = ings.filter(ing =>
     (ing.supplementalAssist || "").toLowerCase().includes("chelate") ||
     (ing.supplementalAssist || "").toLowerCase().includes("complex")
   ).length;
 
-  // Grammar helpers
-  const phrase = (count, singular, plural) =>
-    count === 1 ? `${singular}` : `${plural}`;
+  // helper to pick singular vs plural
+  const pluralize = (count, singular, plural) => count === 1 ? singular : plural;
 
-  const allergyPhrase = `(${allergyCount}) ${phrase(allergyCount, "may trigger an allergy", "may trigger allergies")}`;
-  const poultryPhrase = `(${poultryCount}) ${phrase(poultryCount, "is poultry", "are poultry")}`;
-  const legumePhrase  = `(${legumeCount}) ${phrase(legumeCount, "is a legume", "are legumes")}`;
+  const allergyPhrase = `(${allergyCount}) ${pluralize(allergyCount, "may trigger an allergy", "may trigger allergies")}`;
+  const poultryPhrase = `(${poultryCount}) ${pluralize(poultryCount, "is poultry", "are poultry")}`;
+  const legumePhrase  = `(${legumeCount}) ${pluralize(legumeCount, "is a legume", "are legumes")}`;
 
-  const mineralPhrase = upgradedCount > 0
-    ? `and (${upgradedCount}) ${phrase(upgradedCount, "is an upgraded mineral.", "are upgraded minerals.")}`
+  // build the two sentences
+  const infoSentence  = `(${totalCount}) ingredients evaluated. ` +
+                        `${firstIng} is first, ${secondIng} is second. ` +
+                        `${allergyPhrase}, ${poultryPhrase}, ${legumePhrase}.`;
+
+  const mineralSentence = upgradedCount > 0
+    ? `(${upgradedCount}) ${pluralize(upgradedCount, "upgraded mineral detected", "upgraded minerals detected")}.`
     : `No upgraded minerals were detected.`;
 
-  return (
-    `(${totalCount}) ingredients evaluated. ` +
-    `${firstIng} is first, ${secondIng} is second. ` +
-    `${allergyPhrase}, ${poultryPhrase}, ${legumePhrase} ${mineralPhrase}`
-  );
+  return `${infoSentence} ${mineralSentence}`;
 }
+
 
 
 
