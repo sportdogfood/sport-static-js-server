@@ -277,27 +277,25 @@ function paintSection1(mainRow, sdfRow) {
 }
 
 function paintSection2(mainRow, sdfRow) {
-  // — Section header & subtitle —
+  // — Pull metrics into locals so they never end up undefined —
+  const mainProtein = mainRow["ga_crude_protein_%"] || "?";
+  const mainFat     = mainRow["ga_crude_fat_%"]     || "?";
+  const mainKcal    = mainRow["ga_kcals_per_cup"]   || "?";
+  const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
+  const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
+  const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
+
+  // — Header & subtitle —
   const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
 
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
-  if (subtitleEl) {
-    subtitleEl.textContent =
-      `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-  }
+  if (subtitleEl) subtitleEl.textContent =
+    `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
 
-  // — Typed JS madlib —
+  // — Typed.js madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    // pull each stat once so we don’t typo
-    const mainProtein = mainRow["ga_crude_protein_%"] || "?";
-    const mainFat     = mainRow["ga_crude_fat_%"]     || "?";
-    const mainKcal    = mainRow["ga_kcals_per_cup"]   || "?";
-    const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
-    const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
-    const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
-
     const text =
       `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
       `${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup. ` +
