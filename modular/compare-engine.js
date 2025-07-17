@@ -480,7 +480,6 @@ function buildCountsTable(row, label) {
   `;
 }
 
-// ── Updated section3‑madlib builder ──
 function buildIngredientMadlib(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -502,40 +501,23 @@ function buildIngredientMadlib(row) {
   ).length;
 
   // Grammar helpers
-  const pluralize = (count, singular, plural) =>
-    count === 1 ? singular.replace("{{n}}", count) : plural.replace("{{n}}", count);
+  const phrase = (count, singular, plural) =>
+    count === 1 ? `${singular}` : `${plural}`;
 
-  const allergyPhrase = pluralize(
-    allergyCount,
-    `{{n}} may trigger an allergy`,
-    `{{n}} may trigger allergies`
-  );
-
-  const poultryPhrase = pluralize(
-    poultryCount,
-    `{{n}} is poultry`,
-    `{{n}} are poultry`
-  );
-
-  const legumePhrase = pluralize(
-    legumeCount,
-    `{{n}} is a legume`,
-    `{{n}} are legumes`
-  );
+  const allergyPhrase = `(${allergyCount}) ${phrase(allergyCount, "may trigger an allergy", "may trigger allergies")}`;
+  const poultryPhrase = `(${poultryCount}) ${phrase(poultryCount, "is poultry", "are poultry")}`;
+  const legumePhrase  = `(${legumeCount}) ${phrase(legumeCount, "is a legume", "are legumes")}`;
 
   const mineralPhrase = upgradedCount > 0
-    ? pluralize(upgradedCount, `and {{n}} is an upgraded mineral.`, `and {{n}} are upgraded minerals.`)
+    ? `and (${upgradedCount}) ${phrase(upgradedCount, "is an upgraded mineral.", "are upgraded minerals.")}`
     : `No upgraded minerals were detected.`;
 
   return (
     `(${totalCount}) ingredients evaluated. ` +
     `${firstIng} is first, ${secondIng} is second. ` +
-    `(${allergyCount}) ${allergyPhrase}, ` +
-    `(${poultryCount}) ${poultryPhrase}, ` +
-    `(${legumeCount}) ${legumePhrase} ${mineralPhrase}`
+    `${allergyPhrase}, ${poultryPhrase}, ${legumePhrase} ${mineralPhrase}`
   );
 }
-
 
 
 
