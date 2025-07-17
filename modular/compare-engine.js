@@ -127,7 +127,7 @@ function joinWithAnd(arr) {
 }
 
 function paintSection1(mainRow, sdfRow) {
-  // — Render the "this-mark" value with Typed.js only —
+  // — Render the "this-mark" value with Typed.js —
   const thisMarkValue = mainRow["this-mark"];
   if (thisMarkValue) {
     const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
@@ -143,7 +143,7 @@ function paintSection1(mainRow, sdfRow) {
     }
   }
 
-  // — Headers & subtitles —
+  // — Headers & subtitle —
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
@@ -153,16 +153,33 @@ function paintSection1(mainRow, sdfRow) {
       `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Phrase helpers — (keep these here or hoist them above)
-  function getGrainPhrase(row) { /* … */ }
-  function getMeatPhrase(row) { /* … */ }
-  function getLegumeTerm(row) { /* … */ }
-  function getPoultryTerm(row) { /* … */ }
+  // — Phrase helpers —
+  function getGrainPhrase(row) {
+    const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
+    if (g.includes("free")) return "grain-free";
+    if (g.includes("grain")) return "grain-inclusive";
+    return "grain-inclusive";
+  }
+  function getMeatPhrase(row) {
+    const f = (row["specs_primary_flavor"] || "").toLowerCase();
+    if (["chicken","beef","fish","meat"].some(w => f.includes(w))) return "meat-based";
+    return "animal-based";
+  }
+  function getLegumeTerm(row) {
+    const v = (row["data-legumes"] || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return "legume-free";
+    return "contains legumes";
+  }
+  function getPoultryTerm(row) {
+    const v = (row["data-poultry"] || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return "poultry-free";
+    return "contains poultry";
+  }
 
   // — Core values & madlib —
-  const mainBrand       = mainRow["data-brand"]           || "Brand";
-  const mainName        = mainRow["data-one"]             || "Product";
-  const sdfName         = sdfRow["data-one"]              || "Sport Dog Food";
+  const mainBrand       = mainRow["data-brand"]   || "Brand";
+  const mainName        = mainRow["data-one"]     || "Product";
+  const sdfName         = sdfRow["data-one"]      || "Sport Dog Food";
   const mainGrain       = getGrainPhrase(mainRow);
   const mainMeat        = getMeatPhrase(mainRow);
   const sdfGrain        = getGrainPhrase(sdfRow);
@@ -187,7 +204,6 @@ function paintSection1(mainRow, sdfRow) {
 
   // — Rest of DOM wiring —
   let el;
-
   el = document.querySelector('[data-var="brand-1-name"]');
   if (el) el.textContent = mainName;
 
@@ -200,7 +216,7 @@ function paintSection1(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) el.textContent = mainRow["data-diet"] || mainRow["data-grain"] || "";
 
-  // ← use shared helper instead of style.setProperty
+  // lazy-load brand preview
   el = document.querySelector('[data-var="brand-1-previewimg"]');
   setLazyBackground(el, mainRow.previewengine);
 
@@ -225,7 +241,7 @@ function paintSection1(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) el.textContent = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
 
-  // ← and here as well
+  // lazy-load sport preview
   el = document.querySelector('[data-var="sport-1-previewimg"]');
   setLazyBackground(el, sdfRow.previewengine);
 
@@ -238,6 +254,7 @@ function paintSection1(mainRow, sdfRow) {
     sdfRow["data-poultry"]?.toLowerCase().includes("free")
   );
 }
+
 
 // ——— Replace your entire paintSection2 with this ———
 function paintSection2(mainRow, sdfRow) {
