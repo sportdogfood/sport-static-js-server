@@ -357,20 +357,30 @@ console.log("Kcal/cup difference:", kcalDiff);
 
 // --Diffs -
 // — Difference indicators —
-el = document.querySelector('[data-var="sec2-protein-diff"]');
-if (el) el.textContent = (proteinDiff === 0)
-  ? "Same"
-  : `${Math.abs(proteinDiff)}% ${proteinDiff > 0 ? "more" : "less"}`;
+// — Brand-1 differences —
+document.querySelectorAll('[data-var="brand-1-protein-diff"]').forEach(el => {
+  el.textContent = proteinDiff === 0 ? "–" : `${proteinDiff > 0 ? '+' : ''}${proteinDiff}%`;
+});
+document.querySelectorAll('[data-var="brand-1-fat-diff"]').forEach(el => {
+  el.textContent = fatDiff === 0 ? "–" : `${fatDiff > 0 ? '+' : ''}${fatDiff}%`;
+});
+document.querySelectorAll('[data-var="brand-1-kcal-diff"]').forEach(el => {
+  el.textContent = kcalDiff === 0 ? "–" : `${kcalDiff > 0 ? '+' : ''}${kcalDiff} kcals`;
+});
 
-el = document.querySelector('[data-var="sec2-fat-diff"]');
-if (el) el.textContent = (fatDiff === 0)
-  ? "Same"
-  : `${Math.abs(fatDiff)}% ${fatDiff > 0 ? "more" : "less"}`;
-
-el = document.querySelector('[data-var="sec2-kcal-diff"]');
-if (el) el.textContent = (kcalDiff === 0)
-  ? "Same"
-  : `${Math.abs(kcalDiff)} kcals ${kcalDiff > 0 ? "more" : "less"}`;
+// — Sport-1 differences (inverted logic) —
+document.querySelectorAll('[data-var="sport-1-protein-diff"]').forEach(el => {
+  const val = proteinDiff * -1;
+  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
+});
+document.querySelectorAll('[data-var="sport-1-fat-diff"]').forEach(el => {
+  const val = fatDiff * -1;
+  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
+});
+document.querySelectorAll('[data-var="sport-1-kcal-diff"]').forEach(el => {
+  const val = kcalDiff * -1;
+  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
+});
 
 
 }
