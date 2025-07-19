@@ -354,6 +354,25 @@ console.log("Kcal/cup difference:", kcalDiff);
   if (el) el.textContent = sdfKcal;
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
+
+// --Diffs -
+// — Difference indicators —
+el = document.querySelector('[data-var="sec2-protein-diff"]');
+if (el) el.textContent = (proteinDiff === 0)
+  ? "Same"
+  : `${Math.abs(proteinDiff)}% ${proteinDiff > 0 ? "more" : "less"}`;
+
+el = document.querySelector('[data-var="sec2-fat-diff"]');
+if (el) el.textContent = (fatDiff === 0)
+  ? "Same"
+  : `${Math.abs(fatDiff)}% ${fatDiff > 0 ? "more" : "less"}`;
+
+el = document.querySelector('[data-var="sec2-kcal-diff"]');
+if (el) el.textContent = (kcalDiff === 0)
+  ? "Same"
+  : `${Math.abs(kcalDiff)} kcals ${kcalDiff > 0 ? "more" : "less"}`;
+
+
 }
 
 
