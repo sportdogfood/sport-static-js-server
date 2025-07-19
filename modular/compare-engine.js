@@ -284,6 +284,23 @@ function paintSection2(mainRow, sdfRow) {
   const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
   const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
   const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
+// Convert to numbers for comparison
+const numMainProtein = parseFloat(mainProtein) || 0;
+const numMainFat     = parseFloat(mainFat)     || 0;
+const numMainKcal    = parseFloat(mainKcal)    || 0;
+const numSdfProtein  = parseFloat(sdfProtein)  || 0;
+const numSdfFat      = parseFloat(sdfFat)      || 0;
+const numSdfKcal     = parseFloat(sdfKcal)     || 0;
+
+// Calculate differences
+const proteinDiff = numMainProtein - numSdfProtein;
+const fatDiff     = numMainFat     - numSdfFat;
+const kcalDiff    = numMainKcal    - numSdfKcal;
+
+// Example usage (log or inject into DOM if needed)
+console.log("Protein difference:", proteinDiff);
+console.log("Fat difference:", fatDiff);
+console.log("Kcal/cup difference:", kcalDiff);
 
   // — Header & subtitle —
   const headerEl = document.querySelector('[data-var="section2-header"]');
