@@ -318,9 +318,9 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
-  if (el) el.textContent = mainProtein;
+  if (el) el.textContent = mainProtein + "%";
   el = document.querySelector('[data-var="brand-1-fat"]');
-  if (el) el.textContent = mainFat;
+  if (el) el.textContent = mainFat + "%";
   el = document.querySelector('[data-var="brand-1-kcalscup"]');
   if (el) el.textContent = mainKcal;
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
@@ -330,9 +330,9 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
-  if (el) el.textContent = sdfProtein;
+  if (el) el.textContent = sdfProtein + "%";
   el = document.querySelector('[data-var="sport-1-fat"]');
-  if (el) el.textContent = sdfFat;
+  if (el) el.textContent = sdfFat + "%";
   el = document.querySelector('[data-var="sport-1-kcalscup"]');
   if (el) el.textContent = sdfKcal;
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
