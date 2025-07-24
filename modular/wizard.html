@@ -1,0 +1,50 @@
+<!-- Trigger buttons -->
+<button data-wizard="contact" class="icon-btn">Contact Us</button>
+<button data-wizard="login"   class="icon-btn">Login</button>
+<!-- Add more: data-wizard="changeAddress", "updateCard", etc. -->
+
+<!-- Wizard Overlay (single instance) -->
+<div class="chat-wizard" aria-hidden="true">
+  <div class="wizard-container">
+    <!-- Logo -->
+    <div class="hello-wrap">
+      <div class="pwr-sport2-wrapper">
+        <a href="/" class="w-inline-block w--current">
+          <img src="https://cdn.prod.website-files.com/.../Untitled.svg"
+               alt="Logo" class="image-1134" loading="lazy">
+        </a>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="wizard-title">
+        <h2 id="wizard-heading"></h2>
+      </div>
+      <button id="wizard-close" class="icon-btn" aria-label="Close">×</button>
+    </div>
+
+    <!-- Thread -->
+    <div id="wizardThread" class="chat-messages chat-thread"></div>
+
+    <!-- Input Bar -->
+    <div class="copilot-search">
+      <button id="input-clear"   class="icon-btn" aria-label="Clear">✕</button>
+      <input  id="wizard-input"  class="copilot-input" autocomplete="off">
+      <button id="wizard-restart" class="icon-btn" aria-label="Restart">⟳</button>
+      <button id="wizard-submit"  class="icon-btn send-btn" aria-label="Next">➤</button>
+    </div>
+
+    <!-- Hidden Webflow forms -->
+    <form id="wf-form-contact" style="display:none">
+      <input  type="email"   id="wizard-email"   name="Email">
+      <input  type="text"    id="wizard-firstName" name="FirstName">
+      <textarea           id="wizard-message" name="Message"></textarea>
+    </form>
+    <form id="wf-form-login" style="display:none">
+      <input  type="text"    id="wizard-user"    name="Username">
+      <input  type="password" id="wizard-pass"  name="Password">
+    </form>
+    <!-- Add more forms here with matching IDs: wf-form-changeAddress, wf-form-updateCard, etc. -->
+  </div>
+</div>
