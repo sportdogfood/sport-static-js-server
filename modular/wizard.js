@@ -1,13 +1,14 @@
 // wizard.js
 export function initMultiWizard(configs) {
-  const wizard   = document.querySelector('.chat-wizard');
-  const heading  = document.getElementById('wizard-heading');
-  const thread   = document.getElementById('wizardThread');
-  const input    = document.getElementById('wizard-input');
-  const btnNext  = document.getElementById('wizard-submit');
-  const btnClose = document.getElementById('wizard-close');
+  const wizard     = document.querySelector('.chat-wizard');
+  const heading    = document.getElementById('wizard-heading');
+  const thread     = document.getElementById('wizardThread');
+  const input      = document.getElementById('wizard-input');
+  const btnNext    = document.getElementById('wizard-next');
+  const btnSend    = document.getElementById('wizard-send');
+  const btnClose   = document.getElementById('wizard-close');
   const btnRestart = document.getElementById('wizard-restart');
-  const btnClear = document.getElementById('input-clear');
+  const btnClear   = document.getElementById('input-clear');
 
   let state = { data:{}, idx:0, cfg:null };
 
@@ -38,20 +39,30 @@ export function initMultiWizard(configs) {
 
     setTimeout(() => {
       removeTyping();
+      // Bot prompt
       const promptText = typeof s.prompt === 'function'
         ? s.prompt(state)
         : s.prompt;
-      showBubble(promptText,'bot');
+      showBubble(promptText, 'bot');
 
-      input.placeholder     = s.placeholder || '';
-      btnNext.textContent   = s.confirm ? 'Send' : 'Next';
-      input.style.display   = s.confirm ? 'none' : 'block';
-      btnNext.style.display = s.confirm ? 'inline-flex' : 'none';
-      input.type            = s.key === 'password' ? 'password' : 'text';
-      input.value = '';
-      input.disabled = false;
+      // Configure input
+      input.placeholder = s.placeholder || '';
+      input.type        = (s.key === 'password' ? 'password' : 'text');
+      input.value       = '';
+      input.disabled    = false;
       input.classList.remove('shake');
-      if (!s.confirm) input.focus();
+
+      // Toggle buttons
+      if (s.confirm) {
+        btnNext.style.display = 'none';
+        btnSend.style.display = 'inline-flex';
+        btnSend.disabled      = false; // always enabled on confirm step
+      } else {
+        btnNext.style.display = 'inline-flex';
+        btnNext.disabled      = true;
+        btnSend.style.display = 'none';
+        input.focus();
+      }
     }, 600);
   }
 
@@ -65,6 +76,7 @@ export function initMultiWizard(configs) {
     document.body.classList.add('modal-open');
     wizard.classList.add('active');
 
+    // Wait for slide-up animation before first prompt
     wizard.addEventListener('transitionend', function cb(e) {
       if (e.propertyName === 'transform') {
         wizard.removeEventListener('transitionend', cb);
@@ -73,7 +85,57 @@ export function initMultiWizard(configs) {
     });
   }
 
-  // Attach triggers
+  // Button enabling on input
+  input.addEventListener('input', () => {
+    const s = state.cfg.steps[state.idx];
+    const valid = input.value.trim() && (!s.validate || s.validate(input.value));
+    if (btnNext.style.display !== 'none')  btnNext.disabled = !valid;
+    if (btnSend.style.display !== 'none')  btnSend.disabled = !valid;
+  });
+
+  // Next (non-confirm) handler
+  btnNext.addEventListener('click', e => {
+    e.preventDefault();
+    const s = state.cfg.steps[state.idx];
+    const v = input.value.trim();
+    if (!v || (s.validate && !s.validate(v))) {
+      input.classList.add('shake');
+      return;
+    }
+    state.data[s.key] = v;
+    showBubble(v, 'user');
+    state.idx++;
+    showStep();
+  });
+
+  // Send (confirm) handler
+  btnSend.addEventListener('click', e => {
+    e.preventDefault();
+    // user “Yes, send it”
+    showBubble('Yes, ' + state.cfg.title.toLowerCase() + ' it', 'user');
+    // populate & submit
+    const form = document.getElementById(state.cfg.formId);
+    Object.entries(state.data).forEach(([k, val]) => {
+      const fld = form.querySelector('#wizard-' + k);
+      if (fld) fld.value = val;
+    });
+    form.submit();
+    showBubble('✅ Done!', 'bot');
+  });
+
+  // Close, Restart, Clear
+  btnClose.addEventListener('click', () => {
+    wizard.classList.remove('active');
+    document.documentElement.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
+  });
+  btnRestart.addEventListener('click', resetWizard);
+  btnClear.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+  });
+
+  // Wire up triggers
   document.querySelectorAll('[data-wizard]').forEach(btn => {
     btn.addEventListener('click', e => {
       const key = btn.dataset.wizard;
@@ -81,47 +143,5 @@ export function initMultiWizard(configs) {
       state.cfg = configs[key];
       resetWizard();
     });
-  });
-
-  // Next / Send
-  btnNext.addEventListener('click', e => {
-    e.preventDefault();
-    const s = state.cfg.steps[state.idx];
-    const v = input.value.trim();
-
-    if (s.confirm) {
-      showBubble('Yes, ' + state.cfg.title.toLowerCase() + ' it','user');
-      // populate & submit
-      const form = document.getElementById(state.cfg.formId);
-      Object.entries(state.data).forEach(([k, val]) => {
-        const fld = form.querySelector('#wizard-'+k);
-        if (fld) fld.value = val;
-      });
-      form.submit();
-      showBubble('✅ Done!','bot');
-      return;
-    }
-
-    if (!v || (s.validate && !s.validate(v))) {
-      input.classList.add('shake');
-      return;
-    }
-
-    state.data[s.key] = v;
-    showBubble(v,'user');
-    state.idx++;
-    showStep();
-  });
-
-  // Clear, restart, close
-  btnClear.addEventListener('click', () => {
-    input.value = '';
-    input.focus();
-  });
-  btnRestart.addEventListener('click', resetWizard);
-  btnClose.addEventListener('click', () => {
-    wizard.classList.remove('active');
-    document.documentElement.classList.remove('modal-open');
-    document.body.classList.remove('modal-open');
   });
 }
