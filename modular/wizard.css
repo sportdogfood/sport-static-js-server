@@ -1,47 +1,50 @@
 :root {
-  --bg:#111315; --fg:#f1f1f1; --muted:#a0a0a0;
-  --bar:#2d2f33; --card:#1c1f22; --accent:#2b5cff;
-  --radius:26px; font-family:system-ui,"Segoe UI",sans-serif;
+  --bg: #111315;
+  --fg: #f1f1f1;
+  --muted: #a0a0a0;
+  --bar: #2d2f33;
+  --card: #1c1f22;
+  --accent: #2b5cff;
+  --radius: 26px;
+  --slide-speed: 0.45s;
+  font-family: 'Outfit', sans-serif;
 }
 
-/* Lock background scroll */
-html.modal-open, body.modal-open {
-  overflow:hidden; position:fixed; width:100%; height:100%;
-}
-
-
-/* Slide only the panel, using transform */
-.wizard-container {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
+/* Lock background scroll when wizard is open */
+html.modal-open,
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
   height: 100%;
-  background: var(--bg);
-  transform: translateY(100%);
-  transition: transform .4s cubic-bezier(.22,1,.36,1);
-  will-change: transform;
 }
-/* 1) Fade overlay only */
+
+/* 1) Overlay fade-in/out + off-screen positioning */
 .chat-wizard {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  visibility: hidden;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  transition: opacity .3s ease, visibility .3s ease;
+  visibility: hidden;
+  transform: translateY(100vh);
   pointer-events: none;
+  transition:
+    transform var(--slide-speed) cubic-bezier(.22,1,.36,1),
+    visibility 0s linear var(--slide-speed);
   z-index: 1000;
 }
+
 .chat-wizard.active {
-  opacity: 1;
   visibility: visible;
+  transform: translateY(0);
   pointer-events: all;
+  transition:
+    transform var(--slide-speed) cubic-bezier(.22,1,.36,1),
+    visibility 0s;
 }
 
-/* 2) Slide‐up panel */
+/* 2) Slide-up panel */
 .wizard-container {
   width: 100%;
   max-width: 900px;
@@ -49,10 +52,11 @@ html.modal-open, body.modal-open {
   max-height: 600px;
   background: var(--bg);
   transform: translateY(100%);
-  transition: transform .4s cubic-bezier(.22,1,.36,1);
+  transition: transform var(--slide-speed) cubic-bezier(.22,1,.36,1);
   will-change: transform;
 }
-/* when overlay is active, bring the panel up */
+
+/* 3) When overlay is active, bring panel into view */
 .chat-wizard.active .wizard-container {
   transform: translateY(0);
 }
