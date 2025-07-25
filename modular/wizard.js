@@ -159,12 +159,13 @@ function showStep() {
   }
 
   // enable Next/Send based on input
-  input.addEventListener('input', () => {
-    const s     = state.cfg.steps[state.idx];
-    const valid = input.value.trim() && (!s.validate || s.validate(input.value));
-    if (btnNext.style.display !== 'none') btnNext.disabled = !valid;
-    if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
-  });
+input.addEventListener('input', () => {
+  if (!state.cfg) return;                // ← guard against null
+  const s     = state.cfg.steps[state.idx];
+  const valid = input.value.trim() && (!s.validate || s.validate(input.value));
+  if (btnNext.style.display !== 'none') btnNext.disabled = !valid;
+  if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
+});
 
   // Next button
  btnNext.addEventListener('click', e => {
