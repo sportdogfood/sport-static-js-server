@@ -14,6 +14,14 @@ export function initMultiWizard(configs) {
     return;
   }
 
+  // --- DELEGATE INLINE SEND CLICK ---
+  thread.addEventListener('click', e => {
+    if (e.target && e.target.id === 'wizard-send-inline') {
+      e.preventDefault();
+      btnSend.click();
+    }
+  });
+
   let state = { data: {}, idx: 0, cfg: null };
   let lastFocus = null;
   let resetTimeoutId = null;
@@ -28,28 +36,6 @@ export function initMultiWizard(configs) {
     thread.scrollTop = thread.scrollHeight;
   }
 
-  function showTyping() {
-    const t = document.createElement('div');
-    t.className = 'chat-msg messagex-bot';
-    t.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-    thread.appendChild(t);
-    thread.scrollTop = thread.scrollHeight;
-  }
-
-  function removeTyping() {
-    const t = thread.querySelector('.typing')?.closest('.chat-msg');
-    if (t) t.remove();
-  }
-
-  function scramble(str) {
-    const arr = Array.from(str);
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr.join('');
-  }
-
   function showStep() {
     if (!state.cfg) return;
     const s = state.cfg.steps[state.idx];
@@ -59,11 +45,9 @@ export function initMultiWizard(configs) {
       removeTyping();
       let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
 
-      // Always generic for message step
       if (s.key === 'message') {
         promptText = 'What’s your message?';
       }
-
       if (s.confirm) {
         promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
       }
@@ -78,10 +62,7 @@ export function initMultiWizard(configs) {
       if (s.confirm) {
         input.style.display   = 'none';
         btnNext.style.display = 'none';
-        btnSend.style.display = 'none';  // hide default send
-
-        const inline = document.getElementById('wizard-send-inline');
-        if (inline) inline.addEventListener('click', () => btnSend.click());
+        btnSend.style.display = 'none';
       } else {
         input.style.display   = '';
         btnNext.style.display = 'inline-flex';
@@ -91,6 +72,8 @@ export function initMultiWizard(configs) {
       }
     }, 600);
   }
+
+
 
   function openWizard(key) {
     const storedEmail  = localStorage.getItem('fx_customerEmail');
