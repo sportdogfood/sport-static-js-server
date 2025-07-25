@@ -50,7 +50,7 @@ export function initMultiWizard(configs) {
     return arr.join('');
   }
 
- function showStep() {
+function showStep() {
   if (!state.cfg) return;
   const s = state.cfg.steps[state.idx];
   showTyping();
@@ -167,9 +167,10 @@ export function initMultiWizard(configs) {
   });
 
   // Next button
-  btnNext.addEventListener('click', e => {
-    e.preventDefault();
-    const s = state.cfg.steps[state.idx];
+ btnNext.addEventListener('click', e => {
+  if (!state.cfg) return;
+  e.preventDefault();
+  const s = state.cfg.steps[state.idx];
     const v = input.value.trim();
     if (!v || (s.validate && !s.validate(v))) {
       input.classList.add('shake');
@@ -183,6 +184,7 @@ export function initMultiWizard(configs) {
 
 // Send button (with original POST payload)
 btnSend.addEventListener('click', async e => {
+  if (!state.cfg) return;
   e.preventDefault();
 
   // Prevent double-click
