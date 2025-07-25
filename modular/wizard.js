@@ -15,18 +15,10 @@ export function initMultiWizard(configs) {
     return;
   }
 
-  // Delegate inline-Send clicks
-  thread.addEventListener('click', e => {
-    if (e.target.id === 'wizard-send-inline') {
-      e.preventDefault();
-      btnSend.click();
-    }
-  });
-
   // State
   let state = { data: {}, idx: 0, cfg: null, cfgKey: null };
-  let lastFocus          = null;
-  let resetTimeoutId     = null;
+  let lastFocus = null;
+  let resetTimeoutId = null;
   let transitionFallbackId = null;
   const TRANSITION_DURATION = 400;
 
@@ -63,15 +55,12 @@ export function initMultiWizard(configs) {
     if (!state.cfg) return;
     const s = state.cfg.steps[state.idx];
     showTyping();
-
     setTimeout(() => {
       removeTyping();
-      let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
-      if (s.key === 'message') promptText = 'What’s your message?';
-      if (s.confirm) promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
+      const promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
       showBubble(promptText, 'bot');
 
-      input.placeholder = s.placeholder || `Please enter your ${s.key}...`;
+      input.placeholder = s.placeholder || '';
       input.type        = s.key === 'password' ? 'password' : 'text';
       input.value       = '';
       input.disabled    = false;
@@ -80,7 +69,8 @@ export function initMultiWizard(configs) {
       if (s.confirm) {
         input.style.display   = 'none';
         btnNext.style.display = 'none';
-        btnSend.style.display = 'none';
+        btnSend.style.display = 'inline-flex';
+        btnSend.disabled      = false;
       } else {
         input.style.display   = '';
         btnNext.style.display = 'inline-flex';
@@ -91,7 +81,7 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
-  // Open wizard (single definition)
+  // Open wizard
   function openWizard(rawKey) {
     const key = String(rawKey).toLowerCase();
     const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
@@ -102,23 +92,22 @@ export function initMultiWizard(configs) {
     state.cfgKey = matchKey;
     state.cfg    = configs[matchKey];
 
-    // Prefill from localStorage
-    const storedEmail  = localStorage.getItem('fx_customerEmail');
-    const storedId     = localStorage.getItem('fx_customerId');
-    const storedRegion = localStorage.getItem('userRegion');
+    // prefill
+    const e = localStorage.getItem('fx_customerEmail');
+    const id= localStorage.getItem('fx_customerId');
+    const r = localStorage.getItem('userRegion');
     state.data = {};
-    if (storedEmail && storedId) {
+    if (e && id) {
       state.data.firstName = '';
-      state.data.email     = storedEmail;
-      state.data.foxy_id   = storedId;
-      if (storedRegion) state.data.region = storedRegion;
+      state.data.email     = e;
+      state.data.foxy_id   = id;
+      if (r) state.data.region = r;
       const idx = state.cfg.steps.findIndex(s => s.key === 'message');
       state.idx = idx > -1 ? idx : 0;
     } else {
       state.idx = 0;
     }
 
-    // Show overlay
     thread.innerHTML    = '';
     heading.innerText   = state.cfg.title;
     lastFocus           = document.activeElement;
@@ -151,9 +140,7 @@ export function initMultiWizard(configs) {
   function trapFocus(e) {
     if (!wizard.classList.contains('active') || e.key !== 'Tab') return;
     const focusable = Array.from(
-      wizard.querySelectorAll(
-        'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
-      )
+      wizard.querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')
     ).filter(el => el.offsetParent !== null);
     if (!focusable.length) return;
     const first = focusable[0], last = focusable[focusable.length-1];
@@ -164,7 +151,7 @@ export function initMultiWizard(configs) {
     }
   }
 
-  // Input listener
+  // input validity
   input.addEventListener('input', () => {
     if (!state.cfg) return;
     const s     = state.cfg.steps[state.idx];
@@ -173,7 +160,7 @@ export function initMultiWizard(configs) {
     if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
   });
 
-  // Next button
+  // Next
   btnNext.addEventListener('click', e => {
     if (!state.cfg) return;
     e.preventDefault();
@@ -189,33 +176,32 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send button (disable + text swap + POST)
+  // Send (original POST logic)
   btnSend.addEventListener('click', async e => {
     if (!state.cfg) return;
     e.preventDefault();
-
     btnSend.disabled = true;
-    const inline = document.getElementById('wizard-send-inline');
-    if (inline) inline.disabled = true;
-
-    const orig = btnSend.innerText;
-    btnSend.innerText = 'Sending…';
 
     const moduleName = state.cfg.formModule || 'Leads';
-    const { firstName='', email='', message='', foxy_id='', region='' } = state.data;
+    const name    = state.data.firstName || '';
+    const email   = state.data.email     || '';
+    const message = state.data.message   || '';
+    const foxy_id = state.data.foxy_id   || '';
+    const region  = state.data.region    || '';
 
+    // build payload
     let payload = {};
     if (moduleName === 'Leads') {
       payload = {
-        Last_Name:  scramble(firstName),
-        First_Name: firstName,
+        Last_Name:  scramble(name),
+        First_Name: name,
         Email:      email,
         Message:    message
       };
     }
 
     // sync hidden form
-    [['wizard-name', firstName],
+    [['wizard-name', name],
      ['wizard-email', email],
      ['wizard-message', message],
      ['wizard-foxy_id', foxy_id],
@@ -242,21 +228,18 @@ export function initMultiWizard(configs) {
       console.error(err);
       showBubble('❌ Oops, failed to save. Try again.', 'bot');
       btnSend.disabled = false;
-      if (inline) inline.disabled = false;
-    } finally {
-      btnSend.innerText = orig;
     }
 
-    // Inline Close
+    // inline Close
     const closeBtn = document.createElement('button');
-    closeBtn.innerText = 'Close';
-    closeBtn.className = 'pwr4-inline-close';
+    closeBtn.innerText    = 'Close';
+    closeBtn.className    = 'pwr4-inline-close';
     closeBtn.addEventListener('click', closeWizard);
     const wrap = document.createElement('div');
-    wrap.className = 'chat-msg messagex-bot';
+    wrap.className        = 'chat-msg messagex-bot';
     wrap.appendChild(closeBtn);
     thread.appendChild(wrap);
-    thread.scrollTop = thread.scrollHeight;
+    thread.scrollTop      = thread.scrollHeight;
 
     resetTimeoutId = setTimeout(() => {
       if (wizard.classList.contains('active')) location.reload();
@@ -279,10 +262,10 @@ export function initMultiWizard(configs) {
     input.focus();
   });
 
-  // Disable overlay click
+  // disable overlay click
   wizard.addEventListener('click', e => e.stopPropagation());
 
-  // Keyboard
+  // keyboard
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeWizard();
     trapFocus(e);
@@ -293,7 +276,7 @@ export function initMultiWizard(configs) {
     }
   });
 
-  // Single trigger wiring
+  // trigger buttons
   document.querySelectorAll('[data-wizard]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
