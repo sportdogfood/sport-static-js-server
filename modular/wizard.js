@@ -90,15 +90,12 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
-  // Open wizard
-  function openWizard(key) {
-    console.log('[Wizard] openWizard called with key →', key);
-    console.log('[Wizard] available configs →', Object.keys(configs));
-
-    const matchKey = Object.keys(configs)
-      .find(k => k.toLowerCase() === String(key).toLowerCase());
+  // Single openWizard
+  function openWizard(rawKey) {
+    const key = String(rawKey).toLowerCase();
+    const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
     if (!matchKey) {
-      console.error('[Wizard] no config for', key);
+      console.error('Wizard: no config for', rawKey);
       return;
     }
     state.cfgKey = matchKey;
@@ -152,14 +149,18 @@ export function initMultiWizard(configs) {
   function trapFocus(e) {
     if (!wizard.classList.contains('active') || e.key !== 'Tab') return;
     const focusable = Array.from(
-      wizard.querySelectorAll('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])')
+      wizard.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [href], [tabindex]:not([tabindex="-1"])'
+      )
     ).filter(el => el.offsetParent !== null);
     if (!focusable.length) return;
     const first = focusable[0], last = focusable[focusable.length-1];
     if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault(); last.focus();
+      e.preventDefault();
+      last.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault(); first.focus();
+      e.preventDefault();
+      first.focus();
     }
   }
 
@@ -172,7 +173,7 @@ export function initMultiWizard(configs) {
     if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
   });
 
-  // Next button
+  // Next
   btnNext.addEventListener('click', e => {
     if (!state.cfg) return;
     e.preventDefault();
@@ -188,7 +189,7 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send button with spinner and POST
+  // Send with spinner + POST
   btnSend.addEventListener('click', async e => {
     if (!state.cfg) return;
     e.preventDefault();
@@ -254,7 +255,7 @@ export function initMultiWizard(configs) {
       if (spinner) spinner.remove();
     }
 
-    // Inline Close
+    // Inline close
     const closeBtn = document.createElement('button');
     closeBtn.innerText    = 'Close';
     closeBtn.className    = 'pwr4-inline-close';
@@ -270,7 +271,7 @@ export function initMultiWizard(configs) {
     }, 60000);
   });
 
-  // Close only via button
+  // Close via button
   btnClose.addEventListener('click', () => {
     if (confirm("Are you sure you want to close?")) closeWizard();
   });
@@ -280,13 +281,13 @@ export function initMultiWizard(configs) {
     if (state.cfgKey) openWizard(state.cfgKey);
   });
 
-  // Clear input
+  // Clear
   btnClear.addEventListener('click', () => {
     input.value = '';
     input.focus();
   });
 
-  // Disable overlay click-to-close
+  // Disable overlay background click
   wizard.addEventListener('click', e => e.stopPropagation());
 
   // Keyboard
@@ -300,7 +301,7 @@ export function initMultiWizard(configs) {
     }
   });
 
-  // Trigger buttons
+  // Single trigger wiring
   document.querySelectorAll('[data-wizard]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
