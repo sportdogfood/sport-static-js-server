@@ -50,53 +50,48 @@ export function initMultiWizard(configs) {
     return arr.join('');
   }
 
-  function showStep() {
-    if (!state.cfg) return;
-    const s = state.cfg.steps[state.idx];
-    showTyping();
+ function showStep() {
+  if (!state.cfg) return;
+  const s = state.cfg.steps[state.idx];
+  showTyping();
 
-    setTimeout(() => {
-      removeTyping();
-      let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
+  setTimeout(() => {
+    removeTyping();
+    let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
 
-      // Always generic for message step
-      if (s.key === 'message') {
-        promptText = 'What’s your message?';
+    // Always generic for message step
+    if (s.key === 'message') {
+      promptText = 'What’s your message?';
+    }
+
+    if (s.confirm) {
+      promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
+    }
+    showBubble(promptText, 'bot');
+
+    input.placeholder = s.placeholder || `Please enter your ${s.key}...`;
+    input.type        = s.key === 'password' ? 'password' : 'text';
+    input.value       = '';
+    input.disabled    = false;
+    input.classList.remove('shake');
+
+    if (s.confirm) {
+      input.style.display   = 'none';
+      btnNext.style.display = 'none';
+      btnSend.style.display = 'none';  // hide default send
+
+      const inline = document.getElementById('wizard-send-inline');
+      if (inline) {
+        inline.addEventListener('click', () => btnSend.click());
       }
-
-      if (s.confirm) {
-        promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
-      }
-      showBubble(promptText, 'bot');
-
-      input.placeholder = s.placeholder || `Please enter your ${s.key}...`;
-      input.type        = s.key === 'password' ? 'password' : 'text';
-      input.value       = '';
-      input.disabled    = false;
-      input.classList.remove('shake');
-
-  if (s.confirm) {
-  input.style.display   = 'none';
-  btnNext.style.display = 'none';
-  // hide the default Send near the input bar
-  btnSend.style.display = 'none';
-
-  // add inline Send button in prompt
-if (s.confirm) {
-  input.style.display   = 'none';
-  btnNext.style.display = 'none';
-  btnSend.style.display = 'none';
-
-  const inline = document.getElementById('wizard-send-inline');
-  if (inline) {
-    inline.addEventListener('click', () => btnSend.click());
-  }
-} else {
-  input.style.display   = '';
-  btnNext.style.display = 'inline-flex';
-  btnNext.disabled      = true;
-  btnSend.style.display = 'none';
-  input.focus();
+    } else {
+      input.style.display   = '';
+      btnNext.style.display = 'inline-flex';
+      btnNext.disabled      = true;
+      btnSend.style.display = 'none';
+      input.focus();
+    }
+  }, 600);
 }
 
 
