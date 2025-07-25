@@ -177,7 +177,7 @@ export function initMultiWizard(configs) {
       };
     }
 
-    const endpoint = `https://zaproxy-7ec3ff690999.herokuapp.com/zoho/${moduleName}`;
+    const endpoint = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`;
 
     try {
       const resp = await fetch(endpoint, {
