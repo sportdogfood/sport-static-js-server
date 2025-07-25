@@ -242,20 +242,33 @@ btnSend.addEventListener('click', async e => {
         body: JSON.stringify(payload)
       }
     );
-    const body = await resp.json();
-    if (!resp.ok || !body.data) throw new Error('API error');
+   const body = await resp.json();
+  if (!resp.ok || !body.data) throw new Error('API error');
 
-    const hasStored = !!(email && foxy_id);
-    const success = hasStored
-      ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
-      : `✅ Message sent! We'll get back to you shortly.`;
-    showBubble(success, 'bot');
-  } catch (err) {
-    console.error(err);
-    showBubble('❌ Oops, failed to save. Try again.', 'bot');
-    btnSend.disabled = false;
+  const hasStored = !!(email && foxy_id);
+  const successText = hasStored
+    ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
+    : `✅ Message sent! We'll get back to you shortly.`;
+
+  // Show the success bubble
+  showBubble(successText, 'bot');
+
+  // Tag the last bubble and inject the Close button inside it
+  const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
+  if (lastBubble) {
+    lastBubble.classList.add('success');
+    const closeBtn = document.createElement('button');
+    closeBtn.innerText = 'Close';
+    closeBtn.className = 'pwr4-inline-close';
+    closeBtn.addEventListener('click', closeWizard);
+    lastBubble.appendChild(closeBtn);
+    thread.scrollTop = thread.scrollHeight;
   }
-
+} catch (err) {
+  console.error(err);
+  showBubble('❌ Oops, failed to save. Try again.', 'bot');
+  btnSend.disabled = false;
+}
   // success close button
   const closeBtn = document.createElement('button');
   closeBtn.innerText = 'Close';
