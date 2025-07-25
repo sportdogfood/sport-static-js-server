@@ -164,10 +164,10 @@ export function initMultiWizard(configs) {
     e.preventDefault();
     showBubble(`Yes, ${state.cfg.title.toLowerCase()} it`, 'user');
 
-    const moduleName = state.cfg.formModule || 'Potentials';
+    const moduleName = state.cfg.formModule || 'Leads';
     let payload = { ...state.data };
 
-    if (moduleName === 'Potentials') {
+    if (moduleName === 'Leads') {
       const fn = state.data.firstName || '';
       payload = {
         Last_Name:  scramble(fn),
