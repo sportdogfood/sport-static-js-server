@@ -202,80 +202,86 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send (with payload injection)
-  btnSend.addEventListener('click', async e => {
-    if (!state.cfg) return;
-    e.preventDefault();
-    btnSend.disabled = true;
+// Send (with payload injection)
+btnSend.addEventListener('click', async e => {
+  if (!state.cfg) return;
+  e.preventDefault();
+  btnSend.disabled = true;
 
-    const moduleName = state.cfg.formModule || 'Leads';
-    const { firstName='', email='', message='', foxy_id='', region='' } = state.data;
+  const moduleName = state.cfg.formModule || 'Leads';
+  const { firstName = '', email = '', message = '', foxy_id = '', region = '' } = state.data;
 
-    let payload = {};
-    if (moduleName === 'Leads') {
-      payload = {
-        Last_Name:  scramble(firstName),
-        First_Name: firstName,
-        Email:      email,
-        Message:    message
-      };
-    }
+  let payload = {};
+  if (moduleName === 'Leads') {
+    payload = {
+      Last_Name:  scramble(firstName),
+      First_Name: firstName,
+      Email:      email,
+      Message:    message
+    };
+  }
 
-    // sync hidden form
-    [['wizard-email',  email],
-     ['wizard-foxy_id',foxy_id],
-     ['wizard-region', region],
-     ['wizard-name',   firstName],
-     ['wizard-message',message]
-    ].forEach(([id,val]) => {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    });
-
-    try {
-      const resp = await fetch(
-        `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`,
-        { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) }
-      );
-      const body = await resp.json();
-      if (!resp.ok || !body.data) throw new Error('API error');
-
-      const hasStored = !!(email && foxy_id);
-      const success = hasStored
-        ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
-        : `✅ Message sent! We'll get back to you shortly.`;
-      showBubble(success, 'bot');
-    } catch (err) {
-      console.error(err);
-      showBubble('❌ Oops, failed to save. Try again.', 'bot');
-      btnSend.disabled = false;
-    }
-
-    // success close button
-    const closeBtn = document.createElement('button');
-    closeBtn.innerText = 'Close';
-    closeBtn.className = 'pwr4-inline-close';
-    closeBtn.addEventListener('click', closeWizard);
-    const wrap = document.createElement('div');
-    wrap.className = 'chat-msg messagex-bot';
-    wrap.appendChild(closeBtn);
-    thread.appendChild(wrap);
-
-    resetTimeoutId = setTimeout(() => {
-      if (wizard.classList.contains('active')) closeWizard();
-    }, 60000);
+  // sync hidden form
+  [
+    ['wizard-email',  email],
+    ['wizard-foxy_id', foxy_id],
+    ['wizard-region',  region],
+    ['wizard-name',    firstName],
+    ['wizard-message', message]
+  ].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
   });
 
-  // Restart
-  btnRestart.addEventListener('click', () => {
-    if (state.cfgKey) openWizard(state.cfgKey);
-  });
+  try {
+    const resp = await fetch(
+      `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }
+    );
+    const body = await resp.json();
+    if (!resp.ok || !body.data) throw new Error('API error');
 
-  // Clear
-  btnClear.addEventListener('click', () => {
-    input.value = '';
-    input.focus();
-  });
+    const hasStored = !!(email && foxy_id);
+    const success = hasStored
+      ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
+      : `✅ Message sent! We'll get back to you shortly.`;
+    showBubble(success, 'bot');
+  } catch (err) {
+    console.error(err);
+    showBubble('❌ Oops, failed to save. Try again.', 'bot');
+    btnSend.disabled = false;
+  }
+
+  // success close button
+  const closeBtn = document.createElement('button');
+  closeBtn.innerText = 'Close';
+  closeBtn.className = 'pwr4-inline-close';
+  closeBtn.addEventListener('click', closeWizard);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'chat-msg messagex-bot';
+  wrap.appendChild(closeBtn);
+  thread.appendChild(wrap);
+
+  resetTimeoutId = setTimeout(() => {
+    if (wizard.classList.contains('active')) closeWizard();
+  }, 60000);
+});
+
+// Restart
+btnRestart.addEventListener('click', () => {
+  if (state.cfgKey) openWizard(state.cfgKey);
+});
+
+// Clear
+btnClear.addEventListener('click', () => {
+  input.value = '';
+  input.focus();
+});
 
   // Keyboard handling
   document.addEventListener('keydown', e => {
