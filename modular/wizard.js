@@ -75,17 +75,16 @@ export function initMultiWizard(configs) {
       input.disabled    = false;
       input.classList.remove('shake');
 
-      if (s.confirm) {
-        input.style.display   = 'none';
-        btnNext.style.display = 'none';
-        btnSend.style.display = 'inline-flex';
-        btnSend.disabled      = false;
+  if (s.confirm) {
+  input.style.display   = 'none';
+  btnNext.style.display = 'none';
+  // hide the default Send near the input bar
+  btnSend.style.display = 'none';
 
-        // attach inline send immediately
-        const inline = document.getElementById('wizard-send-inline');
-        if (inline) inline.addEventListener('click', () => btnSend.click());
-
-      } else {
+  // add inline Send button in prompt
+  const inline = document.getElementById('wizard-send-inline');
+  if (inline) inline.addEventListener('click', () => btnSend.click());
+} else {
         input.style.display   = '';
         btnNext.style.display = 'inline-flex';
         btnNext.disabled      = true;
@@ -181,110 +180,130 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send button (with original POST payload)
-  btnSend.addEventListener('click', async e => {
+// Send button (with original POST payload)
+btnSend.addEventListener('click', async e => {
+  e.preventDefault();
+
+  // Prevent double-click
+  btnSend.disabled = true;
+  const inline = document.getElementById('wizard-send-inline');
+  if (inline) inline.disabled = true;
+
+  // Show spinner
+  const spinner = document.createElement('span');
+  spinner.className = 'pwr4-inline-spinner';
+  spinner.innerText = '…'; // or use an icon/CSS animation
+  if (inline) inline.after(spinner);
+
+  const moduleName = state.cfg.formModule || 'Leads';
+  const name    = state.data.name    || '';
+  const email   = state.data.email   || '';
+  const message = state.data.message || '';
+  const foxyId  = state.data.foxy_id || '';
+  const region  = state.data.region  || '';
+
+  // original working payload
+  let payload = {};
+  if (moduleName === 'Leads') {
+    payload = {
+      Last_Name:  scramble(name),
+      First_Name: name,
+      Email:      email,
+      Message:    message
+    };
+  }
+
+  // sync hidden form
+  [['wizard-name', name],
+   ['wizard-email', email],
+   ['wizard-message', message],
+   ['wizard-foxy_id', foxyId],
+   ['wizard-region', region]
+  ].forEach(([id,val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+
+  try {
+    const resp = await fetch(`https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const body = await resp.json();
+
+    if (resp.ok && body.data) {
+      const hasStored = !!(email && foxyId);
+      const msg = hasStored
+        ? `✅ <strong>Bam! Message sent!</strong><br>We’ll get back to you at <span>${email}</span>.`
+        : `✅ Message sent! We’ll get back to you shortly.`;
+      showBubble(msg, 'bot');
+
+      spinner.remove();
+
+      const btn = document.createElement('button');
+      btn.innerText = 'Close';
+      btn.className = 'pwr4-inline-close';
+      btn.addEventListener('click', closeWizard);
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg messagex-bot';
+      wrap.appendChild(btn);
+      thread.appendChild(wrap);
+      thread.scrollTop = thread.scrollHeight;
+
+      resetTimeoutId = setTimeout(() => {
+        if (wizard.classList.contains('active')) location.reload();
+      }, 60000);
+    } else {
+      console.error('Zoho error', body);
+      spinner.remove();
+      showBubble('❌ Oops, failed to save. Try again.', 'bot');
+      btnSend.disabled = false;
+      if (inline) inline.disabled = false;
+    }
+  } catch (err) {
+    console.error('Network error', err);
+    spinner.remove();
+    showBubble('❌ Network error. Please try again.', 'bot');
+    btnSend.disabled = false;
+    if (inline) inline.disabled = false;
+  }
+});
+
+// Close only via button, with confirm
+btnClose.addEventListener('click', () => {
+  if (confirm("Are you sure you want to close?")) closeWizard();
+});
+
+// Restart & Clear
+btnRestart.addEventListener('click', () =>
+  openWizard(Object.keys(configs).find(k => configs[k] === state.cfg))
+);
+btnClear.addEventListener('click', () => { input.value = ''; input.focus(); });
+
+// disable overlay click
+wizard.addEventListener('click', e => e.stopPropagation());
+
+// keyboard handlers
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeWizard();
+  trapFocus(e);
+  if (e.key === 'Enter' && document.activeElement === input && !e.shiftKey) {
     e.preventDefault();
+    if (!btnNext.disabled && btnNext.style.display !== 'none') btnNext.click();
+    else if (!btnSend.disabled && btnSend.style.display !== 'none') btnSend.click();
+  }
+});
 
-    const moduleName = state.cfg.formModule || 'Leads';
-    const name    = state.data.name    || '';
-    const email   = state.data.email   || '';
-    const message = state.data.message || '';
-    const foxyId  = state.data.foxy_id || '';
-    const region  = state.data.region  || '';
-
-    // original working payload
-    let payload = {};
-    if (moduleName === 'Leads') {
-      payload = {
-        Last_Name:  scramble(name),
-        First_Name: name,
-        Email:      email,
-        Message:    message
-      };
-    }
-
-    // sync hidden form
-    [['wizard-name', name],
-     ['wizard-email', email],
-     ['wizard-message', message],
-     ['wizard-foxy_id', foxyId],
-     ['wizard-region', region]
-    ].forEach(([id,val]) => {
-      const el = document.getElementById(id);
-      if (el) el.value = val;
-    });
-
-    try {
-      const resp = await fetch(`https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`, {
-
-  method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const body = await resp.json();
-      if (resp.ok && body.data) {
-        const hasStored = !!(email && foxyId);
-        const msg = hasStored
-          ? `✅ <strong>Bam! Message sent!</strong><br>We’ll get back to you at <span>${email}</span>.`
-          : `✅ Message sent! We’ll get back to you shortly.`;
-        showBubble(msg, 'bot');
-
-        const btn = document.createElement('button');
-        btn.innerText = 'Close';
-        btn.className = 'pwr4-inline-close';
-        btn.addEventListener('click', closeWizard);
-        const wrap = document.createElement('div');
-        wrap.className = 'chat-msg messagex-bot';
-        wrap.appendChild(btn);
-        thread.appendChild(wrap);
-        thread.scrollTop = thread.scrollHeight;
-
-        resetTimeoutId = setTimeout(() => {
-          if (wizard.classList.contains('active')) location.reload();
-        }, 60000);
-      } else {
-        console.error('Zoho error', body);
-        showBubble('❌ Oops, failed to save. Try again.', 'bot');
-      }
-    } catch (err) {
-      console.error('Network error', err);
-      showBubble('❌ Network error. Please try again.', 'bot');
-    }
+// trigger
+document.querySelectorAll('[data-wizard]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    const key = btn.dataset.wizard;
+    if (configs[key]) openWizard(key);
   });
+});
 
-  // Close only via button, with confirm
-  btnClose.addEventListener('click', () => {
-    if (confirm("Are you sure you want to close?")) closeWizard();
-  });
-
-  // Restart & Clear
-  btnRestart.addEventListener('click', () =>
-    openWizard(Object.keys(configs).find(k => configs[k] === state.cfg))
-  );
-  btnClear.addEventListener('click', () => { input.value = ''; input.focus(); });
-
-  // disable overlay click
-  wizard.addEventListener('click', e => e.stopPropagation());
-
-  // keyboard handlers
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') closeWizard();
-    trapFocus(e);
-    if (e.key === 'Enter' && document.activeElement === input && !e.shiftKey) {
-      e.preventDefault();
-      if (!btnNext.disabled && btnNext.style.display !== 'none') btnNext.click();
-      else if (!btnSend.disabled && btnSend.style.display !== 'none') btnSend.click();
-    }
-  });
-
-  // trigger
-  document.querySelectorAll('[data-wizard]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.preventDefault();
-      const key = btn.dataset.wizard;
-      if (configs[key]) openWizard(key);
-    });
-  });
 }
 
 
