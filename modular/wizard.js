@@ -1,6 +1,4 @@
-// wizard.js
 export function initMultiWizard(configs) {
-  // DOM elements
   const wizard     = document.querySelector('.chat-wizard');
   const heading    = document.getElementById('wizard-heading');
   const thread     = document.getElementById('wizardThread');
@@ -16,18 +14,16 @@ export function initMultiWizard(configs) {
     return;
   }
 
-  // State
   let state = { data: {}, idx: 0, cfg: null };
   let lastFocus = null;
   let resetTimeoutId = null;
   let transitionFallbackId = null;
-  const TRANSITION_DURATION = 400; // match CSS .4s
+  const TRANSITION_DURATION = 400;
 
-  // Helpers
   function showBubble(text, who) {
     const d = document.createElement('div');
     d.className = 'chat-msg ' + (who === 'bot' ? 'messagex-bot' : 'messagex-user');
-    d.innerText = text;
+    d.innerHTML = text;
     thread.appendChild(d);
     thread.scrollTop = thread.scrollHeight;
   }
@@ -45,7 +41,6 @@ export function initMultiWizard(configs) {
     if (t) t.remove();
   }
 
-  // scramble last name from first name
   function scramble(str) {
     const arr = Array.from(str);
     for (let i = arr.length - 1; i > 0; i--) {
@@ -62,10 +57,11 @@ export function initMultiWizard(configs) {
 
     setTimeout(() => {
       removeTyping();
-      const promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
+      let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
+      if (s.confirm) promptText += ` <button id="wizard-send-inline" class="btn-inline-send">Send</button>`;
       showBubble(promptText, 'bot');
 
-      input.placeholder = s.placeholder || '';
+      input.placeholder = s.placeholder || `Please enter your ${s.key || 'response'}...`;
       input.type = s.key === 'password' ? 'password' : 'text';
       input.value = '';
       input.disabled = false;
@@ -76,6 +72,13 @@ export function initMultiWizard(configs) {
         btnNext.style.display = 'none';
         btnSend.style.display = 'inline-flex';
         btnSend.disabled = false;
+
+        setTimeout(() => {
+          const btnInline = document.getElementById('wizard-send-inline');
+          if (btnInline) {
+            btnInline.addEventListener('click', () => btnSend.click());
+          }
+        }, 100);
       } else {
         input.style.display = '';
         btnNext.style.display = 'inline-flex';
@@ -87,10 +90,25 @@ export function initMultiWizard(configs) {
   }
 
   function openWizard(key) {
+    const storedEmail   = localStorage.getItem('fx_customerEmail');
+    const storedId      = localStorage.getItem('fx_customerId');
+    const storedRegion  = localStorage.getItem('userRegion');
+
     state.data = {};
-    state.idx = 0;
     state.cfg = configs[key];
+
     if (!state.cfg) return console.error('Wizard: no config for', key);
+
+    if (storedEmail && storedId) {
+      state.data.Email   = storedEmail;
+      state.data.Foxy_id = storedId;
+      if (storedRegion) state.data.Region = storedRegion;
+
+      const startIdx = state.cfg.steps.findIndex(s => s.key === 'message');
+      state.idx = startIdx > -1 ? startIdx : 0;
+    } else {
+      state.idx = 0;
+    }
 
     thread.innerHTML = '';
     heading.innerText = state.cfg.title;
@@ -136,7 +154,6 @@ export function initMultiWizard(configs) {
     }
   }
 
-  // enable Next/Send based on input validity
   input.addEventListener('input', () => {
     const s = state.cfg.steps[state.idx];
     const valid = input.value.trim() && (!s.validate || s.validate(input.value));
@@ -144,7 +161,6 @@ export function initMultiWizard(configs) {
     if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
   });
 
-  // Next handler
   btnNext.addEventListener('click', e => {
     e.preventDefault();
     const s = state.cfg.steps[state.idx];
@@ -159,25 +175,37 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send handler with Zoho POST
   btnSend.addEventListener('click', async e => {
     e.preventDefault();
-    showBubble(`Yes, ${state.cfg.title.toLowerCase()} it`, 'user');
 
     const moduleName = state.cfg.formModule || 'Leads';
-    let payload = { ...state.data };
+    const fn      = state.data.firstName || '';
+    const email   = state.data.Email || '';
+    const foxyId  = state.data.Foxy_id || '';
+    const region  = state.data.Region || '';
+    const message = state.data.message || '';
 
-    if (moduleName === 'Leads') {
-      const fn = state.data.firstName || '';
-      payload = {
-        Last_Name:  scramble(fn),
-        First_Name: fn,
-        Email:      state.data.email || '',
-        Message:    state.data.message || ''
-      };
-    }
+    const payload = {
+      Last_Name:  scramble(fn),
+      First_Name: fn,
+      Email:      email,
+      Message:    message,
+      Foxy_id:    foxyId,
+      Region:     region
+    };
 
-    const endpoint = `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`;
+    const setInputValue = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) el.value = value;
+    };
+
+    setInputValue('wizard-email', email);
+    setInputValue('wizard-foxy_id', foxyId);
+    setInputValue('wizard-region', region);
+    setInputValue('wizard-name', fn);
+    setInputValue('wizard-message', message);
+
+    const endpoint = `https://zaproxy-7ec3ff690999.herokuapp.com/zoho/${moduleName}`;
 
     try {
       const resp = await fetch(endpoint, {
@@ -187,9 +215,26 @@ export function initMultiWizard(configs) {
       });
       const body = await resp.json();
       if (resp.ok && body.data) {
-        showBubble('✅ Done!', 'bot');
+        const hasStored = localStorage.getItem('fx_customerEmail') && localStorage.getItem('fx_customerId');
+        const successMsg = hasStored
+          ? `✅ <strong>Bam! Message sent!</strong><br>We’ll get back to you shortly at <span>${email}</span>. You may close this window or wait for it to reset.`
+          : `✅ Message sent! We’ll get back to you shortly. You may close this window or wait for it to reset.`;
+
+        showBubble(successMsg, 'bot');
+
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = 'Close';
+        closeBtn.className = 'btn-inline-close';
+        closeBtn.addEventListener('click', closeWizard);
+
+        const msg = document.createElement('div');
+        msg.className = 'chat-msg messagex-bot';
+        msg.appendChild(closeBtn);
+        thread.appendChild(msg);
+        thread.scrollTop = thread.scrollHeight;
+
         resetTimeoutId = setTimeout(() => {
-          if (wizard.classList.contains('active')) resetWizard();
+          if (wizard.classList.contains('active')) location.reload();
         }, 60000);
       } else {
         console.error('Zoho error', body);
@@ -201,19 +246,29 @@ export function initMultiWizard(configs) {
     }
   });
 
-  // Close, Restart, Clear
-  btnClose.addEventListener('click', closeWizard);
-  btnRestart.addEventListener('click', () => openWizard(Object.keys(configs)
-    .find(k => configs[k] === state.cfg)));
+  btnClose.addEventListener('click', () => {
+    const confirmClose = confirm("Are you sure you want to close?");
+    if (confirmClose) closeWizard();
+  });
+
+  btnRestart.addEventListener('click', () => openWizard(Object.keys(configs).find(k => configs[k] === state.cfg)));
   btnClear.addEventListener('click', () => { input.value = ''; input.focus(); });
 
-  // click-outside closes
-  wizard.addEventListener('click', e => { if (e.target === wizard) closeWizard(); });
+  // DISABLE overlay click-to-close entirely
+  wizard.addEventListener('click', e => {
+    e.stopPropagation();
+  });
 
-  // escape & focus trap
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeWizard(); trapFocus(e); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeWizard();
+    trapFocus(e);
+    if (e.key === 'Enter' && document.activeElement === input && !e.shiftKey) {
+      e.preventDefault();
+      if (!btnNext.disabled && btnNext.style.display !== 'none') btnNext.click();
+      else if (!btnSend.disabled && btnSend.style.display !== 'none') btnSend.click();
+    }
+  });
 
-  // trigger buttons
   document.querySelectorAll('[data-wizard]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
