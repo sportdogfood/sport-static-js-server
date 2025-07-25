@@ -1,5 +1,5 @@
 export function initMultiWizard(configs) {
-  // DOM references
+  // 2:09 DOM references
   const wizard     = document.querySelector('.chat-wizard');
   const heading    = document.getElementById('wizard-heading');
   const thread     = document.getElementById('wizardThread');
