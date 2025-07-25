@@ -17,14 +17,14 @@ export function initMultiWizard(configs) {
 
   // Delegate inline Send clicks
   thread.addEventListener('click', e => {
-    if (e.target && e.target.id === 'wizard-send-inline') {
+    if (e.target.id === 'wizard-send-inline') {
       e.preventDefault();
       btnSend.click();
     }
   });
 
   // State
-  let state = { data: {}, idx: 0, cfg: null };
+  let state = { data: {}, idx: 0, cfg: null, cfgKey: null };
   let lastFocus = null;
   let resetTimeoutId = null;
   let transitionFallbackId = null;
@@ -63,17 +63,11 @@ export function initMultiWizard(configs) {
     if (!state.cfg) return;
     const s = state.cfg.steps[state.idx];
     showTyping();
-
     setTimeout(() => {
       removeTyping();
       let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
-
-      if (s.key === 'message') {
-        promptText = 'What’s your message?';
-      }
-      if (s.confirm) {
-        promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
-      }
+      if (s.key === 'message') promptText = 'What’s your message?';
+      if (s.confirm) promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
       showBubble(promptText, 'bot');
 
       input.placeholder = s.placeholder || `Please enter your ${s.key}...`;
@@ -96,52 +90,47 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
-function openWizard(key) {
-  // DEBUG: log the requested key and available configs
-  console.log('[Wizard] openWizard called with key →', key);
-  console.log('[Wizard] available configs →', Object.keys(configs));
+  // Open wizard
+  function openWizard(key) {
+    console.log('[Wizard] openWizard called with key →', key);
+    console.log('[Wizard] available configs →', Object.keys(configs));
 
-  // Case‐insensitive lookup of the config
-  const matchKey = Object.keys(configs)
-    .find(k => k.toLowerCase() === String(key).toLowerCase());
+    const matchKey = Object.keys(configs)
+      .find(k => k.toLowerCase() === String(key).toLowerCase());
+    if (!matchKey) {
+      console.error('[Wizard] no config for', key);
+      return;
+    }
+    state.cfgKey = matchKey;
+    state.cfg    = configs[matchKey];
 
-  if (!matchKey) {
-    console.error('[Wizard] no config for', key);
-    return;
+    const storedEmail  = localStorage.getItem('fx_customerEmail');
+    const storedId     = localStorage.getItem('fx_customerId');
+    const storedRegion = localStorage.getItem('userRegion');
+
+    state.data = {};
+    if (storedEmail && storedId) {
+      state.data.firstName = '';
+      state.data.email     = storedEmail;
+      state.data.foxy_id   = storedId;
+      if (storedRegion) state.data.region = storedRegion;
+      const idx = state.cfg.steps.findIndex(s => s.key === 'message');
+      state.idx = idx > -1 ? idx : 0;
+    } else {
+      state.idx = 0;
+    }
+
+    thread.innerHTML    = '';
+    heading.innerText   = state.cfg.title;
+    lastFocus           = document.activeElement;
+    wizard.setAttribute('aria-hidden','false');
+    document.documentElement.classList.add('modal-open');
+    document.body.classList.add('modal-open');
+    wizard.classList.add('active');
+
+    wizard.addEventListener('transitionend', onTransitionEnd);
+    transitionFallbackId = setTimeout(onTransitionEnd, TRANSITION_DURATION + 50);
   }
-  state.cfg = configs[matchKey];
-
-  // Prefill from localStorage if available
-  const storedEmail  = localStorage.getItem('fx_customerEmail');
-  const storedId     = localStorage.getItem('fx_customerId');
-  const storedRegion = localStorage.getItem('userRegion');
-
-  state.data = {};
-  if (storedEmail && storedId) {
-    state.data.firstName = '';
-    state.data.email     = storedEmail;
-    state.data.foxy_id   = storedId;
-    if (storedRegion) state.data.region = storedRegion;
-
-    // jump to message step
-    const idx = state.cfg.steps.findIndex(s => s.key === 'message');
-    state.idx = idx > -1 ? idx : 0;
-  } else {
-    state.idx = 0;
-  }
-
-  // Reset UI and show first step
-  thread.innerHTML    = '';
-  heading.innerText   = state.cfg.title;
-  lastFocus           = document.activeElement;
-  wizard.setAttribute('aria-hidden','false');
-  document.documentElement.classList.add('modal-open');
-  document.body.classList.add('modal-open');
-  wizard.classList.add('active');
-
-  wizard.addEventListener('transitionend', onTransitionEnd);
-  transitionFallbackId = setTimeout(onTransitionEnd, TRANSITION_DURATION + 50);
-}
 
   function onTransitionEnd(e) {
     if (e && e.propertyName !== 'transform') return;
@@ -286,13 +275,18 @@ function openWizard(key) {
     if (confirm("Are you sure you want to close?")) closeWizard();
   });
 
-  // Restart & clear
-  btnRestart.addEventListener('click', () =>
-    openWizard(Object.keys(configs).find(k => k.toLowerCase() === String(state.cfg && state.cfg.title).toLowerCase()))
-  );
-  btnClear.addEventListener('click', () => { input.value = ''; input.focus(); });
+  // Restart
+  btnRestart.addEventListener('click', () => {
+    if (state.cfgKey) openWizard(state.cfgKey);
+  });
 
-  // Disable overlay click
+  // Clear input
+  btnClear.addEventListener('click', () => {
+    input.value = '';
+    input.focus();
+  });
+
+  // Disable overlay click-to-close
   wizard.addEventListener('click', e => e.stopPropagation());
 
   // Keyboard
