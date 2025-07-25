@@ -202,20 +202,21 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-// Send button handler with guaranteed Last_Name fallback
+// Send button handler with guaranteed Last_Name and proper Foxy_id
 btnSend.addEventListener('click', async e => {
   if (!state.cfg) return;
   e.preventDefault();
   btnSend.disabled = true;
 
   const moduleName = state.cfg.formModule || 'Leads';
-  const firstName  = state.data.firstName || '';
-  const email      = state.data.email     || '';
-  const message    = state.data.message   || '';
-  const foxy_id    = state.data.foxy_id   || '';
-  const region     = state.data.region    || '';
+  const firstName  = state.data.firstName   || '';
+  const email      = state.data.email       || '';
+  // handle whichever you saved earlier:
+  const foxy_id    = state.data.foxy_id     ?? state.data.Foxy_id ?? '';
+  const region     = state.data.region      || '';
+  const message    = state.data.message     || '';
 
-  // Determine Last_Name: scramble firstName or fallback to email prefix
+  // Determine Last_Name
   let lastName;
   if (firstName) {
     lastName = scramble(firstName);
@@ -233,12 +234,15 @@ btnSend.addEventListener('click', async e => {
       First_Name: firstName,
       Email:      email,
       Message:    message,
-      Foxy_id:    foxy_id,
+      Foxy_id:    foxy_id,   // exact field name Zoho expects
       Region:     region
     };
   }
 
-  // Sync to hidden form fields
+  // log to inspect what’s being sent
+  console.log('[Wizard] Payload →', payload);
+
+  // sync to hidden form fields
   [
     ['wizard-name',    firstName],
     ['wizard-email',   email],
@@ -260,7 +264,7 @@ btnSend.addEventListener('click', async e => {
       }
     );
     const body = await resp.json();
-    if (!resp.ok || !body.data) throw new Error('API error');
+    if (!resp.ok || !body.data) throw new Error(JSON.stringify(body));
 
     const hasStored = !!(email && foxy_id);
     const successText = hasStored
@@ -268,7 +272,6 @@ btnSend.addEventListener('click', async e => {
       : `✅ Message sent! We'll get back to you shortly.`;
     showBubble(successText, 'bot');
 
-    // Tag and style the success bubble with Close button inside
     const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
     if (lastBubble) {
       lastBubble.classList.add('success');
@@ -280,12 +283,12 @@ btnSend.addEventListener('click', async e => {
       thread.scrollTop = thread.scrollHeight;
     }
   } catch (err) {
-    console.error(err);
+    console.error('[Wizard] POST error →', err);
     showBubble('❌ Oops, failed to save. Try again.', 'bot');
     btnSend.disabled = false;
   }
 
-  // Auto-close after 60s if still open
+  // Auto-close after 60s
   resetTimeoutId = setTimeout(() => {
     if (wizard.classList.contains('active')) closeWizard();
   }, 60000);
