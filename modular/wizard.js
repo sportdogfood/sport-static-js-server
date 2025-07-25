@@ -82,17 +82,23 @@ export function initMultiWizard(configs) {
   btnSend.style.display = 'none';
 
   // add inline Send button in prompt
+if (s.confirm) {
+  input.style.display   = 'none';
+  btnNext.style.display = 'none';
+  btnSend.style.display = 'none';
+
   const inline = document.getElementById('wizard-send-inline');
-  if (inline) inline.addEventListener('click', () => btnSend.click());
-} else {
-        input.style.display   = '';
-        btnNext.style.display = 'inline-flex';
-        btnNext.disabled      = true;
-        btnSend.style.display = 'none';
-        input.focus();
-      }
-    }, 600);
+  if (inline) {
+    inline.addEventListener('click', () => btnSend.click());
   }
+} else {
+  input.style.display   = '';
+  btnNext.style.display = 'inline-flex';
+  btnNext.disabled      = true;
+  btnSend.style.display = 'none';
+  input.focus();
+}
+
 
   function openWizard(key) {
     const storedEmail  = localStorage.getItem('fx_customerEmail');
@@ -196,7 +202,7 @@ btnSend.addEventListener('click', async e => {
   if (inline) inline.after(spinner);
 
   const moduleName = state.cfg.formModule || 'Leads';
-  const name    = state.data.name    || '';
+  const name = state.data.firstName || '';
   const email   = state.data.email   || '';
   const message = state.data.message || '';
   const foxyId  = state.data.foxy_id || '';
