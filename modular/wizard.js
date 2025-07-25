@@ -58,8 +58,9 @@ export function initMultiWizard(configs) {
     setTimeout(() => {
       removeTyping();
       let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
-      if (s.confirm) promptText += ` <button id="wizard-send-inline" class="btn-inline-send">Send</button>`;
+      if (s.confirm) promptText += ` <button id="wizard-send-inline" class="pwr4-inline-send">Send</button>`;
       showBubble(promptText, 'bot');
+
 
       input.placeholder = s.placeholder || `Please enter your ${s.key || 'response'}...`;
       input.type = s.key === 'password' ? 'password' : 'text';
@@ -224,7 +225,7 @@ export function initMultiWizard(configs) {
 
         const closeBtn = document.createElement('button');
         closeBtn.innerText = 'Close';
-        closeBtn.className = 'btn-inline-close';
+        closeBtn.className = 'pwr4-inline-close';
         closeBtn.addEventListener('click', closeWizard);
 
         const msg = document.createElement('div');
