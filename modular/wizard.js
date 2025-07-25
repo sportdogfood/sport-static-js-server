@@ -15,7 +15,7 @@ export function initMultiWizard(configs) {
     return;
   }
 
-  // Delegate inline Send clicks
+  // Delegate inline-Send clicks
   thread.addEventListener('click', e => {
     if (e.target.id === 'wizard-send-inline') {
       e.preventDefault();
@@ -25,8 +25,8 @@ export function initMultiWizard(configs) {
 
   // State
   let state = { data: {}, idx: 0, cfg: null, cfgKey: null };
-  let lastFocus = null;
-  let resetTimeoutId = null;
+  let lastFocus          = null;
+  let resetTimeoutId     = null;
   let transitionFallbackId = null;
   const TRANSITION_DURATION = 400;
 
@@ -63,6 +63,7 @@ export function initMultiWizard(configs) {
     if (!state.cfg) return;
     const s = state.cfg.steps[state.idx];
     showTyping();
+
     setTimeout(() => {
       removeTyping();
       let promptText = typeof s.prompt === 'function' ? s.prompt(state) : s.prompt;
@@ -90,7 +91,7 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
-  // Single openWizard
+  // Open wizard (single definition)
   function openWizard(rawKey) {
     const key = String(rawKey).toLowerCase();
     const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
@@ -101,10 +102,10 @@ export function initMultiWizard(configs) {
     state.cfgKey = matchKey;
     state.cfg    = configs[matchKey];
 
+    // Prefill from localStorage
     const storedEmail  = localStorage.getItem('fx_customerEmail');
     const storedId     = localStorage.getItem('fx_customerId');
     const storedRegion = localStorage.getItem('userRegion');
-
     state.data = {};
     if (storedEmail && storedId) {
       state.data.firstName = '';
@@ -117,6 +118,7 @@ export function initMultiWizard(configs) {
       state.idx = 0;
     }
 
+    // Show overlay
     thread.innerHTML    = '';
     heading.innerText   = state.cfg.title;
     lastFocus           = document.activeElement;
@@ -156,11 +158,9 @@ export function initMultiWizard(configs) {
     if (!focusable.length) return;
     const first = focusable[0], last = focusable[focusable.length-1];
     if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
+      e.preventDefault(); last.focus();
     } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
+      e.preventDefault(); first.focus();
     }
   }
 
@@ -173,7 +173,7 @@ export function initMultiWizard(configs) {
     if (btnSend.style.display !== 'none') btnSend.disabled = !valid;
   });
 
-  // Next
+  // Next button
   btnNext.addEventListener('click', e => {
     if (!state.cfg) return;
     e.preventDefault();
@@ -189,7 +189,7 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-  // Send with spinner + POST
+  // Send button (disable + text swap + POST)
   btnSend.addEventListener('click', async e => {
     if (!state.cfg) return;
     e.preventDefault();
@@ -198,35 +198,27 @@ export function initMultiWizard(configs) {
     const inline = document.getElementById('wizard-send-inline');
     if (inline) inline.disabled = true;
 
-    let spinner;
-    if (inline) {
-      spinner = document.createElement('span');
-      spinner.className = 'pwr4-inline-spinner';
-      spinner.innerText = '…';
-      inline.after(spinner);
-    }
+    const orig = btnSend.innerText;
+    btnSend.innerText = 'Sending…';
 
     const moduleName = state.cfg.formModule || 'Leads';
-    const name       = state.data.firstName || '';
-    const email      = state.data.email     || '';
-    const message    = state.data.message   || '';
-    const foxyId     = state.data.foxy_id   || '';
-    const region     = state.data.region    || '';
+    const { firstName='', email='', message='', foxy_id='', region='' } = state.data;
 
     let payload = {};
     if (moduleName === 'Leads') {
       payload = {
-        Last_Name:  scramble(name),
-        First_Name: name,
+        Last_Name:  scramble(firstName),
+        First_Name: firstName,
         Email:      email,
         Message:    message
       };
     }
 
-    [['wizard-name',   name],
-     ['wizard-email',  email],
-     ['wizard-message',message],
-     ['wizard-foxy_id',foxyId],
+    // sync hidden form
+    [['wizard-name', firstName],
+     ['wizard-email', email],
+     ['wizard-message', message],
+     ['wizard-foxy_id', foxy_id],
      ['wizard-region', region]
     ].forEach(([id,val]) => {
       const el = document.getElementById(id);
@@ -241,7 +233,7 @@ export function initMultiWizard(configs) {
       const body = await resp.json();
       if (!resp.ok || !body.data) throw new Error('API error');
 
-      const hasStored = !!(email && foxyId);
+      const hasStored = !!(email && foxy_id);
       const msg = hasStored
         ? `✅ <strong>Bam! Message sent!</strong><br>We’ll get back to you at <span>${email}</span>.`
         : `✅ Message sent! We’ll get back to you shortly.`;
@@ -252,26 +244,26 @@ export function initMultiWizard(configs) {
       btnSend.disabled = false;
       if (inline) inline.disabled = false;
     } finally {
-      if (spinner) spinner.remove();
+      btnSend.innerText = orig;
     }
 
-    // Inline close
+    // Inline Close
     const closeBtn = document.createElement('button');
-    closeBtn.innerText    = 'Close';
-    closeBtn.className    = 'pwr4-inline-close';
+    closeBtn.innerText = 'Close';
+    closeBtn.className = 'pwr4-inline-close';
     closeBtn.addEventListener('click', closeWizard);
     const wrap = document.createElement('div');
-    wrap.className        = 'chat-msg messagex-bot';
+    wrap.className = 'chat-msg messagex-bot';
     wrap.appendChild(closeBtn);
     thread.appendChild(wrap);
-    thread.scrollTop      = thread.scrollHeight;
+    thread.scrollTop = thread.scrollHeight;
 
     resetTimeoutId = setTimeout(() => {
       if (wizard.classList.contains('active')) location.reload();
     }, 60000);
   });
 
-  // Close via button
+  // Close only via button
   btnClose.addEventListener('click', () => {
     if (confirm("Are you sure you want to close?")) closeWizard();
   });
@@ -287,7 +279,7 @@ export function initMultiWizard(configs) {
     input.focus();
   });
 
-  // Disable overlay background click
+  // Disable overlay click
   wizard.addEventListener('click', e => e.stopPropagation());
 
   // Keyboard
