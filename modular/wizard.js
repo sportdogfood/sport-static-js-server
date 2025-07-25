@@ -202,32 +202,49 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-// Send (with payload injection)
+// Send button handler with guaranteed Last_Name fallback
 btnSend.addEventListener('click', async e => {
   if (!state.cfg) return;
   e.preventDefault();
   btnSend.disabled = true;
 
   const moduleName = state.cfg.formModule || 'Leads';
-  const { firstName = '', email = '', message = '', foxy_id = '', region = '' } = state.data;
+  const firstName  = state.data.firstName || '';
+  const email      = state.data.email     || '';
+  const message    = state.data.message   || '';
+  const foxy_id    = state.data.foxy_id   || '';
+  const region     = state.data.region    || '';
 
+  // Determine Last_Name: scramble firstName or fallback to email prefix
+  let lastName;
+  if (firstName) {
+    lastName = scramble(firstName);
+  } else if (email) {
+    lastName = email.split('@')[0];
+  } else {
+    lastName = 'Customer';
+  }
+
+  // Build payload
   let payload = {};
   if (moduleName === 'Leads') {
     payload = {
-      Last_Name:  scramble(firstName),
+      Last_Name:  lastName,
       First_Name: firstName,
       Email:      email,
-      Message:    message
+      Message:    message,
+      Foxy_id:    foxy_id,
+      Region:     region
     };
   }
 
-  // sync hidden form
+  // Sync to hidden form fields
   [
-    ['wizard-email',  email],
-    ['wizard-foxy_id', foxy_id],
-    ['wizard-region',  region],
     ['wizard-name',    firstName],
-    ['wizard-message', message]
+    ['wizard-email',   email],
+    ['wizard-message', message],
+    ['wizard-foxy_id', foxy_id],
+    ['wizard-region',  region]
   ].forEach(([id, val]) => {
     const el = document.getElementById(id);
     if (el) el.value = val;
@@ -242,48 +259,38 @@ btnSend.addEventListener('click', async e => {
         body: JSON.stringify(payload)
       }
     );
-   const body = await resp.json();
-  if (!resp.ok || !body.data) throw new Error('API error');
+    const body = await resp.json();
+    if (!resp.ok || !body.data) throw new Error('API error');
 
-  const hasStored = !!(email && foxy_id);
-  const successText = hasStored
-    ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
-    : `✅ Message sent! We'll get back to you shortly.`;
+    const hasStored = !!(email && foxy_id);
+    const successText = hasStored
+      ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
+      : `✅ Message sent! We'll get back to you shortly.`;
+    showBubble(successText, 'bot');
 
-  // Show the success bubble
-  showBubble(successText, 'bot');
-
-  // Tag the last bubble and inject the Close button inside it
-  const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
-  if (lastBubble) {
-    lastBubble.classList.add('success');
-    const closeBtn = document.createElement('button');
-    closeBtn.innerText = 'Close';
-    closeBtn.className = 'pwr4-inline-close';
-    closeBtn.addEventListener('click', closeWizard);
-    lastBubble.appendChild(closeBtn);
-    thread.scrollTop = thread.scrollHeight;
+    // Tag and style the success bubble with Close button inside
+    const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
+    if (lastBubble) {
+      lastBubble.classList.add('success');
+      const closeBtn = document.createElement('button');
+      closeBtn.innerText = 'Close';
+      closeBtn.className = 'pwr4-inline-close';
+      closeBtn.addEventListener('click', closeWizard);
+      lastBubble.appendChild(closeBtn);
+      thread.scrollTop = thread.scrollHeight;
+    }
+  } catch (err) {
+    console.error(err);
+    showBubble('❌ Oops, failed to save. Try again.', 'bot');
+    btnSend.disabled = false;
   }
-} catch (err) {
-  console.error(err);
-  showBubble('❌ Oops, failed to save. Try again.', 'bot');
-  btnSend.disabled = false;
-}
-  // success close button
-  const closeBtn = document.createElement('button');
-  closeBtn.innerText = 'Close';
-  closeBtn.className = 'pwr4-inline-close';
-  closeBtn.addEventListener('click', closeWizard);
 
-  const wrap = document.createElement('div');
-  wrap.className = 'chat-msg messagex-bot';
-  wrap.appendChild(closeBtn);
-  thread.appendChild(wrap);
-
+  // Auto-close after 60s if still open
   resetTimeoutId = setTimeout(() => {
     if (wizard.classList.contains('active')) closeWizard();
   }, 60000);
 });
+
 
 // Restart
 btnRestart.addEventListener('click', () => {
