@@ -215,8 +215,9 @@ export function initMultiWizard(configs) {
     });
 
     try {
-      const resp = await fetch(`https://zaproxy-7ec3ff690999.herokuapp.com/zoho/${moduleName}`, {
-        method: 'POST',
+      const resp = await fetch(`https://zaproxy-7ec3ff690999.herokuapp.com/zoho/Leads`, {
+
+  method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
