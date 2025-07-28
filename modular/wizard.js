@@ -208,11 +208,11 @@ btnSend.addEventListener('click', async e => {
   btnSend.disabled = true;
 
   const moduleName = state.cfg.formModule || 'Leads';
-  const firstName  = state.data.firstName   || '';
-  const email      = state.data.email       || '';
-  const foxy_id    = state.data.foxy_id     ?? state.data.Foxy_id ?? '';
-  const region     = state.data.region      || '';
-  const message    = state.data.message     || '';
+  const firstName  = state.data.firstName || '';
+  const email      = state.data.email     || '';
+  const foxy_id    = state.data.foxy_id  ?? state.data.Foxy_id ?? '';
+  const region     = state.data.region    || '';
+  const message    = state.data.message   || '';
 
   // Determine Last_Name
   let lastName;
@@ -224,7 +224,7 @@ btnSend.addEventListener('click', async e => {
     lastName = 'Customer';
   }
 
-  // Build payload
+  // Build payload (Zoho expects these fields exactly)
   let payload = {};
   if (moduleName === 'Leads') {
     payload = {
@@ -237,31 +237,44 @@ btnSend.addEventListener('click', async e => {
     };
   }
 
-  // Optimistic success
+  // Sync hidden form fields (for Webflow native submission if needed)
+  [
+    ['wizard-name',    firstName],
+    ['wizard-email',   email],
+    ['wizard-message', message],
+    ['wizard-foxy_id', foxy_id],
+    ['wizard-region',  region]
+  ].forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+
+  // --- Optimistic Success: show to user immediately, don't wait for POST ---
   const hasRequired = !!(email && firstName);
   const successText = hasRequired
     ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
     : `✅ Message sent! We'll get back to you shortly.`;
-  showBubble(successText, 'bot');
 
-  // Style the last bubble with Close button inside
-  const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
-  if (lastBubble) {
-    lastBubble.classList.add('success');
-    const closeBtn = document.createElement('button');
-    closeBtn.innerText = 'Close';
-    closeBtn.className = 'pwr4-inline-close';
-    closeBtn.addEventListener('click', closeWizard);
-    lastBubble.appendChild(closeBtn);
-    thread.scrollTop = thread.scrollHeight;
-  }
+  // Create the styled success bubble (always .success class)
+  const successBubble = document.createElement('div');
+  successBubble.className = 'chat-msg messagex-bot success';
+  successBubble.innerHTML = successText;
 
-  // Immediately close after 60s if still open
+  const closeBtn = document.createElement('button');
+  closeBtn.innerText = 'Close';
+  closeBtn.className = 'pwr4-inline-close';
+  closeBtn.addEventListener('click', closeWizard);
+
+  successBubble.appendChild(closeBtn);
+  thread.appendChild(successBubble);
+  thread.scrollTop = thread.scrollHeight;
+
+  // Immediately auto-close after 60s if still open
   resetTimeoutId = setTimeout(() => {
     if (wizard.classList.contains('active')) closeWizard();
   }, 60000);
 
-  // Fire POST in background (non-blocking)
+  // --- Background POST ---
   try {
     const resp = await fetch(
       `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`,
@@ -273,17 +286,13 @@ btnSend.addEventListener('click', async e => {
     );
     const body = await resp.json();
     if (!resp.ok || !body.data) throw new Error(JSON.stringify(body));
+    // Optionally: if admin wants a notification on error, you can add it here.
   } catch (err) {
-    // Silent fail: you can add logic here to email admin or log error
-    // Example: trigger a webhook, or email, or log to console
+    // Optionally: log, email admin, etc. User never sees error.
     console.error('[Wizard] Background POST error:', err);
-
-    // Optionally, send an email to admin (pseudo code):
-    // fetch('/email-admin', { method:'POST', body: JSON.stringify({ ...payload, error: err.toString() }) });
-
-    // Optionally, you could also store in localStorage for later retry
+    // Optional: Email admin, or store for retry.
   }
-  // User never sees error. Their UI always shows success.
+  // UI is not affected by POST errors. User always sees immediate success.
 });
 
 
