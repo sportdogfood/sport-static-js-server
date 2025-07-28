@@ -18,30 +18,7 @@ body.modal-open {
   width: 100%;
   height: 100%;
 }
-/* Style the final success bubble */
-.chat-msg.messagex-bot.success {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  min-height: 100px;
-  padding: 1rem;
-  box-sizing: border-box;
-  background-color: #f0f0f0;    /* or your bubble color */
-  color: #000;                  /* text color */
-  border-radius: 8px;
-  margin-top: 1rem;
-}
 
-/* Position and style the Close button within it */
-.chat-msg.messagex-bot.success .pwr4-inline-close {
-  background: #007aff;          /* your button bg */
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
 /* 1) Overlay: full viewport with fade + slide in */
 .chat-wizard {
   position: fixed;
