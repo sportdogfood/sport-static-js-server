@@ -202,7 +202,6 @@ export function initMultiWizard(configs) {
     showStep();
   });
 
-// Send button handler with guaranteed Last_Name and proper Foxy_id
 btnSend.addEventListener('click', async e => {
   if (!state.cfg) return;
   e.preventDefault();
@@ -211,7 +210,6 @@ btnSend.addEventListener('click', async e => {
   const moduleName = state.cfg.formModule || 'Leads';
   const firstName  = state.data.firstName   || '';
   const email      = state.data.email       || '';
-  // handle whichever you saved earlier:
   const foxy_id    = state.data.foxy_id     ?? state.data.Foxy_id ?? '';
   const region     = state.data.region      || '';
   const message    = state.data.message     || '';
@@ -234,26 +232,36 @@ btnSend.addEventListener('click', async e => {
       First_Name: firstName,
       Email:      email,
       Message:    message,
-      Foxy_id:    foxy_id,   // exact field name Zoho expects
+      Foxy_id:    foxy_id,
       Region:     region
     };
   }
 
-  // log to inspect what’s being sent
-  console.log('[Wizard] Payload →', payload);
+  // Optimistic success
+  const hasRequired = !!(email && firstName);
+  const successText = hasRequired
+    ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
+    : `✅ Message sent! We'll get back to you shortly.`;
+  showBubble(successText, 'bot');
 
-  // sync to hidden form fields
-  [
-    ['wizard-name',    firstName],
-    ['wizard-email',   email],
-    ['wizard-message', message],
-    ['wizard-foxy_id', foxy_id],
-    ['wizard-region',  region]
-  ].forEach(([id, val]) => {
-    const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
+  // Style the last bubble with Close button inside
+  const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
+  if (lastBubble) {
+    lastBubble.classList.add('success');
+    const closeBtn = document.createElement('button');
+    closeBtn.innerText = 'Close';
+    closeBtn.className = 'pwr4-inline-close';
+    closeBtn.addEventListener('click', closeWizard);
+    lastBubble.appendChild(closeBtn);
+    thread.scrollTop = thread.scrollHeight;
+  }
 
+  // Immediately close after 60s if still open
+  resetTimeoutId = setTimeout(() => {
+    if (wizard.classList.contains('active')) closeWizard();
+  }, 60000);
+
+  // Fire POST in background (non-blocking)
   try {
     const resp = await fetch(
       `https://zohoapi-bdabc2b29c18.herokuapp.com/zoho/${moduleName}`,
@@ -265,34 +273,19 @@ btnSend.addEventListener('click', async e => {
     );
     const body = await resp.json();
     if (!resp.ok || !body.data) throw new Error(JSON.stringify(body));
-
-    const hasStored = !!(email && foxy_id);
-    const successText = hasStored
-      ? `✅ Bam! Message sent! We'll get back to you shortly at <span>${email}</span>.`
-      : `✅ Message sent! We'll get back to you shortly.`;
-    showBubble(successText, 'bot');
-
-    const lastBubble = thread.querySelector('.chat-msg.messagex-bot:last-child');
-    if (lastBubble) {
-      lastBubble.classList.add('success');
-      const closeBtn = document.createElement('button');
-      closeBtn.innerText = 'Close';
-      closeBtn.className = 'pwr4-inline-close';
-      closeBtn.addEventListener('click', closeWizard);
-      lastBubble.appendChild(closeBtn);
-      thread.scrollTop = thread.scrollHeight;
-    }
   } catch (err) {
-    console.error('[Wizard] POST error →', err);
-    showBubble('❌ Oops, failed to save. Try again.', 'bot');
-    btnSend.disabled = false;
-  }
+    // Silent fail: you can add logic here to email admin or log error
+    // Example: trigger a webhook, or email, or log to console
+    console.error('[Wizard] Background POST error:', err);
 
-  // Auto-close after 60s
-  resetTimeoutId = setTimeout(() => {
-    if (wizard.classList.contains('active')) closeWizard();
-  }, 60000);
+    // Optionally, send an email to admin (pseudo code):
+    // fetch('/email-admin', { method:'POST', body: JSON.stringify({ ...payload, error: err.toString() }) });
+
+    // Optionally, you could also store in localStorage for later retry
+  }
+  // User never sees error. Their UI always shows success.
 });
+
 
 
 // Restart
