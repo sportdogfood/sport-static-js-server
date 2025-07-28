@@ -102,49 +102,48 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
-  // Open wizard
-  function openWizard(rawKey) {
-    const key = String(rawKey).toLowerCase();
-    const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
-    if (!matchKey) {
-      console.error('Wizard: no config for', rawKey);
-      return;
-    }
-    state.cfgKey = matchKey;
-    state.cfg    = configs[matchKey];
-
-    // Pre‐fill from localStorage
-    const storedEmail  = localStorage.getItem('fx_customerEmail');
-    const storedId     = localStorage.getItem('fx_customerId');
-    const storedRegion = localStorage.getItem('userRegion');
-
-    state.data = {};
-    if (storedEmail && storedId) {
-      state.data.firstName = '';
-      state.data.email     = storedEmail;
-      state.data.foxy_id   = storedId;
-      if (storedRegion) state.data.region = storedRegion;
-      // skip to message
-      const idx = state.cfg.steps.findIndex(s => s.key === 'message');
-      state.idx = idx > -1 ? idx : 0;
-    } else {
-      state.idx = 0;
-    }
-
-    thread.innerHTML    = '';
-    heading.innerText   = state.cfg.title;
-    lastFocus           = document.activeElement;
-    wizard.setAttribute('aria-hidden','false');
-    document.documentElement.classList.add('modal-open');
-    document.body.classList.add('modal-open');
-    wizard.classList.add('active');
-
-    // Autofocus
-    setTimeout(() => input.focus(), TRANSITION_DURATION + 10);
-
-    wizard.addEventListener('transitionend', onTransitionEnd);
-    transitionFallbackId = setTimeout(onTransitionEnd, TRANSITION_DURATION + 50);
+ function openWizard(rawKey) {
+  const key = String(rawKey).toLowerCase();
+  const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
+  if (!matchKey) {
+    console.error('Wizard: no config for', rawKey);
+    return;
   }
+  state.cfgKey = matchKey;
+  state.cfg    = configs[matchKey];
+
+  // Pre‐fill from localStorage
+  const storedEmail  = localStorage.getItem('fx_customerEmail');
+  const storedId     = localStorage.getItem('fx_customerId');  // <-- always the Foxy ID you want
+  const storedRegion = localStorage.getItem('userRegion');
+
+  state.data = {};
+  if (storedEmail && storedId) {
+    state.data.firstName = ''; // Set later by step
+    state.data.email     = storedEmail;
+    state.data.foxy_id   = storedId; // <-- Always lower-case in JS!
+    if (storedRegion) state.data.region = storedRegion;
+    // skip to message
+    const idx = state.cfg.steps.findIndex(s => s.key === 'message');
+    state.idx = idx > -1 ? idx : 0;
+  } else {
+    state.idx = 0;
+  }
+
+  thread.innerHTML    = '';
+  heading.innerText   = state.cfg.title;
+  lastFocus           = document.activeElement;
+  wizard.setAttribute('aria-hidden','false');
+  document.documentElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
+  wizard.classList.add('active');
+
+  setTimeout(() => input.focus(), TRANSITION_DURATION + 10);
+
+  wizard.addEventListener('transitionend', onTransitionEnd);
+  transitionFallbackId = setTimeout(onTransitionEnd, TRANSITION_DURATION + 50);
+}
+
 
   function onTransitionEnd(e) {
     if (e && e.propertyName !== 'transform') return;
@@ -208,11 +207,11 @@ btnSend.addEventListener('click', async e => {
   btnSend.disabled = true;
 
   const moduleName = state.cfg.formModule || 'Leads';
-  const firstName  = state.data.firstName || '';
-  const email      = state.data.email     || '';
-  const foxy_id    = state.data.foxy_id  ?? state.data.Foxy_id ?? '';
-  const region     = state.data.region    || '';
-  const message    = state.data.message   || '';
+  const firstName  = state.data.firstName   || '';
+  const email      = state.data.email       || '';
+  const foxy_id    = state.data.foxy_id     || ''; // Always lower-case here
+  const region     = state.data.region      || '';
+  const message    = state.data.message     || '';
 
   // Determine Last_Name
   let lastName;
@@ -224,7 +223,7 @@ btnSend.addEventListener('click', async e => {
     lastName = 'Customer';
   }
 
-  // Build payload (Zoho expects these fields exactly)
+  // Build payload (Zoho expects Foxy_id)
   let payload = {};
   if (moduleName === 'Leads') {
     payload = {
@@ -232,7 +231,7 @@ btnSend.addEventListener('click', async e => {
       First_Name: firstName,
       Email:      email,
       Message:    message,
-      Foxy_id:    foxy_id,
+      Foxy_id:    foxy_id,   // ← key exactly as Zoho expects
       Region:     region
     };
   }
