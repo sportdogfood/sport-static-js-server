@@ -206,35 +206,26 @@ btnSend.addEventListener('click', async e => {
   e.preventDefault();
   btnSend.disabled = true;
 
-  const moduleName = state.cfg.formModule || 'Leads';
-  const firstName  = state.data.firstName   || '';
-  const email      = state.data.email       || '';
-  const foxy_id    = state.data.foxy_id     || ''; // Always lower-case here
-  const region     = state.data.region      || '';
-  const message    = state.data.message     || '';
+  // Always use "Threads" module
+  const moduleName = 'Threads';
 
-  // Determine Last_Name
-  let lastName;
-  if (firstName) {
-    lastName = scramble(firstName);
-  } else if (email) {
-    lastName = email.split('@')[0];
-  } else {
-    lastName = 'Customer';
-  }
+  // Field mappings with fallbacks
+  const email      = state.data.email || state.data.customer_email || '';
+  const firstName  = state.data.firstName || state.data.first_name || '';
+  const foxy_id    = state.data.foxy_id || '';
+  const region     = state.data.region || '';
+  const message    = state.data.message || '';
+  const name       = 'Wizard Contact';
 
-  // Build payload (Zoho expects Foxy_id)
-  let payload = {};
-  if (moduleName === 'Leads') {
-    payload = {
-      Last_Name:  lastName,
-      First_Name: firstName,
-      Email:      email,
-      Message:    message,
-      Foxy_id:    foxy_id,   // ← key exactly as Zoho expects
-      Region:     region
-    };
-  }
+  // Build payload
+  const payload = {
+    Name: name,          // Always "Wizard Contact"
+    Email: email,
+    Message: message,
+    First_Name: firstName,
+    Foxy_id: foxy_id,
+    Region: region
+  };
 
   // Sync hidden form fields (for Webflow native submission if needed)
   [
@@ -285,11 +276,9 @@ btnSend.addEventListener('click', async e => {
     );
     const body = await resp.json();
     if (!resp.ok || !body.data) throw new Error(JSON.stringify(body));
-    // Optionally: if admin wants a notification on error, you can add it here.
+    // Optionally: admin notification or logging here
   } catch (err) {
-    // Optionally: log, email admin, etc. User never sees error.
     console.error('[Wizard] Background POST error:', err);
-    // Optional: Email admin, or store for retry.
   }
   // UI is not affected by POST errors. User always sees immediate success.
 });
