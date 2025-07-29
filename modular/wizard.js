@@ -102,7 +102,7 @@ export function initMultiWizard(configs) {
     }, TRANSITION_DURATION);
   }
 
- function openWizard(rawKey) {
+function openWizard(rawKey) {
   const key = String(rawKey).toLowerCase();
   const matchKey = Object.keys(configs).find(k => k.toLowerCase() === key);
   if (!matchKey) {
@@ -112,23 +112,24 @@ export function initMultiWizard(configs) {
   state.cfgKey = matchKey;
   state.cfg    = configs[matchKey];
 
-  // Pre‐fill from localStorage
+  // Pre‐fill from localStorage (always assign if present)
   const storedEmail  = localStorage.getItem('fx_customerEmail');
-  const storedId     = localStorage.getItem('fx_customerId');  // <-- always the Foxy ID you want
+  const storedId     = localStorage.getItem('fx_customerId');
   const storedRegion = localStorage.getItem('userRegion');
 
   state.data = {};
-  if (storedEmail && storedId) {
-    state.data.firstName = ''; // Set later by step
-    state.data.email     = storedEmail;
-    state.data.foxy_id   = storedId; // <-- Always lower-case in JS!
-    if (storedRegion) state.data.region = storedRegion;
-    // skip to message
-    const idx = state.cfg.steps.findIndex(s => s.key === 'message');
-    state.idx = idx > -1 ? idx : 0;
-  } else {
-    state.idx = 0;
-  }
+  state.data.firstName = ''; // Set later by step or user
+
+  if (storedEmail)  state.data.email    = storedEmail;
+  if (storedId)     state.data.foxy_id  = storedId;
+  if (storedRegion) state.data.region   = storedRegion;
+
+  // Optionally, log values for debugging:
+  // console.log('openWizard state.data:', state.data);
+
+  // If you want to skip straight to "message" step if pre-filled:
+  const idx = state.cfg.steps.findIndex(s => s.key === 'message');
+  state.idx = (storedEmail && storedId && idx > -1) ? idx : 0;
 
   thread.innerHTML    = '';
   heading.innerText   = state.cfg.title;
@@ -209,6 +210,20 @@ btnSend.addEventListener('click', async e => {
   // Always use "Threads" module
   const moduleName = 'Threads';
 
+  // --- Populate from localStorage if missing in state.data ---
+  if (!state.data.foxy_id) {
+    const storedId = localStorage.getItem('fx_customerId');
+    if (storedId) state.data.foxy_id = storedId;
+  }
+  if (!state.data.email) {
+    const storedEmail = localStorage.getItem('fx_customerEmail');
+    if (storedEmail) state.data.email = storedEmail;
+  }
+  if (!state.data.region) {
+    const storedRegion = localStorage.getItem('userRegion');
+    if (storedRegion) state.data.region = storedRegion;
+  }
+
   // Field mappings with fallbacks
   const email      = state.data.email || state.data.customer_email || '';
   const firstName  = state.data.firstName || state.data.first_name || '';
@@ -216,6 +231,16 @@ btnSend.addEventListener('click', async e => {
   const region     = state.data.region || '';
   const message    = state.data.message || '';
   const name       = 'Wizard Contact';
+
+  // Debug log to ensure all fields are set before POST
+  console.log('Wizard POST payload:', {
+    Name: name,
+    Email: email,
+    Message: message,
+    First_Name: firstName,
+    Foxy_id: foxy_id,
+    Region: region
+  });
 
   // Build payload for Zoho Threads module
   const payload = {
@@ -282,6 +307,7 @@ btnSend.addEventListener('click', async e => {
   }
   // UI is not affected by POST errors. User always sees immediate success.
 });
+
 
 
 
