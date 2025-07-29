@@ -207,7 +207,7 @@ btnSend.addEventListener('click', async e => {
   btnSend.disabled = true;
 
   // Always use "Threads" module
-  const moduleName = 'CustomModule48';
+  const moduleName = 'Threads';
 
   // Field mappings with fallbacks
   const email      = state.data.email || state.data.customer_email || '';
@@ -217,9 +217,9 @@ btnSend.addEventListener('click', async e => {
   const message    = state.data.message || '';
   const name       = 'Wizard Contact';
 
-  // Build payload
+  // Build payload for Zoho Threads module
   const payload = {
-    Name: name,          // Always "Wizard Contact"
+    Name: name,                // Always "Wizard Contact"
     Email: email,
     Message: message,
     First_Name: firstName,
