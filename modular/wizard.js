@@ -207,7 +207,7 @@ btnSend.addEventListener('click', async e => {
   btnSend.disabled = true;
 
   // Always use "Threads" module
-  const moduleName = 'Threads';
+  const moduleName = 'CustomModule48';
 
   // Field mappings with fallbacks
   const email      = state.data.email || state.data.customer_email || '';
