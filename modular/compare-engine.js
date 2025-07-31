@@ -216,12 +216,13 @@ function paintSection1(mainRow, sdfRow) {
 
   const madlib = `${mainSentence} ${sdfSentence}`;
 
-  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) {
-    madlibEl.setAttribute('data-text', madlib);
-    madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed');
-  }
+const madlibEl = document.querySelector('[data-var="section1-madlib"]');
+if (madlibEl) {
+  madlibEl.innerHTML = madlib; // Directly inject HTML (for highlight span)
+  madlibEl.removeAttribute('data-text');
+  madlibEl.removeAttribute('data-typed');
+}
+
 
   // — Rest of DOM wiring —
   let el;
