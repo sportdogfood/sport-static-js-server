@@ -181,14 +181,15 @@ function paintSection1(mainRow, sdfRow) {
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
-  const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
-  if (subtitleEl) {
+const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
+if (subtitleEl) {
   subtitleEl.innerHTML =
-  `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} ` +
-  `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;">` +
-  `Sport Dog Food ${sdfRow["data-one"]}`;
+    `<span class="span-compare">Comparing</span><br>` +  // wrapped and break here
+    `${mainRow["data-brand"]} ${mainRow["data-one"]} ` +
+    `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;">` +
+    `Sport Dog Food ${sdfRow["data-one"]}`;
+}
 
-  }
 
   // — Phrase helpers —
   function getGrainPhrase(row) {
