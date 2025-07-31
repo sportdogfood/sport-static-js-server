@@ -183,8 +183,11 @@ function paintSection1(mainRow, sdfRow) {
 
   const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
   if (subtitleEl) {
-    subtitleEl.textContent =
-      `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+  subtitleEl.innerHTML =
+  `Comparing ${mainRow["data-brand"]} ${mainRow["data-one"]} ` +
+  `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;">` +
+  `Sport Dog Food ${sdfRow["data-one"]}`;
+
   }
 
   // — Phrase helpers —
