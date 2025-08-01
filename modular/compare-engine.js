@@ -379,18 +379,7 @@ function paintSection1(mainRow, sdfRow) {
     });
   }
 
-  // lazy-load sport preview image and paint icons
-  el = document.querySelector('[data-var="sport-1-previewimg"]');
-  if (el && sdfRow.previewengine) setLazyBackground(el, sdfRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="sport-1-legumesfree"]',
-    sdfRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="sport-1-poultryfree"]',
-    sdfRow["data-poultry"]?.toLowerCase().includes("free")
-  );
+ 
 }
 
 
