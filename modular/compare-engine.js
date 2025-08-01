@@ -306,14 +306,14 @@ if (el) {
   // el.textContent = val;    // ← REMOVE or comment out this line
   const container = el.closest('.pwr-paint');
   setDataClass(container, "brand-1", "flavor", val, {
-    "Meat": "MT",
-    "Poultry": "PO",
-    "Fish": "FS"
+    "Meat": "mt",
+    "Poultry": "po",
+    "Fish": "fs"
   });
   showInnerByValue(container, val, {
-    "Meat": "MT",
-    "Poultry": "PO",
-    "Fish": "FS"
+    "Meat": "mt",
+    "Poultry": "po",
+    "Fish": "fs"
   });
 }
 
@@ -325,12 +325,12 @@ if (el) {
     // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "diet", val, {
-      "Grain": "GI",
-      "Grain Free": "GF"
+      "Grain": "gi",
+      "Grain Free": "gf"
     });
     showInnerByValue(container, val, {
-      "Grain": "GI",
-      "Grain Free": "GF"
+      "Grain": "gi",
+      "Grain Free": "gf"
     });
   }
 
@@ -341,12 +341,12 @@ if (el) {
     // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "legumesfree", val, {
-      "Legume": "LI",
-      "Legumes Free": "LF"
+      "Legume": "li",
+      "Legumes Free": "lf"
     });
     showInnerByValue(container, val, {
-      "Legume": "LI",
-      "Legumes Free": "LF"
+      "Legume": "li",
+      "Legumes Free": "lf"
     });
   }
 
@@ -357,12 +357,12 @@ if (el) {
    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "poultryfree", val, {
-      "Poultry": "PI",
-      "Poultry Free": "PF"
+      "Poultry": "pi",
+      "Poultry Free": "pf"
     });
     showInnerByValue(container, val, {
-      "Poultry": "PI",
-      "Poultry Free": "PF"
+      "Poultry": "pi",
+      "Poultry Free": "pf"
     });
   }
 
@@ -373,14 +373,14 @@ if (el) {
   // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "flavor", val, {
-      "Meat": "MT",
-      "Poultry": "PO",
-      "Fish": "FS"
+      "Meat": "mt",
+      "Poultry": "po",
+      "Fish": "fs"
     });
     showInnerByValue(container, val, {
-      "Meat": "MT",
-      "Poultry": "PO",
-      "Fish": "FS"
+      "Meat": "mt",
+      "Poultry": "po",
+      "Fish": "fs"
     });
   }
 
@@ -391,12 +391,12 @@ if (el) {
    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "diet", val, {
-      "Grain": "GI",
-      "Grain Free": "GF"
+      "Grain": "gi",
+      "Grain Free": "gf"
     });
     showInnerByValue(container, val, {
-      "Grain": "GI",
-      "Grain Free": "GF"
+      "Grain": "gi",
+      "Grain Free": "gf"
     });
   }
 
@@ -407,12 +407,12 @@ if (el) {
    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "legumesfree", val, {
-      "Legume": "LI",
-      "Legumes Free": "LF"
+      "Legume": "li",
+      "Legumes Free": "lf"
     });
     showInnerByValue(container, val, {
-      "Legume": "LI",
-      "Legumes Free": "LF"
+      "Legume": "li",
+      "Legumes Free": "lf"
     });
   }
 
@@ -423,12 +423,12 @@ if (el) {
    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "poultryfree", val, {
-      "Poultry": "PI",
-      "Poultry Free": "PF"
+      "Poultry": "pi",
+      "Poultry Free": "pf"
     });
     showInnerByValue(container, val, {
-      "Poultry": "PI",
-      "Poultry Free": "PF"
+      "Poultry": "pi",
+      "Poultry Free": "pf"
     });
   }
 }
