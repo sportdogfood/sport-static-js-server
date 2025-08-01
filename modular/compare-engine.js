@@ -364,9 +364,9 @@ if (el) {
     "Poultry": "poultry"
   });
 }
-aintSection1 code ...
 
-} // <-- this closes paintSection1 properly
+
+} 
 
 
 function paintSection2(mainRow, sdfRow) {
