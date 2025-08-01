@@ -183,20 +183,11 @@ function buildLegumePoultryPhrase(row) {
 
 function paintSection1(mainRow, sdfRow) {
   // — Render the "this-mark" with Typed.js if present —
-  const thisMarkValue = mainRow["this-mark"];
-  if (thisMarkValue && window.Typed) {
-    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-    if (thisMarkEl) {
-      thisMarkEl.setAttribute('data-text', thisMarkValue);
-      thisMarkEl.textContent = '';
-      thisMarkEl.removeAttribute('data-typed');
-      new Typed(thisMarkEl, {
-        strings: [thisMarkValue],
-        typeSpeed: 24,
-        showCursor: false
-      });
-    }
-  }
+const thisMarkValue = mainRow["this-mark"];
+const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
+if (thisMarkEl) {
+  thisMarkEl.textContent = thisMarkValue || '';
+}
 
   // — Header & subtitle —
   const headerEl = document.querySelector('[data-var="section1-header"]');
