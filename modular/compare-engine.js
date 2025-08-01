@@ -315,7 +315,7 @@ if (el) {
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) {
     const val = mainRow["data-diet"] || mainRow["data-grain"] || "";
-    el.textContent = val;
+    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "diet", val, {
       "Grain": "GI",
@@ -331,7 +331,7 @@ if (el) {
   el = document.querySelector('[data-var="brand-1-legumesfree"]');
   if (el) {
     const val = mainRow["data-legumes"] || "";
-    el.textContent = val;
+    // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "legumesfree", val, {
       "Legume": "LI",
@@ -347,7 +347,7 @@ if (el) {
   el = document.querySelector('[data-var="brand-1-poultryfree"]');
   if (el) {
     const val = mainRow["data-poultry"] || "";
-    el.textContent = val;
+   // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "poultryfree", val, {
       "Poultry": "PI",
@@ -363,7 +363,7 @@ if (el) {
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) {
     const val = sdfRow["specs_primary_flavor"] || "";
-    el.textContent = val;
+  // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "flavor", val, {
       "Meat": "MT",
@@ -381,7 +381,7 @@ if (el) {
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) {
     const val = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
-    el.textContent = val;
+   // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "diet", val, {
       "Grain": "GI",
@@ -397,7 +397,7 @@ if (el) {
   el = document.querySelector('[data-var="sport-1-legumesfree"]');
   if (el) {
     const val = sdfRow["data-legumes"] || "";
-    el.textContent = val;
+   // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "legumesfree", val, {
       "Legume": "LI",
@@ -413,7 +413,7 @@ if (el) {
   el = document.querySelector('[data-var="sport-1-poultryfree"]');
   if (el) {
     const val = sdfRow["data-poultry"] || "";
-    el.textContent = val;
+   // el.textContent = val;    // ← REMOVE or comment out this line
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "poultryfree", val, {
       "Poultry": "PI",
