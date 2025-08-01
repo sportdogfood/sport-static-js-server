@@ -252,7 +252,28 @@ function paintSection1(mainRow, sdfRow) {
     madlibEl.removeAttribute('data-typed');
   }
 
-  // — Helper to add dynamic class based on value and mapping —
+  // Set brand and preview images text and lazy-loads
+let el = document.querySelector('[data-var="brand-1-name"]');
+if (el) el.textContent = mainRow["data-one"] || "";
+
+el = document.querySelector('[data-var="brand-1-brand"]');
+if (el) el.textContent = mainRow["data-brand"] || "";
+
+el = document.querySelector('[data-var="brand-1-previewimg"]');
+if (el && mainRow.previewengine) {
+  setLazyBackground(el, mainRow.previewengine);
+}
+
+el = document.querySelector('[data-var="sport-1-name"]');
+if (el) el.textContent = sdfRow["data-one"] || "";
+
+el = document.querySelector('[data-var="sport-1-brand"]');
+if (el) el.textContent = "Sport Dog Food";
+
+el = document.querySelector('[data-var="sport-1-previewimg"]');
+if (el && sdfRow.previewengine) {
+  setLazyBackground(el, sdfRow.previewengine);
+}// — Helper to add dynamic class based on value and mapping —
  // Helper function to add/remove class based on value mapping
 function setDataClass(el, base, key, value, map) {
   if (!el) return;
