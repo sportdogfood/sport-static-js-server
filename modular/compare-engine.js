@@ -292,22 +292,24 @@ function paintSection1(mainRow, sdfRow) {
   }
 
   // BRAND-1 flavor & inner toggling
-  el = document.querySelector('[data-var="brand-1-flavor"]');
-  if (el) {
-    const val = mainRow["specs_primary_flavor"] || "";
-    el.textContent = val;
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "flavor", val, {
-      "Meat": "MT",
-      "Poultry": "PO",
-      "Fish": "FS"
-    });
-    showInnerByValue(container, val, {
-      "Meat": "MT",
-      "Poultry": "PO",
-      "Fish": "FS"
-    });
-  }
+// BRAND-1 flavor & inner toggling
+el = document.querySelector('[data-var="brand-1-flavor"]');
+if (el) {
+  const val = mainRow["specs_primary_flavor"] || "";
+  // el.textContent = val;    // ← REMOVE or comment out this line
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "brand-1", "flavor", val, {
+    "Meat": "MT",
+    "Poultry": "PO",
+    "Fish": "FS"
+  });
+  showInnerByValue(container, val, {
+    "Meat": "MT",
+    "Poultry": "PO",
+    "Fish": "FS"
+  });
+}
+
 
   // BRAND-1 diet & inner toggling
   el = document.querySelector('[data-var="brand-1-diet"]');
