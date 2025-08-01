@@ -282,57 +282,48 @@ if (madlibEl) {
 }
 
 function paintSection2(mainRow, sdfRow) {
-  // — Pull metrics into locals so they never end up undefined —
+  // — Pull and normalize metrics —
   const mainProtein = mainRow["ga_crude_protein_%"] || "?";
   const mainFat     = mainRow["ga_crude_fat_%"]     || "?";
   const mainKcal    = mainRow["ga_kcals_per_cup"]   || "?";
   const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
   const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
   const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
-// Convert to numbers for comparison
-const numMainProtein = parseFloat(mainProtein) || 0;
-const numMainFat     = parseFloat(mainFat)     || 0;
-const numMainKcal    = parseFloat(mainKcal)    || 0;
-const numSdfProtein  = parseFloat(sdfProtein)  || 0;
-const numSdfFat      = parseFloat(sdfFat)      || 0;
-const numSdfKcal     = parseFloat(sdfKcal)     || 0;
 
-// Calculate differences
-const proteinDiff = numMainProtein - numSdfProtein;
-const fatDiff     = numMainFat     - numSdfFat;
-const kcalDiff    = numMainKcal    - numSdfKcal;
+  // Convert to numbers for math
+  const numMainProtein = parseFloat(mainProtein) || 0;
+  const numMainFat     = parseFloat(mainFat)     || 0;
+  const numMainKcal    = parseFloat(mainKcal)    || 0;
+  const numSdfProtein  = parseFloat(sdfProtein)  || 0;
+  const numSdfFat      = parseFloat(sdfFat)      || 0;
+  const numSdfKcal     = parseFloat(sdfKcal)     || 0;
 
-// Example usage (log or inject into DOM if needed)
-console.log("Protein difference:", proteinDiff);
-console.log("Fat difference:", fatDiff);
-console.log("Kcal/cup difference:", kcalDiff);
+  // Calculate differences
+  const proteinDiff = numMainProtein - numSdfProtein;
+  const fatDiff     = numMainFat     - numSdfFat;
+  const kcalDiff    = numMainKcal    - numSdfKcal;
 
   // — Header & subtitle —
   const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
 
-const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
-if (subtitleEl) {
-  subtitleEl.innerHTML =
-    `<span class="span-compare">Protein, fat, and calorie details</span><br>` +  // wrapped and break here
-    `${mainRow["data-brand"]} ${mainRow["data-one"]}<br> ` +
-    `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
-    `Sport Dog Food ${sdfRow["data-one"]}`;
-}
+  const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
+  if (subtitleEl) {
+    subtitleEl.innerHTML =
+      `<span class="span-compare">Protein, fat, and calorie details</span><br>` +
+      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
+      `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
+      `Sport Dog Food ${sdfRow["data-one"]}`;
+  }
 
- 
-  // — Typed.js madlib —
+  // — Plain madlib text (not typed) —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    const text =
+    madlibEl.textContent =
       `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
       `${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup. ` +
       `Sport Dog Food ${sdfRow["data-one"]} provides ` +
       `${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup for comparison.`;
-
-    madlibEl.setAttribute('data-text', text);
-    madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed');
   }
 
   // — Lazy-load preview images —
@@ -366,35 +357,32 @@ if (subtitleEl) {
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 
-// --Diffs -
-// — Difference indicators —
-// — Brand-1 differences —
-document.querySelectorAll('[data-var="brand-1-protein-diff"]').forEach(el => {
-  el.textContent = proteinDiff === 0 ? "–" : `${proteinDiff > 0 ? '+' : ''}${proteinDiff}%`;
-});
-document.querySelectorAll('[data-var="brand-1-fat-diff"]').forEach(el => {
-  el.textContent = fatDiff === 0 ? "–" : `${fatDiff > 0 ? '+' : ''}${fatDiff}%`;
-});
-document.querySelectorAll('[data-var="brand-1-kcal-diff"]').forEach(el => {
-  el.textContent = kcalDiff === 0 ? "–" : `${kcalDiff > 0 ? '+' : ''}${kcalDiff} kcals`;
-});
+  // — Difference indicators —
+  document.querySelectorAll('[data-var="brand-1-protein-diff"]').forEach(el => {
+    el.textContent = proteinDiff === 0 ? "–" : `${proteinDiff > 0 ? '+' : ''}${proteinDiff}%`;
+  });
+  document.querySelectorAll('[data-var="brand-1-fat-diff"]').forEach(el => {
+    el.textContent = fatDiff === 0 ? "–" : `${fatDiff > 0 ? '+' : ''}${fatDiff}%`;
+  });
+  document.querySelectorAll('[data-var="brand-1-kcal-diff"]').forEach(el => {
+    el.textContent = kcalDiff === 0 ? "–" : `${kcalDiff > 0 ? '+' : ''}${kcalDiff} kcals`;
+  });
 
-// — Sport-1 differences (inverted logic) —
-document.querySelectorAll('[data-var="sport-1-protein-diff"]').forEach(el => {
-  const val = proteinDiff * -1;
-  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
-});
-document.querySelectorAll('[data-var="sport-1-fat-diff"]').forEach(el => {
-  const val = fatDiff * -1;
-  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
-});
-document.querySelectorAll('[data-var="sport-1-kcal-diff"]').forEach(el => {
-  const val = kcalDiff * -1;
-  el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
-});
-
-
+  // — Sport-1 differences (inverted logic) —
+  document.querySelectorAll('[data-var="sport-1-protein-diff"]').forEach(el => {
+    const val = -proteinDiff;
+    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
+  });
+  document.querySelectorAll('[data-var="sport-1-fat-diff"]').forEach(el => {
+    const val = -fatDiff;
+    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
+  });
+  document.querySelectorAll('[data-var="sport-1-kcal-diff"]').forEach(el => {
+    const val = -kcalDiff;
+    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
+  });
 }
+
 
 
 
