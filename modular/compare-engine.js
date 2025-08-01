@@ -316,16 +316,16 @@ function paintSection2(mainRow, sdfRow) {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-// — Plain madlib text (not typed) —
 const madlibEl = document.querySelector('[data-var="section2-madlib"]');
 if (madlibEl) {
-  madlibEl.textContent =
+  madlibEl.innerHTML =
     `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> provides ` +
     `<span class="span-compare-specs">${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup.</span><br>` +
-    `<span class="span-port-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
+    `<span class="span-sport-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
     `<span class="span-sport-specs">${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup</span> for comparison.`;
+  madlibEl.removeAttribute('data-text');
+  madlibEl.removeAttribute('data-typed');
 }
-
 
 
   // — Lazy-load preview images —
