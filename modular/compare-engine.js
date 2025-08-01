@@ -206,7 +206,7 @@ function paintSection1(mainRow, sdfRow) {
   if (subtitleEl) {
     subtitleEl.innerHTML =
       `<span class="span-compare">Comparing</span><br>` +
-      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
+      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br> ` +
       `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
@@ -234,7 +234,7 @@ function paintSection1(mainRow, sdfRow) {
 
   const mainSentence =
     `${mainBrand} ${mainName} is a ${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula that’s ${mainSpec}.`;
-  const sdfSentence =
+  const sdfSentence  =
     `${sdfName} is a ${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet that’s ` +
     `<span class="highlight">${sdfSpec}</span>.`;
 
