@@ -261,12 +261,19 @@ function paintSection1(mainRow, sdfRow) {
 
   const madlib = `${mainSentence} ${sdfSentence}`;
 
-  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) {
-    madlibEl.innerHTML = madlib;
-    madlibEl.removeAttribute('data-text');
-    madlibEl.removeAttribute('data-typed');
-  }
+const madlibEl = document.querySelector('[data-var="section1-madlib"]');
+if (madlibEl) {
+  madlibEl.innerHTML =
+    `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> is a ` +
+    `<span class="span-compare-specs">${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula</span> that’s ` +
+    `<span class="span-compare-specs">${mainSpec}</span>.<br>` +
+    `<span class="span-sport-name">${sdfName}</span> is a ` +
+    `<span class="span-sport-specs">${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet</span> that’s ` +
+    `<span class="highlight">${sdfSpec}</span>.`;
+  madlibEl.removeAttribute('data-text');
+  madlibEl.removeAttribute('data-typed');
+}
+
 
   // Set brand/name/preview text and lazy-load images
   let el = document.querySelector('[data-var="brand-1-name"]');
