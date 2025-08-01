@@ -154,16 +154,6 @@ function joinWithAnd(arr) {
  * @param {string} key - subkey, e.g. "flavor", "diet", "legumesfree", "poultryfree"
  * @param {string} value - value to drive the class
  * @param {Object} map - value translation map
- */
-function setDataClass(el, base, key, value, map) {
-  if (!el) return;
-  // Remove any previous {base}-{key}-* class
-  const re = new RegExp(`\\b${base}-${key}-\\w+\\b`, 'g');
-  el.className = el.className.replace(re, '').trim();
-  // Map value to class segment
-  let segment = (map && map[value]) ? map[value] : (value || '').toLowerCase().replace(/\s+/g, '');
-  if (segment) el.classList.add(`${base}-${key}-${segment}`);
-}
 
 /**
  * Returns a combined legume/poultry phrase handling all 4 states
