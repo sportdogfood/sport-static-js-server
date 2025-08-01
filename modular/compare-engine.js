@@ -253,135 +253,118 @@ function paintSection1(mainRow, sdfRow) {
   }
 
   // — Helper to add dynamic class based on value and mapping —
-  function setDataClass(el, base, key, value, map) {
-    if (!el) return;
-    const re = new RegExp(`\\b${base}-${key}-\\w+\\b`, 'g');
-    el.className = el.className.replace(re, '').trim();
-    let segment = (map && map[value]) ? map[value] : (value || '').toLowerCase().replace(/\s+/g, '');
-    if (segment) el.classList.add(`${base}-${key}-${segment}`);
-  }
+ // Helper function to add/remove class based on value mapping
+function setDataClass(el, base, key, value, map) {
+  if (!el) return;
+  // Remove any previous class like brand-1-flavor-*
+  const re = new RegExp(`\\b${base}-${key}-\\w+\\b`, 'g');
+  el.className = el.className.replace(re, '').trim();
 
-  // BRAND-1 flavor
-  let el = document.querySelector('[data-var="brand-1-flavor"]');
-  if (el) {
-    const val = mainRow["specs_primary_flavor"] || "";
-    el.textContent = val;
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "flavor", val, {
-      "Meat": "meat",
-      "Fish": "fish",
-      "Poultry": "poultry"
-    });
-  }
+  // Normalize value: find exact key case-insensitively in map
+  let segmentKey = Object.keys(map).find(k => k.toLowerCase() === (value || '').toLowerCase());
+  let segment = segmentKey ? map[segmentKey] : (value || '').toLowerCase().replace(/\s+/g, '');
 
-  // BRAND-1 diet
-  el = document.querySelector('[data-var="brand-1-diet"]');
-  if (el) {
-    const val = mainRow["data-diet"] || mainRow["data-grain"] || "";
-    el.textContent = val;
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "diet", val, {
-      "Grain Free": "grainfree",
-      "Grain": "grain"
-    });
-  }
-
-  // BRAND-1 legumesfree
-  el = document.querySelector('[data-var="brand-1-legumesfree"]');
-  if (el) {
-    const val = mainRow["data-legumes"] || "";
-    el.textContent = val;
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "legumesfree", val, {
-      "Legumes Free": "legumesfree",
-      "Legume": "legumes"
-    });
-  }
-
-  // BRAND-1 poultryfree
-  el = document.querySelector('[data-var="brand-1-poultryfree"]');
-  if (el) {
-    const val = mainRow["data-poultry"] || "";
-    el.textContent = val;
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "poultryfree", val, {
-      "Poultry Free": "poultryfree",
-      "Poultry": "poultry"
-    });
-  }
-
-  // lazy-load brand preview
-  el = document.querySelector('[data-var="brand-1-previewimg"]');
-  setLazyBackground(el, mainRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="brand-1-legumesfree"]',
-    mainRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="brand-1-poultryfree"]',
-    mainRow["data-poultry"]?.toLowerCase().includes("free")
-  );
-
-  // SPORT-1
-  el = document.querySelector('[data-var="sport-1-name"]');
-  if (el) el.textContent = sdfName;
-
-  el = document.querySelector('[data-var="sport-1-brand"]');
-  if (el) el.textContent = "Sport Dog Food";
-
-  el = document.querySelector('[data-var="sport-1-flavor"]');
-  if (el) {
-    const val = sdfRow["specs_primary_flavor"] || "";
-    el.textContent = val;
-    setDataClass(el, "sport-1", "flavor", val, {
-      "Meat": "meat",
-      "Fish": "fish",
-      "Poultry": "poultry"
-    });
-  }
-
-  el = document.querySelector('[data-var="sport-1-diet"]');
-  if (el) {
-    const val = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
-    el.textContent = val;
-    setDataClass(el, "sport-1", "diet", val, {
-      "Grain": "grain",
-      "Grain Free": "grainfree"
-    });
-  }
-
-  el = document.querySelector('[data-var="sport-1-legumesfree"]');
-  if (el) {
-    const val = sdfRow["data-legumes"] || "";
-    setDataClass(el, "sport-1", "legumesfree", val, {
-      "Legume": "legumes",
-      "Legumes Free": "legumesfree"
-    });
-  }
-
-  el = document.querySelector('[data-var="sport-1-poultryfree"]');
-  if (el) {
-    const val = sdfRow["data-poultry"] || "";
-    setDataClass(el, "sport-1", "poultryfree", val, {
-      "Poultry": "poultry",
-      "Poultry Free": "poultryfree"
-    });
-  }
-
-  // lazy-load sport preview
-  el = document.querySelector('[data-var="sport-1-previewimg"]');
-  setLazyBackground(el, sdfRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="sport-1-legumesfree"]',
-    sdfRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="sport-1-poultryfree"]',
-    sdfRow["data-poultry"]?.toLowerCase().includes("free")
-  );
+  if (segment) el.classList.add(`${base}-${key}-${segment}`);
 }
+
+// BRAND-1 flavor
+let el = document.querySelector('[data-var="brand-1-flavor"]');
+if (el) {
+  const val = mainRow["specs_primary_flavor"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "brand-1", "flavor", val, {
+    "Meat": "meat",
+    "Fish": "fish",
+    "Poultry": "poultry"
+  });
+}
+
+// BRAND-1 diet
+el = document.querySelector('[data-var="brand-1-diet"]');
+if (el) {
+  const val = mainRow["data-diet"] || mainRow["data-grain"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "brand-1", "diet", val, {
+    "Grain Free": "grainfree",
+    "Grain": "grain"
+  });
+}
+
+// BRAND-1 legumesfree
+el = document.querySelector('[data-var="brand-1-legumesfree"]');
+if (el) {
+  const val = mainRow["data-legumes"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "brand-1", "legumesfree", val, {
+    "Legumes Free": "legumesfree",
+    "Legume": "legumes"
+  });
+}
+
+// BRAND-1 poultryfree
+el = document.querySelector('[data-var="brand-1-poultryfree"]');
+if (el) {
+  const val = mainRow["data-poultry"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "brand-1", "poultryfree", val, {
+    "Poultry Free": "poultryfree",
+    "Poultry": "poultry"
+  });
+}
+
+// SPORT-1 flavor
+el = document.querySelector('[data-var="sport-1-flavor"]');
+if (el) {
+  const val = sdfRow["specs_primary_flavor"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "sport-1", "flavor", val, {
+    "Meat": "meat",
+    "Fish": "fish",
+    "Poultry": "poultry"
+  });
+}
+
+// SPORT-1 diet
+el = document.querySelector('[data-var="sport-1-diet"]');
+if (el) {
+  const val = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "sport-1", "diet", val, {
+    "Grain Free": "grainfree",
+    "Grain": "grain"
+  });
+}
+
+// SPORT-1 legumesfree
+el = document.querySelector('[data-var="sport-1-legumesfree"]');
+if (el) {
+  const val = sdfRow["data-legumes"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "sport-1", "legumesfree", val, {
+    "Legumes Free": "legumesfree",
+    "Legume": "legumes"
+  });
+}
+
+// SPORT-1 poultryfree
+el = document.querySelector('[data-var="sport-1-poultryfree"]');
+if (el) {
+  const val = sdfRow["data-poultry"] || "";
+  el.textContent = val;
+  const container = el.closest('.pwr-paint');
+  setDataClass(container, "sport-1", "poultryfree", val, {
+    "Poultry Free": "poultryfree",
+    "Poultry": "poultry"
+  });
+}
+
 
 
 function paintSection2(mainRow, sdfRow) {
