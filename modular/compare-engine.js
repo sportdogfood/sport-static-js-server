@@ -316,23 +316,16 @@ function paintSection2(mainRow, sdfRow) {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Plain madlib text (not typed) —
-const madlibScope = document.querySelector('[data-var="section2-madlib"]');
-if (madlibScope) {
-  madlibScope.querySelectorAll('.compare-1-name').forEach(el =>
-    el.textContent = ((mainRow["data-brand"] || "") + " " + (mainRow["data-one"] || "")).trim()
-  );
-  madlibScope.querySelectorAll('.compare-1-specs').forEach(el =>
-    el.textContent = `${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup`
-  );
-
-  madlibScope.querySelectorAll('.sport-1-name').forEach(el =>
-    el.textContent = `Sport Dog Food ${(sdfRow["data-one"] || "")}`.trim()
-  );
-  madlibScope.querySelectorAll('.sport-1-specs').forEach(el =>
-    el.textContent = `${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup`
-  );
+// — Plain madlib text (not typed) —
+const madlibEl = document.querySelector('[data-var="section2-madlib"]');
+if (madlibEl) {
+  madlibEl.textContent =
+    `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> provides ` +
+    `<span class="span-compare-specs">${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup.</span><br>` +
+    `<span class="span-port-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
+    `<span class="span-sport-specs">${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup</span> for comparison.`;
 }
+
 
 
   // — Lazy-load preview images —
