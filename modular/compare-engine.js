@@ -182,11 +182,41 @@ function buildLegumePoultryPhrase(row) {
 }
 
 
+
+function setDataClass(el, base, key, value, map) {
+  if (!el) return;
+  // Remove any previous class like brand-1-flavor-*
+  const re = new RegExp(`\\b${base}-${key}-\\w+\\b`, 'g');
+  el.className = el.className.replace(re, '').trim();
+
+  // Normalize value: find exact key case-insensitively in map
+  let segmentKey = Object.keys(map).find(k => k.toLowerCase() === (value || '').toLowerCase());
+  let segment = segmentKey ? map[segmentKey] : (value || '').toLowerCase().replace(/\s+/g, '');
+
+  if (segment) el.classList.add(`${base}-${key}-${segment}`);
+}
+
+function showInnerByValue(container, value, map) {
+  if (!container) return;
+  const targetClass = map[value] || null;
+
+  // Hide all inner divs first
+  container.querySelectorAll('.pwr8-inner').forEach(div => {
+    div.classList.remove('show');
+  });
+
+  // Show the one that matches the mapped class
+  if (targetClass) {
+    const toShow = container.querySelector(`.pwr8-inner.${targetClass}`);
+    if (toShow) toShow.classList.add('show');
+  }
+}
+
 function paintSection1(mainRow, sdfRow) {
-  // — Render the "this-mark" with Typed.js if present —
+  // Render "this-mark" (Typed.js or fallback)
   const thisMarkValue = mainRow["this-mark"];
-  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
   if (thisMarkValue && window.Typed) {
+    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
     if (thisMarkEl) {
       thisMarkEl.setAttribute('data-text', thisMarkValue);
       thisMarkEl.textContent = '';
@@ -198,11 +228,11 @@ function paintSection1(mainRow, sdfRow) {
       });
     }
   } else {
-    // Fallback: render plain text if Typed.js not used or no this-mark
+    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
     if (thisMarkEl) thisMarkEl.textContent = thisMarkValue || '';
   }
 
-  // — Header & subtitle —
+  // Header & subtitle
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
@@ -215,7 +245,7 @@ function paintSection1(mainRow, sdfRow) {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Phrase helpers —
+  // Phrase helpers
   function getGrainPhrase(row) {
     const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
     if (g.includes("free")) return "grain-free";
@@ -229,159 +259,180 @@ function paintSection1(mainRow, sdfRow) {
       : "animal-based";
   }
 
-  // — Build the two-sentence madlib —
-  const mainBrand    = mainRow["data-brand"]   || "Brand";
-  const mainName     = mainRow["data-one"]     || "Product";
-  const sdfName      = sdfRow["data-one"]      || "Sport Dog Food";
-  const mainSpec     = buildLegumePoultryPhrase(mainRow);
-  const sdfSpec      = buildLegumePoultryPhrase(sdfRow);
+  // Build madlib
+  const mainBrand = mainRow["data-brand"] || "Brand";
+  const mainName = mainRow["data-one"] || "Product";
+  const sdfName = sdfRow["data-one"] || "Sport Dog Food";
+  const mainSpec = buildLegumePoultryPhrase(mainRow);
+  const sdfSpec = buildLegumePoultryPhrase(sdfRow);
 
-  const mainSentence =
-    `${mainBrand} ${mainName} is a ${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula that’s ${mainSpec}.`;
-  const sdfSentence =
-    `${sdfName} is a ${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet that’s ` +
-    `<span class="highlight">${sdfSpec}</span>.`;
+  const mainSentence = `${mainBrand} ${mainName} is a ${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula that’s ${mainSpec}.`;
+  const sdfSentence = `${sdfName} is a ${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet that’s <span class="highlight">${sdfSpec}</span>.`;
 
   const madlib = `${mainSentence} ${sdfSentence}`;
 
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
-    madlibEl.innerHTML = madlib; // Directly inject HTML (for highlight span)
+    madlibEl.innerHTML = madlib;
     madlibEl.removeAttribute('data-text');
     madlibEl.removeAttribute('data-typed');
   }
 
-  // Helper to add/remove dynamic class based on value mapping
-  function setDataClass(el, base, key, value, map) {
-    if (!el) return;
-    // Remove any previous class like brand-1-flavor-*
-    const re = new RegExp(`\\b${base}-${key}-\\w+\\b`, 'g');
-    el.className = el.className.replace(re, '').trim();
+  // Set brand/name/preview text and lazy-load images
+  let el = document.querySelector('[data-var="brand-1-name"]');
+  if (el) el.textContent = mainName;
 
-    // Normalize value: find exact key case-insensitively in map
-    let segmentKey = Object.keys(map).find(k => k.toLowerCase() === (value || '').toLowerCase());
-    let segment = segmentKey ? map[segmentKey] : (value || '').toLowerCase().replace(/\s+/g, '');
+  el = document.querySelector('[data-var="brand-1-brand"]');
+  if (el) el.textContent = mainBrand;
 
-    if (segment) el.classList.add(`${base}-${key}-${segment}`);
+  el = document.querySelector('[data-var="brand-1-previewimg"]');
+  if (el && mainRow.previewengine) {
+    setLazyBackground(el, mainRow.previewengine);
   }
 
-  // Declare el once
-  let el;
+  el = document.querySelector('[data-var="sport-1-name"]');
+  if (el) el.textContent = sdfName;
 
-  // BRAND-1 flavor
+  el = document.querySelector('[data-var="sport-1-brand"]');
+  if (el) el.textContent = "Sport Dog Food";
+
+  el = document.querySelector('[data-var="sport-1-previewimg"]');
+  if (el && sdfRow.previewengine) {
+    setLazyBackground(el, sdfRow.previewengine);
+  }
+
+  // BRAND-1 flavor & inner toggling
   el = document.querySelector('[data-var="brand-1-flavor"]');
   if (el) {
     const val = mainRow["specs_primary_flavor"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "flavor", val, {
-      "Meat": "meat",
-      "Fish": "fish",
-      "Poultry": "poultry"
+      "Meat": "MT",
+      "Poultry": "PO",
+      "Fish": "FS"
+    });
+    showInnerByValue(container, val, {
+      "Meat": "MT",
+      "Poultry": "PO",
+      "Fish": "FS"
     });
   }
 
-  // BRAND-1 diet
+  // BRAND-1 diet & inner toggling
   el = document.querySelector('[data-var="brand-1-diet"]');
   if (el) {
     const val = mainRow["data-diet"] || mainRow["data-grain"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "diet", val, {
-      "Grain Free": "grainfree",
-      "Grain": "grain"
+      "Grain": "GI",
+      "Grain Free": "GF"
+    });
+    showInnerByValue(container, val, {
+      "Grain": "GI",
+      "Grain Free": "GF"
     });
   }
 
-  // BRAND-1 legumesfree
+  // BRAND-1 legumesfree & inner toggling
   el = document.querySelector('[data-var="brand-1-legumesfree"]');
   if (el) {
     const val = mainRow["data-legumes"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "legumesfree", val, {
-      "Legumes Free": "legumesfree",
-      "Legume": "legumes"
+      "Legume": "LI",
+      "Legumes Free": "LF"
+    });
+    showInnerByValue(container, val, {
+      "Legume": "LI",
+      "Legumes Free": "LF"
     });
   }
 
-  // BRAND-1 poultryfree
+  // BRAND-1 poultryfree & inner toggling
   el = document.querySelector('[data-var="brand-1-poultryfree"]');
   if (el) {
     const val = mainRow["data-poultry"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "brand-1", "poultryfree", val, {
-      "Poultry Free": "poultryfree",
-      "Poultry": "poultry"
+      "Poultry": "PI",
+      "Poultry Free": "PF"
+    });
+    showInnerByValue(container, val, {
+      "Poultry": "PI",
+      "Poultry Free": "PF"
     });
   }
 
-  // lazy-load brand preview image and paint icons
-  el = document.querySelector('[data-var="brand-1-previewimg"]');
-  if (el && mainRow.previewengine) setLazyBackground(el, mainRow.previewengine);
-
-  paintSvgIcon(
-    '[data-var="brand-1-legumesfree"]',
-    mainRow["data-legumes"]?.toLowerCase().includes("free")
-  );
-  paintSvgIcon(
-    '[data-var="brand-1-poultryfree"]',
-    mainRow["data-poultry"]?.toLowerCase().includes("free")
-  );
-
-  // SPORT-1 flavor
+  // SPORT-1 flavor & inner toggling
   el = document.querySelector('[data-var="sport-1-flavor"]');
   if (el) {
     const val = sdfRow["specs_primary_flavor"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "flavor", val, {
-      "Meat": "meat",
-      "Fish": "fish",
-      "Poultry": "poultry"
+      "Meat": "MT",
+      "Poultry": "PO",
+      "Fish": "FS"
+    });
+    showInnerByValue(container, val, {
+      "Meat": "MT",
+      "Poultry": "PO",
+      "Fish": "FS"
     });
   }
 
-  // SPORT-1 diet
+  // SPORT-1 diet & inner toggling
   el = document.querySelector('[data-var="sport-1-diet"]');
   if (el) {
     const val = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "diet", val, {
-      "Grain Free": "grainfree",
-      "Grain": "grain"
+      "Grain": "GI",
+      "Grain Free": "GF"
+    });
+    showInnerByValue(container, val, {
+      "Grain": "GI",
+      "Grain Free": "GF"
     });
   }
 
-  // SPORT-1 legumesfree
+  // SPORT-1 legumesfree & inner toggling
   el = document.querySelector('[data-var="sport-1-legumesfree"]');
   if (el) {
     const val = sdfRow["data-legumes"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "legumesfree", val, {
-      "Legumes Free": "legumesfree",
-      "Legume": "legumes"
+      "Legume": "LI",
+      "Legumes Free": "LF"
+    });
+    showInnerByValue(container, val, {
+      "Legume": "LI",
+      "Legumes Free": "LF"
     });
   }
 
-  // SPORT-1 poultryfree
+  // SPORT-1 poultryfree & inner toggling
   el = document.querySelector('[data-var="sport-1-poultryfree"]');
   if (el) {
     const val = sdfRow["data-poultry"] || "";
     el.textContent = val;
     const container = el.closest('.pwr-paint');
     setDataClass(container, "sport-1", "poultryfree", val, {
-      "Poultry Free": "poultryfree",
-      "Poultry": "poultry"
+      "Poultry": "PI",
+      "Poultry Free": "PF"
+    });
+    showInnerByValue(container, val, {
+      "Poultry": "PI",
+      "Poultry Free": "PF"
     });
   }
-
- 
 }
-
 
 
 function paintSection2(mainRow, sdfRow) {
