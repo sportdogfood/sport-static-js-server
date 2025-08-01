@@ -311,10 +311,16 @@ console.log("Kcal/cup difference:", kcalDiff);
   const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
 
-  const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
-  if (subtitleEl) subtitleEl.textContent =
-    `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
+if (subtitleEl) {
+  subtitleEl.innerHTML =
+    `<span class="span-compare">Protein, fat, and calorie details</span><br>` +  // wrapped and break here
+    `${mainRow["data-brand"]} ${mainRow["data-one"]}<br> ` +
+    `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
+    `Sport Dog Food ${sdfRow["data-one"]}`;
+}
 
+ 
   // — Typed.js madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
