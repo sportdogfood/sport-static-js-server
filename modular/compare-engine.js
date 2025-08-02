@@ -748,6 +748,90 @@ function renderIngListDivs(row) {
   `;
 }
 
+function paintDualIngredientLists(mainRow, sdfRow) {
+  // Utility: get all ingredient objects for a row
+  function getIngredients(row) {
+    const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
+    return ids.map(id => ING_MAP[id]).filter(Boolean);
+  }
+
+  // Render list as HTML for dual filter
+  function renderList(ings, title, emptyMsg, groupId) {
+    return `
+      <div class="pwrf-list-group" data-list="${groupId}">
+        <div class="pwrf_list-title">${title}</div>
+        ${ings.map(ing => {
+          // For filter: add hidden fields for every attribute you want to match
+          const searchVal = [
+            ing.Name, ing.displayAs, ing.groupWith, ing["data-type"] || "",
+            (ing.tags || []).join(' ')
+          ].join(' ').toLowerCase();
+          return `<div class="pwrf_dropdown-item"
+                       data-search="${searchVal}">
+                    <span class="pwrf_item-name">${ing.displayAs || ing.Name}</span>
+                  </div>`;
+        }).join('')}
+        <div class="pwrf_no-results" style="display:none;">No ${title.toLowerCase()} found.</div>
+      </div>
+    `;
+  }
+
+  // Insert markup into a fixed wrapper on the page
+  const wrapperSelector = '.pwrf-filter-wrapper';
+  let wrapper = document.querySelector(wrapperSelector);
+  if (!wrapper) {
+    wrapper = document.createElement('div');
+    wrapper.className = 'pwrf-filter-wrapper';
+    document.querySelector('#section-3')?.appendChild(wrapper);
+  }
+  wrapper.innerHTML = `
+    <input type="text" class="pwrf_search-input" placeholder="Search both lists..." />
+    <button class="pwrf_clear-btn">Clear</button>
+    ${renderList(getIngredients(mainRow), mainRow["data-brand"] || "Competitor", "No competitor ingredients", 1)}
+    ${renderList(getIngredients(sdfRow), "Sport Dog Food", "No SDF ingredients", 2)}
+  `;
+
+  class DualFilterInstance {
+    constructor(wrapper) {
+      this.input    = wrapper.querySelector('.pwrf_search-input');
+      this.clearBtn = wrapper.querySelector('.pwrf_clear-btn');
+      this.lists = Array.from(wrapper.querySelectorAll('.pwrf-list-group')).map(list => ({
+        group: list,
+        items: Array.from(list.querySelectorAll('.pwrf_dropdown-item')),
+        noResults: list.querySelector('.pwrf_no-results')
+      }));
+      this._bind();
+    }
+    _bind() {
+      this.input.addEventListener('input', () => this._filter());
+      this.clearBtn.addEventListener('click', e => {
+        e.preventDefault();
+        this.input.value = '';
+        this._filter();
+      });
+      this.lists.forEach(list => list.noResults.style.display = 'none');
+    }
+    _filter() {
+      const q = this.input.value.trim().toLowerCase();
+      this.lists.forEach(list => {
+        let visible = 0;
+        list.items.forEach(item => {
+          const search = (item.dataset.search || '').toLowerCase();
+          const row = item.closest('[role="listitem"]') || item.closest('.w-dyn-item') || item;
+          if (search.includes(q)) {
+            row.style.display = '';
+            visible++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+        list.noResults.style.display = visible === 0 ? '' : 'none';
+      });
+    }
+  }
+  new DualFilterInstance(wrapper);
+}
+
 function getContentiousIngredients(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
@@ -822,51 +906,52 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
     threshold: 0.1
   };
 
- const sectionMap = [
-  {
-    id: '#section-1',
-    fn: () => {
-      paintSection1(mainRow, sdfRow);
-      runTypedForMadlib('section1-madlib');
-    }
-  },
-  {
-    id: '#section-2',
-    fn: () => {
-      paintSection2(mainRow, sdfRow);
-      runTypedForMadlib('section2-madlib');
-    }
-  },
- {
-  id: '#section-3',
-  fn: () => {
-    paintSection3(mainRow, sdfRow);
-    // animate each madlib slot
-    [
-      'section3-madlib',
-      'section3-sport-madlib',
-      'section3-contentious-madlib',
-      'section3-sport-contentious-madlib'
-    ].forEach(runTypedForMadlib);
-  }
-},
+  const sectionMap = [
+    {
+      id: '#section-1',
+      fn: () => {
+        paintSection1(mainRow, sdfRow);
+        runTypedForMadlib('section1-madlib');
+      }
+    },
+    {
+      id: '#section-2',
+      fn: () => {
+        paintSection2(mainRow, sdfRow);
+        runTypedForMadlib('section2-madlib');
+      }
+    },
+    {
+      id: '#section-3',
+      fn: () => {
+        paintSection3(mainRow, sdfRow);
+        // Animate madlib slots
+        [
+          'section3-madlib',
+          'section3-sport-madlib',
+          'section3-contentious-madlib',
+          'section3-sport-contentious-madlib'
+        ].forEach(runTypedForMadlib);
 
-  {
-    id: '#section-k',
-    fn: () => {
-      if (typeof paintSectionK === 'function') {
-        paintSectionK(mainRow, [
-          getCiRow(SDF_FORMULAS.cub),
-          getCiRow(SDF_FORMULAS.dock),
-          getCiRow(SDF_FORMULAS.herding)
-        ]);
-      } else {
-        console.warn('[CCI] paintSectionK not defined—skipping Section K');
+        // --- Paint the dual ingredient filter lists ---
+        paintDualIngredientLists(mainRow, sdfRow);
+      }
+    },
+    {
+      id: '#section-k',
+      fn: () => {
+        if (typeof paintSectionK === 'function') {
+          paintSectionK(mainRow, [
+            getCiRow(SDF_FORMULAS.cub),
+            getCiRow(SDF_FORMULAS.dock),
+            getCiRow(SDF_FORMULAS.herding)
+          ]);
+        } else {
+          console.warn('[CCI] paintSectionK not defined—skipping Section K');
+        }
       }
     }
-  }
-];
-
+  ];
 
   sectionMap.forEach(({ id, fn }) => {
     const target = document.querySelector(id);
@@ -946,6 +1031,10 @@ export function renderComparePage() {
         paintSection1(mainRow, newRow);
         paintSection2(mainRow, newRow);
         paintSection3(mainRow, newRow);
+
+        // Dual ingredient filter must re-paint on switch:
+        paintDualIngredientLists(mainRow, newRow);
+
         if (typeof paintSectionK === 'function') {
           paintSectionK(mainRow, [
             getCiRow(SDF_FORMULAS.cub),
@@ -975,4 +1064,5 @@ export function renderComparePage() {
   // 6. Finally, kick off the switcher
   setupSdfSwitcher(initialId);
 }
+
 
