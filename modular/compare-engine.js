@@ -203,23 +203,70 @@ function showInnerByValue(container, value, map) {
 }
 
 function paintSection1(mainRow, sdfRow) {
-  // Render "this-mark" (Typed.js or fallback)
+  // ---- ICON MAPS ----
+  const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
+
+  const ICONS = {
+    // Diet
+    "grain-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_free" alt="Grain Free"></div>`,
+    "grain-inclusive": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_in" alt="Grain Inclusive"></div>`,
+    // Legumes
+    "legumes-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg" class="icon-legumes-free" alt="Legume Free"></div>`,
+    "contains-legumes": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg" class="icon-legumes" alt="Contains Legumes"></div>`,
+    // Poultry
+    "poultry-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-poultry-free" alt="Poultry Free"></div>`,
+    "contains-poultry": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-poultry" alt="Contains Poultry"></div>`,
+    // Flavors
+    "flavor-poultry": `<div class="icon-wrapper"><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-flavor-poultry" alt="Poultry Flavor"></div>`,
+    "flavor-beef": `<div class="icon-wrapper"><img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg" class="icon-flavor-beef" alt="Beef Flavor"></div>`,
+    "flavor-meat": `<div class="icon-wrapper"><img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg" class="icon-flavor-meat" alt="Meat Flavor"></div>`,
+    "flavor-fish": `<div class="icon-wrapper"><img src="${CDN}/688c1f5e4633f104d7ea1658_Untitled%20(6%20x%206%20in)%20(70%20x%2070%20px).svg" class="icon-flavor-fish" alt="Fish Flavor"></div>`,
+    "flavor-buffalo": `<div class="icon-wrapper"><img src="${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg" class="icon-flavor-buffalo" alt="Buffalo Flavor"></div>`
+  };
+
+  // --- Icon selector helpers ---
+  function getGrainIcon(val) {
+    const v = (val || "").toLowerCase();
+    if (v.includes("free")) return ICONS["grain-free"];
+    if (v.includes("grain")) return ICONS["grain-inclusive"];
+    return "";
+  }
+  function getLegumeIcon(val) {
+    const v = (val || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return ICONS["legumes-free"];
+    if (v.includes("legume") || v.includes("pea")) return ICONS["contains-legumes"];
+    return "";
+  }
+  function getPoultryIcon(val) {
+    const v = (val || "").toLowerCase();
+    if (v.includes("free") || v.includes("no")) return ICONS["poultry-free"];
+    if (v.includes("poultry")) return ICONS["contains-poultry"];
+    return "";
+  }
+  function getFlavorIcon(val) {
+    const v = (val || "").toLowerCase();
+    if (v.includes("poultry") || v.includes("chicken")) return ICONS["flavor-poultry"];
+    if (v.includes("beef")) return ICONS["flavor-beef"];
+    if (v.includes("meat")) return ICONS["flavor-meat"];
+    if (v.includes("fish") || v.includes("salmon")) return ICONS["flavor-fish"];
+    if (v.includes("buffalo") || v.includes("bison")) return ICONS["flavor-buffalo"];
+    return "";
+  }
+
+  // --- Render "this-mark" (Typed.js or fallback) ---
   const thisMarkValue = mainRow["this-mark"];
-  if (thisMarkValue && window.Typed) {
-    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-    if (thisMarkEl) {
-      thisMarkEl.setAttribute('data-text', thisMarkValue);
-      thisMarkEl.textContent = '';
-      thisMarkEl.removeAttribute('data-typed');
-      new Typed(thisMarkEl, {
-        strings: [thisMarkValue],
-        typeSpeed: 24,
-        showCursor: false
-      });
-    }
-  } else {
-    const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-    if (thisMarkEl) thisMarkEl.textContent = thisMarkValue || '';
+  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
+  if (thisMarkValue && window.Typed && thisMarkEl) {
+    thisMarkEl.setAttribute('data-text', thisMarkValue);
+    thisMarkEl.textContent = '';
+    thisMarkEl.removeAttribute('data-typed');
+    new Typed(thisMarkEl, {
+      strings: [thisMarkValue],
+      typeSpeed: 24,
+      showCursor: false
+    });
+  } else if (thisMarkEl) {
+    thisMarkEl.textContent = thisMarkValue || '';
   }
 
   // Header & subtitle
@@ -231,7 +278,7 @@ function paintSection1(mainRow, sdfRow) {
     subtitleEl.innerHTML =
       `<span class="span-compare">Comparing</span><br>` +
       `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
-      `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
+      `<img src="${CDN}/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
@@ -248,6 +295,7 @@ function paintSection1(mainRow, sdfRow) {
       ? "meat-based"
       : "animal-based";
   }
+  // Assuming buildLegumePoultryPhrase is defined elsewhere
 
   // Build madlib
   const mainBrand = mainRow["data-brand"] || "Brand";
@@ -256,24 +304,18 @@ function paintSection1(mainRow, sdfRow) {
   const mainSpec = buildLegumePoultryPhrase(mainRow);
   const sdfSpec = buildLegumePoultryPhrase(sdfRow);
 
-  const mainSentence = `${mainBrand} ${mainName} is a ${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula that’s ${mainSpec}.`;
-  const sdfSentence = `${sdfName} is a ${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet that’s <span class="highlight">${sdfSpec}</span>.`;
-
-  const madlib = `${mainSentence} ${sdfSentence}`;
-
-const madlibEl = document.querySelector('[data-var="section1-madlib"]');
-if (madlibEl) {
-  madlibEl.innerHTML =
-    `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> is a ` +
-    `<span class="span-compare-specs">${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula</span> that’s ` +
-    `<span class="span-compare-specs">${mainSpec}</span>.<br>` +
-    `<span class="span-sport-name">${sdfName}</span> is a ` +
-    `<span class="span-sport-specs">${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet</span> that’s ` +
-    `<span class="highlight">${sdfSpec}</span>.`;
-  madlibEl.removeAttribute('data-text');
-  madlibEl.removeAttribute('data-typed');
-}
-
+  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
+  if (madlibEl) {
+    madlibEl.innerHTML =
+      `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> is a ` +
+      `<span class="span-compare-specs">${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula</span> that’s ` +
+      `<span class="span-compare-specs">${mainSpec}</span>.<br>` +
+      `<span class="span-sport-name">${sdfName}</span> is a ` +
+      `<span class="span-sport-specs">${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet</span> that’s ` +
+      `<span class="highlight">${sdfSpec}</span>.`;
+    madlibEl.removeAttribute('data-text');
+    madlibEl.removeAttribute('data-typed');
+  }
 
   // Set brand/name/preview text and lazy-load images
   let el = document.querySelector('[data-var="brand-1-name"]');
@@ -298,139 +340,32 @@ if (madlibEl) {
     setLazyBackground(el, sdfRow.previewengine);
   }
 
-  // BRAND-1 flavor & inner toggling
-// BRAND-1 flavor & inner toggling
-el = document.querySelector('[data-var="brand-1-flavor"]');
-if (el) {
-  const val = mainRow["specs_primary_flavor"] || "";
-  // el.textContent = val;    // ← REMOVE or comment out this line
-  const container = el.closest('.pwr-paint');
-  setDataClass(container, "brand-1", "flavor", val, {
-    "Meat": "mt",
-    "Poultry": "po",
-    "Fish": "fs"
-  });
-  showInnerByValue(container, val, {
-    "Meat": "mt",
-    "Poultry": "po",
-    "Fish": "fs"
-  });
-}
-
-
-  // BRAND-1 diet & inner toggling
+  // ----- ICON RENDERING INSTEAD OF TOGGLING -----
+  // BRAND-1
   el = document.querySelector('[data-var="brand-1-diet"]');
-  if (el) {
-    const val = mainRow["data-diet"] || mainRow["data-grain"] || "";
-    // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "diet", val, {
-      "Grain": "gi",
-      "Grain Free": "gf"
-    });
-    showInnerByValue(container, val, {
-      "Grain": "gi",
-      "Grain Free": "gf"
-    });
-  }
+  if (el) el.innerHTML = getGrainIcon(mainRow["data-diet"] || mainRow["data-grain"]);
 
-  // BRAND-1 legumesfree & inner toggling
   el = document.querySelector('[data-var="brand-1-legumesfree"]');
-  if (el) {
-    const val = mainRow["data-legumes"] || "";
-    // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "legumesfree", val, {
-      "Legume": "li",
-      "Legumes Free": "lf"
-    });
-    showInnerByValue(container, val, {
-      "Legume": "li",
-      "Legumes Free": "lf"
-    });
-  }
+  if (el) el.innerHTML = getLegumeIcon(mainRow["data-legumes"]);
 
-  // BRAND-1 poultryfree & inner toggling
   el = document.querySelector('[data-var="brand-1-poultryfree"]');
-  if (el) {
-    const val = mainRow["data-poultry"] || "";
-   // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "brand-1", "poultryfree", val, {
-      "Poultry": "pi",
-      "Poultry Free": "pf"
-    });
-    showInnerByValue(container, val, {
-      "Poultry": "pi",
-      "Poultry Free": "pf"
-    });
-  }
+  if (el) el.innerHTML = getPoultryIcon(mainRow["data-poultry"]);
 
-  // SPORT-1 flavor & inner toggling
-  el = document.querySelector('[data-var="sport-1-flavor"]');
-  if (el) {
-    const val = sdfRow["specs_primary_flavor"] || "";
-  // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "sport-1", "flavor", val, {
-      "Meat": "mt",
-      "Poultry": "po",
-      "Fish": "fs"
-    });
-    showInnerByValue(container, val, {
-      "Meat": "mt",
-      "Poultry": "po",
-      "Fish": "fs"
-    });
-  }
+  el = document.querySelector('[data-var="brand-1-flavor"]');
+  if (el) el.innerHTML = getFlavorIcon(mainRow["specs_primary_flavor"]);
 
-  // SPORT-1 diet & inner toggling
+  // SPORT-1
   el = document.querySelector('[data-var="sport-1-diet"]');
-  if (el) {
-    const val = sdfRow["data-diet"] || sdfRow["data-grain"] || "";
-   // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "sport-1", "diet", val, {
-      "Grain": "gi",
-      "Grain Free": "gf"
-    });
-    showInnerByValue(container, val, {
-      "Grain": "gi",
-      "Grain Free": "gf"
-    });
-  }
+  if (el) el.innerHTML = getGrainIcon(sdfRow["data-diet"] || sdfRow["data-grain"]);
 
-  // SPORT-1 legumesfree & inner toggling
   el = document.querySelector('[data-var="sport-1-legumesfree"]');
-  if (el) {
-    const val = sdfRow["data-legumes"] || "";
-   // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "sport-1", "legumesfree", val, {
-      "Legume": "li",
-      "Legumes Free": "lf"
-    });
-    showInnerByValue(container, val, {
-      "Legume": "li",
-      "Legumes Free": "lf"
-    });
-  }
+  if (el) el.innerHTML = getLegumeIcon(sdfRow["data-legumes"]);
 
-  // SPORT-1 poultryfree & inner toggling
   el = document.querySelector('[data-var="sport-1-poultryfree"]');
-  if (el) {
-    const val = sdfRow["data-poultry"] || "";
-   // el.textContent = val;    // ← REMOVE or comment out this line
-    const container = el.closest('.pwr-paint');
-    setDataClass(container, "sport-1", "poultryfree", val, {
-      "Poultry": "pi",
-      "Poultry Free": "pf"
-    });
-    showInnerByValue(container, val, {
-      "Poultry": "pi",
-      "Poultry Free": "pf"
-    });
-  }
+  if (el) el.innerHTML = getPoultryIcon(sdfRow["data-poultry"]);
+
+  el = document.querySelector('[data-var="sport-1-flavor"]');
+  if (el) el.innerHTML = getFlavorIcon(sdfRow["specs_primary_flavor"]);
 }
 
 
