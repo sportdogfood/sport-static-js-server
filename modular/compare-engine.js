@@ -171,6 +171,74 @@ function buildLegumePoultryPhrase(row) {
   /* !freeL && freeP */    return `${poultryPhrase} but ${legumePhrase}`;
 }
 
+/**
+ * Renders six normalized nutrient bars into
+ * <div id="nutrient-bars-container"></div>
+ */
+function renderNutrientBars(mainRow, sdfRow) {
+  const container = document.getElementById('nutrient-bars-container');
+  if (!container) return;
+
+  // Your visual‐scale maxima
+  const MAX = { protein: 40, fat: 30, kcals: 600 };
+
+  // Helper: always at least 2% wide
+  const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
+
+  // Pull and coerce row values
+  const mp = Number(mainRow["ga_crude_protein_%"])  || 0;
+  const mf = Number(mainRow["ga_crude_fat_%"])      || 0;
+  const mk = Number(mainRow["ga_kcals_per_cup"])    || 0;
+  const sp = Number(sdfRow["ga_crude_protein_%"])   || 0;
+  const sf = Number(sdfRow["ga_crude_fat_%"])       || 0;
+  const sk = Number(sdfRow["ga_kcals_per_cup"])     || 0;
+
+  // Build all six rows of HTML
+  container.innerHTML = `
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Brand Protein</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(mp,MAX.protein)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${mp}%</span>
+    </div>
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Brand Fat</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(mf,MAX.fat)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${mf}%</span>
+    </div>
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Brand Calories</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(mk,MAX.kcals)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${mk}</span>
+    </div>
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Sport Protein</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(sp,MAX.protein)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${sp}%</span>
+    </div>
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Sport Fat</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(sf,MAX.fat)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${sf}%</span>
+    </div>
+    <div class="nutrient-bar-row">
+      <span class="nutrient-bar-label">Sport Calories</span>
+      <div class="nutrient-bar-track">
+        <div class="nutrient-bar-fill" style="width:${pct(sk,MAX.kcals)}%"></div>
+      </div>
+      <span class="nutrient-bar-value">${sk}</span>
+    </div>
+  `;
+}
 
 
 function setDataClass(el, base, key, value, map) {
