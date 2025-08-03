@@ -370,67 +370,50 @@ function paintSection1(mainRow, sdfRow) {
 
 
 function paintSection2(mainRow, sdfRow) {
-  // — Pull and normalize metrics —
-  const mainProtein = mainRow["ga_crude_protein_%"] || "?";
-  const mainFat     = mainRow["ga_crude_fat_%"]     || "?";
-  const mainKcal    = mainRow["ga_kcals_per_cup"]   || "?";
-  const sdfProtein  = sdfRow["ga_crude_protein_%"]  || "?";
-  const sdfFat      = sdfRow["ga_crude_fat_%"]      || "?";
-  const sdfKcal     = sdfRow["ga_kcals_per_cup"]    || "?";
-
-  // Convert to numbers for math
-  const numMainProtein = parseFloat(mainProtein) || 0;
-  const numMainFat     = parseFloat(mainFat)     || 0;
-  const numMainKcal    = parseFloat(mainKcal)    || 0;
-  const numSdfProtein  = parseFloat(sdfProtein)  || 0;
-  const numSdfFat      = parseFloat(sdfFat)      || 0;
-  const numSdfKcal     = parseFloat(sdfKcal)     || 0;
-
-  // Calculate differences
-  const proteinDiff = numMainProtein - numSdfProtein;
-  const fatDiff     = numMainFat     - numSdfFat;
-  const kcalDiff    = numMainKcal    - numSdfKcal;
-
-  // — Header & subtitle —
+  // — Section header & subtitle —
   const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
 
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) {
-    subtitleEl.innerHTML =
-      `<span class="span-compare">Protein, fat, and calorie details</span><br>` +
-      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
-      `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
-      `Sport Dog Food ${sdfRow["data-one"]}`;
+    subtitleEl.textContent =
+      `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Madlib copy —
+  // — Typed madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
-    madlibEl.innerHTML =
-      `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> provides ` +
-      `<span class="span-compare-specs">${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup.</span><br>` +
-      `<span class="span-sport-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
-      `<span class="span-sport-specs">${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup</span> for comparison.`;
-    madlibEl.removeAttribute('data-text');
+    madlibEl.setAttribute(
+      'data-text',
+      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
+      `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+      `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+      `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
+      `Sport Dog Food ${sdfRow["data-one"]} provides ` +
+      `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
+      `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
+      `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
+    );
+    madlibEl.textContent = '';
     madlibEl.removeAttribute('data-typed');
   }
 
   // — Lazy-load preview images —
   let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-  if (el) setLazyBackground(el, mainRow.previewengine);
+  setLazyBackground(el, mainRow.previewengine);
+
   el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-  if (el) setLazyBackground(el, sdfRow.previewengine);
+  setLazyBackground(el, sdfRow.previewengine);
 
   // — Numeric specs for mainRow —
   el = document.querySelector('[data-var="brand-1-sec2-name"]');
   if (el) el.textContent = mainRow["data-one"] || "";
   el = document.querySelector('[data-var="brand-1-protein"]');
-  if (el) el.textContent = mainProtein + "%";
+  if (el) el.textContent = mainRow["ga_crude_protein_%"] || "";
   el = document.querySelector('[data-var="brand-1-fat"]');
-  if (el) el.textContent = mainFat + "%";
+  if (el) el.textContent = mainRow["ga_crude_fat_%"] || "";
   el = document.querySelector('[data-var="brand-1-kcalscup"]');
-  if (el) el.textContent = mainKcal;
+  if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
   el = document.querySelector('[data-var="brand-1-kcalskg"]');
   if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
 
@@ -438,78 +421,16 @@ function paintSection2(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec2-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
   el = document.querySelector('[data-var="sport-1-protein"]');
-  if (el) el.textContent = sdfProtein + "%";
+  if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
   el = document.querySelector('[data-var="sport-1-fat"]');
-  if (el) el.textContent = sdfFat + "%";
+  if (el) el.textContent = sdfRow["ga_crude_fat_%"] || "";
   el = document.querySelector('[data-var="sport-1-kcalscup"]');
-  if (el) el.textContent = sdfKcal;
+  if (el) el.textContent = sdfRow["ga_kcals_per_cup"] || "";
   el = document.querySelector('[data-var="sport-1-kcalskg"]');
   if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
 
-  // — Difference indicators —
-  document.querySelectorAll('[data-var="brand-1-protein-diff"]').forEach(el => {
-    el.textContent = proteinDiff === 0 ? "–" : `${proteinDiff > 0 ? '+' : ''}${proteinDiff}%`;
-  });
-  document.querySelectorAll('[data-var="brand-1-fat-diff"]').forEach(el => {
-    el.textContent = fatDiff === 0 ? "–" : `${fatDiff > 0 ? '+' : ''}${fatDiff}%`;
-  });
-  document.querySelectorAll('[data-var="brand-1-kcal-diff"]').forEach(el => {
-    el.textContent = kcalDiff === 0 ? "–" : `${kcalDiff > 0 ? '+' : ''}${kcalDiff} kcals`;
-  });
-
-  // — Sport-1 differences (inverted logic) —
-  document.querySelectorAll('[data-var="sport-1-protein-diff"]').forEach(el => {
-    const val = -proteinDiff;
-    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
-  });
-  document.querySelectorAll('[data-var="sport-1-fat-diff"]').forEach(el => {
-    const val = -fatDiff;
-    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val}%`;
-  });
-  document.querySelectorAll('[data-var="sport-1-kcal-diff"]').forEach(el => {
-    const val = -kcalDiff;
-    el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
-  });
-
-  // === Responsive Normalized Bars for Protein, Fat, Kcals ===
-
-  // Define "logical" maximums for visual scale
-  const maxProtein = 40; // e.g. 40% for protein
-  const maxFat     = 30; // e.g. 30% for fat
-  const maxKcals   = 600; // e.g. 600 kcals/cup for normalization
-
-  // Helper for percent width (at least 2% visible)
-  const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
-
-  // --- Protein Bar ---
-  const proteinBar    = document.getElementById('protein-bar');
-  const proteinLabel  = document.getElementById('protein-label');
-  const proteinValue  = document.getElementById('protein-value');
-  if (proteinBar && proteinLabel && proteinValue) {
-    proteinLabel.textContent = 'Protein';
-    proteinValue.textContent = `${numMainProtein} of ${maxProtein} max`;
-    proteinBar.style.width   = pct(numMainProtein, maxProtein) + '%';
-  }
-
-  // --- Fat Bar ---
-  const fatBar    = document.getElementById('fat-bar');
-  const fatLabel  = document.getElementById('fat-label');
-  const fatValue  = document.getElementById('fat-value');
-  if (fatBar && fatLabel && fatValue) {
-    fatLabel.textContent = 'Fat';
-    fatValue.textContent = `${numMainFat} of ${maxFat} max`;
-    fatBar.style.width   = pct(numMainFat, maxFat) + '%';
-  }
-
-  // --- Kcal Bar ---
-  const kcalBar    = document.getElementById('kcal-bar');
-  const kcalLabel  = document.getElementById('kcal-label');
-  const kcalValue  = document.getElementById('kcal-value');
-  if (kcalBar && kcalLabel && kcalValue) {
-    kcalLabel.textContent = 'Calories';
-    kcalValue.textContent = `${numMainKcal} of ${maxKcals} max`;
-    kcalBar.style.width   = pct(numMainKcal, maxKcals) + '%';
-  }
+  // — NEW: render all six nutrient bars —
+  renderNutrientBars(mainRow, sdfRow);
 }
 
 
