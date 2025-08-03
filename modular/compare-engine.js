@@ -715,30 +715,44 @@ function paintDualIngredientLists(mainRow, sdfRow) {
     return ids.map(id => ING_MAP[id]).filter(Boolean);
   }
 
-  // 2) Render one list-group
-  function renderList(ings, title, groupId) {
-    const itemsHtml = ings.map(ing => {
-      const searchVal = [
-        ing.Name,
-        ing.displayAs,
-        ing.groupWith,
-        ing["data-type"] || "",
-        ...(ing.tags || [])
-      ].join(" ").toLowerCase();
-      return `
-        <div class="pwrf_dropdown-item" data-search="${searchVal}">
-          <span class="pwrf_item-name">${ing.displayAs || ing.Name}</span>
-        </div>
-      `;
-    }).join("");
-    return `
-      <div class="pwrf-list-group" data-list="${groupId}" style="display:none">
-        <div class="pwrf_list-title">${title}</div>
-        ${itemsHtml}
-        <div class="pwrf_no-results" style="display:none">No ${title.toLowerCase()} found.</div>
+function renderList(ings, title, groupId) {
+  return `
+    <div class="pwrf-list-group" data-list="${groupId}">
+      <div class="pwrf_list-title">${title}</div>
+      ${ings.map(ing => {
+        const searchVal = [
+          ing.Name,
+          ing.displayAs,
+          ing.groupWith,
+          ing["data-type"]      || "",
+          ing.recordType        || "",
+          ing.animalType        || "",
+          ing.animalAssist      || "",
+          ing.plantType         || "",
+          ing.plantAssist       || "",
+          ing.supplementalType  || "",
+          ing.supplementalAssist|| "",
+          ...(ing.tags || [])
+        ]
+        .join(" ")
+        .toLowerCase();
+
+        return `
+          <div class="pwrf_dropdown-item"
+               data-search="${searchVal}">
+            <span class="pwrf_item-name">
+              ${ing.displayAs || ing.Name}
+            </span>
+          </div>
+        `;
+      }).join("")}
+      <div class="pwrf_no-results" style="display:none;">
+        No ${title.toLowerCase()} found.
       </div>
-    `;
-  }
+    </div>
+  `;
+}
+
 
   // 3) Ensure wrapper
   let wrapper = document.querySelector(".pwrf-filter-wrapper");
