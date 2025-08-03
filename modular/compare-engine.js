@@ -471,6 +471,46 @@ if (madlibEl) {
     const val = -kcalDiff;
     el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
   });
+// ----- Visual Bars for Kcals -----
+
+// Find max kcals between both to scale bars proportionally (or set a fixed max)
+const maxKcal = Math.max(numMainKcal, numSdfKcal, 600); // 600 is a visual ceiling
+
+// Main row bar
+const mainBar     = document.getElementById('main-nutrient-bar');
+const mainLabel   = document.getElementById('main-bar-label');
+const mainValue   = document.getElementById('main-bar-value');
+
+// SDF row bar
+const sdfBar      = document.getElementById('sdf-nutrient-bar');
+const sdfLabel    = document.getElementById('sdf-bar-label');
+const sdfValue    = document.getElementById('sdf-bar-value');
+
+if (mainBar && sdfBar && mainLabel && sdfLabel && mainValue && sdfValue) {
+  // Set bar labels
+  mainLabel.textContent = `${mainRow["data-brand"] || "Brand"}`;
+  sdfLabel.textContent  = `Sport Dog Food`;
+
+  // Set bar values
+  mainValue.textContent = `${numMainKcal} kcals/cup`;
+  sdfValue.textContent  = `${numSdfKcal} kcals/cup`;
+
+  // Compute width (max 526px) proportional to kcal
+  const pxMax = 526;
+  const mainBarWidth = Math.round((numMainKcal / maxKcal) * pxMax);
+  const sdfBarWidth  = Math.round((numSdfKcal / maxKcal) * pxMax);
+
+  // Animate width (reset first)
+  mainBar.style.width = "0px";
+  sdfBar.style.width  = "0px";
+  setTimeout(() => {
+    mainBar.style.width = mainBarWidth + "px";
+    sdfBar.style.width  = sdfBarWidth  + "px";
+    mainBar.setAttribute('data-target-width', mainBarWidth + "px");
+    sdfBar.setAttribute('data-target-width',  sdfBarWidth + "px");
+  }, 80);
+}
+
 }
 
 
