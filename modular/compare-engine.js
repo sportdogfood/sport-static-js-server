@@ -404,22 +404,21 @@ function paintSection2(mainRow, sdfRow) {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-const madlibEl = document.querySelector('[data-var="section2-madlib"]');
-if (madlibEl) {
-  madlibEl.innerHTML =
-    `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> provides ` +
-    `<span class="span-compare-specs">${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup.</span><br>` +
-    `<span class="span-sport-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
-    `<span class="span-sport-specs">${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup</span> for comparison.`;
-  madlibEl.removeAttribute('data-text');
-  madlibEl.removeAttribute('data-typed');
-}
-
+  // — Madlib copy —
+  const madlibEl = document.querySelector('[data-var="section2-madlib"]');
+  if (madlibEl) {
+    madlibEl.innerHTML =
+      `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> provides ` +
+      `<span class="span-compare-specs">${mainProtein}% protein, ${mainFat}% fat, and ${mainKcal} kcals/cup.</span><br>` +
+      `<span class="span-sport-name">Sport Dog Food ${sdfRow["data-one"]}</span> provides ` +
+      `<span class="span-sport-specs">${sdfProtein}% protein, ${sdfFat}% fat, and ${sdfKcal} kcals/cup</span> for comparison.`;
+    madlibEl.removeAttribute('data-text');
+    madlibEl.removeAttribute('data-typed');
+  }
 
   // — Lazy-load preview images —
   let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
   if (el) setLazyBackground(el, mainRow.previewengine);
-
   el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
   if (el) setLazyBackground(el, sdfRow.previewengine);
 
@@ -471,46 +470,46 @@ if (madlibEl) {
     const val = -kcalDiff;
     el.textContent = val === 0 ? "–" : `${val > 0 ? '+' : ''}${val} kcals`;
   });
-// ----- Visual Bars for Kcals -----
 
-// Find max kcals between both to scale bars proportionally (or set a fixed max)
-const maxKcal = Math.max(numMainKcal, numSdfKcal, 600); // 600 is a visual ceiling
+  // === Responsive Normalized Bars for Protein, Fat, Kcals ===
 
-// Main row bar
-const mainBar     = document.getElementById('main-nutrient-bar');
-const mainLabel   = document.getElementById('main-bar-label');
-const mainValue   = document.getElementById('main-bar-value');
+  // Define "logical" maximums for visual scale
+  const maxProtein = 40; // e.g. 40% for protein
+  const maxFat     = 30; // e.g. 30% for fat
+  const maxKcals   = 600; // e.g. 600 kcals/cup for normalization
 
-// SDF row bar
-const sdfBar      = document.getElementById('sdf-nutrient-bar');
-const sdfLabel    = document.getElementById('sdf-bar-label');
-const sdfValue    = document.getElementById('sdf-bar-value');
+  // Helper for percent width (at least 2% visible)
+  const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
 
-if (mainBar && sdfBar && mainLabel && sdfLabel && mainValue && sdfValue) {
-  // Set bar labels
-  mainLabel.textContent = `${mainRow["data-brand"] || "Brand"}`;
-  sdfLabel.textContent  = `Sport Dog Food`;
+  // --- Protein Bar ---
+  const proteinBar    = document.getElementById('protein-bar');
+  const proteinLabel  = document.getElementById('protein-label');
+  const proteinValue  = document.getElementById('protein-value');
+  if (proteinBar && proteinLabel && proteinValue) {
+    proteinLabel.textContent = 'Protein';
+    proteinValue.textContent = `${numMainProtein} of ${maxProtein} max`;
+    proteinBar.style.width   = pct(numMainProtein, maxProtein) + '%';
+  }
 
-  // Set bar values
-  mainValue.textContent = `${numMainKcal} kcals/cup`;
-  sdfValue.textContent  = `${numSdfKcal} kcals/cup`;
+  // --- Fat Bar ---
+  const fatBar    = document.getElementById('fat-bar');
+  const fatLabel  = document.getElementById('fat-label');
+  const fatValue  = document.getElementById('fat-value');
+  if (fatBar && fatLabel && fatValue) {
+    fatLabel.textContent = 'Fat';
+    fatValue.textContent = `${numMainFat} of ${maxFat} max`;
+    fatBar.style.width   = pct(numMainFat, maxFat) + '%';
+  }
 
-  // Compute width (max 526px) proportional to kcal
-  const pxMax = 526;
-  const mainBarWidth = Math.round((numMainKcal / maxKcal) * pxMax);
-  const sdfBarWidth  = Math.round((numSdfKcal / maxKcal) * pxMax);
-
-  // Animate width (reset first)
-  mainBar.style.width = "0px";
-  sdfBar.style.width  = "0px";
-  setTimeout(() => {
-    mainBar.style.width = mainBarWidth + "px";
-    sdfBar.style.width  = sdfBarWidth  + "px";
-    mainBar.setAttribute('data-target-width', mainBarWidth + "px");
-    sdfBar.setAttribute('data-target-width',  sdfBarWidth + "px");
-  }, 80);
-}
-
+  // --- Kcal Bar ---
+  const kcalBar    = document.getElementById('kcal-bar');
+  const kcalLabel  = document.getElementById('kcal-label');
+  const kcalValue  = document.getElementById('kcal-value');
+  if (kcalBar && kcalLabel && kcalValue) {
+    kcalLabel.textContent = 'Calories';
+    kcalValue.textContent = `${numMainKcal} of ${maxKcals} max`;
+    kcalBar.style.width   = pct(numMainKcal, maxKcals) + '%';
+  }
 }
 
 
