@@ -276,7 +276,8 @@ function paintSection1(mainRow, sdfRow) {
 
   const ICONS = {
     // Diet
-    "grain-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_free" alt="Grain Free"></div>`,
+
+    "grain-free": `<div class="pwr-ci-row"><div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_free" alt="Grain Free"></div></div><div class="icon-label"><div>grain free</div></div>`,
     "grain-inclusive": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_in" alt="Grain Inclusive"></div>`,
     // Legumes
     "legumes-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg" class="icon-legumes-free" alt="Legume Free"></div>`,
