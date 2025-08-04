@@ -272,26 +272,135 @@ function showInnerByValue(container, value, map) {
 
 function paintSection1(mainRow, sdfRow) {
   // ---- ICON MAPS ----
-  const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
+// ---- ICON MAPS ----
+const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
 
-  const ICONS = {
-    // Diet
+const ICONS = {
+  // Diet
+  "grain-free": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash"></div>
+        <img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg"
+             class="icon-grain_free"
+             alt="Grain Free">
+      </div>
+      <div class="icon-label"><div>Grain Free</div></div>
+    </div>
+  `,
+  "grain-inclusive": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash no-slash"></div>
+        <img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg"
+             class="icon-grain_in"
+             alt="Grain Inclusive">
+      </div>
+      <div class="icon-label"><div>Grain Inclusive</div></div>
+    </div>
+  `,
 
-    "grain-free": `<div class="pwr-ci-row"><div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_free" alt="Grain Free"></div></div><div class="icon-label"><div>grain free</div></div>`,
-    "grain-inclusive": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg" class="icon-grain_in" alt="Grain Inclusive"></div>`,
-    // Legumes
-    "legumes-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg" class="icon-legumes-free" alt="Legume Free"></div>`,
-    "contains-legumes": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg" class="icon-legumes" alt="Contains Legumes"></div>`,
-    // Poultry
-    "poultry-free": `<div class="icon-wrapper"><div class="slash"></div><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-poultry-free" alt="Poultry Free"></div>`,
-    "contains-poultry": `<div class="icon-wrapper"><div class="slash no-slash"></div><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-poultry" alt="Contains Poultry"></div>`,
-    // Flavors
-    "flavor-poultry": `<div class="icon-wrapper"><img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg" class="icon-flavor-poultry" alt="Poultry Flavor"></div>`,
-    "flavor-beef": `<div class="icon-wrapper"><img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg" class="icon-flavor-beef" alt="Beef Flavor"></div>`,
-    "flavor-meat": `<div class="icon-wrapper"><img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg" class="icon-flavor-meat" alt="Meat Flavor"></div>`,
-    "flavor-fish": `<div class="icon-wrapper"><img src="${CDN}/688c1f5e4633f104d7ea1658_Untitled%20(6%20x%206%20in)%20(70%20x%2070%20px).svg" class="icon-flavor-fish" alt="Fish Flavor"></div>`,
-    "flavor-buffalo": `<div class="icon-wrapper"><img src="${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg" class="icon-flavor-buffalo" alt="Buffalo Flavor"></div>`
-  };
+  // Legumes
+  "legumes-free": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash"></div>
+        <img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg"
+             class="icon-legumes-free"
+             alt="Legume Free">
+      </div>
+      <div class="icon-label"><div>Legume Free</div></div>
+    </div>
+  `,
+  "contains-legumes": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash no-slash"></div>
+        <img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg"
+             class="icon-legumes"
+             alt="Contains Legumes">
+      </div>
+      <div class="icon-label"><div>Contains Legumes</div></div>
+    </div>
+  `,
+
+  // Poultry
+  "poultry-free": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash"></div>
+        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
+             class="icon-poultry-free"
+             alt="Poultry Free">
+      </div>
+      <div class="icon-label"><div>Poultry Free</div></div>
+    </div>
+  `,
+  "contains-poultry": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <div class="slash no-slash"></div>
+        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
+             class="icon-poultry"
+             alt="Contains Poultry">
+      </div>
+      <div class="icon-label"><div>Contains Poultry</div></div>
+    </div>
+  `,
+
+  // Flavors
+  "flavor-poultry": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
+             class="icon-flavor-poultry"
+             alt="Poultry Flavor">
+      </div>
+      <div class="icon-label"><div>Poultry Flavor</div></div>
+    </div>
+  `,
+  "flavor-beef": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg"
+             class="icon-flavor-beef"
+             alt="Beef Flavor">
+      </div>
+      <div class="icon-label"><div>Beef Flavor</div></div>
+    </div>
+  `,
+  "flavor-meat": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg"
+             class="icon-flavor-meat"
+             alt="Meat Flavor">
+      </div>
+      <div class="icon-label"><div>Meat Flavor</div></div>
+    </div>
+  `,
+  "flavor-fish": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <img src="${CDN}/688c1f5e4633f104d7ea1658_Untitled%20(6%20x%206%20in)%20(70%20x%2070%20px).svg"
+             class="icon-flavor-fish"
+             alt="Fish Flavor">
+      </div>
+      <div class="icon-label"><div>Fish Flavor</div></div>
+    </div>
+  `,
+  "flavor-buffalo": `
+    <div class="pwr-ci-row">
+      <div class="icon-wrapper">
+        <img src="${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg"
+             class="icon-flavor-buffalo"
+             alt="Buffalo Flavor">
+      </div>
+      <div class="icon-label"><div>Buffalo Flavor</div></div>
+    </div>
+  `
+};
+
 
   // --- Icon selector helpers ---
   function getGrainIcon(val) {
