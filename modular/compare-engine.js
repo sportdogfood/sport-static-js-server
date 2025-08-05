@@ -438,11 +438,11 @@ const ICONS = {
     thisMarkEl.setAttribute('data-text', thisMarkValue);
     thisMarkEl.textContent = '';
     thisMarkEl.removeAttribute('data-typed');
-    new Typed(thisMarkEl, {
-      strings: [thisMarkValue],
-      typeSpeed: 24,
-      showCursor: false
-    });
+  // new Typed(thisMarkEl, {
+  //   strings: [thisMarkValue],
+  //   typeSpeed: 24,
+  //   showCursor: false
+  // });
   } else if (thisMarkEl) {
     thisMarkEl.textContent = thisMarkValue || '';
   }
@@ -558,7 +558,7 @@ function paintSection2(mainRow, sdfRow) {
       `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // — Typed madlib —
+  // —  madlib —
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.setAttribute(
@@ -572,10 +572,10 @@ function paintSection2(mainRow, sdfRow) {
       `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
       `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
     );
-    madlibEl.textContent = '';
-    madlibEl.removeAttribute('data-typed');
-  }
-
+    madlibEl.textContent = madlibEl.getAttribute('data-text') || '';
+  madlibEl.removeAttribute('data-typed');
+  // new Typed(madlibEl, { strings: [madlibEl.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+}
   // — Lazy-load preview images —
   let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
   setLazyBackground(el, mainRow.previewengine);
@@ -627,24 +627,27 @@ function paintSection3(mainRow, sdfRow) {
   if (el) el.textContent = mainRow["data-one"] || "";
 
   // section3-madlib
-  el = document.querySelector('[data-var="section3-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildIngredientMadlib(mainRow));
-    el.textContent = '';
-    el.removeAttribute('data-typed');
-  }
+el = document.querySelector('[data-var="section3-madlib"]');
+if (el) {
+  el.setAttribute('data-text', buildIngredientMadlib(mainRow));
+  el.textContent = el.getAttribute('data-text') || '';
+  el.removeAttribute('data-typed');
+  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+}
 
   // table of counts
   el = document.querySelector('[data-var="brand-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
 
   // section3-contentious-madlib
-  el = document.querySelector('[data-var="section3-contentious-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildSection4Madlib(mainRow));
-    el.textContent = '';
-    el.removeAttribute('data-typed');
-  }
+el = document.querySelector('[data-var="section3-contentious-madlib"]');
+if (el) {
+  el.setAttribute('data-text', buildSection4Madlib(mainRow));
+  el.textContent = el.getAttribute('data-text') || '';
+  el.removeAttribute('data-typed');
+  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+}
+
 
   // preview image (lazy)
   el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
@@ -658,25 +661,27 @@ function paintSection3(mainRow, sdfRow) {
   el = document.querySelector('[data-var="sport-1-sec3-name"]');
   if (el) el.textContent = sdfRow["data-one"] || "";
 
-  // section3-sport-madlib
-  el = document.querySelector('[data-var="section3-sport-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
-    el.textContent = '';
-    el.removeAttribute('data-typed');
-  }
+// section3-sport-madlib
+el = document.querySelector('[data-var="section3-sport-madlib"]');
+if (el) {
+  el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
+  el.textContent = el.getAttribute('data-text') || '';
+  el.removeAttribute('data-typed');
+  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+}
 
   // sport counts table
   el = document.querySelector('[data-var="sport-1-sec3-counts"]');
   if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
 
-  // section3-sport-contentious-madlib
-  el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
-  if (el) {
-    el.setAttribute('data-text', buildSection4Madlib(sdfRow));
-    el.textContent = '';
-    el.removeAttribute('data-typed');
-  }
+// section3-sport-contentious-madlib
+el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
+if (el) {
+  el.setAttribute('data-text', buildSection4Madlib(sdfRow));
+  el.textContent = el.getAttribute('data-text') || '';
+  el.removeAttribute('data-typed');
+  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+}
 
   // sport preview image (lazy)
   el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
@@ -734,17 +739,17 @@ function paintSectionK(mainRow, sdfRows) {
   const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
   if (!madlibEl) return;
 
-  madlibEl.setAttribute('data-text', text);
-  madlibEl.textContent = '';
+madlibEl.setAttribute('data-text', text);
+  madlibEl.textContent = text;
   madlibEl.removeAttribute('data-typed');
+  // new Typed(madlibEl, { strings: [text], typeSpeed: 26, showCursor: false });
 
   // Kick off Typed.js
-  new Typed(madlibEl, {
-    strings: [text],
-    typeSpeed: 26,
-    showCursor: false
-  });
-}
+  // new Typed(madlibEl, {
+  //   strings: [text],
+  //   typeSpeed: 26,
+  //   showCursor: false
+  // });
 
 function getConsumerTypeTag(type) {
   if (!type) return "";
@@ -1048,18 +1053,15 @@ function buildSection4Madlib(mainRow) {
 
 function runTypedForMadlib(dataVar) {
   const el = document.querySelector(`[data-var="${dataVar}"]`);
-  if (!el || el.getAttribute("data-typed") === "true") return;
+  if (!el /*|| el.getAttribute("data-typed") === "true"*/) return;
   const str = el.getAttribute("data-text");
   if (!str) return;
 
-  el.textContent = '';
+  el.textContent = str;
   el.setAttribute("data-typed", "true");
-  new Typed(el, {
-    strings: [str],
-    typeSpeed: 24,
-    showCursor: false
-  });
+  // new Typed(el, { strings: [str], typeSpeed: 24, showCursor: false });
 }
+
 
 function lazyLoadCompareSections(mainRow, sdfRow) {
   const observerOptions = {
