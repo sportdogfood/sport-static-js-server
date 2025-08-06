@@ -750,6 +750,7 @@ madlibEl.setAttribute('data-text', text);
   //   typeSpeed: 26,
   //   showCursor: false
   // });
+}
 
 function getConsumerTypeTag(type) {
   if (!type) return "";
