@@ -977,7 +977,8 @@ function lazyLoadCompareSections(mainRow, sdfRow) {
 
 export function renderComparePage() {
   const mainFive = document.getElementById('item-faq-five')?.value?.trim();
-  const mainRow  = CI_DATA.find(r => r['data-five'] === mainFive);
+  // FIX: compare as strings to avoid type mismatches
+  const mainRow  = CI_DATA.find(r => String(r['data-five']) === String(mainFive));
 
   if (!mainRow) {
     console.error('[CCI] No mainRow for', mainFive);
@@ -1003,10 +1004,15 @@ export function renderComparePage() {
     ING_SUPP
   };
 
-  // 4. Lazy-load painting on scroll
+  // NEW: paint sticky header immediately
+  if (typeof renderStickyCompareHeader === 'function') {
+    renderStickyCompareHeader(mainRow, initialRow);
+  }
+
+  // 4) Lazy-load the main sections on scroll
   lazyLoadCompareSections(mainRow, initialRow);
 
-  // 5. Wire up the buttons
+  // 5) Wire up the buttons
   function setupSdfSwitcher(activeId) {
     const controls = Array.from(
       document.querySelectorAll('.pwr-ci-button-row [data-var]')
@@ -1035,6 +1041,13 @@ export function renderComparePage() {
         // 2) Lookup & paint
         const newRow = getCiRow(newId);
         window.CCI.sdfRow = newRow;
+
+        // NEW: update sticky header on switch
+        if (typeof renderStickyCompareHeader === 'function') {
+          renderStickyCompareHeader(mainRow, newRow);
+        }
+
+        // Repaint sections with new SDF selection
         paintSection1(mainRow, newRow);
         paintSection2(mainRow, newRow);
         paintSection3(mainRow, newRow);
@@ -1068,8 +1081,6 @@ export function renderComparePage() {
     });
   }
 
-  // 6. Finally, kick off the switcher
+  // 6) Finally, kick off the switcher
   setupSdfSwitcher(initialId);
 }
-
-
