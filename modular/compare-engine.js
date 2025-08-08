@@ -270,184 +270,30 @@ function showInnerByValue(container, value, map) {
   }
 }
 
+
 function paintSection1(mainRow, sdfRow) {
-  // ---- ICON MAPS ----
-// ---- ICON MAPS ----
-const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
+  const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
 
-const ICONS = {
-  // Diet
-  "grain-free": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash"></div>
-        <img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg"
-             class="icon-grain_free"
-             alt="Grain Free">
-      </div>
-      <div class="icon-label"><div>Grain Free</div></div>
-    </div>
-  `,
-  "grain-inclusive": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash no-slash"></div>
-        <img src="${CDN}/688e4f97f058589e135de78d_grain-sm.svg"
-             class="icon-grain_in"
-             alt="Grain Inclusive">
-      </div>
-      <div class="icon-label"><div>Grain Inclusive</div></div>
-    </div>
-  `,
+  // === Helpers to format values ===
+  const dietText = v =>
+    /free/i.test(v) ? 'Grain Free' : /grain/i.test(v) ? 'Grain Inclusive' : '—';
+  const legumesText = v =>
+    /(free|no)/i.test(v) ? 'Legume-Free' : /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
+  const poultryText = v =>
+    /(free|no)/i.test(v) ? 'Poultry-Free' : /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
+  const flavorText = v =>
+    /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
+    /\bbeef\b/i.test(v) ? 'Beef' :
+    /\bfish|salmon\b/i.test(v) ? 'Fish' :
+    /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
+    /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  // Legumes
-  "legumes-free": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash"></div>
-        <img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg"
-             class="icon-legumes-free"
-             alt="Legume Free">
-      </div>
-      <div class="icon-label"><div>Legume Free</div></div>
-    </div>
-  `,
-  "contains-legumes": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash no-slash"></div>
-        <img src="${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg"
-             class="icon-legumes"
-             alt="Contains Legumes">
-      </div>
-      <div class="icon-label"><div>Contains Legumes</div></div>
-    </div>
-  `,
+  const setDelta = (a, b) => {
+    if (a === b) return { text: 'Match', cls: '' };
+    return { text: 'Different', cls: '' };
+  };
 
-  // Poultry
-  "poultry-free": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash"></div>
-        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
-             class="icon-poultry-free"
-             alt="Poultry Free">
-      </div>
-      <div class="icon-label"><div>Poultry Free</div></div>
-    </div>
-  `,
-  "contains-poultry": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <div class="slash no-slash"></div>
-        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
-             class="icon-poultry"
-             alt="Contains Poultry">
-      </div>
-      <div class="icon-label"><div>Contains Poultry</div></div>
-    </div>
-  `,
-
-  // Flavors
-  "flavor-poultry": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <img src="${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg"
-             class="icon-flavor-poultry"
-             alt="Poultry Flavor">
-      </div>
-      <div class="icon-label"><div>Poultry Flavor</div></div>
-    </div>
-  `,
-  "flavor-beef": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg"
-             class="icon-flavor-beef"
-             alt="Beef Flavor">
-      </div>
-      <div class="icon-label"><div>Beef Flavor</div></div>
-    </div>
-  `,
-  "flavor-meat": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <img src="${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg"
-             class="icon-flavor-meat"
-             alt="Meat Flavor">
-      </div>
-      <div class="icon-label"><div>Meat Flavor</div></div>
-    </div>
-  `,
-  "flavor-fish": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <img src="${CDN}/688c1f5e4633f104d7ea1658_Untitled%20(6%20x%206%20in)%20(70%20x%2070%20px).svg"
-             class="icon-flavor-fish"
-             alt="Fish Flavor">
-      </div>
-      <div class="icon-label"><div>Fish Flavor</div></div>
-    </div>
-  `,
-  "flavor-buffalo": `
-    <div class="pwr-ci-row">
-      <div class="icon-wrapper">
-        <img src="${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg"
-             class="icon-flavor-buffalo"
-             alt="Buffalo Flavor">
-      </div>
-      <div class="icon-label"><div>Buffalo Flavor</div></div>
-    </div>
-  `
-};
-
-
-  // --- Icon selector helpers ---
-  function getGrainIcon(val) {
-    const v = (val || "").toLowerCase();
-    if (v.includes("free")) return ICONS["grain-free"];
-    if (v.includes("grain")) return ICONS["grain-inclusive"];
-    return "";
-  }
-  function getLegumeIcon(val) {
-    const v = (val || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return ICONS["legumes-free"];
-    if (v.includes("legume") || v.includes("pea")) return ICONS["contains-legumes"];
-    return "";
-  }
-  function getPoultryIcon(val) {
-    const v = (val || "").toLowerCase();
-    if (v.includes("free") || v.includes("no")) return ICONS["poultry-free"];
-    if (v.includes("poultry")) return ICONS["contains-poultry"];
-    return "";
-  }
-  function getFlavorIcon(val) {
-    const v = (val || "").toLowerCase();
-    if (v.includes("poultry") || v.includes("chicken")) return ICONS["flavor-poultry"];
-    if (v.includes("beef")) return ICONS["flavor-beef"];
-    if (v.includes("meat")) return ICONS["flavor-meat"];
-    if (v.includes("fish") || v.includes("salmon")) return ICONS["flavor-fish"];
-    if (v.includes("buffalo") || v.includes("bison")) return ICONS["flavor-buffalo"];
-    return "";
-  }
-
-  // --- Render "this-mark" (Typed.js or fallback) ---
-  const thisMarkValue = mainRow["this-mark"];
-  const thisMarkEl = document.querySelector('[data-var="brand-1-thismark"]');
-  if (thisMarkValue && window.Typed && thisMarkEl) {
-    thisMarkEl.setAttribute('data-text', thisMarkValue);
-    thisMarkEl.textContent = '';
-    thisMarkEl.removeAttribute('data-typed');
-  // new Typed(thisMarkEl, {
-  //   strings: [thisMarkValue],
-  //   typeSpeed: 24,
-  //   showCursor: false
-  // });
-  } else if (thisMarkEl) {
-    thisMarkEl.textContent = thisMarkValue || '';
-  }
-
-  // Header & subtitle
+  // === Inject header/subtitle ===
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
 
@@ -460,90 +306,73 @@ const ICONS = {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // Phrase helpers
-  function getGrainPhrase(row) {
-    const g = (row["data-diet"] || row["data-grain"] || "").toLowerCase();
-    if (g.includes("free")) return "grain-free";
-    if (g.includes("grain")) return "grain-inclusive";
-    return "grain-inclusive";
-  }
-  function getMeatPhrase(row) {
-    const f = (row["specs_primary_flavor"] || "").toLowerCase();
-    return ["chicken", "beef", "fish", "meat"].some(w => f.includes(w))
-      ? "meat-based"
-      : "animal-based";
-  }
-  // Assuming buildLegumePoultryPhrase is defined elsewhere
+  // === Overlay layout markup ===
+  const container = document.querySelector('#section-1 .cmp1-rows');
+  if (container) {
+    container.innerHTML = `
+      <div class="cmp1-row" data-key="diet">
+        <div class="cmp1-label">Diet</div>
+        <div class="cmp1-values">
+          <span class="cmp1-badge brand">${dietText(mainRow["data-diet"] || mainRow["data-grain"] || '')}</span>
+          <span class="cmp1-badge sport">${dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')}</span>
+        </div>
+        <div class="cmp1-delta">${setDelta(
+          dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
+          dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')
+        ).text}</div>
+      </div>
 
-  // Build madlib
-  const mainBrand = mainRow["data-brand"] || "Brand";
-  const mainName = mainRow["data-one"] || "Product";
-  const sdfName = sdfRow["data-one"] || "Sport Dog Food";
+      <div class="cmp1-row" data-key="legumes">
+        <div class="cmp1-label">Legumes</div>
+        <div class="cmp1-values">
+          <span class="cmp1-badge brand">${legumesText(mainRow["data-legumes"] || '')}</span>
+          <span class="cmp1-badge sport">${legumesText(sdfRow["data-legumes"] || '')}</span>
+        </div>
+        <div class="cmp1-delta">${setDelta(
+          legumesText(mainRow["data-legumes"] || ''),
+          legumesText(sdfRow["data-legumes"] || '')
+        ).text}</div>
+      </div>
+
+      <div class="cmp1-row" data-key="poultry">
+        <div class="cmp1-label">Poultry</div>
+        <div class="cmp1-values">
+          <span class="cmp1-badge brand">${poultryText(mainRow["data-poultry"] || '')}</span>
+          <span class="cmp1-badge sport">${poultryText(sdfRow["data-poultry"] || '')}</span>
+        </div>
+        <div class="cmp1-delta">${setDelta(
+          poultryText(mainRow["data-poultry"] || ''),
+          poultryText(sdfRow["data-poultry"] || '')
+        ).text}</div>
+      </div>
+
+      <div class="cmp1-row" data-key="flavor">
+        <div class="cmp1-label">Primary Protein</div>
+        <div class="cmp1-values">
+          <span class="cmp1-badge brand">${flavorText(mainRow["specs_primary_flavor"] || '')}</span>
+          <span class="cmp1-badge sport">${flavorText(sdfRow["specs_primary_flavor"] || '')}</span>
+        </div>
+        <div class="cmp1-delta">${setDelta(
+          flavorText(mainRow["specs_primary_flavor"] || ''),
+          flavorText(sdfRow["specs_primary_flavor"] || '')
+        ).text}</div>
+      </div>
+    `;
+  }
+
+  // === Madlib ===
   const mainSpec = buildLegumePoultryPhrase(mainRow);
   const sdfSpec = buildLegumePoultryPhrase(sdfRow);
-
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
   if (madlibEl) {
     madlibEl.innerHTML =
       `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> is a ` +
-      `<span class="span-compare-specs">${getGrainPhrase(mainRow)}, ${getMeatPhrase(mainRow)} formula</span> that’s ` +
+      `<span class="span-compare-specs">${dietText(mainRow["data-diet"] || mainRow["data-grain"] || '')}, ${flavorText(mainRow["specs_primary_flavor"] || '')} formula</span> that’s ` +
       `<span class="span-compare-specs">${mainSpec}</span>.<br>` +
-      `<span class="span-sport-name">${sdfName}</span> is a ` +
-      `<span class="span-sport-specs">${getGrainPhrase(sdfRow)}, ${getMeatPhrase(sdfRow)} diet</span> that’s ` +
+      `<span class="span-sport-name">${sdfRow["data-one"]}</span> is a ` +
+      `<span class="span-sport-specs">${dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')}, ${flavorText(sdfRow["specs_primary_flavor"] || '')} diet</span> that’s ` +
       `<span class="highlight">${sdfSpec}</span>.`;
-    madlibEl.removeAttribute('data-text');
-    madlibEl.removeAttribute('data-typed');
   }
-
-  // Set brand/name/preview text and lazy-load images
-  let el = document.querySelector('[data-var="brand-1-name"]');
-  if (el) el.textContent = mainName;
-
-  el = document.querySelector('[data-var="brand-1-brand"]');
-  if (el) el.textContent = mainBrand;
-
-  el = document.querySelector('[data-var="brand-1-previewimg"]');
-  if (el && mainRow.previewengine) {
-    setLazyBackground(el, mainRow.previewengine);
-  }
-
-  el = document.querySelector('[data-var="sport-1-name"]');
-  if (el) el.textContent = sdfName;
-
-  el = document.querySelector('[data-var="sport-1-brand"]');
-  if (el) el.textContent = "Sport Dog Food";
-
-  el = document.querySelector('[data-var="sport-1-previewimg"]');
-  if (el && sdfRow.previewengine) {
-    setLazyBackground(el, sdfRow.previewengine);
-  }
-
-  // ----- ICON RENDERING INSTEAD OF TOGGLING -----
-  // BRAND-1
-  el = document.querySelector('[data-var="brand-1-diet"]');
-  if (el) el.innerHTML = getGrainIcon(mainRow["data-diet"] || mainRow["data-grain"]);
-
-  el = document.querySelector('[data-var="brand-1-legumesfree"]');
-  if (el) el.innerHTML = getLegumeIcon(mainRow["data-legumes"]);
-
-  el = document.querySelector('[data-var="brand-1-poultryfree"]');
-  if (el) el.innerHTML = getPoultryIcon(mainRow["data-poultry"]);
-
-  el = document.querySelector('[data-var="brand-1-flavor"]');
-  if (el) el.innerHTML = getFlavorIcon(mainRow["specs_primary_flavor"]);
-
-  // SPORT-1
-  el = document.querySelector('[data-var="sport-1-diet"]');
-  if (el) el.innerHTML = getGrainIcon(sdfRow["data-diet"] || sdfRow["data-grain"]);
-
-  el = document.querySelector('[data-var="sport-1-legumesfree"]');
-  if (el) el.innerHTML = getLegumeIcon(sdfRow["data-legumes"]);
-
-  el = document.querySelector('[data-var="sport-1-poultryfree"]');
-  if (el) el.innerHTML = getPoultryIcon(sdfRow["data-poultry"]);
-
-  el = document.querySelector('[data-var="sport-1-flavor"]');
-  if (el) el.innerHTML = getFlavorIcon(sdfRow["specs_primary_flavor"]);
 }
 
 
