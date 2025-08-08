@@ -274,7 +274,18 @@ function showInnerByValue(container, value, map) {
 function paintSection1(mainRow, sdfRow) {
   const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
 
-  // === Helpers to format values ===
+  // (Keep header/subtitle wiring, or strip—your call)
+  const headerEl = document.querySelector('[data-var="section1-header"]');
+  if (headerEl) headerEl.textContent = "Nutrition Profile";
+  const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
+  if (subtitleEl) {
+    subtitleEl.innerHTML =
+      `<span class="span-compare">Comparing</span><br>` +
+      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
+      `<img src="${CDN}/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
+      `Sport Dog Food ${sdfRow["data-one"]}`;
+  }
+
   const dietText = v =>
     /free/i.test(v) ? 'Grain Free' : /grain/i.test(v) ? 'Grain Inclusive' : '—';
   const legumesText = v =>
@@ -288,15 +299,96 @@ function paintSection1(mainRow, sdfRow) {
     /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  const setDelta = (a, b) => {
-    if (a === b) return { text: 'Match', cls: '' };
-    return { text: 'Different', cls: '' };
-  };
+  const setDelta = (a, b) => a === b ? {text:'Match'} : {text:'Different'};
 
-  // === Inject header/subtitle ===
+  const root = document.querySelector('#section-1 .cmp1-rows');
+  if (!root) return;
+
+  const rows = [
+    {
+      key:'diet', label:'Diet',
+      brand: dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
+      sport: dietText(sdfRow["data-diet"]  || sdfRow["data-grain"]  || '')
+    },
+    {
+      key:'legumes', label:'Legumes',
+      brand: legumesText(mainRow["data-legumes"] || ''),
+      sport: legumesText(sdfRow["data-legumes"]  || '')
+    },
+    {
+      key:'poultry', label:'Poultry',
+      brand: poultryText(mainRow["data-poultry"] || ''),
+      sport: poultryText(sdfRow["data-poultry"]  || '')
+    },
+    {
+      key:'flavor', label:'Primary Protein',
+      brand: flavorText(mainRow["specs_primary_flavor"] || ''),
+      sport: flavorText(sdfRow["specs_primary_flavor"]  || '')
+    }
+  ];
+
+  root.innerHTML = rows.map(r => `
+    <div class="cmp1-row" data-key="${r.key}">
+      <div class="cmp1-label">${r.label}</div>
+      <div class="cmp1-values">
+        <span class="cmp1-badge brand">${r.brand}</span>
+        <span class="cmp1-badge sport">${r.sport}</span>
+      </div>
+      <div class="cmp1-delta">${setDelta(r.brand, r.sport).text}</div>
+    </div>
+  `).join('');
+}
+
+function renderStickyCompareHeader(mainRow, sdfRow) {
+  const root = document.getElementById('compare-sticky');
+  if (!root) return;
+
+  // Inject structure once
+  if (!root.querySelector('.cmp-head')) {
+    root.innerHTML = `
+      <div class="cmp-head">
+        <div class="cmp-head-col brand">
+          <div class="cmp-head-img lazy-bg" data-var="compare-1-preview"></div>
+          <div class="cmp-head-meta">
+            <div class="cmp-head-brand" data-var="compare-1-brand"></div>
+            <div class="cmp-head-name"  data-var="compare-1-name"></div>
+          </div>
+        </div>
+        <div class="cmp-head-col sport">
+          <div class="cmp-head-img lazy-bg" data-var="sport-1-previewimg"></div>
+          <div class="cmp-head-meta">
+            <div class="cmp-head-brand" data-var="sport-1-brand"></div>
+            <div class="cmp-head-name"  data-var="sport-1-name"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Fill text
+  const set = (sel, v) => {
+    const el = root.querySelector(`[data-var="${sel}"]`);
+    if (el) el.textContent = v || '';
+  };
+  set('compare-1-brand', mainRow['data-brand']);
+  set('compare-1-name',  mainRow['data-one']);
+  set('sport-1-brand',   'Sport Dog Food');
+  set('sport-1-name',    sdfRow['data-one']);
+
+  // Lazy images (reuse your helper)
+  const bImg = root.querySelector('[data-var="compare-1-preview"]');
+  const sImg = root.querySelector('[data-var="sport-1-previewimg"]');
+  if (bImg && mainRow.previewengine) setLazyBackground(bImg, mainRow.previewengine);
+  if (sImg && sdfRow.previewengine)  setLazyBackground(sImg,  sdfRow.previewengine);
+}
+
+
+function paintSection1(mainRow, sdfRow) {
+  const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
+
+  // (Keep header/subtitle wiring, or strip—your call)
   const headerEl = document.querySelector('[data-var="section1-header"]');
   if (headerEl) headerEl.textContent = "Nutrition Profile";
-
   const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
   if (subtitleEl) {
     subtitleEl.innerHTML =
@@ -306,187 +398,58 @@ function paintSection1(mainRow, sdfRow) {
       `Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // === Overlay layout markup ===
-  const container = document.querySelector('#section-1 .cmp1-rows');
-  if (container) {
-    container.innerHTML = `
-      <div class="cmp1-row" data-key="diet">
-        <div class="cmp1-label">Diet</div>
-        <div class="cmp1-values">
-          <span class="cmp1-badge brand">${dietText(mainRow["data-diet"] || mainRow["data-grain"] || '')}</span>
-          <span class="cmp1-badge sport">${dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')}</span>
-        </div>
-        <div class="cmp1-delta">${setDelta(
-          dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
-          dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')
-        ).text}</div>
-      </div>
+  const dietText = v =>
+    /free/i.test(v) ? 'Grain Free' : /grain/i.test(v) ? 'Grain Inclusive' : '—';
+  const legumesText = v =>
+    /(free|no)/i.test(v) ? 'Legume-Free' : /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
+  const poultryText = v =>
+    /(free|no)/i.test(v) ? 'Poultry-Free' : /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
+  const flavorText = v =>
+    /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
+    /\bbeef\b/i.test(v) ? 'Beef' :
+    /\bfish|salmon\b/i.test(v) ? 'Fish' :
+    /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
+    /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-      <div class="cmp1-row" data-key="legumes">
-        <div class="cmp1-label">Legumes</div>
-        <div class="cmp1-values">
-          <span class="cmp1-badge brand">${legumesText(mainRow["data-legumes"] || '')}</span>
-          <span class="cmp1-badge sport">${legumesText(sdfRow["data-legumes"] || '')}</span>
-        </div>
-        <div class="cmp1-delta">${setDelta(
-          legumesText(mainRow["data-legumes"] || ''),
-          legumesText(sdfRow["data-legumes"] || '')
-        ).text}</div>
-      </div>
+  const setDelta = (a, b) => a === b ? {text:'Match'} : {text:'Different'};
 
-      <div class="cmp1-row" data-key="poultry">
-        <div class="cmp1-label">Poultry</div>
-        <div class="cmp1-values">
-          <span class="cmp1-badge brand">${poultryText(mainRow["data-poultry"] || '')}</span>
-          <span class="cmp1-badge sport">${poultryText(sdfRow["data-poultry"] || '')}</span>
-        </div>
-        <div class="cmp1-delta">${setDelta(
-          poultryText(mainRow["data-poultry"] || ''),
-          poultryText(sdfRow["data-poultry"] || '')
-        ).text}</div>
-      </div>
+  const root = document.querySelector('#section-1 .cmp1-rows');
+  if (!root) return;
 
-      <div class="cmp1-row" data-key="flavor">
-        <div class="cmp1-label">Primary Protein</div>
-        <div class="cmp1-values">
-          <span class="cmp1-badge brand">${flavorText(mainRow["specs_primary_flavor"] || '')}</span>
-          <span class="cmp1-badge sport">${flavorText(sdfRow["specs_primary_flavor"] || '')}</span>
-        </div>
-        <div class="cmp1-delta">${setDelta(
-          flavorText(mainRow["specs_primary_flavor"] || ''),
-          flavorText(sdfRow["specs_primary_flavor"] || '')
-        ).text}</div>
-      </div>
-    `;
-  }
-
-  // === Madlib ===
-  const mainSpec = buildLegumePoultryPhrase(mainRow);
-  const sdfSpec = buildLegumePoultryPhrase(sdfRow);
-  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) {
-    madlibEl.innerHTML =
-      `<span class="span-compare-name">${mainRow["data-brand"]} ${mainRow["data-one"]}</span> is a ` +
-      `<span class="span-compare-specs">${dietText(mainRow["data-diet"] || mainRow["data-grain"] || '')}, ${flavorText(mainRow["specs_primary_flavor"] || '')} formula</span> that’s ` +
-      `<span class="span-compare-specs">${mainSpec}</span>.<br>` +
-      `<span class="span-sport-name">${sdfRow["data-one"]}</span> is a ` +
-      `<span class="span-sport-specs">${dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || '')}, ${flavorText(sdfRow["specs_primary_flavor"] || '')} diet</span> that’s ` +
-      `<span class="highlight">${sdfSpec}</span>.`;
-  }
-}
-
-
-function paintSection2(mainRow, sdfRow) {
-  // (Optional) Keep your existing header/subtitle for now
-  const headerEl = document.querySelector('[data-var="section2-header"]');
-  if (headerEl) headerEl.textContent = "Performance Essentials";
-  const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
-  if (subtitleEl) {
-    subtitleEl.textContent =
-      `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
-  }
-
-  // Find or create the wrapper inside #section-2
-  const sec2 = document.getElementById('section-2') || document.querySelector('#section-2');
-  if (!sec2) return;
-  let wrap = sec2.querySelector('.cmp2-rows');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.className = 'cmp2-rows';
-    sec2.appendChild(wrap);
-  }
-
-  // Helpers
-  const toNum = v => {
-    if (v == null) return null;
-    const n = Number(String(v).replace(/[^\d.]/g, ''));
-    return Number.isFinite(n) ? n : null;
-  };
-  const diffObj = (brandVal, sportVal, unit = '') => {
-    const b = toNum(brandVal), s = toNum(sportVal);
-    if (b == null || s == null) return { match: false, diffTxt: '—', badge: 'Different' };
-    const d  = s - b;
-    const pd = b !== 0 ? (d / b) * 100 : null;
-    const sign = d > 0 ? '+' : d < 0 ? '' : '';
-    const pct  = pd == null ? '' : ` (${sign}${Math.round(pd)}%)`;
-    return { match: d === 0, diffTxt: `${sign}${d}${unit}${pct}`, badge: d === 0 ? 'Match' : 'Different' };
-  };
-  // Visual ceilings (tweak as needed)
-  const MAX = { protein: 40, fat: 30, kcals: 600, kcalskg: 4500 };
-  const clampPct = (v, m) => {
-    const n = toNum(v) ?? 0;
-    return Math.max(2, Math.min(100, Math.round((n / m) * 100)));
-  };
-
-  const fields = {
-    protein: { label: 'Crude Protein', unit: '%', brand: mainRow['ga_crude_protein_%'], sport: sdfRow['ga_crude_protein_%'] },
-    fat:     { label: 'Crude Fat',     unit: '%', brand: mainRow['ga_crude_fat_%'],     sport: sdfRow['ga_crude_fat_%']     },
-    kcals:   { label: 'Kcals / Cup',   unit: '',  brand: mainRow['ga_kcals_per_cup'],   sport: sdfRow['ga_kcals_per_cup']   },
-    kcalskg: { label: 'Kcals / Kg',    unit: '',  brand: mainRow['ga_kcals_per_kg'],    sport: sdfRow['ga_kcals_per_kg']    }
-  };
-
-  // Inject markup (first run)
-  if (!wrap.children.length) {
-    wrap.innerHTML = Object.entries(fields).map(([key, meta]) => `
-      <div class="cmp2-row" data-key="${key}">
-        <div class="cmp2-label">${meta.label}</div>
-        <div class="cmp2-values">
-          <span class="cmp2-badge brand" data-var="brand-1-${key}"></span>
-          <span class="cmp2-badge sport" data-var="sport-1-${key}"></span>
-        </div>
-        <div class="cmp2-diff"  data-var="${key}-diff"></div>
-        <div class="cmp2-delta" data-var="${key}-delta"></div>
-
-        <!-- Per-row overlay bar -->
-        <div class="cmp2-bar">
-          <div class="cmp2-track" role="img" aria-label="${meta.label} comparison">
-            <div class="cmp2-fill brand"></div>
-            <div class="cmp2-fill sport"></div>
-            <div class="cmp2-ticks"></div>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  // Fill values + diffs + per-row bar widths
-  Object.entries(fields).forEach(([key, meta]) => {
-    const row = wrap.querySelector(`.cmp2-row[data-key="${key}"]`);
-    if (!row) return;
-
-    const bEl = row.querySelector(`[data-var="brand-1-${key}"]`);
-    const sEl = row.querySelector(`[data-var="sport-1-${key}"]`);
-    const dEl = row.querySelector(`[data-var="${key}-diff"]`);
-    const tEl = row.querySelector(`[data-var="${key}-delta"]`);
-    if (bEl) bEl.textContent = (meta.brand ?? '') === '' ? '—' : `${meta.brand}${meta.unit}`;
-    if (sEl) sEl.textContent = (meta.sport ?? '') === '' ? '—' : `${meta.sport}${meta.unit}`;
-
-    const d = diffObj(meta.brand, meta.sport, meta.unit);
-    if (dEl) dEl.textContent = d.diffTxt;
-    if (tEl) {
-      tEl.textContent = d.badge;
-      tEl.classList.toggle('match', d.match);
-      tEl.classList.toggle('diff', !d.match);
+  const rows = [
+    {
+      key:'diet', label:'Diet',
+      brand: dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
+      sport: dietText(sdfRow["data-diet"]  || sdfRow["data-grain"]  || '')
+    },
+    {
+      key:'legumes', label:'Legumes',
+      brand: legumesText(mainRow["data-legumes"] || ''),
+      sport: legumesText(sdfRow["data-legumes"]  || '')
+    },
+    {
+      key:'poultry', label:'Poultry',
+      brand: poultryText(mainRow["data-poultry"] || ''),
+      sport: poultryText(sdfRow["data-poultry"]  || '')
+    },
+    {
+      key:'flavor', label:'Primary Protein',
+      brand: flavorText(mainRow["specs_primary_flavor"] || ''),
+      sport: flavorText(sdfRow["specs_primary_flavor"]  || '')
     }
+  ];
 
-    // Bars (brand vs sport) for this row only
-    const max = MAX[key] ?? 100;
-    const fBrand = row.querySelector('.cmp2-fill.brand');
-    const fSport = row.querySelector('.cmp2-fill.sport');
-    if (fBrand) fBrand.style.width = `${clampPct(meta.brand, max)}%`;
-    if (fSport) fSport.style.width = `${clampPct(meta.sport, max)}%`;
-
-    const track = row.querySelector('.cmp2-track');
-    if (track) {
-      const bNum = toNum(meta.brand);
-      const sNum = toNum(meta.sport);
-      const unitTxt = meta.unit || (key.startsWith('kcals') ? ' kcals' : '');
-      track.setAttribute('aria-label',
-        `${meta.label}: Brand ${bNum ?? '—'}${unitTxt}; Sport ${sNum ?? '—'}${unitTxt}`);
-    }
-  });
+  root.innerHTML = rows.map(r => `
+    <div class="cmp1-row" data-key="${r.key}">
+      <div class="cmp1-label">${r.label}</div>
+      <div class="cmp1-values">
+        <span class="cmp1-badge brand">${r.brand}</span>
+        <span class="cmp1-badge sport">${r.sport}</span>
+      </div>
+      <div class="cmp1-delta">${setDelta(r.brand, r.sport).text}</div>
+    </div>
+  `).join('');
 }
-
 
 
 
