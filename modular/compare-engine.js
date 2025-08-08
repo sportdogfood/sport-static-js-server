@@ -377,67 +377,114 @@ function paintSection1(mainRow, sdfRow) {
 
 
 function paintSection2(mainRow, sdfRow) {
-  // — Section header & subtitle —
+  // (Optional) Keep your existing header/subtitle for now
   const headerEl = document.querySelector('[data-var="section2-header"]');
   if (headerEl) headerEl.textContent = "Performance Essentials";
-
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) {
     subtitleEl.textContent =
       `Protein, fat, and calorie details for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
   }
 
-  // —  madlib —
-  const madlibEl = document.querySelector('[data-var="section2-madlib"]');
-  if (madlibEl) {
-    madlibEl.setAttribute(
-      'data-text',
-      `${mainRow["data-brand"]} ${mainRow["data-one"]} provides ` +
-      `${mainRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-      `${mainRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-      `${mainRow["ga_kcals_per_cup"]    || "?"} kcals/cup. ` +
-      `Sport Dog Food ${sdfRow["data-one"]} provides ` +
-      `${sdfRow["ga_crude_protein_%"]  || "?"}% protein, ` +
-      `${sdfRow["ga_crude_fat_%"]      || "?"}% fat, and ` +
-      `${sdfRow["ga_kcals_per_cup"]    || "?"} kcals/cup for comparison.`
-    );
-    madlibEl.textContent = madlibEl.getAttribute('data-text') || '';
-  madlibEl.removeAttribute('data-typed');
-  // new Typed(madlibEl, { strings: [madlibEl.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
-}
-  // — Lazy-load preview images —
-  let el = document.querySelector('[data-var="brand-1-sec2-previewimg"]');
-  setLazyBackground(el, mainRow.previewengine);
+  // Find or create the wrapper inside #section-2
+  const sec2 = document.getElementById('section-2') || document.querySelector('#section-2');
+  if (!sec2) return;
+  let wrap = sec2.querySelector('.cmp2-rows');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'cmp2-rows';
+    sec2.appendChild(wrap);
+  }
 
-  el = document.querySelector('[data-var="sport-1-sec2-previewimg"]');
-  setLazyBackground(el, sdfRow.previewengine);
+  // Helpers
+  const toNum = v => {
+    if (v == null) return null;
+    const n = Number(String(v).replace(/[^\d.]/g, ''));
+    return Number.isFinite(n) ? n : null;
+  };
+  const diffObj = (brandVal, sportVal, unit = '') => {
+    const b = toNum(brandVal), s = toNum(sportVal);
+    if (b == null || s == null) return { match: false, diffTxt: '—', badge: 'Different' };
+    const d  = s - b;
+    const pd = b !== 0 ? (d / b) * 100 : null;
+    const sign = d > 0 ? '+' : d < 0 ? '' : '';
+    const pct  = pd == null ? '' : ` (${sign}${Math.round(pd)}%)`;
+    return { match: d === 0, diffTxt: `${sign}${d}${unit}${pct}`, badge: d === 0 ? 'Match' : 'Different' };
+  };
+  // Visual ceilings (tweak as needed)
+  const MAX = { protein: 40, fat: 30, kcals: 600, kcalskg: 4500 };
+  const clampPct = (v, m) => {
+    const n = toNum(v) ?? 0;
+    return Math.max(2, Math.min(100, Math.round((n / m) * 100)));
+  };
 
-  // — Numeric specs for mainRow —
-  el = document.querySelector('[data-var="brand-1-sec2-name"]');
-  if (el) el.textContent = mainRow["data-one"] || "";
-  el = document.querySelector('[data-var="brand-1-protein"]');
-  if (el) el.textContent = mainRow["ga_crude_protein_%"] || "";
-  el = document.querySelector('[data-var="brand-1-fat"]');
-  if (el) el.textContent = mainRow["ga_crude_fat_%"] || "";
-  el = document.querySelector('[data-var="brand-1-kcalscup"]');
-  if (el) el.textContent = mainRow["ga_kcals_per_cup"] || "";
-  el = document.querySelector('[data-var="brand-1-kcalskg"]');
-  if (el) el.textContent = mainRow["ga_kcals_per_kg"] || "";
+  const fields = {
+    protein: { label: 'Crude Protein', unit: '%', brand: mainRow['ga_crude_protein_%'], sport: sdfRow['ga_crude_protein_%'] },
+    fat:     { label: 'Crude Fat',     unit: '%', brand: mainRow['ga_crude_fat_%'],     sport: sdfRow['ga_crude_fat_%']     },
+    kcals:   { label: 'Kcals / Cup',   unit: '',  brand: mainRow['ga_kcals_per_cup'],   sport: sdfRow['ga_kcals_per_cup']   },
+    kcalskg: { label: 'Kcals / Kg',    unit: '',  brand: mainRow['ga_kcals_per_kg'],    sport: sdfRow['ga_kcals_per_kg']    }
+  };
 
-  // — Numeric specs for sdfRow —
-  el = document.querySelector('[data-var="sport-1-sec2-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
-  el = document.querySelector('[data-var="sport-1-protein"]');
-  if (el) el.textContent = sdfRow["ga_crude_protein_%"] || "";
-  el = document.querySelector('[data-var="sport-1-fat"]');
-  if (el) el.textContent = sdfRow["ga_crude_fat_%"] || "";
-  el = document.querySelector('[data-var="sport-1-kcalscup"]');
-  if (el) el.textContent = sdfRow["ga_kcals_per_cup"] || "";
-  el = document.querySelector('[data-var="sport-1-kcalskg"]');
-  if (el) el.textContent = sdfRow["ga_kcals_per_kg"] || "";
+  // Inject markup (first run)
+  if (!wrap.children.length) {
+    wrap.innerHTML = Object.entries(fields).map(([key, meta]) => `
+      <div class="cmp2-row" data-key="${key}">
+        <div class="cmp2-label">${meta.label}</div>
+        <div class="cmp2-values">
+          <span class="cmp2-badge brand" data-var="brand-1-${key}"></span>
+          <span class="cmp2-badge sport" data-var="sport-1-${key}"></span>
+        </div>
+        <div class="cmp2-diff"  data-var="${key}-diff"></div>
+        <div class="cmp2-delta" data-var="${key}-delta"></div>
 
-  // — NEW: render all six nutrient bars —
-  renderNutrientBars(mainRow, sdfRow);
+        <!-- Per-row overlay bar -->
+        <div class="cmp2-bar">
+          <div class="cmp2-track" role="img" aria-label="${meta.label} comparison">
+            <div class="cmp2-fill brand"></div>
+            <div class="cmp2-fill sport"></div>
+            <div class="cmp2-ticks"></div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Fill values + diffs + per-row bar widths
+  Object.entries(fields).forEach(([key, meta]) => {
+    const row = wrap.querySelector(`.cmp2-row[data-key="${key}"]`);
+    if (!row) return;
+
+    const bEl = row.querySelector(`[data-var="brand-1-${key}"]`);
+    const sEl = row.querySelector(`[data-var="sport-1-${key}"]`);
+    const dEl = row.querySelector(`[data-var="${key}-diff"]`);
+    const tEl = row.querySelector(`[data-var="${key}-delta"]`);
+    if (bEl) bEl.textContent = (meta.brand ?? '') === '' ? '—' : `${meta.brand}${meta.unit}`;
+    if (sEl) sEl.textContent = (meta.sport ?? '') === '' ? '—' : `${meta.sport}${meta.unit}`;
+
+    const d = diffObj(meta.brand, meta.sport, meta.unit);
+    if (dEl) dEl.textContent = d.diffTxt;
+    if (tEl) {
+      tEl.textContent = d.badge;
+      tEl.classList.toggle('match', d.match);
+      tEl.classList.toggle('diff', !d.match);
+    }
+
+    // Bars (brand vs sport) for this row only
+    const max = MAX[key] ?? 100;
+    const fBrand = row.querySelector('.cmp2-fill.brand');
+    const fSport = row.querySelector('.cmp2-fill.sport');
+    if (fBrand) fBrand.style.width = `${clampPct(meta.brand, max)}%`;
+    if (fSport) fSport.style.width = `${clampPct(meta.sport, max)}%`;
+
+    const track = row.querySelector('.cmp2-track');
+    if (track) {
+      const bNum = toNum(meta.brand);
+      const sNum = toNum(meta.sport);
+      const unitTxt = meta.unit || (key.startsWith('kcals') ? ' kcals' : '');
+      track.setAttribute('aria-label',
+        `${meta.label}: Brand ${bNum ?? '—'}${unitTxt}; Sport ${sNum ?? '—'}${unitTxt}`);
+    }
+  });
 }
 
 
