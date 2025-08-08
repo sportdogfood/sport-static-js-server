@@ -454,91 +454,149 @@ function paintSection1(mainRow, sdfRow) {
 
 
 function paintSection3(mainRow, sdfRow) {
-  // Headline & subtitle
-  let el = document.querySelector('[data-var="section3-header"]');
-  if (el) el.textContent = "Under the Hood";
+  // ---- Headline & subtitle ----
+  const headerEl = document.querySelector('[data-var="section3-header"]');
+  if (headerEl) headerEl.textContent = "Under the Hood";
+  const subtitleEl = document.querySelector('[data-var="section3-subtitle"]');
+  if (subtitleEl) subtitleEl.textContent = "Let's dig in and see how each ingredient stacks up.";
 
-  el = document.querySelector('[data-var="section3-subtitle"]');
-  if (el) el.textContent = "Let's dig in and see how each ingredient stacks up.";
+  // ---- Root for Section 3 ----
+  const sec3 = document.getElementById('section-3') || document.querySelector('#section-3');
+  if (!sec3) return;
 
-  // Competitor block
-  el = document.querySelector('[data-var="brand-1-sec3-name"]');
-  if (el) el.textContent = mainRow["data-one"] || "";
+  // ---- Build scaffold once ----
+  if (!sec3.querySelector('.cmp3')) {
+    sec3.innerHTML = `
+      <div class="cmp3">
+        <!-- Totals overlay -->
+        <div class="cmp3-rows" id="cmp3-rows"></div>
 
-  // section3-madlib
-el = document.querySelector('[data-var="section3-madlib"]');
-if (el) {
-  el.setAttribute('data-text', buildIngredientMadlib(mainRow));
-  el.textContent = el.getAttribute('data-text') || '';
-  el.removeAttribute('data-typed');
-  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
+        <!-- Actions -->
+        <div class="cmp3-actions">
+          <button class="cmp3-btn" id="open-ing-search">Search ingredients</button>
+          <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false">Swap order (Sport ⇄ Compare)</button>
+        </div>
+
+        <!-- Ingredient lists: compare over sport -->
+        <div class="cmp3-lists" id="cmp3-lists">
+          <div class="ci-list brand" id="cmp3-brand-list">
+            <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
+            <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
+          </div>
+          <div class="ci-list sport" id="cmp3-sport-list">
+            <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
+            <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // ---- Totals overlay rows (compare over sport) ----
+  const rowsRoot = sec3.querySelector('#cmp3-rows');
+  const countsBrand = getIngredientCategoryCounts(mainRow);
+  const countsSport = getIngredientCategoryCounts(sdfRow);
+  const overlayRow = (key, label) => {
+    const b = countsBrand[key] ?? 0;
+    const s = countsSport[key] ?? 0;
+    const diff = s - b;
+    const diffTxt = diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`);
+    const badge = diff === 0 ? 'Match' : 'Different';
+    const badgeCls = diff === 0 ? 'match' : 'diff';
+    return `
+      <div class="cmp3-row" data-key="${key}">
+        <div class="cmp3-label">${label}</div>
+        <div class="cmp3-values">
+          <span class="cmp3-badge brand">${b}</span>
+          <span class="cmp3-badge sport">${s}</span>
+        </div>
+        <div class="cmp3-diff">${diffTxt}</div>
+        <div class="cmp3-delta ${badgeCls}">${badge}</div>
+      </div>
+    `;
+  };
+
+  rowsRoot.innerHTML = [
+    overlayRow('total',       'Total Ingredients'),
+    overlayRow('Protein',     'Protein'),
+    overlayRow('Plants',      'Plants'),
+    overlayRow('Supplemental','Supplemental'),
+    (countsBrand.Other || countsSport.Other) ? overlayRow('Other', 'Other') : ''
+  ].join('');
+
+  // ---- Names above lists ----
+  const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
+  if (brandNameEl) brandNameEl.textContent =
+    mainRow["data-brand"] ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
+                          : (mainRow["data-one"] || "");
+
+  const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
+  if (sportNameEl) sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
+
+  // ---- Ingredient lists ----
+  const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
+  if (brandListEl) brandListEl.innerHTML = renderIngListDivs(mainRow);
+  const sportListEl = sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
+  if (sportListEl) sportListEl.innerHTML = renderIngListDivs(sdfRow);
+
+  // ---- Modal: ensure exists + wire open/close + paint search UI inside ----
+  ensureIngSearchModal();
+  const openBtn = sec3.querySelector('#open-ing-search');
+  if (openBtn && !openBtn._wired) {
+    openBtn._wired = true;
+    openBtn.addEventListener('click', () => {
+      const modal = document.getElementById('ing-search-modal');
+      if (!modal) return;
+      modal.classList.add('open');
+      // Paint the dual ingredient search into the modal’s .pwrf-filter-wrapper
+      paintDualIngredientLists(mainRow, sdfRow);
+    });
+  }
+
+  // ---- Swap order toggle (Sport ⇄ Compare) ----
+  const swapBtn   = sec3.querySelector('#swap-ing-order');
+  const listsWrap = sec3.querySelector('#cmp3-lists');
+  const brandBlock = sec3.querySelector('#cmp3-brand-list');
+  const sportBlock = sec3.querySelector('#cmp3-sport-list');
+
+  if (swapBtn && !swapBtn._wired) {
+    swapBtn._wired = true;
+    swapBtn.addEventListener('click', () => {
+      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
+      swapBtn.setAttribute('aria-pressed', String(!swapped));
+      if (!swapped) {
+        // Move sport above compare
+        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
+      } else {
+        // Move compare back on top
+        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
+      }
+    });
+  }
+} // <-- END paintSection3
+
+function ensureIngSearchModal() {
+  if (document.getElementById('ing-search-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'ing-search-modal';
+  modal.className = 'cmp3-modal';
+  modal.innerHTML = `
+    <div class="cmp3-modal__backdrop" data-close="1"></div>
+    <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
+      <div class="cmp3-modal__head">
+        <h3 id="ing-search-title">Search Ingredients</h3>
+        <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close">×</button>
+      </div>
+      <div class="cmp3-modal__body">
+        <div class="pwrf-filter-wrapper"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', (e) => { if (e.target.dataset.close === '1') modal.classList.remove('open'); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.remove('open'); });
 }
 
-  // table of counts
-  el = document.querySelector('[data-var="brand-1-sec3-counts"]');
-  if (el) el.innerHTML = buildCountsTable(mainRow, `${mainRow["data-brand"]} ${mainRow["data-one"]}`);
-
-  // section3-contentious-madlib
-el = document.querySelector('[data-var="section3-contentious-madlib"]');
-if (el) {
-  el.setAttribute('data-text', buildSection4Madlib(mainRow));
-  el.textContent = el.getAttribute('data-text') || '';
-  el.removeAttribute('data-typed');
-  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
-}
-
-
-  // preview image (lazy)
-  el = document.querySelector('[data-var="brand-1-sec3-previewimg"]');
-  setLazyBackground(el, mainRow.previewengine);
-
-  // ingredient list
-  el = document.querySelector('[data-var="brand-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(mainRow);
-
-  // Sport Dog Food block
-  el = document.querySelector('[data-var="sport-1-sec3-name"]');
-  if (el) el.textContent = sdfRow["data-one"] || "";
-
-// section3-sport-madlib
-el = document.querySelector('[data-var="section3-sport-madlib"]');
-if (el) {
-  el.setAttribute('data-text', buildIngredientMadlib(sdfRow));
-  el.textContent = el.getAttribute('data-text') || '';
-  el.removeAttribute('data-typed');
-  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
-}
-
-  // sport counts table
-  el = document.querySelector('[data-var="sport-1-sec3-counts"]');
-  if (el) el.innerHTML = buildCountsTable(sdfRow, `Sport Dog Food ${sdfRow["data-one"]}`);
-
-// section3-sport-contentious-madlib
-el = document.querySelector('[data-var="section3-sport-contentious-madlib"]');
-if (el) {
-  el.setAttribute('data-text', buildSection4Madlib(sdfRow));
-  el.textContent = el.getAttribute('data-text') || '';
-  el.removeAttribute('data-typed');
-  // new Typed(el, { strings: [el.getAttribute('data-text')], typeSpeed: 24, showCursor: false });
-}
-
-  // sport preview image (lazy)
-  el = document.querySelector('[data-var="sport-1-sec3-previewimg"]');
-  setLazyBackground(el, sdfRow.previewengine);
-
-  // sport ingredient list
-  el = document.querySelector('[data-var="sport-1-sec3-inglist"]');
-  if (el) el.innerHTML = renderIngListDivs(sdfRow);
-}
-
-
-function paintSvgIcon(selector, isPositive) {
-  const el = document.querySelector(selector);
-  if (!el) return;
-  el.innerHTML = isPositive
-    ? `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436c41c99b786922c0bf_ckicon.svg" alt="Check" class="icon-status-svg" />`
-    : `<img src="https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41/6875436b4862ce5c6ee377e7_xicon.svg" alt="X" class="icon-status-svg" />`;
-}
 // ——————————————
 // 1) Build the Section K madlib string
 function buildSectionKMadlib(mainRow, sdfRows) {
