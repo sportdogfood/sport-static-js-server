@@ -388,37 +388,34 @@ return `
   }
 }
 
-
+// ===========================
 // Section 3 (ingredients overlay + modal search + swap)
 // ===========================
 export function paintSection3(mainRow, sdfRow) {
-  const headerEl = document.querySelector('[data-var="section3-header"]');
-  if (headerEl) headerEl.textContent = "Under the Hood";
-  const subtitleEl = document.querySelector('[data-var="section3-subtitle"]');
-  if (subtitleEl) subtitleEl.textContent = "Let's dig in and see how each ingredient stacks up.";
+  // Set headers
+  const h = document.querySelector('[data-var="section3-header"]');
+  if (h) h.textContent = 'Under the Hood';
+  const p = document.querySelector('[data-var="section3-subtitle"]');
+  if (p) p.textContent = "Let's dig in and see how each ingredient stacks up.";
 
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
-  // Ensure required DOM exists (handles half-rendered legacy markup)
+  // Ensure DOM scaffold exists
   ensureSection3Dom(sec3);
 
-  // Targets (guaranteed to exist after ensureSection3Dom)
+  // Targets (exist after scaffold)
   const rowsRoot    = sec3.querySelector('#cmp3-rows');
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
   const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
   const sportListEl = sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
 
-  // Safety guard: if something still isn't there, bail quietly
-  if (!rowsRoot || !brandNameEl || !sportNameEl || !brandListEl || !sportListEl) {
-    console.warn('[compare] Section 3 structure incomplete');
-    return;
-  }
+  if (!rowsRoot || !brandNameEl || !sportNameEl || !brandListEl || !sportListEl) return;
 
   // Totals overlay (compare over sport)
-  const countsB  = getIngredientCategoryCounts(mainRow);
-  const countsS  = getIngredientCategoryCounts(sdfRow);
+  const countsB = getIngredientCategoryCounts(mainRow);
+  const countsS = getIngredientCategoryCounts(sdfRow);
 
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
@@ -449,16 +446,16 @@ export function paintSection3(mainRow, sdfRow) {
   ].join('');
 
   // Names
-  brandNameEl.textContent = mainRow["data-brand"]
-    ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
-    : (mainRow["data-one"] || "");
-  sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
+  brandNameEl.textContent = mainRow['data-brand']
+    ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
+    : (mainRow['data-one'] || '');
+  sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
   // Lists
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-  // Modal open
+  // Modal (idempotent)
   ensureIngSearchModal();
   const openBtn = sec3.querySelector('#open-ing-search');
   if (openBtn && !openBtn._wired) {
@@ -471,7 +468,7 @@ export function paintSection3(mainRow, sdfRow) {
     });
   }
 
-  // Swap order
+  // Swap order (idempotent)
   const swapBtn    = sec3.querySelector('#swap-ing-order');
   const listsWrap  = sec3.querySelector('#cmp3-lists');
   const brandBlock = sec3.querySelector('#cmp3-brand-list');
@@ -491,18 +488,18 @@ export function paintSection3(mainRow, sdfRow) {
   }
 }
 
-// Guarantees all required nodes exist, even if .cmp3 exists but is missing children
+// Build/repair the Section 3 DOM scaffold if missing pieces
 function ensureSection3Dom(sec3) {
-  const needsBuild =
-    !sec3.querySelector('.cmp3') ||
-    !sec3.querySelector('#cmp3-rows') ||
-    !sec3.querySelector('#cmp3-lists') ||
-    !sec3.querySelector('#cmp3-brand-list') ||
-    !sec3.querySelector('#cmp3-sport-list') ||
-    !sec3.querySelector('[data-var="brand-1-sec3-inglist"]') ||
-    !sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
+  const ok =
+    sec3.querySelector('.cmp3') &&
+    sec3.querySelector('#cmp3-rows') &&
+    sec3.querySelector('#cmp3-lists') &&
+    sec3.querySelector('#cmp3-brand-list') &&
+    sec3.querySelector('#cmp3-sport-list') &&
+    sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
+    sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
 
-  if (!needsBuild) return;
+  if (ok) return;
 
   sec3.innerHTML = `
     <div class="cmp3">
@@ -527,93 +524,7 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
-
-  // Totals overlay (compare over sport)
-  const rowsRoot = sec3.querySelector('#cmp3-rows');
-  const countsB  = getIngredientCategoryCounts(mainRow);
-  const countsS  = getIngredientCategoryCounts(sdfRow);
-
-  const overlayRow = (key, label) => {
-    const b = countsB[key] ?? 0;
-    const s = countsS[key] ?? 0;
-    const diff = s - b;
-    const diffTxt = diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`);
-    const badge = diff === 0 ? 'Match' : 'Different';
-    const badgeCls = diff === 0 ? 'match' : 'diff';
-    return `
-      <div class="cmp3-row" data-key="${esc(key)}">
-        <div class="cmp3-label">${esc(label)}</div>
-        <div class="cmp3-values">
-          <span class="cmp3-badge brand">${b}</span>
-          <span class="cmp3-badge sport">${s}</span>
-        </div>
-        <div class="cmp3-diff">${esc(diffTxt)}</div>
-        <div class="cmp3-delta ${badgeCls}">${badge}</div>
-      </div>
-    `;
-  };
-
-  rowsRoot.innerHTML = [
-    overlayRow('total',        'Total Ingredients'),
-    overlayRow('Protein',      'Protein'),
-    overlayRow('Plants',       'Plants'),
-    overlayRow('Supplemental', 'Supplemental'),
-    (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
-  ].join('');
-
-  // Names
-  const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
-  if (brandNameEl) {
-    brandNameEl.textContent = mainRow["data-brand"]
-      ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
-      : (mainRow["data-one"] || "");
-  }
-
-  const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
-  if (sportNameEl) {
-    sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
-  }
-
-  // Lists
-  const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
-  if (brandListEl) brandListEl.innerHTML = renderIngListDivs(mainRow);
-  const sportListEl = sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
-  if (sportListEl) sportListEl.innerHTML = renderIngListDivs(sdfRow);
-
-  // Modal
-  ensureIngSearchModal();
-  const openBtn = sec3.querySelector('#open-ing-search');
-  if (openBtn && !openBtn._wired) {
-    openBtn._wired = true;
-    openBtn.addEventListener('click', () => {
-      const modal = ensureIngSearchModal();
-      modal.classList.add('open');
-      const mount = modal.querySelector('.pwrf-filter-wrapper');
-      if (mount) paintDualIngredientLists(mainRow, sdfRow, mount);
-    });
-  }
-
-  // Swap order
-  const swapBtn    = sec3.querySelector('#swap-ing-order');
-  const listsWrap  = sec3.querySelector('#cmp3-lists');
-  const brandBlock = sec3.querySelector('#cmp3-brand-list');
-  const sportBlock = sec3.querySelector('#cmp3-sport-list');
-
-  if (swapBtn && !swapBtn._wired) {
-    swapBtn._wired = true;
-    swapBtn.addEventListener('click', () => {
-      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
-      swapBtn.setAttribute('aria-pressed', String(!swapped));
-      if (!swapped) {
-        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
-      } else {
-        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
-      }
-    });
-  }
-} // <-- closes paintSection3
-
-// ---- Modal shell (module-scope, idempotent) ----
+// Modal shell (idempotent)
 function ensureIngSearchModal() {
   let modal = document.getElementById('ing-search-modal');
   if (modal) return modal;
@@ -649,12 +560,9 @@ function ensureIngSearchModal() {
   return modal;
 }
 
-
-// ===========================
-// Ingredient list + search
-// ===========================
+// Render inline ingredient list tags
 function renderIngListDivs(row) {
-  const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
+  const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
   const ings = ids.map(id => ING_MAP[id]).filter(Boolean);
 
   return `
@@ -662,16 +570,16 @@ function renderIngListDivs(row) {
       ${ings.map(ing => {
         const display = esc(ing.displayAs || ing.Name || '');
         const tags = [];
-        if (ing["data-type"]) {
-          const tag = getConsumerTypeTag(ing["data-type"]);
+        if (ing['data-type']) {
+          const tag = getConsumerTypeTag(ing['data-type']);
           tags.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${esc(tag.toLowerCase())}">${esc(tag)}</div>`);
         }
         if (ing.tagPoultry)     tags.push(`<div class="ci-ing-tag ci-tag-poultry" title="Poultry" aria-label="Poultry"></div>`);
         if (ing.tagAllergy)     tags.push(`<div class="ci-ing-tag ci-tag-allergy" title="Allergy" aria-label="Allergy"></div>`);
         if (ing.tagContentious) tags.push(`<div class="ci-ing-tag ci-tag-contentious" title="Contentious" aria-label="Contentious"></div>`);
-        if (ing.supplementalType === "Minerals")   tags.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
-        if (ing.supplementalType === "Vitamins")   tags.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
-        if (ing.supplementalType === "Probiotics") tags.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
+        if (ing.supplementalType === 'Minerals')   tags.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
+        if (ing.supplementalType === 'Vitamins')   tags.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
+        if (ing.supplementalType === 'Probiotics') tags.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
         const assist = (ing.supplementalAssist || '').toLowerCase();
         if (assist.includes('chelate') || assist.includes('complex')) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
@@ -679,7 +587,7 @@ function renderIngListDivs(row) {
         return `
           <div class="ci-ing-wrapper">
             <div class="ci-ing-displayas">${display}</div>
-            <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join("")}</div>
+            <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join('')}</div>
           </div>
         `;
       }).join('')}
@@ -687,54 +595,43 @@ function renderIngListDivs(row) {
   `;
 }
 
-
-
+// Modal search content
 function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
-  function getIngredients(row) {
-    const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
+  const getIngredients = (row) => {
+    const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
     return ids.map(id => ING_MAP[id]).filter(Boolean);
-  }
+  };
 
-  function renderList(ings, title, groupId) {
-    return `
-      <div class="pwrf-list-group" data-list="${groupId}">
-        <div class="pwrf_list-title">${esc(title)}</div>
-        ${ings.map(ing => {
-          const searchVal = [
-            ing.Name,
-            ing.displayAs,
-            ing.groupWith,
-            ing["data-type"]       || "",
-            ing.recordType         || "",
-            ing.animalType         || "",
-            ing.animalAssist       || "",
-            ing.plantType          || "",
-            ing.plantAssist        || "",
-            ing.supplementalType   || "",
-            ing.supplementalAssist || "",
-            ...(ing.tags || [])
-          ].join(" ").toLowerCase();
+  const renderList = (ings, title, groupId) => `
+    <div class="pwrf-list-group" data-list="${groupId}">
+      <div class="pwrf_list-title">${esc(title)}</div>
+      ${ings.map(ing => {
+        const searchVal = [
+          ing.Name,
+          ing.displayAs,
+          ing.groupWith,
+          ing['data-type']       || '',
+          ing.recordType         || '',
+          ing.animalType         || '',
+          ing.animalAssist       || '',
+          ing.plantType          || '',
+          ing.plantAssist        || '',
+          ing.supplementalType   || '',
+          ing.supplementalAssist || '',
+          ...(ing.tags || [])
+        ].join(' ').toLowerCase();
+        return `
+          <div class="pwrf_dropdown-item" data-search="${esc(searchVal)}">
+            <span class="pwrf_item-name">${esc(ing.displayAs || ing.Name || '')}</span>
+          </div>
+        `;
+      }).join('')}
+      <div class="pwrf_no-results" style="display:none;">No ${esc(title.toLowerCase())} found.</div>
+    </div>
+  `;
 
-          return `
-            <div class="pwrf_dropdown-item" data-search="${esc(searchVal)}">
-              <span class="pwrf_item-name">${esc(ing.displayAs || ing.Name || '')}</span>
-            </div>
-          `;
-        }).join("")}
-        <div class="pwrf_no-results" style="display:none;">No ${esc(title.toLowerCase())} found.</div>
-      </div>
-    `;
-  }
-
-  // Find or create mount point
-  let wrapper = mountEl || document.querySelector(".pwrf-filter-wrapper");
-  if (!wrapper) {
-    const sec3 = document.querySelector("#section-3");
-    if (!sec3) return; // nowhere to put it
-    wrapper = document.createElement("div");
-    wrapper.className = "pwrf-filter-wrapper";
-    sec3.appendChild(wrapper);
-  }
+  const wrapper = mountEl || document.querySelector('.pwrf-filter-wrapper');
+  if (!wrapper) return;
 
   wrapper.innerHTML = `
     <div class="pwrf_searchbar" role="search">
@@ -742,53 +639,52 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
       <button class="pwrf_clear-btn" style="display:none" type="button">Clear</button>
     </div>
     <div class="pwrf_results" aria-live="polite">
-      ${renderList(getIngredients(mainRow), mainRow["data-brand"] || "Competitor", 1)}
-      ${renderList(getIngredients(sdfRow), "Sport Dog Food", 2)}
+      ${renderList(getIngredients(mainRow), mainRow['data-brand'] || 'Competitor', 1)}
+      ${renderList(getIngredients(sdfRow), 'Sport Dog Food', 2)}
     </div>
   `;
 
-  const input    = wrapper.querySelector(".pwrf_search-input");
-  const clearBtn = wrapper.querySelector(".pwrf_clear-btn");
-  const groups   = Array.from(wrapper.querySelectorAll(".pwrf-list-group")).map(el => ({
+  const input    = wrapper.querySelector('.pwrf_search-input');
+  const clearBtn = wrapper.querySelector('.pwrf_clear-btn');
+  const groups   = Array.from(wrapper.querySelectorAll('.pwrf-list-group')).map(el => ({
     container: el,
-    items: Array.from(el.querySelectorAll(".pwrf_dropdown-item")),
-    noResults: el.querySelector(".pwrf_no-results")
+    items: Array.from(el.querySelectorAll('.pwrf_dropdown-item')),
+    noResults: el.querySelector('.pwrf_no-results')
   }));
 
-  function filterNow() {
+  const filterNow = () => {
     const q = input.value.trim().toLowerCase();
     if (!q) {
-      clearBtn.style.display = "none";
+      clearBtn.style.display = 'none';
       groups.forEach(g => {
-        g.container.style.display = "none";
-        g.noResults.style.display = "none";
-        g.items.forEach(it => it.style.display = "none");
+        g.container.style.display = 'none';
+        g.noResults.style.display = 'none';
+        g.items.forEach(it => it.style.display = 'none');
       });
     } else {
-      clearBtn.style.display = "";
+      clearBtn.style.display = '';
       groups.forEach(g => {
-        g.container.style.display = "";
+        g.container.style.display = '';
         let any = false;
         for (const it of g.items) {
           const ok = it.dataset.search.includes(q);
-          it.style.display = ok ? "" : "none";
+          it.style.display = ok ? '' : 'none';
           if (ok) any = true;
         }
-        g.noResults.style.display = any ? "none" : "";
+        g.noResults.style.display = any ? 'none' : '';
       });
     }
-  }
+  };
 
-  // light debounce so typing feels smooth
   let to = 0;
   const debounced = () => { clearTimeout(to); to = setTimeout(() => requestAnimationFrame(filterNow), 120); };
 
-  input.addEventListener("input", debounced);
-  clearBtn.addEventListener("click", (e) => { e.preventDefault(); input.value = ""; filterNow(); });
+  input.addEventListener('input', debounced);
+  clearBtn.addEventListener('click', (e) => { e.preventDefault(); input.value = ''; filterNow(); });
 
-  // initialize hidden
   filterNow();
 }
+
 
 
 function renderAllSections(mainRow, sdfRow) {
