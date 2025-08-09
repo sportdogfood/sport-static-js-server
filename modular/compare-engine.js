@@ -693,29 +693,19 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
 }
 
 
-// ===========================
-// Lazy-load sections (single IO)
-// ===========================
-function lazyLoadCompareSections(mainRow, sdfRow) {
-  const tasks = new Map([
-    ['#section-1', () => { paintSection1(mainRow, sdfRow); /* runTypedForMadlib('section1-madlib') if re-enabled */ }],
-    ['#section-2', () => { paintSection2(mainRow, sdfRow); /* runTypedForMadlib('section2-madlib') */ }],
-    ['#section-3', () => {
-      paintSection3(mainRow, sdfRow);
-      // Typed slots (disabled by default)
-      // ['section3-madlib','section3-sport-madlib','section3-contentious-madlib','section3-sport-contentious-madlib'].forEach(runTypedForMadlib);
-      // DO NOT pre-render dual search here; it renders on modal open
-    }],
-    ['#section-k', () => {
-      if (typeof paintSectionK === 'function') {
-        paintSectionK(mainRow, [
-          getCiRow(SDF_FORMULAS.cub),
-          getCiRow(SDF_FORMULAS.dock),
-          getCiRow(SDF_FORMULAS.herding)
-        ]);
-      }
-    }]
-  ]);
+function renderAllSections(mainRow, sdfRow) {
+  paintSection1(mainRow, sdfRow);
+  paintSection2(mainRow, sdfRow);
+  paintSection3(mainRow, sdfRow);
+  if (typeof paintSectionK === 'function') {
+    paintSectionK(mainRow, [
+      getCiRow(SDF_FORMULAS.cub),
+      getCiRow(SDF_FORMULAS.dock),
+      getCiRow(SDF_FORMULAS.herding)
+    ]);
+  }
+}
+
 
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -851,7 +841,7 @@ export function renderComparePage() {
   }
 
   // Lazy-load sections
-  lazyLoadCompareSections(mainRow, initialRow);
+renderAllSections(mainRow, initialRow);
 // NEW: initialize CMS selection to the current formula (waits for CMS to render)
 initCmsSelection(initialId);
   // Switcher
@@ -880,21 +870,9 @@ controls.forEach(el => {
     const newRow = getCiRow(newId);
     window.CCI.sdfRow = newRow;
 
-    if (typeof renderStickyCompareHeader === 'function') {
-      renderStickyCompareHeader(mainRow, newRow);
-    }
+renderStickyCompareHeader(mainRow, newRow);
+renderAllSections(mainRow, newRow);
 
-    paintSection1(mainRow, newRow);
-    paintSection2(mainRow, newRow);
-    paintSection3(mainRow, newRow);
-
-    if (typeof paintSectionK === 'function') {
-      paintSectionK(mainRow, [
-        getCiRow(SDF_FORMULAS.cub),
-        getCiRow(SDF_FORMULAS.dock),
-        getCiRow(SDF_FORMULAS.herding)
-      ]);
-    }
 
     // >>> NEW: keep the hidden CMS selection in sync
     syncCmsSelection(newId);
