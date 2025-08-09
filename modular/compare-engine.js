@@ -589,15 +589,7 @@ function renderIngListDivs(row) {
   `;
 }
 
-// tiny HTML esc to keep innerHTML safe
-function esc(s) {
-  return String(s ?? '')
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#39;');
-}
+
 
 function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   function getIngredients(row) {
