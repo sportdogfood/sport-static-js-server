@@ -762,6 +762,70 @@ export function paintSectionK(mainRow, sdfRows) {
   madlibEl.setAttribute('data-text', text);
   madlibEl.innerHTML = text;
 }
+// Wait for an element to exist AND have at least one matching child (if childSelector is provided)
+function waitForEl(selector, { childSelector = null, timeout = 5000 } = {}) {
+  return new Promise((resolve) => {
+    const root = document.querySelector(selector);
+    // If it's already there (and populated if needed), resolve immediately
+    if (root && (!childSelector || root.querySelector(childSelector))) {
+      return resolve(root);
+    }
+    const obs = new MutationObserver(() => {
+      const el = document.querySelector(selector);
+      if (el && (!childSelector || el.querySelector(childSelector))) {
+        obs.disconnect();
+        resolve(el);
+      }
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
+
+    // Safety timeout so we don’t hang forever
+    setTimeout(() => {
+      obs.disconnect();
+      resolve(document.querySelector(selector) || null);
+    }, timeout);
+  });
+}
+
+/**
+ * Sync the hidden Webflow CMS selection UI to a given SDF id.
+ * Expects:
+ *   <div id="cms-select-list">
+ *     <div class="collection-item">
+ *       <div class="cms-selected hidden" data-key="29099"></div>
+ *     </div>
+ *   </div>
+ */
+async function syncCmsSelection(sdfId) {
+  const cmsRoot = await waitForEl('#cms-select-list', { childSelector: '[data-key]' });
+  if (!cmsRoot) {
+    console.warn('[compare] CMS list not found');
+    return;
+  }
+
+  const items = Array.from(cmsRoot.querySelectorAll('[data-key]'));
+  if (!items.length) {
+    console.warn('[compare] CMS list has no [data-key] items');
+    return;
+  }
+
+  const key = String(sdfId);
+  items.forEach((el) => {
+    const isMatch = String(el.getAttribute('data-key')) === key;
+    // visibility
+    el.classList.toggle('hidden', !isMatch);
+    // a11y states (in case you want to style/state off these)
+    el.setAttribute('aria-hidden', String(!isMatch));
+    el.setAttribute('aria-selected', String(isMatch));
+    // optional “selected” class if you want a style hook:
+    el.classList.toggle('is-selected', isMatch);
+  });
+}
+
+/** Call once on load to set the initial selection after CMS renders */
+function initCmsSelection(initialId) {
+  syncCmsSelection(initialId); // runs once CMS exists due to waitForEl inside
+}
 
 // ===========================
 // Entry
@@ -788,7 +852,8 @@ export function renderComparePage() {
 
   // Lazy-load sections
   lazyLoadCompareSections(mainRow, initialRow);
-
+// NEW: initialize CMS selection to the current formula (waits for CMS to render)
+initCmsSelection(initialId);
   // Switcher
   function setupSdfSwitcher(activeId) {
     const controls = Array.from(
@@ -801,42 +866,48 @@ export function renderComparePage() {
       el.style.display = id === activeId ? 'none' : '';
     });
 
-    controls.forEach(el => {
-      el.addEventListener('click', e => {
-        e.preventDefault();
-        const newId = el.getAttribute('data-var');
-        if (!Object.values(SDF_FORMULAS).includes(newId)) return;
+controls.forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    const newId = el.getAttribute('data-var');
+    if (!Object.values(SDF_FORMULAS).includes(newId)) return;
 
-        params.set('sdf', newId);
-        window.history.replaceState({}, '', `${location.pathname}?${params}`);
+    // Update URL
+    params.set('sdf', newId);
+    window.history.replaceState({}, '', `${location.pathname}?${params}`);
 
-        const newRow = getCiRow(newId);
-        window.CCI.sdfRow = newRow;
+    // Lookup & paint
+    const newRow = getCiRow(newId);
+    window.CCI.sdfRow = newRow;
 
-        if (typeof renderStickyCompareHeader === 'function') {
-          renderStickyCompareHeader(mainRow, newRow);
-        }
+    if (typeof renderStickyCompareHeader === 'function') {
+      renderStickyCompareHeader(mainRow, newRow);
+    }
 
-        paintSection1(mainRow, newRow);
-        paintSection2(mainRow, newRow);
-        paintSection3(mainRow, newRow);
+    paintSection1(mainRow, newRow);
+    paintSection2(mainRow, newRow);
+    paintSection3(mainRow, newRow);
 
-        // If Section K shown on page, refresh
-        if (typeof paintSectionK === 'function') {
-          paintSectionK(mainRow, [
-            getCiRow(SDF_FORMULAS.cub),
-            getCiRow(SDF_FORMULAS.dock),
-            getCiRow(SDF_FORMULAS.herding)
-          ]);
-        }
+    if (typeof paintSectionK === 'function') {
+      paintSectionK(mainRow, [
+        getCiRow(SDF_FORMULAS.cub),
+        getCiRow(SDF_FORMULAS.dock),
+        getCiRow(SDF_FORMULAS.herding)
+      ]);
+    }
 
-        controls.forEach(b => {
-          const bid = b.getAttribute('data-var');
-          b.classList.toggle('active', bid === newId);
-          b.style.display = bid === newId ? 'none' : '';
-        });
-      });
+    // >>> NEW: keep the hidden CMS selection in sync
+    syncCmsSelection(newId);
+
+    // Button states
+    controls.forEach(b => {
+      const bid = b.getAttribute('data-var');
+      b.classList.toggle('active', bid === newId);
+      b.style.display = bid === newId ? 'none' : '';
     });
+  });
+});
+
   }
 
   setupSdfSwitcher(initialId);
