@@ -562,6 +562,16 @@ function renderIngListDivs(row) {
   `;
 }
 
+// tiny HTML esc to keep innerHTML safe
+function esc(s) {
+  return String(s ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
 function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   function getIngredients(row) {
     const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
@@ -577,14 +587,14 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
             ing.Name,
             ing.displayAs,
             ing.groupWith,
-            ing["data-type"]      || "",
-            ing.recordType        || "",
-            ing.animalType        || "",
-            ing.animalAssist      || "",
-            ing.plantType         || "",
-            ing.plantAssist       || "",
-            ing.supplementalType  || "",
-            ing.supplementalAssist|| "",
+            ing["data-type"]       || "",
+            ing.recordType         || "",
+            ing.animalType         || "",
+            ing.animalAssist       || "",
+            ing.plantType          || "",
+            ing.plantAssist        || "",
+            ing.supplementalType   || "",
+            ing.supplementalAssist || "",
             ...(ing.tags || [])
           ].join(" ").toLowerCase();
 
@@ -599,14 +609,25 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
     `;
   }
 
-  const wrapper = mountEl || document.querySelector(".pwrf-filter-wrapper");
-  if (!wrapper) return;
+  // Find or create mount point
+  let wrapper = mountEl || document.querySelector(".pwrf-filter-wrapper");
+  if (!wrapper) {
+    const sec3 = document.querySelector("#section-3");
+    if (!sec3) return; // nowhere to put it
+    wrapper = document.createElement("div");
+    wrapper.className = "pwrf-filter-wrapper";
+    sec3.appendChild(wrapper);
+  }
 
   wrapper.innerHTML = `
-    <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-    <button class="pwrf_clear-btn" style="display:none" type="button">Clear</button>
-    ${renderList(getIngredients(mainRow), mainRow["data-brand"] || "Competitor", 1)}
-    ${renderList(getIngredients(sdfRow), "Sport Dog Food", 2)}
+    <div class="pwrf_searchbar" role="search">
+      <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
+      <button class="pwrf_clear-btn" style="display:none" type="button">Clear</button>
+    </div>
+    <div class="pwrf_results" aria-live="polite">
+      ${renderList(getIngredients(mainRow), mainRow["data-brand"] || "Competitor", 1)}
+      ${renderList(getIngredients(sdfRow), "Sport Dog Food", 2)}
+    </div>
   `;
 
   const input    = wrapper.querySelector(".pwrf_search-input");
@@ -641,6 +662,7 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
     }
   }
 
+  // light debounce so typing feels smooth
   let to = 0;
   const debounced = () => { clearTimeout(to); to = setTimeout(() => requestAnimationFrame(filterNow), 120); };
 
@@ -650,6 +672,7 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   // initialize hidden
   filterNow();
 }
+
 
 // ===========================
 // Lazy-load sections (single IO)
