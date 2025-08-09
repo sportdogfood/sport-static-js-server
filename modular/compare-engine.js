@@ -710,19 +710,6 @@ function renderAllSections(mainRow, sdfRow) {
 }
 
 
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      const fn = tasks.get('#' + e.target.id);
-      if (fn) fn();
-      io.unobserve(e.target);
-    });
-  }, { root: null, rootMargin: '0px 0px -30% 0px', threshold: 0.1 });
-
-  tasks.forEach((_, sel) => {
-    const el = document.querySelector(sel);
-    if (el) io.observe(el);
-  });
 
 
 // ===========================
