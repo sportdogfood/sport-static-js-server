@@ -502,10 +502,12 @@ export function paintSection3(mainRow, sdfRow) {
   }
 }
 
-// Modal shell
+// ---- Modal shell (drop-in) ----
 function ensureIngSearchModal() {
-  if (document.getElementById('ing-search-modal')) return;
-  const modal = document.createElement('div');
+  let modal = document.getElementById('ing-search-modal');
+  if (modal) return modal;
+
+  modal = document.createElement('div');
   modal.id = 'ing-search-modal';
   modal.className = 'cmp3-modal';
   modal.innerHTML = `
@@ -521,9 +523,18 @@ function ensureIngSearchModal() {
     </div>
   `;
   document.body.appendChild(modal);
-  modal.addEventListener('click', (e) => { if (e.target.dataset.close === '1') modal.classList.remove('open'); });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.remove('open'); });
+
+  // close on backdrop/X or Esc
+  modal.addEventListener('click', (e) => {
+    if (e.target.dataset.close === '1') modal.classList.remove('open');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') modal.classList.remove('open');
+  });
+
+  return modal;
 }
+
 
 // ===========================
 // Ingredient list + search
