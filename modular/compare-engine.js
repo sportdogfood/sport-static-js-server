@@ -453,6 +453,182 @@ export function paintSection3(mainRow, sdfRow) {
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
+
+// === Modal: fixed size + body scroll lock + search render ===
+
+// Lock the page while modal is open (no scroll jump)
+function lockBodyScroll() {
+  const y = window.scrollY || 0;
+  document.documentElement.classList.add('no-scroll');
+  document.body.style.top = `-${y}px`;
+  document.body.dataset.scrollY = String(y);
+}
+function unlockBodyScroll() {
+  const y = parseInt(document.body.dataset.scrollY || '0', 10);
+  document.documentElement.classList.remove('no-scroll');
+  document.body.style.top = '';
+  delete document.body.dataset.scrollY;
+  window.scrollTo(0, y);
+}
+
+// Create the modal once; return the element
+function ensureIngSearchModal() {
+  let modal = document.getElementById('ing-search-modal');
+  if (modal) return modal;
+
+  modal = document.createElement('div');
+  modal.id = 'ing-search-modal';
+  modal.className = 'cmp3-modal';
+  modal.setAttribute('aria-hidden', 'true');
+  modal.innerHTML = `
+    <div class="cmp3-modal__backdrop" data-close="1"></div>
+    <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
+      <div class="cmp3-modal__head">
+        <h3 id="ing-search-title">Search Ingredients</h3>
+        <div class="pwrf_searchbar" role="search">
+          <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
+          <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
+        </div>
+        <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close" type="button">×</button>
+      </div>
+      <div class="cmp3-modal__body">
+        <div class="pwrf_results" aria-live="polite"></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  // Close on backdrop/X
+  modal.addEventListener('click', (e) => {
+    const t = e.target;
+    if (t && t.getAttribute && t.getAttribute('data-close') === '1') closeIngredientModal();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeIngredientModal();
+  });
+
+  return modal;
+}
+
+// Open / Close API
+function openIngredientModal(mainRow, sdfRow) {
+  const modal = ensureIngSearchModal();
+  if (!modal.classList.contains('open')) {
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    lockBodyScroll();
+  }
+  // (Re)paint search UI
+  const wrapper = modal.querySelector('.pwrf_results');
+  const input   = modal.querySelector('.pwrf_search-input');
+  const clear   = modal.querySelector('.pwrf_clear-btn');
+  if (wrapper && input && clear) {
+    paintDualIngredientLists(mainRow, sdfRow, wrapper, input, clear);
+    input.focus();
+  }
+}
+function closeIngredientModal() {
+  const modal = document.getElementById('ing-search-modal');
+  if (!modal) return;
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  unlockBodyScroll();
+}
+
+// Wire your existing button to this
+export function wireIngredientSearchButton(sec3, mainRow, sdfRow) {
+  ensureIngSearchModal();
+  const btn = sec3.querySelector('#open-ing-search');
+  if (btn && !btn._wired) {
+    btn._wired = true;
+    btn.addEventListener('click', () => openIngredientModal(mainRow, sdfRow));
+  }
+}
+
+// Render the two lists + live filter (results don’t resize the modal)
+function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn) {
+  const listHtml = (ings, title) => `
+    <div class="pwrf-list-group">
+      <div class="pwrf_list-title">${esc(title)}</div>
+      <div class="pwrf_list-body">
+        ${ings.map(ing => {
+          const searchVal = [
+            ing.Name, ing.displayAs, ing.groupWith,
+            ing['data-type']||'', ing.recordType||'',
+            ing.animalType||'', ing.animalAssist||'',
+            ing.plantType||'',  ing.plantAssist||'',
+            ing.supplementalType||'', ing.supplementalAssist||'',
+            ...(ing.tags||[])
+          ].join(' ').toLowerCase();
+          return `
+            <div class="pwrf_item" data-search="${esc(searchVal)}">
+              <div class="pwrf_item-name">${esc(ing.displayAs || ing.Name || '')}</div>
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="pwrf_no-results" hidden>No ${esc(title.toLowerCase())} found.</div>
+    </div>
+  `;
+
+  const getIngs = (row) => {
+    const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
+    return ids.map(id => ING_MAP[id]).filter(Boolean);
+  };
+
+  resultsEl.innerHTML = `
+    ${listHtml(getIngs(mainRow), mainRow['data-brand'] || 'Competitor')}
+    ${listHtml(getIngs(sdfRow),  'Sport Dog Food')}
+  `;
+
+  const groups = Array.from(resultsEl.querySelectorAll('.pwrf-list-group')).map(g => ({
+    container: g,
+    items: Array.from(g.querySelectorAll('.pwrf_item')),
+    empty: g.querySelector('.pwrf_no-results')
+  }));
+
+  function doFilter() {
+    const q = inputEl.value.trim().toLowerCase();
+    clearBtn.hidden = !q;
+    groups.forEach(g => {
+      let any = false;
+      g.items.forEach(it => {
+        const ok = q && it.dataset.search.includes(q);
+        it.hidden = !ok;
+        if (ok) any = true;
+      });
+      g.empty.hidden = any || !q;
+    });
+    // When empty query: show nothing (keeps the panel stable and quiet)
+    if (!q) {
+      groups.forEach(g => {
+        g.items.forEach(it => it.hidden = true);
+        g.empty.hidden = true;
+      });
+    }
+  }
+
+  let to = 0;
+  const debounced = () => { clearTimeout(to); to = setTimeout(doFilter, 100); };
+
+  inputEl.removeEventListener('_inputAttached', () => {});
+  inputEl.addEventListener('input', debounced);
+  inputEl._inputAttached = true;
+
+  clearBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    inputEl.value = '';
+    doFilter();
+    inputEl.focus();
+  });
+
+  // Start with empty state (no results until user types)
+  doFilter();
+}
+
+
   // Modal (idempotent)
   ensureIngSearchModal();
   const openBtn = sec3.querySelector('#open-ing-search');
@@ -695,6 +871,7 @@ function renderAllSections(mainRow, sdfRow) {
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
   paintSection3(mainRow, sdfRow);
+wireIngredientSearchButton(sec3, mainRow, sdfRow);
   if (typeof paintSectionK === 'function') {
     paintSectionK(mainRow, [
       getCiRow(SDF_FORMULAS.cub),
