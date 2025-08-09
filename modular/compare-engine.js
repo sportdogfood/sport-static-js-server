@@ -311,7 +311,7 @@ export function paintSection1(mainRow, sdfRow) {
 }
 
 // ===========================
-// Section 2 (Group 2 + per-row bars)
+// Section 2 (Group 2 + two distinct bars per row)
 // ===========================
 export function paintSection2(mainRow, sdfRow) {
   const headerEl = document.querySelector('[data-var="section2-header"]');
@@ -334,42 +334,40 @@ export function paintSection2(mainRow, sdfRow) {
   const b = vals(mainRow);
   const s = vals(sdfRow);
 
-  // visual maxes
+  // visual maxes (only for bar widths)
   const MAX = { protein: 40, fat: 30, kcals_c: 600, kcals_k: 5500 };
   const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
+
   const row = (key, label, unit = '') => {
     const bv = b[key], sv = s[key];
     const diff = sv - bv;
-    const diffTxt = isNaN(diff) ? '—' : (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`));
-    const badge = (diff === 0) ? 'Match' : 'Different';
+    const diffTxt  = isNaN(diff) ? '—' : (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`));
+    const badge    = (diff === 0) ? 'Match' : 'Different';
     const badgeCls = (diff === 0) ? 'match' : 'diff';
-    const maxKey = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
+    const maxKey   = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
 
-return `
-  <div class="cmp2-row" data-key="${esc(key)}">
-    <div class="cmp2-label">${esc(label)}</div>
-    <div class="cmp2-values">
-      <span class="cmp2-badge brand">${esc(unit ? `${bv}${unit}` : String(bv))}</span>
-      <span class="cmp2-badge sport">${esc(unit ? `${sv}${unit}` : String(sv))}</span>
-    </div>
-    <div class="cmp2-diff">${esc(diffTxt)}</div>
-    <div class="cmp2-delta ${badgeCls}">${badge}</div>
-  </div>
+    return `
+      <div class="cmp2-row" data-key="${esc(key)}">
+        <div class="cmp2-label">${esc(label)}</div>
 
-  <div class="cmp2-bars">
-    <div class="cmp2-bar" data-key="${esc(key)}">
-      <div class="cmp2-track">
-        <div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div>
-        <div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div>
+        <div class="cmp2-values">
+          <div class="cmp2-bar brand" aria-label="Competitor ${esc(label)}">
+            <div class="cmp2-track">
+              <div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div>
+            </div>
+          </div>
+
+          <div class="cmp2-bar sport" aria-label="Sport Dog Food ${esc(label)}">
+            <div class="cmp2-track">
+              <div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cmp2-diff">${esc(diffTxt)}</div>
+        <div class="cmp2-delta ${badgeCls}">${badge}</div>
       </div>
-      <div class="cmp2-values">
-        <span class="cmp2-badge brand">${esc(unit ? `${bv}${unit}` : String(bv))}</span>
-        <span class="cmp2-badge sport">${esc(unit ? `${sv}${unit}` : String(sv))}</span>
-      </div>
-    </div>
-  </div>
-`;
-
+    `;
   };
 
   root.innerHTML = [
@@ -524,38 +522,42 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
-// Modal shell (idempotent)
+// Modal shell (idempotent; stable close)
 function ensureIngSearchModal() {
   let modal = document.getElementById('ing-search-modal');
-  if (modal) return modal;
-
-  modal = document.createElement('div');
-  modal.id = 'ing-search-modal';
-  modal.className = 'cmp3-modal';
-  modal.innerHTML = `
-    <div class="cmp3-modal__backdrop" data-close="1"></div>
-    <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
-      <div class="cmp3-modal__head">
-        <h3 id="ing-search-title">Search Ingredients</h3>
-        <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close" type="button">×</button>
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'ing-search-modal';
+    modal.className = 'cmp3-modal';
+    modal.innerHTML = `
+      <div class="cmp3-modal__backdrop" data-close="1"></div>
+      <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
+        <div class="cmp3-modal__head">
+          <h3 id="ing-search-title">Search Ingredients</h3>
+          <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close" type="button">×</button>
+        </div>
+        <div class="cmp3-modal__body">
+          <div class="pwrf-filter-wrapper"></div>
+        </div>
       </div>
-      <div class="cmp3-modal__body">
-        <div class="pwrf-filter-wrapper"></div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+    `;
+    document.body.appendChild(modal);
+  }
 
-  // close on backdrop/X
-  modal.addEventListener('click', (e) => {
-    const t = e.target;
-    if (t && t.dataset && t.dataset.close === '1') modal.classList.remove('open');
-  });
+  if (!modal._wired) {
+    modal._wired = true;
 
-  // close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') modal.classList.remove('open');
-  });
+    // close on backdrop/X (robust)
+    modal.addEventListener('click', (e) => {
+      const closer = e.target.closest('[data-close]');
+      if (closer) modal.classList.remove('open');
+    });
+
+    // close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) modal.classList.remove('open');
+    });
+  }
 
   return modal;
 }
@@ -595,7 +597,7 @@ function renderIngListDivs(row) {
   `;
 }
 
-// Modal search content
+// Modal search content (mounts inside .pwrf-filter-wrapper)
 function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   const getIngredients = (row) => {
     const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
@@ -605,28 +607,31 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   const renderList = (ings, title, groupId) => `
     <div class="pwrf-list-group" data-list="${groupId}">
       <div class="pwrf_list-title">${esc(title)}</div>
-      ${ings.map(ing => {
-        const searchVal = [
-          ing.Name,
-          ing.displayAs,
-          ing.groupWith,
-          ing['data-type']       || '',
-          ing.recordType         || '',
-          ing.animalType         || '',
-          ing.animalAssist       || '',
-          ing.plantType          || '',
-          ing.plantAssist        || '',
-          ing.supplementalType   || '',
-          ing.supplementalAssist || '',
-          ...(ing.tags || [])
-        ].join(' ').toLowerCase();
-        return `
-          <div class="pwrf_dropdown-item" data-search="${esc(searchVal)}">
-            <span class="pwrf_item-name">${esc(ing.displayAs || ing.Name || '')}</span>
-          </div>
-        `;
-      }).join('')}
-      <div class="pwrf_no-results" style="display:none;">No ${esc(title.toLowerCase())} found.</div>
+      <div class="pwrf_list-body">
+        ${ings.map(ing => {
+          const searchVal = [
+            ing.Name,
+            ing.displayAs,
+            ing.groupWith,
+            ing['data-type']       || '',
+            ing.recordType         || '',
+            ing.animalType         || '',
+            ing.animalAssist       || '',
+            ing.plantType          || '',
+            ing.plantAssist        || '',
+            ing.supplementalType   || '',
+            ing.supplementalAssist || '',
+            ...(ing.tags || [])
+          ].join(' ').toLowerCase();
+
+          return `
+            <div class="pwrf_row" data-search="${esc(searchVal)}">
+              <div class="pwrf_row-label">${esc(ing.displayAs || ing.Name || '')}</div>
+            </div>
+          `;
+        }).join('')}
+        <div class="pwrf_no-results" style="display:none;">No ${esc(title.toLowerCase())} found.</div>
+      </div>
     </div>
   `;
 
@@ -636,7 +641,7 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   wrapper.innerHTML = `
     <div class="pwrf_searchbar" role="search">
       <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-      <button class="pwrf_clear-btn" style="display:none" type="button">Clear</button>
+      <button class="pwrf_clear-btn" type="button" aria-label="Clear search">Clear</button>
     </div>
     <div class="pwrf_results" aria-live="polite">
       ${renderList(getIngredients(mainRow), mainRow['data-brand'] || 'Competitor', 1)}
@@ -648,30 +653,30 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   const clearBtn = wrapper.querySelector('.pwrf_clear-btn');
   const groups   = Array.from(wrapper.querySelectorAll('.pwrf-list-group')).map(el => ({
     container: el,
-    items: Array.from(el.querySelectorAll('.pwrf_dropdown-item')),
+    items: Array.from(el.querySelectorAll('.pwrf_row')),
     noResults: el.querySelector('.pwrf_no-results')
   }));
 
   const filterNow = () => {
     const q = input.value.trim().toLowerCase();
     if (!q) {
-      clearBtn.style.display = 'none';
+      clearBtn.disabled = true;
       groups.forEach(g => {
-        g.container.style.display = 'none';
-        g.noResults.style.display = 'none';
-        g.items.forEach(it => it.style.display = 'none');
+        g.container.style.display = "";      // keep group visible; hide items for stable box
+        g.noResults.style.display = "none";
+        g.items.forEach(it => it.style.display = "none");
       });
     } else {
-      clearBtn.style.display = '';
+      clearBtn.disabled = false;
       groups.forEach(g => {
-        g.container.style.display = '';
+        g.container.style.display = "";
         let any = false;
         for (const it of g.items) {
           const ok = it.dataset.search.includes(q);
-          it.style.display = ok ? '' : 'none';
+          it.style.display = ok ? "" : "none";
           if (ok) any = true;
         }
-        g.noResults.style.display = any ? 'none' : '';
+        g.noResults.style.display = any ? "none" : "";
       });
     }
   };
@@ -685,8 +690,7 @@ function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
   filterNow();
 }
 
-
-
+// Render all sections now (no lazy IO)
 function renderAllSections(mainRow, sdfRow) {
   paintSection1(mainRow, sdfRow);
   paintSection2(mainRow, sdfRow);
@@ -699,9 +703,6 @@ function renderAllSections(mainRow, sdfRow) {
     ]);
   }
 }
-
-
-
 
 // ===========================
 // Section K (optional summary)
@@ -733,14 +734,13 @@ export function paintSectionK(mainRow, sdfRows) {
   madlibEl.setAttribute('data-text', text);
   madlibEl.innerHTML = text;
 }
-// Wait for an element to exist AND have at least one matching child (if childSelector is provided)
+
+// Utility: wait for an element (and optional child)
 function waitForEl(selector, { childSelector = null, timeout = 5000 } = {}) {
   return new Promise((resolve) => {
     const root = document.querySelector(selector);
-    // If it's already there (and populated if needed), resolve immediately
-    if (root && (!childSelector || root.querySelector(childSelector))) {
-      return resolve(root);
-    }
+    if (root && (!childSelector || root.querySelector(childSelector))) return resolve(root);
+
     const obs = new MutationObserver(() => {
       const el = document.querySelector(selector);
       if (el && (!childSelector || el.querySelector(childSelector))) {
@@ -750,7 +750,6 @@ function waitForEl(selector, { childSelector = null, timeout = 5000 } = {}) {
     });
     obs.observe(document.documentElement, { childList: true, subtree: true });
 
-    // Safety timeout so we don’t hang forever
     setTimeout(() => {
       obs.disconnect();
       resolve(document.querySelector(selector) || null);
@@ -783,19 +782,16 @@ async function syncCmsSelection(sdfId) {
   const key = String(sdfId);
   items.forEach((el) => {
     const isMatch = String(el.getAttribute('data-key')) === key;
-    // visibility
     el.classList.toggle('hidden', !isMatch);
-    // a11y states (in case you want to style/state off these)
     el.setAttribute('aria-hidden', String(!isMatch));
     el.setAttribute('aria-selected', String(isMatch));
-    // optional “selected” class if you want a style hook:
     el.classList.toggle('is-selected', isMatch);
   });
 }
 
 /** Call once on load to set the initial selection after CMS renders */
 function initCmsSelection(initialId) {
-  syncCmsSelection(initialId); // runs once CMS exists due to waitForEl inside
+  syncCmsSelection(initialId);
 }
 
 // ===========================
@@ -821,10 +817,12 @@ export function renderComparePage() {
     renderStickyCompareHeader(mainRow, initialRow);
   }
 
-  // Lazy-load sections
-renderAllSections(mainRow, initialRow);
-// NEW: initialize CMS selection to the current formula (waits for CMS to render)
-initCmsSelection(initialId);
+  // Render all sections (no lazy IO)
+  renderAllSections(mainRow, initialRow);
+
+  // Init hidden CMS selection
+  initCmsSelection(initialId);
+
   // Switcher
   function setupSdfSwitcher(activeId) {
     const controls = Array.from(
@@ -837,36 +835,34 @@ initCmsSelection(initialId);
       el.style.display = id === activeId ? 'none' : '';
     });
 
-controls.forEach(el => {
-  el.addEventListener('click', e => {
-    e.preventDefault();
-    const newId = el.getAttribute('data-var');
-    if (!Object.values(SDF_FORMULAS).includes(newId)) return;
+    controls.forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        const newId = el.getAttribute('data-var');
+        if (!Object.values(SDF_FORMULAS).includes(newId)) return;
 
-    // Update URL
-    params.set('sdf', newId);
-    window.history.replaceState({}, '', `${location.pathname}?${params}`);
+        // Update URL
+        params.set('sdf', newId);
+        window.history.replaceState({}, '', `${location.pathname}?${params}`);
 
-    // Lookup & paint
-    const newRow = getCiRow(newId);
-    window.CCI.sdfRow = newRow;
+        // Lookup & paint
+        const newRow = getCiRow(newId);
+        window.CCI.sdfRow = newRow;
 
-renderStickyCompareHeader(mainRow, newRow);
-renderAllSections(mainRow, newRow);
+        renderStickyCompareHeader(mainRow, newRow);
+        renderAllSections(mainRow, newRow);
 
+        // keep the hidden CMS selection in sync
+        syncCmsSelection(newId);
 
-    // >>> NEW: keep the hidden CMS selection in sync
-    syncCmsSelection(newId);
-
-    // Button states
-    controls.forEach(b => {
-      const bid = b.getAttribute('data-var');
-      b.classList.toggle('active', bid === newId);
-      b.style.display = bid === newId ? 'none' : '';
+        // Button states
+        controls.forEach(b => {
+          const bid = b.getAttribute('data-var');
+          b.classList.toggle('active', bid === newId);
+          b.style.display = bid === newId ? 'none' : '';
+        });
+      });
     });
-  });
-});
-
   }
 
   setupSdfSwitcher(initialId);
