@@ -345,28 +345,31 @@ export function paintSection2(mainRow, sdfRow) {
     const badgeCls = (diff === 0) ? 'match' : 'diff';
     const maxKey = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
 
-    return `
-      <div class="cmp2-row" data-key="${esc(key)}">
-        <div class="cmp2-label">${esc(label)}</div>
+return `
+  <div class="cmp2-row" data-key="${esc(key)}">
+    <div class="cmp2-label">${esc(label)}</div>
+    <div class="cmp2-values">
+      <span class="cmp2-badge brand">${esc(unit ? `${bv}${unit}` : String(bv))}</span>
+      <span class="cmp2-badge sport">${esc(unit ? `${sv}${unit}` : String(sv))}</span>
+    </div>
+    <div class="cmp2-diff">${esc(diffTxt)}</div>
+    <div class="cmp2-delta ${badgeCls}">${badge}</div>
+  </div>
 
-        <div class="cmp2-values">
-          <div class="cmp2-badges">
-            <span class="cmp2-badge brand">${esc(unit ? `${bv}${unit}` : String(bv))}</span>
-            <span class="cmp2-badge sport">${esc(unit ? `${sv}${unit}` : String(sv))}</span>
-          </div>
-
-          <div class="cmp2-bars">
-            <div class="cmp2-track">
-              <div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div>
-              <div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="cmp2-diff">${esc(diffTxt)}</div>
-        <div class="cmp2-delta ${badgeCls}">${badge}</div>
+  <div class="cmp2-bars">
+    <div class="cmp2-bar" data-key="${esc(key)}">
+      <div class="cmp2-track">
+        <div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div>
+        <div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div>
       </div>
-    `;
+      <div class="cmp2-values">
+        <span class="cmp2-badge brand">${esc(unit ? `${bv}${unit}` : String(bv))}</span>
+        <span class="cmp2-badge sport">${esc(unit ? `${sv}${unit}` : String(sv))}</span>
+      </div>
+    </div>
+  </div>
+`;
+
   };
 
   root.innerHTML = [
@@ -720,7 +723,7 @@ function renderAllSections(mainRow, sdfRow) {
     const el = document.querySelector(sel);
     if (el) io.observe(el);
   });
-}
+
 
 // ===========================
 // Section K (optional summary)
