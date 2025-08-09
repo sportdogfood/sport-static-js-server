@@ -42,8 +42,7 @@ const bgObserver = ('IntersectionObserver' in window)
   : null;
 
 function setLazyBackground(el, url) {
-  if (!el) return;
-  if (!url) return;
+  if (!el || !url) return;
   if (DEBUG) console.log('[lazy] set bg', el, url);
   el.dataset.bg = url;
   if (bgObserver) {
@@ -144,8 +143,8 @@ function buildLegumePoultryPhrase(row) {
   const vP = (row["data-poultry"] || "").toLowerCase();
   const freeL = vL.includes("free") || vL.includes("no");
   const freeP = vP.includes("free") || vP.includes("no");
-  const legumePhrase  = freeL ? "legume-free"      : "contains legumes";
-  const poultryPhrase = freeP ? "poultry-free"     : "contains poultry";
+  const legumePhrase  = freeL ? "legume-free"  : "contains legumes";
+  const poultryPhrase = freeP ? "poultry-free" : "contains poultry";
   if (freeL && freeP)   return `${legumePhrase} and ${poultryPhrase}`;
   if (!freeL && !freeP) return `${legumePhrase} and ${poultryPhrase}`;
   if (freeL && !freeP)  return `${legumePhrase} but ${poultryPhrase}`;
@@ -172,13 +171,10 @@ function getIngredientCategoryCounts(row) {
   return counts;
 }
 
-// ===========================
-// Class setter (hyphen-safe)
-// ===========================
+// (kept, hyphen-safe class setter; not strictly required elsewhere)
 function setDataClass(el, base, key, value, map) {
   if (!el) return;
   const prefix = `${base}-${key}-`;
-  // remove any existing classes with that prefix
   [...el.classList].forEach(cls => { if (cls.startsWith(prefix)) el.classList.remove(cls); });
   let segmentKey = Object.keys(map || {}).find(k => k.toLowerCase() === (value || '').toLowerCase());
   let segment = segmentKey ? map[segmentKey] : (value || '').toLowerCase().replace(/\s+/g, '-');
@@ -295,7 +291,7 @@ export function paintSection1(mainRow, sdfRow) {
     </div>
   `).join('');
 
-  // Light summary madlib (optional)
+  // Optional summary
   const mainSpec = buildLegumePoultryPhrase(mainRow);
   const sdfSpec  = buildLegumePoultryPhrase(sdfRow);
   const madlibEl = document.querySelector('[data-var="section1-madlib"]');
@@ -311,7 +307,7 @@ export function paintSection1(mainRow, sdfRow) {
 }
 
 // ===========================
-// Section 2 (Group 2 + two distinct bars per row)
+// Section 2 (Group 2 + two distinct bars per row, below each row)
 // ===========================
 export function paintSection2(mainRow, sdfRow) {
   const headerEl = document.querySelector('[data-var="section2-header"]');
@@ -334,7 +330,7 @@ export function paintSection2(mainRow, sdfRow) {
   const b = vals(mainRow);
   const s = vals(sdfRow);
 
-  // visual maxes (only for bar widths)
+  // visual maxes for bar widths
   const MAX = { protein: 40, fat: 30, kcals_c: 600, kcals_k: 5500 };
   const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
 
@@ -346,26 +342,29 @@ export function paintSection2(mainRow, sdfRow) {
     const badgeCls = (diff === 0) ? 'match' : 'diff';
     const maxKey   = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
 
+    const fmt = (v) => unit ? `${v}${unit}` : String(v);
+
     return `
       <div class="cmp2-row" data-key="${esc(key)}">
         <div class="cmp2-label">${esc(label)}</div>
+        <div class="cmp2-diff">${esc(diffTxt)}</div>
+        <div class="cmp2-delta ${badgeCls}">${badge}</div>
+      </div>
 
-        <div class="cmp2-values">
-          <div class="cmp2-bar brand" aria-label="Competitor ${esc(label)}">
-            <div class="cmp2-track">
-              <div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div>
-            </div>
-          </div>
-
-          <div class="cmp2-bar sport" aria-label="Sport Dog Food ${esc(label)}">
-            <div class="cmp2-track">
-              <div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div>
-            </div>
+      <div class="cmp2-bars">
+        <div class="cmp2-bar brand" aria-label="Competitor ${esc(label)}">
+          <div class="cmp2-track"><div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div></div>
+          <div class="cmp2-values">
+            <span class="cmp2-badge brand">${esc(fmt(bv))}</span>
           </div>
         </div>
 
-        <div class="cmp2-diff">${esc(diffTxt)}</div>
-        <div class="cmp2-delta ${badgeCls}">${badge}</div>
+        <div class="cmp2-bar sport" aria-label="Sport Dog Food ${esc(label)}">
+          <div class="cmp2-track"><div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div></div>
+          <div class="cmp2-values">
+            <span class="cmp2-badge sport">${esc(fmt(sv))}</span>
+          </div>
+        </div>
       </div>
     `;
   };
@@ -390,7 +389,7 @@ export function paintSection2(mainRow, sdfRow) {
 // Section 3 (ingredients overlay + modal search + swap)
 // ===========================
 export function paintSection3(mainRow, sdfRow) {
-  // Set headers
+  // headers
   const h = document.querySelector('[data-var="section3-header"]');
   if (h) h.textContent = 'Under the Hood';
   const p = document.querySelector('[data-var="section3-subtitle"]');
@@ -402,19 +401,17 @@ export function paintSection3(mainRow, sdfRow) {
   // Ensure DOM scaffold exists
   ensureSection3Dom(sec3);
 
-  // Targets (exist after scaffold)
+  // Targets
   const rowsRoot    = sec3.querySelector('#cmp3-rows');
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
   const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
   const sportListEl = sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
-
   if (!rowsRoot || !brandNameEl || !sportNameEl || !brandListEl || !sportListEl) return;
 
-  // Totals overlay (compare over sport)
+  // Totals overlay
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
-
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
@@ -434,7 +431,6 @@ export function paintSection3(mainRow, sdfRow) {
       </div>
     `;
   };
-
   rowsRoot.innerHTML = [
     overlayRow('total',        'Total Ingredients'),
     overlayRow('Protein',      'Protein'),
@@ -453,10 +449,72 @@ export function paintSection3(mainRow, sdfRow) {
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
+  // Modal: wire button to open canonical modal
+  ensureIngSearchModal(); // ensure it exists once (or adapt to existing)
+  const openBtn = sec3.querySelector('#open-ing-search');
+  if (openBtn && !openBtn._wired) {
+    openBtn._wired = true;
+    openBtn.addEventListener('click', () => openIngredientModal(mainRow, sdfRow));
+  }
 
-// === Modal: fixed size + body scroll lock + search render ===
+  // Swap order
+  const swapBtn    = sec3.querySelector('#swap-ing-order');
+  const listsWrap  = sec3.querySelector('#cmp3-lists');
+  const brandBlock = sec3.querySelector('#cmp3-brand-list');
+  const sportBlock = sec3.querySelector('#cmp3-sport-list');
+  if (swapBtn && !swapBtn._wired) {
+    swapBtn._wired = true;
+    swapBtn.addEventListener('click', () => {
+      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
+      swapBtn.setAttribute('aria-pressed', String(!swapped));
+      if (!swapped) {
+        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
+      } else {
+        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
+      }
+    });
+  }
+}
 
-// Lock the page while modal is open (no scroll jump)
+// Build/repair the Section 3 DOM scaffold if missing pieces
+function ensureSection3Dom(sec3) {
+  const ok =
+    sec3.querySelector('.cmp3') &&
+    sec3.querySelector('#cmp3-rows') &&
+    sec3.querySelector('#cmp3-lists') &&
+    sec3.querySelector('#cmp3-brand-list') &&
+    sec3.querySelector('#cmp3-sport-list') &&
+    sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
+    sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
+
+  if (ok) return;
+
+  sec3.innerHTML = `
+    <div class="cmp3">
+      <div class="cmp3-rows" id="cmp3-rows"></div>
+
+      <div class="cmp3-actions">
+        <button class="cmp3-btn" id="open-ing-search" type="button">Search ingredients</button>
+        <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false" type="button">Swap order (Sport ⇄ Compare)</button>
+      </div>
+
+      <div class="cmp3-lists" id="cmp3-lists">
+        <div class="ci-list brand" id="cmp3-brand-list">
+          <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
+          <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
+        </div>
+        <div class="ci-list sport" id="cmp3-sport-list">
+          <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
+          <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ===========================
+// Modal (single canonical version): fixed size + body scroll lock
+// ===========================
 function lockBodyScroll() {
   const y = window.scrollY || 0;
   document.documentElement.classList.add('no-scroll');
@@ -471,7 +529,7 @@ function unlockBodyScroll() {
   window.scrollTo(0, y);
 }
 
-// Create the modal once; return the element
+// Create the modal once; return it
 function ensureIngSearchModal() {
   let modal = document.getElementById('ing-search-modal');
   if (modal) return modal;
@@ -500,20 +558,18 @@ function ensureIngSearchModal() {
 
   // Close on backdrop/X
   modal.addEventListener('click', (e) => {
-    const t = e.target;
-    if (t && t.getAttribute && t.getAttribute('data-close') === '1') closeIngredientModal();
+    const closer = e.target.closest('[data-close]');
+    if (closer) closeIngredientModal();
   });
 
   // Close on Escape
   document.addEventListener('keydown', (e) => {
-    if (!modal.classList.contains('open')) return;
-    if (e.key === 'Escape') closeIngredientModal();
+    if (e.key === 'Escape' && modal.classList.contains('open')) closeIngredientModal();
   });
 
   return modal;
 }
 
-// Open / Close API
 function openIngredientModal(mainRow, sdfRow) {
   const modal = ensureIngSearchModal();
   if (!modal.classList.contains('open')) {
@@ -521,31 +577,41 @@ function openIngredientModal(mainRow, sdfRow) {
     modal.setAttribute('aria-hidden', 'false');
     lockBodyScroll();
   }
-  // (Re)paint search UI
-  const wrapper = modal.querySelector('.pwrf_results');
-  const input   = modal.querySelector('.pwrf_search-input');
-  const clear   = modal.querySelector('.pwrf_clear-btn');
-  if (wrapper && input && clear) {
-    paintDualIngredientLists(mainRow, sdfRow, wrapper, input, clear);
-    input.focus();
+
+  // Preferred (canonical) structure
+  let resultsEl = modal.querySelector('.pwrf_results');
+  let inputEl   = modal.querySelector('.pwrf_search-input');
+  let clearBtn  = modal.querySelector('.pwrf_clear-btn');
+
+  // Fallback: support legacy static modal with .pwrf-filter-wrapper (inject searchbar inside it)
+  if (!resultsEl) {
+    const mount = modal.querySelector('.pwrf-filter-wrapper');
+    if (mount) {
+      mount.innerHTML = `
+        <div class="pwrf_searchbar" role="search">
+          <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
+          <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
+        </div>
+        <div class="pwrf_results" aria-live="polite"></div>
+      `;
+      resultsEl = mount.querySelector('.pwrf_results');
+      inputEl   = mount.querySelector('.pwrf_search-input');
+      clearBtn  = mount.querySelector('.pwrf_clear-btn');
+    }
+  }
+
+  if (resultsEl && inputEl && clearBtn) {
+    paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
+    inputEl.focus();
   }
 }
+
 function closeIngredientModal() {
   const modal = document.getElementById('ing-search-modal');
   if (!modal) return;
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
   unlockBodyScroll();
-}
-
-// Wire your existing button to this
-export function wireIngredientSearchButton(sec3, mainRow, sdfRow) {
-  ensureIngSearchModal();
-  const btn = sec3.querySelector('#open-ing-search');
-  if (btn && !btn._wired) {
-    btn._wired = true;
-    btn.addEventListener('click', () => openIngredientModal(mainRow, sdfRow));
-  }
 }
 
 // Render the two lists + live filter (results don’t resize the modal)
@@ -601,8 +667,7 @@ function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn)
       });
       g.empty.hidden = any || !q;
     });
-    // When empty query: show nothing (keeps the panel stable and quiet)
-    if (!q) {
+    if (!q) { // stable empty state
       groups.forEach(g => {
         g.items.forEach(it => it.hidden = true);
         g.empty.hidden = true;
@@ -613,129 +678,15 @@ function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn)
   let to = 0;
   const debounced = () => { clearTimeout(to); to = setTimeout(doFilter, 100); };
 
-  inputEl.removeEventListener('_inputAttached', () => {});
-  inputEl.addEventListener('input', debounced);
-  inputEl._inputAttached = true;
-
-  clearBtn.addEventListener('click', (e) => {
+  inputEl.oninput = debounced; // replace any previous listeners
+  clearBtn.onclick = (e) => {
     e.preventDefault();
     inputEl.value = '';
     doFilter();
     inputEl.focus();
-  });
+  };
 
-  // Start with empty state (no results until user types)
-  doFilter();
-}
-
-
-  // Modal (idempotent)
-  ensureIngSearchModal();
-  const openBtn = sec3.querySelector('#open-ing-search');
-  if (openBtn && !openBtn._wired) {
-    openBtn._wired = true;
-    openBtn.addEventListener('click', () => {
-      const modal = ensureIngSearchModal();
-      modal.classList.add('open');
-      const mount = modal.querySelector('.pwrf-filter-wrapper');
-      if (mount) paintDualIngredientLists(mainRow, sdfRow, mount);
-    });
-  }
-
-  // Swap order (idempotent)
-  const swapBtn    = sec3.querySelector('#swap-ing-order');
-  const listsWrap  = sec3.querySelector('#cmp3-lists');
-  const brandBlock = sec3.querySelector('#cmp3-brand-list');
-  const sportBlock = sec3.querySelector('#cmp3-sport-list');
-
-  if (swapBtn && !swapBtn._wired) {
-    swapBtn._wired = true;
-    swapBtn.addEventListener('click', () => {
-      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
-      swapBtn.setAttribute('aria-pressed', String(!swapped));
-      if (!swapped) {
-        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
-      } else {
-        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
-      }
-    });
-  }
-}
-
-// Build/repair the Section 3 DOM scaffold if missing pieces
-function ensureSection3Dom(sec3) {
-  const ok =
-    sec3.querySelector('.cmp3') &&
-    sec3.querySelector('#cmp3-rows') &&
-    sec3.querySelector('#cmp3-lists') &&
-    sec3.querySelector('#cmp3-brand-list') &&
-    sec3.querySelector('#cmp3-sport-list') &&
-    sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
-    sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
-
-  if (ok) return;
-
-  sec3.innerHTML = `
-    <div class="cmp3">
-      <div class="cmp3-rows" id="cmp3-rows"></div>
-
-      <div class="cmp3-actions">
-        <button class="cmp3-btn" id="open-ing-search" type="button">Search ingredients</button>
-        <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false" type="button">Swap order (Sport ⇄ Compare)</button>
-      </div>
-
-      <div class="cmp3-lists" id="cmp3-lists">
-        <div class="ci-list brand" id="cmp3-brand-list">
-          <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
-          <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
-        </div>
-        <div class="ci-list sport" id="cmp3-sport-list">
-          <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
-          <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-// Modal shell (idempotent; stable close)
-function ensureIngSearchModal() {
-  let modal = document.getElementById('ing-search-modal');
-  if (!modal) {
-    modal = document.createElement('div');
-    modal.id = 'ing-search-modal';
-    modal.className = 'cmp3-modal';
-    modal.innerHTML = `
-      <div class="cmp3-modal__backdrop" data-close="1"></div>
-      <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
-        <div class="cmp3-modal__head">
-          <h3 id="ing-search-title">Search Ingredients</h3>
-          <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close" type="button">×</button>
-        </div>
-        <div class="cmp3-modal__body">
-          <div class="pwrf-filter-wrapper"></div>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(modal);
-  }
-
-  if (!modal._wired) {
-    modal._wired = true;
-
-    // close on backdrop/X (robust)
-    modal.addEventListener('click', (e) => {
-      const closer = e.target.closest('[data-close]');
-      if (closer) modal.classList.remove('open');
-    });
-
-    // close on Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modal.classList.contains('open')) modal.classList.remove('open');
-    });
-  }
-
-  return modal;
+  doFilter(); // start empty
 }
 
 // Render inline ingredient list tags
@@ -773,146 +724,9 @@ function renderIngListDivs(row) {
   `;
 }
 
-// Modal search content (mounts inside .pwrf-filter-wrapper)
-function paintDualIngredientLists(mainRow, sdfRow, mountEl) {
-  const getIngredients = (row) => {
-    const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
-    return ids.map(id => ING_MAP[id]).filter(Boolean);
-  };
-
-  const renderList = (ings, title, groupId) => `
-    <div class="pwrf-list-group" data-list="${groupId}">
-      <div class="pwrf_list-title">${esc(title)}</div>
-      <div class="pwrf_list-body">
-        ${ings.map(ing => {
-          const searchVal = [
-            ing.Name,
-            ing.displayAs,
-            ing.groupWith,
-            ing['data-type']       || '',
-            ing.recordType         || '',
-            ing.animalType         || '',
-            ing.animalAssist       || '',
-            ing.plantType          || '',
-            ing.plantAssist        || '',
-            ing.supplementalType   || '',
-            ing.supplementalAssist || '',
-            ...(ing.tags || [])
-          ].join(' ').toLowerCase();
-
-          return `
-            <div class="pwrf_row" data-search="${esc(searchVal)}">
-              <div class="pwrf_row-label">${esc(ing.displayAs || ing.Name || '')}</div>
-            </div>
-          `;
-        }).join('')}
-        <div class="pwrf_no-results" style="display:none;">No ${esc(title.toLowerCase())} found.</div>
-      </div>
-    </div>
-  `;
-
-  const wrapper = mountEl || document.querySelector('.pwrf-filter-wrapper');
-  if (!wrapper) return;
-
-  wrapper.innerHTML = `
-    <div class="pwrf_searchbar" role="search">
-      <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-      <button class="pwrf_clear-btn" type="button" aria-label="Clear search">Clear</button>
-    </div>
-    <div class="pwrf_results" aria-live="polite">
-      ${renderList(getIngredients(mainRow), mainRow['data-brand'] || 'Competitor', 1)}
-      ${renderList(getIngredients(sdfRow), 'Sport Dog Food', 2)}
-    </div>
-  `;
-
-  const input    = wrapper.querySelector('.pwrf_search-input');
-  const clearBtn = wrapper.querySelector('.pwrf_clear-btn');
-  const groups   = Array.from(wrapper.querySelectorAll('.pwrf-list-group')).map(el => ({
-    container: el,
-    items: Array.from(el.querySelectorAll('.pwrf_row')),
-    noResults: el.querySelector('.pwrf_no-results')
-  }));
-
-  const filterNow = () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) {
-      clearBtn.disabled = true;
-      groups.forEach(g => {
-        g.container.style.display = "";      // keep group visible; hide items for stable box
-        g.noResults.style.display = "none";
-        g.items.forEach(it => it.style.display = "none");
-      });
-    } else {
-      clearBtn.disabled = false;
-      groups.forEach(g => {
-        g.container.style.display = "";
-        let any = false;
-        for (const it of g.items) {
-          const ok = it.dataset.search.includes(q);
-          it.style.display = ok ? "" : "none";
-          if (ok) any = true;
-        }
-        g.noResults.style.display = any ? "none" : "";
-      });
-    }
-  };
-
-  let to = 0;
-  const debounced = () => { clearTimeout(to); to = setTimeout(() => requestAnimationFrame(filterNow), 120); };
-
-  input.addEventListener('input', debounced);
-  clearBtn.addEventListener('click', (e) => { e.preventDefault(); input.value = ''; filterNow(); });
-
-  filterNow();
-}
-
-// Render all sections now (no lazy IO)
-function renderAllSections(mainRow, sdfRow) {
-  paintSection1(mainRow, sdfRow);
-  paintSection2(mainRow, sdfRow);
-  paintSection3(mainRow, sdfRow);
-wireIngredientSearchButton(sec3, mainRow, sdfRow);
-  if (typeof paintSectionK === 'function') {
-    paintSectionK(mainRow, [
-      getCiRow(SDF_FORMULAS.cub),
-      getCiRow(SDF_FORMULAS.dock),
-      getCiRow(SDF_FORMULAS.herding)
-    ]);
-  }
-}
-
 // ===========================
-// Section K (optional summary)
-// ===========================
-function buildSectionKMadlib(mainRow, sdfRows) {
-  const mainBrand = mainRow["data-brand"] || "Brand";
-  const mainName  = mainRow["data-one"]   || "Product";
-  const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
-
-  const sdfKcals = sdfRows.map(r => parseInt(r["ga_kcals_per_cup"], 10)).filter(n => !isNaN(n));
-  const minKcal = sdfKcals.length ? Math.min(...sdfKcals) : "?";
-  const maxKcal = sdfKcals.length ? Math.max(...sdfKcals) : "?";
-
-  let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
-  if (mainKcal !== "?" && mainKcal < 410) kcalLine += " This is not particularly high if you are feeding a highly active dog.";
-  else if (mainKcal !== "?" && mainKcal > 500) kcalLine += " This is suitable for high-performance dogs.";
-
-  const sdfLine = `Sport formulas range from <span class="highlight">${minKcal}–${maxKcal}</span> kcals per cup for comparison.`;
-  return `${kcalLine} ${sdfLine}`;
-}
-
-export function paintSectionK(mainRow, sdfRows) {
-  const headerEl = document.querySelector('[data-var="sectionk-header"]');
-  if (headerEl) headerEl.textContent = "Overall Formula Comparison";
-
-  const text = buildSectionKMadlib(mainRow, sdfRows);
-  const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
-  if (!madlibEl) return;
-  madlibEl.setAttribute('data-text', text);
-  madlibEl.innerHTML = text;
-}
-
 // Utility: wait for an element (and optional child)
+// ===========================
 function waitForEl(selector, { childSelector = null, timeout = 5000 } = {}) {
   return new Promise((resolve) => {
     const root = document.querySelector(selector);
@@ -969,6 +783,53 @@ async function syncCmsSelection(sdfId) {
 /** Call once on load to set the initial selection after CMS renders */
 function initCmsSelection(initialId) {
   syncCmsSelection(initialId);
+}
+
+// ===========================
+// Section K (optional summary)
+// ===========================
+function buildSectionKMadlib(mainRow, sdfRows) {
+  const mainBrand = mainRow["data-brand"] || "Brand";
+  const mainName  = mainRow["data-one"]   || "Product";
+  const mainKcal  = parseInt(mainRow["ga_kcals_per_cup"], 10) || "?";
+
+  const sdfKcals = sdfRows.map(r => parseInt(r["ga_kcals_per_cup"], 10)).filter(n => !isNaN(n));
+  const minKcal = sdfKcals.length ? Math.min(...sdfKcals) : "?";
+  const maxKcal = sdfKcals.length ? Math.max(...sdfKcals) : "?";
+
+  let kcalLine = `${mainBrand} ${mainName} contains ${mainKcal} kcals/cup.`;
+  if (mainKcal !== "?" && mainKcal < 410) kcalLine += " This is not particularly high if you are feeding a highly active dog.";
+  else if (mainKcal !== "?" && mainKcal > 500) kcalLine += " This is suitable for high-performance dogs.";
+
+  const sdfLine = `Sport formulas range from <span class="highlight">${minKcal}–${maxKcal}</span> kcals per cup for comparison.`;
+  return `${kcalLine} ${sdfLine}`;
+}
+
+export function paintSectionK(mainRow, sdfRows) {
+  const headerEl = document.querySelector('[data-var="sectionk-header"]');
+  if (headerEl) headerEl.textContent = "Overall Formula Comparison";
+
+  const text = buildSectionKMadlib(mainRow, sdfRows);
+  const madlibEl = document.querySelector('[data-var="sectionk-madlib"]');
+  if (!madlibEl) return;
+  madlibEl.setAttribute('data-text', text);
+  madlibEl.innerHTML = text;
+}
+
+// ===========================
+// Render-all helper (no lazy IO)
+// ===========================
+function renderAllSections(mainRow, sdfRow) {
+  paintSection1(mainRow, sdfRow);
+  paintSection2(mainRow, sdfRow);
+  paintSection3(mainRow, sdfRow);
+  if (typeof paintSectionK === 'function') {
+    paintSectionK(mainRow, [
+      getCiRow(SDF_FORMULAS.cub),
+      getCiRow(SDF_FORMULAS.dock),
+      getCiRow(SDF_FORMULAS.herding)
+    ]);
+  }
 }
 
 // ===========================
