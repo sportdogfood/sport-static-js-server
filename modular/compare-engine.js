@@ -388,18 +388,10 @@ return `
   }
 }
 
-// ===========================
+
 // Section 3 (ingredients overlay + modal search + swap)
 // ===========================
 export function paintSection3(mainRow, sdfRow) {
-  const esc = (v) =>
-    String(v ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-
   const headerEl = document.querySelector('[data-var="section3-header"]');
   if (headerEl) headerEl.textContent = "Under the Hood";
   const subtitleEl = document.querySelector('[data-var="section3-subtitle"]');
@@ -408,30 +400,133 @@ export function paintSection3(mainRow, sdfRow) {
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
-  // Scaffold once
-  if (!sec3.querySelector('.cmp3')) {
-    sec3.innerHTML = `
-      <div class="cmp3">
-        <div class="cmp3-rows" id="cmp3-rows"></div>
+  // Ensure required DOM exists (handles half-rendered legacy markup)
+  ensureSection3Dom(sec3);
 
-        <div class="cmp3-actions">
-          <button class="cmp3-btn" id="open-ing-search" type="button">Search ingredients</button>
-          <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false" type="button">Swap order (Sport ⇄ Compare)</button>
-        </div>
+  // Targets (guaranteed to exist after ensureSection3Dom)
+  const rowsRoot    = sec3.querySelector('#cmp3-rows');
+  const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
+  const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
+  const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
+  const sportListEl = sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
 
-        <div class="cmp3-lists" id="cmp3-lists">
-          <div class="ci-list brand" id="cmp3-brand-list">
-            <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
-            <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
-          </div>
-          <div class="ci-list sport" id="cmp3-sport-list">
-            <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
-            <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
-          </div>
+  // Safety guard: if something still isn't there, bail quietly
+  if (!rowsRoot || !brandNameEl || !sportNameEl || !brandListEl || !sportListEl) {
+    console.warn('[compare] Section 3 structure incomplete');
+    return;
+  }
+
+  // Totals overlay (compare over sport)
+  const countsB  = getIngredientCategoryCounts(mainRow);
+  const countsS  = getIngredientCategoryCounts(sdfRow);
+
+  const overlayRow = (key, label) => {
+    const b = countsB[key] ?? 0;
+    const s = countsS[key] ?? 0;
+    const diff = s - b;
+    const diffTxt  = diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`);
+    const badge    = diff === 0 ? 'Match' : 'Different';
+    const badgeCls = diff === 0 ? 'match' : 'diff';
+    return `
+      <div class="cmp3-row" data-key="${esc(key)}">
+        <div class="cmp3-label">${esc(label)}</div>
+        <div class="cmp3-values">
+          <span class="cmp3-badge brand">${b}</span>
+          <span class="cmp3-badge sport">${s}</span>
         </div>
+        <div class="cmp3-diff">${esc(diffTxt)}</div>
+        <div class="cmp3-delta ${badgeCls}">${badge}</div>
       </div>
     `;
+  };
+
+  rowsRoot.innerHTML = [
+    overlayRow('total',        'Total Ingredients'),
+    overlayRow('Protein',      'Protein'),
+    overlayRow('Plants',       'Plants'),
+    overlayRow('Supplemental', 'Supplemental'),
+    (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
+  ].join('');
+
+  // Names
+  brandNameEl.textContent = mainRow["data-brand"]
+    ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
+    : (mainRow["data-one"] || "");
+  sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
+
+  // Lists
+  brandListEl.innerHTML = renderIngListDivs(mainRow);
+  sportListEl.innerHTML = renderIngListDivs(sdfRow);
+
+  // Modal open
+  ensureIngSearchModal();
+  const openBtn = sec3.querySelector('#open-ing-search');
+  if (openBtn && !openBtn._wired) {
+    openBtn._wired = true;
+    openBtn.addEventListener('click', () => {
+      const modal = ensureIngSearchModal();
+      modal.classList.add('open');
+      const mount = modal.querySelector('.pwrf-filter-wrapper');
+      if (mount) paintDualIngredientLists(mainRow, sdfRow, mount);
+    });
   }
+
+  // Swap order
+  const swapBtn    = sec3.querySelector('#swap-ing-order');
+  const listsWrap  = sec3.querySelector('#cmp3-lists');
+  const brandBlock = sec3.querySelector('#cmp3-brand-list');
+  const sportBlock = sec3.querySelector('#cmp3-sport-list');
+
+  if (swapBtn && !swapBtn._wired) {
+    swapBtn._wired = true;
+    swapBtn.addEventListener('click', () => {
+      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
+      swapBtn.setAttribute('aria-pressed', String(!swapped));
+      if (!swapped) {
+        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
+      } else {
+        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
+      }
+    });
+  }
+}
+
+// Guarantees all required nodes exist, even if .cmp3 exists but is missing children
+function ensureSection3Dom(sec3) {
+  const needsBuild =
+    !sec3.querySelector('.cmp3') ||
+    !sec3.querySelector('#cmp3-rows') ||
+    !sec3.querySelector('#cmp3-lists') ||
+    !sec3.querySelector('#cmp3-brand-list') ||
+    !sec3.querySelector('#cmp3-sport-list') ||
+    !sec3.querySelector('[data-var="brand-1-sec3-inglist"]') ||
+    !sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
+
+  if (!needsBuild) return;
+
+  sec3.innerHTML = `
+    <div class="cmp3">
+      <div class="cmp3-rows" id="cmp3-rows"></div>
+
+      <div class="cmp3-actions">
+        <button class="cmp3-btn" id="open-ing-search" type="button">Search ingredients</button>
+        <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false" type="button">Swap order (Sport ⇄ Compare)</button>
+      </div>
+
+      <div class="cmp3-lists" id="cmp3-lists">
+        <div class="ci-list brand" id="cmp3-brand-list">
+          <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
+          <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
+        </div>
+        <div class="ci-list sport" id="cmp3-sport-list">
+          <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
+          <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 
   // Totals overlay (compare over sport)
   const rowsRoot = sec3.querySelector('#cmp3-rows');
