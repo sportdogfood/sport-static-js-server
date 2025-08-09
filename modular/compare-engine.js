@@ -389,14 +389,23 @@ export function paintSection2(mainRow, sdfRow) {
 // Section 3 (ingredients overlay + modal search + swap)
 // ===========================
 export function paintSection3(mainRow, sdfRow) {
+  const esc = (v) =>
+    String(v ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
   const headerEl = document.querySelector('[data-var="section3-header"]');
   if (headerEl) headerEl.textContent = "Under the Hood";
   const subtitleEl = document.querySelector('[data-var="section3-subtitle"]');
   if (subtitleEl) subtitleEl.textContent = "Let's dig in and see how each ingredient stacks up.";
 
-  const sec3 = document.getElementById('section-3') || document.querySelector('#section-3');
+  const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
+  // Scaffold once
   if (!sec3.querySelector('.cmp3')) {
     sec3.innerHTML = `
       <div class="cmp3">
@@ -422,9 +431,10 @@ export function paintSection3(mainRow, sdfRow) {
   }
 
   // Totals overlay (compare over sport)
-  const rowsRoot   = sec3.querySelector('#cmp3-rows');
-  const countsB    = getIngredientCategoryCounts(mainRow);
-  const countsS    = getIngredientCategoryCounts(sdfRow);
+  const rowsRoot = sec3.querySelector('#cmp3-rows');
+  const countsB  = getIngredientCategoryCounts(mainRow);
+  const countsS  = getIngredientCategoryCounts(sdfRow);
+
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
@@ -455,12 +465,16 @@ export function paintSection3(mainRow, sdfRow) {
 
   // Names
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
-  if (brandNameEl) brandNameEl.textContent =
-    mainRow["data-brand"] ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
-                          : (mainRow["data-one"] || "");
+  if (brandNameEl) {
+    brandNameEl.textContent = mainRow["data-brand"]
+      ? `${mainRow["data-brand"]} ${mainRow["data-one"] || ''}`.trim()
+      : (mainRow["data-one"] || "");
+  }
 
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
-  if (sportNameEl) sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
+  if (sportNameEl) {
+    sportNameEl.textContent = `Sport Dog Food ${sdfRow["data-one"] || ''}`.trim();
+  }
 
   // Lists
   const brandListEl = sec3.querySelector('[data-var="brand-1-sec3-inglist"]');
@@ -474,11 +488,10 @@ export function paintSection3(mainRow, sdfRow) {
   if (openBtn && !openBtn._wired) {
     openBtn._wired = true;
     openBtn.addEventListener('click', () => {
-      const modal = document.getElementById('ing-search-modal');
-      if (!modal) return;
+      const modal = ensureIngSearchModal();
       modal.classList.add('open');
-      // Paint search UI inside modal body
-      paintDualIngredientLists(mainRow, sdfRow, modal.querySelector('.pwrf-filter-wrapper'));
+      const mount = modal.querySelector('.pwrf-filter-wrapper');
+      if (mount) paintDualIngredientLists(mainRow, sdfRow, mount);
     });
   }
 
@@ -500,9 +513,9 @@ export function paintSection3(mainRow, sdfRow) {
       }
     });
   }
-}
+} // <-- closes paintSection3
 
-// ---- Modal shell (drop-in) ----
+// ---- Modal shell (module-scope, idempotent) ----
 function ensureIngSearchModal() {
   let modal = document.getElementById('ing-search-modal');
   if (modal) return modal;
@@ -524,10 +537,13 @@ function ensureIngSearchModal() {
   `;
   document.body.appendChild(modal);
 
-  // close on backdrop/X or Esc
+  // close on backdrop/X
   modal.addEventListener('click', (e) => {
-    if (e.target.dataset.close === '1') modal.classList.remove('open');
+    const t = e.target;
+    if (t && t.dataset && t.dataset.close === '1') modal.classList.remove('open');
   });
+
+  // close on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') modal.classList.remove('open');
   });
