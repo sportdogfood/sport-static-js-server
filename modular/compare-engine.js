@@ -271,73 +271,7 @@ function showInnerByValue(container, value, map) {
 }
 
 
-function paintSection1(mainRow, sdfRow) {
-  const CDN = "https://cdn.prod.website-files.com/5c919f089b1194a099fe6c41";
 
-  // (Keep header/subtitle wiring, or strip—your call)
-  const headerEl = document.querySelector('[data-var="section1-header"]');
-  if (headerEl) headerEl.textContent = "Nutrition Profile";
-  const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
-  if (subtitleEl) {
-    subtitleEl.innerHTML =
-      `<span class="span-compare">Comparing</span><br>` +
-      `${mainRow["data-brand"]} ${mainRow["data-one"]}<br>` +
-      `<img src="${CDN}/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle; width:1.6em; height:1em; margin:0 0.3em;"><br>` +
-      `Sport Dog Food ${sdfRow["data-one"]}`;
-  }
-
-  const dietText = v =>
-    /free/i.test(v) ? 'Grain Free' : /grain/i.test(v) ? 'Grain Inclusive' : '—';
-  const legumesText = v =>
-    /(free|no)/i.test(v) ? 'Legume-Free' : /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
-  const poultryText = v =>
-    /(free|no)/i.test(v) ? 'Poultry-Free' : /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
-  const flavorText = v =>
-    /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
-    /\bbeef\b/i.test(v) ? 'Beef' :
-    /\bfish|salmon\b/i.test(v) ? 'Fish' :
-    /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
-    /\bmeat\b/i.test(v) ? 'Meat' : '—';
-
-  const setDelta = (a, b) => a === b ? {text:'Match'} : {text:'Different'};
-
-  const root = document.querySelector('#section-1 .cmp1-rows');
-  if (!root) return;
-
-  const rows = [
-    {
-      key:'diet', label:'Diet',
-      brand: dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
-      sport: dietText(sdfRow["data-diet"]  || sdfRow["data-grain"]  || '')
-    },
-    {
-      key:'legumes', label:'Legumes',
-      brand: legumesText(mainRow["data-legumes"] || ''),
-      sport: legumesText(sdfRow["data-legumes"]  || '')
-    },
-    {
-      key:'poultry', label:'Poultry',
-      brand: poultryText(mainRow["data-poultry"] || ''),
-      sport: poultryText(sdfRow["data-poultry"]  || '')
-    },
-    {
-      key:'flavor', label:'Primary Protein',
-      brand: flavorText(mainRow["specs_primary_flavor"] || ''),
-      sport: flavorText(sdfRow["specs_primary_flavor"]  || '')
-    }
-  ];
-
-  root.innerHTML = rows.map(r => `
-    <div class="cmp1-row" data-key="${r.key}">
-      <div class="cmp1-label">${r.label}</div>
-      <div class="cmp1-values">
-        <span class="cmp1-badge brand">${r.brand}</span>
-        <span class="cmp1-badge sport">${r.sport}</span>
-      </div>
-      <div class="cmp1-delta">${setDelta(r.brand, r.sport).text}</div>
-    </div>
-  `).join('');
-}
 
 function renderStickyCompareHeader(mainRow, sdfRow) {
   const root = document.getElementById('compare-sticky');
@@ -549,7 +483,7 @@ function paintSection3(mainRow, sdfRow) {
       if (!modal) return;
       modal.classList.add('open');
       // Paint the dual ingredient search into the modal’s .pwrf-filter-wrapper
-      paintDualIngredientLists(mainRow, sdfRow);
+
     });
   }
 
