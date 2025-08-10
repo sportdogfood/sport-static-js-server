@@ -252,89 +252,114 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
   const flavorText = v =>
     /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
-    /\bbeef\b/i.test(v) ? 'Beef' :
-    /\bfish|salmon\b/i.test(v) ? 'Fish' :
-    /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
+    /\b(beef)\b/i.test(v) ? 'Beef' :
+    /\b(fish|salmon)\b/i.test(v) ? 'Fish' :
+    /\b(bison|buffalo)\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  // tiny icon set to mirror your sample
-// add near your icons object:
-const matchIcons = {
-  eq:  `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`,
-  ne:  `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`
-};
-
-function getMatchBadge(aTxt, bTxt) {
-  const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
-  const icon = isMatch ? matchIcons.eq : matchIcons.ne;
-  const label = isMatch ? 'Match' : 'Different';
-  const cls = isMatch ? 'match' : 'diff';
-  return `<span class="cmp-match ${cls}" aria-label="Attributes ${label}">${icon}<span class="cmp-match-txt">${label}</span></span>`;
-}
-
-  const icons = {
-    diet:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 8c2 0 3-2 3-4M7 14c2 0 3-2 3-4M17 8c-2 0-3-2-3-4M17 14c-2 0-3-2-3-4"/></svg>`,
-    dietB:   `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M8.5 8c1.5 0 2.5-2 2.5-4M8.5 14c1.5 0 2.5-2 2.5-4M15.5 8C14 8 13 6 13 4M15.5 14C14 14 13 12 13 10"/></svg>`,
-    circle:  `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>`,
-    bars:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><path d="M4 18h16M8 6h8M6 12h12"/></svg>`,
-    tri:     `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><path d="M5 19l7-14 7 14z"/></svg>`,
-    check:   `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>`
+  // --- ICON LIB (uses your CDN assets) ---
+  const ICONS = {
+    poultry: `${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg`,
+    legumes: `${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg`,
+    grain:   `${CDN}/688e4f97f058589e135de78d_grain-sm.svg`,
+    flavor: {
+      poultry: `${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg`,
+      beef:    `${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg`,
+      meat:    `${CDN}/688e4f91a8deee5cc246d0be_beef-sm.svg`,
+      fish:    `${CDN}/688c1f5e4633f104d7ea1658_Untitled%20(6%20x%206%20in)%20(70%20x%2070%20px).svg`,
+      buffalo: `${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg`
+    }
   };
 
-  // if you have real scoring, plug it in here
-  const deltaFor = (_key, _a, _b, which) => {
-    // return { txt: '+7', cls: 'pos' } etc.  Default to zero to match sample shape.
-    return { txt: '±0', cls: 'zero' };
-  };
+  function iconWrap(src, cls, { slash } = {}) {
+    const slashDiv = (slash === undefined || slash === null)
+      ? ''
+      : `<div class="slash${slash ? '' : ' no-slash'}"></div>`;
+    return `
+      <div class="icon-wrapper">
+        ${slashDiv}
+        <img src="${src}" loading="lazy" alt="" class="${cls}">
+      </div>
+    `;
+  }
+
+  // Map attribute text -> proper icon wrapper
+  function renderAttrIcon(kind, txt) {
+    const t = (txt || '').toLowerCase();
+
+    if (kind === 'diet') {
+      const isFree = /free/.test(t);
+      const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
+      return iconWrap(ICONS.grain, cls, { slash: isFree });
+    }
+
+    if (kind === 'legumes') {
+      const isFree = /(free|no)/.test(t);
+      const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
+      return iconWrap(ICONS.legumes, cls, { slash: isFree });
+    }
+
+    if (kind === 'poultry') {
+      const isFree = /(free|no)/.test(t);
+      const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
+      return iconWrap(ICONS.poultry, cls, { slash: isFree });
+    }
+
+    if (kind === 'flavor') {
+      let key = 'meat';
+      if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
+      else if (/\b(beef)\b/.test(t))      key = 'beef';
+      else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
+      else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
+      const cls = `icon-flavor-${key}`;
+      return iconWrap(ICONS.flavor[key], cls); // no slash overlay for flavors
+    }
+
+    return '';
+  }
+
+  // Equality badge (== / ≠) — ensure esc() exists in your file
+  function getMatchBadge(aTxt, bTxt) {
+    const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
+    const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
+    const iconNe = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`;
+    const label = isMatch ? 'Match' : 'Different';
+    const cls = isMatch ? 'match' : 'diff';
+    return `<span class="cmp-match ${cls}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
+  }
 
   const rows = [
-    {
-      label: 'Diet',
-      aTxt: dietText(mainRow['data-diet'] || mainRow['data-grain'] || ''),
-      bTxt: dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || ''),
-      aIcon: icons.diet, bIcon: icons.dietB
-    },
-    {
-      label: 'Legumes',
-      aTxt: legumesText(mainRow['data-legumes'] || ''),
-      bTxt: legumesText(sdfRow['data-legumes']  || ''),
-      aIcon: icons.circle, bIcon: icons.circle
-    },
-    {
-      label: 'Poultry',
-      aTxt: poultryText(mainRow['data-poultry'] || ''),
-      bTxt: poultryText(sdfRow['data-poultry']  || ''),
-      aIcon: icons.bars, bIcon: icons.bars
-    },
-    {
-      label: 'Primary Protein',
-      aTxt: flavorText(mainRow['specs_primary_flavor'] || ''),
-      bTxt: flavorText(sdfRow['specs_primary_flavor']  || ''),
-      aIcon: icons.tri, bIcon: icons.tri
-    }
+    { label:'Diet',            aTxt: dietText(mainRow['data-diet'] || mainRow['data-grain'] || ''), bTxt: dietText(sdfRow['data-diet'] || sdfRow['data-grain'] || ''), kind:'diet' },
+    { label:'Legumes',         aTxt: legumesText(mainRow['data-legumes'] || ''),                     bTxt: legumesText(sdfRow['data-legumes'] || ''),                     kind:'legumes' },
+    { label:'Poultry',         aTxt: poultryText(mainRow['data-poultry'] || ''),                     bTxt: poultryText(sdfRow['data-poultry'] || ''),                     kind:'poultry' },
+    { label:'Primary Protein', aTxt: flavorText(mainRow['specs_primary_flavor'] || ''),              bTxt: flavorText(sdfRow['specs_primary_flavor'] || ''),              kind:'flavor' }
   ];
 
-rowsSec.innerHTML = rows.map((r) => {
-  return `
-    <div class="row">
-      <div class="label">${esc(r.label)}</div>
+  rowsSec.innerHTML = rows.map((r) => {
+    const aIcon = renderAttrIcon(r.kind, r.aTxt);
+    const bIcon = renderAttrIcon(r.kind, r.bTxt);
+    const badge = getMatchBadge(r.aTxt, r.bTxt);
 
-      <div class="value valueA" data-col="${esc(compFull)}">
-        ${r.aIcon}
-        <span class="txt">${esc(r.aTxt)}</span>
-        <span class="status">${getMatchBadge(r.aTxt, r.bTxt)}</span>
+    return `
+      <div class="row">
+        <div class="label">${esc(r.label)}</div>
+
+        <div class="value valueA" data-col="${esc(compFull)}">
+          ${aIcon}
+          <span class="txt">${esc(r.aTxt)}</span>
+          <span class="status">${badge}</span>
+        </div>
+
+        <div class="value valueB" data-col="${esc(sportFull)}">
+          ${bIcon}
+          <span class="txt">${esc(r.bTxt)}</span>
+          <span class="status">${badge}</span>
+        </div>
       </div>
-
-      <div class="value valueB" data-col="${esc(sportFull)}">
-        ${r.bIcon}
-        <span class="txt">${esc(r.bTxt)}</span>
-        <span class="status">${getMatchBadge(r.aTxt, r.bTxt)}</span>
-      </div>
-    </div>
-  `;
-}).join('');
-
+    `;
+  }).join('');
 }
+
 //===================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
 // ===========================
