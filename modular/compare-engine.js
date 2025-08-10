@@ -182,69 +182,74 @@ function setDataClass(el, base, key, value, map) {
 }
 
 // ===========================
-// Sticky header
+// Sticky header (exact markup)
 // ===========================
-export function renderStickyCompareHeader(mainRow, sdfRow) {
-  const root = document.getElementById('compare-sticky');
+export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '#compare-sticky') {
+  const root = document.querySelector(containerSelector);
   if (!root) return;
 
-  if (!root.querySelector('.cmp-head')) {
-    root.innerHTML = `
-      <div class="cmp-head">
-        <div class="cmp-head-col brand">
-          <div class="cmp-head-img lazy-bg" data-var="compare-1-preview" aria-hidden="true"></div>
-          <div class="cmp-head-meta">
-            <div class="cmp-head-brand" data-var="compare-1-brand"></div>
-            <div class="cmp-head-name"  data-var="compare-1-name"></div>
-          </div>
-        </div>
-        <div class="cmp-head-col sport">
-          <div class="cmp-head-img lazy-bg" data-var="sport-1-previewimg" aria-hidden="true"></div>
-          <div class="cmp-head-meta">
-            <div class="cmp-head-brand" data-var="sport-1-brand"></div>
-            <div class="cmp-head-name"  data-var="sport-1-name"></div>
-          </div>
+  const brandName = (mainRow['data-brand'] || '').trim() || 'Competitor';
+  const brandProd = (mainRow['data-one']   || '').trim();
+  const sportBrand = 'SPORT DOG FOOD';
+  const sportProd  = (sdfRow['data-one'] || '').trim();
+
+  root.innerHTML = `
+    <header class="cmp-head" aria-label="Compare header">
+      <div class="label-spacer" aria-hidden="true"></div>
+
+      <div class="cmp-head-col" role="group" aria-label="Competitor">
+        <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+        <div>
+          <div class="cmp-head-brand">${esc(brandName).toUpperCase()}</div>
+          <div class="cmp-head-name">${esc(brandProd)}</div>
         </div>
       </div>
-    `;
-  }
 
-  const setText = (sel, v) => {
-    const el = root.querySelector(`[data-var="${sel}"]`);
-    if (el) el.textContent = v || '';
-  };
-  setText('compare-1-brand', mainRow['data-brand']);
-  setText('compare-1-name',  mainRow['data-one']);
-  setText('sport-1-brand',   'Sport Dog Food');
-  setText('sport-1-name',    sdfRow['data-one']);
+      <div class="cmp-head-col" role="group" aria-label="Sport Dog Food">
+        <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+        <div>
+          <div class="cmp-head-brand">${esc(sportBrand)}</div>
+          <div class="cmp-head-name">${esc(sportProd)}</div>
+        </div>
+      </div>
+    </header>
+  `;
 
-  const bImg = root.querySelector('[data-var="compare-1-preview"]');
-  const sImg = root.querySelector('[data-var="sport-1-previewimg"]');
-  if (bImg && mainRow.previewengine) setLazyBackground(bImg, mainRow.previewengine);
-  if (sImg && sdfRow.previewengine)  setLazyBackground(sImg,  sdfRow.previewengine);
+  // lazy bg images (keep your existing helper)
+  const [cmpImg, sdfImg] = root.querySelectorAll('.cmp-head-img');
+  if (cmpImg && mainRow.previewengine) setLazyBackground(cmpImg, mainRow.previewengine);
+  if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
 }
 
+
 // ===========================
-// Section 1 (Group 1 attributes)
+// Section 1 (exact row markup)
 // ===========================
-export function paintSection1(mainRow, sdfRow) {
-  const headerEl = document.querySelector('[data-var="section1-header"]');
-  if (headerEl) headerEl.textContent = "Nutrition Profile";
-  const subtitleEl = document.querySelector('[data-var="section1-subtitle"]');
-  if (subtitleEl) {
-    subtitleEl.innerHTML =
-      `<span class="span-compare">Comparing</span><br>` +
-      `${esc(mainRow["data-brand"])} ${esc(mainRow["data-one"])}<br>` +
-      `<img src="${CDN}/688bad97d808a1d5e76a8eb2_versus.svg" alt="versus" class="vs-icon" style="vertical-align:middle;width:1.6em;height:1em;margin:0 0.3em;"><br>` +
-      `Sport Dog Food ${esc(sdfRow["data-one"])}`;
+export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
+  const mount = document.querySelector(sectionSelector);
+  if (!mount) return;
+
+  // ensure <section class="rows"> exists inside #section-1
+  let rowsSec = mount.querySelector(':scope > section.rows');
+  if (!rowsSec) {
+    rowsSec = document.createElement('section');
+    rowsSec.className = 'rows';
+    rowsSec.setAttribute('aria-label', 'Attribute comparison');
+    mount.appendChild(rowsSec);
   }
 
+  const compFull  = `${(mainRow['data-brand'] || 'Competitor')} — ${(mainRow['data-one'] || '').trim()}`.trim();
+  const sportFull = `Sport Dog Food — ${(sdfRow['data-one'] || '').trim()}`.trim();
+
   const dietText = v =>
-    /free/i.test(v) ? 'Grain Free' : /grain/i.test(v) ? 'Grain Inclusive' : '—';
+    /free/i.test(v) ? 'Grain Free' :
+    /grain/i.test(v) ? 'Grain Inclusive' : '—';
   const legumesText = v =>
-    /(free|no)/i.test(v) ? 'Legume-Free' : /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
+    /(free|no)/i.test(v) ? 'Legume-Free' :
+    /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
   const poultryText = v =>
-    /(free|no)/i.test(v) ? 'Poultry-Free' : /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
+    /(free|no)/i.test(v) ? 'Poultry-Free' :
+    /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
   const flavorText = v =>
     /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
     /\bbeef\b/i.test(v) ? 'Beef' :
@@ -252,60 +257,77 @@ export function paintSection1(mainRow, sdfRow) {
     /\bbison|buffalo\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  const setDelta = (a, b) => a === b ? 'Match' : 'Different';
+  // tiny icon set to mirror your sample
+  const icons = {
+    diet:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 8c2 0 3-2 3-4M7 14c2 0 3-2 3-4M17 8c-2 0-3-2-3-4M17 14c-2 0-3-2-3-4"/></svg>`,
+    dietB:   `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M8.5 8c1.5 0 2.5-2 2.5-4M8.5 14c1.5 0 2.5-2 2.5-4M15.5 8C14 8 13 6 13 4M15.5 14C14 14 13 12 13 10"/></svg>`,
+    circle:  `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg>`,
+    bars:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><path d="M4 18h16M8 6h8M6 12h12"/></svg>`,
+    tri:     `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" aria-hidden="true"><path d="M5 19l7-14 7 14z"/></svg>`,
+    check:   `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>`
+  };
 
-  const root = document.querySelector('#section-1 .cmp1-rows');
-  if (!root) return;
+  // if you have real scoring, plug it in here
+  const deltaFor = (_key, _a, _b, which) => {
+    // return { txt: '+7', cls: 'pos' } etc.  Default to zero to match sample shape.
+    return { txt: '±0', cls: 'zero' };
+  };
 
   const rows = [
     {
-      key:'diet', label:'Diet',
-      brand: dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''),
-      sport: dietText(sdfRow["data-diet"]  || sdfRow["data-grain"]  || '')
+      label: 'Diet',
+      aTxt: dietText(mainRow['data-diet'] || mainRow['data-grain'] || ''),
+      bTxt: dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || ''),
+      aIcon: icons.diet, bIcon: icons.dietB
     },
     {
-      key:'legumes', label:'Legumes',
-      brand: legumesText(mainRow["data-legumes"] || ''),
-      sport: legumesText(sdfRow["data-legumes"]  || '')
+      label: 'Legumes',
+      aTxt: legumesText(mainRow['data-legumes'] || ''),
+      bTxt: legumesText(sdfRow['data-legumes']  || ''),
+      aIcon: icons.circle, bIcon: icons.circle
     },
     {
-      key:'poultry', label:'Poultry',
-      brand: poultryText(mainRow["data-poultry"] || ''),
-      sport: poultryText(sdfRow["data-poultry"]  || '')
+      label: 'Poultry',
+      aTxt: poultryText(mainRow['data-poultry'] || ''),
+      bTxt: poultryText(sdfRow['data-poultry']  || ''),
+      aIcon: icons.bars, bIcon: icons.bars
     },
     {
-      key:'flavor', label:'Primary Protein',
-      brand: flavorText(mainRow["specs_primary_flavor"] || ''),
-      sport: flavorText(sdfRow["specs_primary_flavor"]  || '')
+      label: 'Primary Protein',
+      aTxt: flavorText(mainRow['specs_primary_flavor'] || ''),
+      bTxt: flavorText(sdfRow['specs_primary_flavor']  || ''),
+      aIcon: icons.tri, bIcon: icons.tri
     }
   ];
 
-  root.innerHTML = rows.map(r => `
-    <div class="cmp1-row" data-key="${esc(r.key)}">
-      <div class="cmp1-label">${esc(r.label)}</div>
-      <div class="cmp1-values">
-        <span class="cmp1-badge brand">${esc(r.brand)}</span>
-        <span class="cmp1-badge sport">${esc(r.sport)}</span>
+  rowsSec.innerHTML = rows.map((r, i) => {
+    const dA = deltaFor(r.label, r.aTxt, r.bTxt, 'A');
+    const dB = deltaFor(r.label, r.aTxt, r.bTxt, 'B');
+    return `
+      <div class="row">
+        <div class="label">${esc(r.label)}</div>
+
+        <div class="value valueA" data-col="${esc(compFull)}">
+          ${r.aIcon}
+          <span class="txt">${esc(r.aTxt)}</span>
+          <span class="status">
+            <span class="check">${icons.check}</span>
+            <span class="delta ${esc(dA.cls)}">${esc(dA.txt)}</span>
+          </span>
+        </div>
+
+        <div class="value valueB" data-col="${esc(sportFull)}">
+          ${r.bIcon}
+          <span class="txt">${esc(r.bTxt)}</span>
+          <span class="status">
+            <span class="check">${icons.check}</span>
+            <span class="delta ${esc(dB.cls)}">${esc(dB.txt)}</span>
+          </span>
+        </div>
       </div>
-      <div class="cmp1-delta">${esc(setDelta(r.brand, r.sport))}</div>
-    </div>
-  `).join('');
-
-  // Optional summary
-  const mainSpec = buildLegumePoultryPhrase(mainRow);
-  const sdfSpec  = buildLegumePoultryPhrase(sdfRow);
-  const madlibEl = document.querySelector('[data-var="section1-madlib"]');
-  if (madlibEl) {
-    madlibEl.innerHTML =
-      `<span class="span-compare-name">${esc(mainRow["data-brand"])} ${esc(mainRow["data-one"])}</span> is a ` +
-      `<span class="span-compare-specs">${esc(dietText(mainRow["data-diet"] || mainRow["data-grain"] || ''))}, ${esc(flavorText(mainRow["specs_primary_flavor"] || ''))} formula</span> that’s ` +
-      `<span class="span-compare-specs">${esc(mainSpec)}</span>.<br>` +
-      `<span class="span-sport-name">${esc(sdfRow["data-one"])}</span> is a ` +
-      `<span class="span-sport-specs">${esc(dietText(sdfRow["data-diet"] || sdfRow["data-grain"] || ''))}, ${esc(flavorText(sdfRow["specs_primary_flavor"] || ''))} diet</span> that’s ` +
-      `<span class="highlight">${esc(sdfSpec)}</span>.`;
-  }
+    `;
+  }).join('');
 }
-
 // ===========================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
 // ===========================
