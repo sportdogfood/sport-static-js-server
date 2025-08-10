@@ -258,6 +258,20 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
   // tiny icon set to mirror your sample
+// add near your icons object:
+const matchIcons = {
+  eq:  `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`,
+  ne:  `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`
+};
+
+function getMatchBadge(aTxt, bTxt) {
+  const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
+  const icon = isMatch ? matchIcons.eq : matchIcons.ne;
+  const label = isMatch ? 'Match' : 'Different';
+  const cls = isMatch ? 'match' : 'diff';
+  return `<span class="cmp-match ${cls}" aria-label="Attributes ${label}">${icon}<span class="cmp-match-txt">${label}</span></span>`;
+}
+
   const icons = {
     diet:    `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 8c2 0 3-2 3-4M7 14c2 0 3-2 3-4M17 8c-2 0-3-2-3-4M17 14c-2 0-3-2-3-4"/></svg>`,
     dietB:   `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#2b384e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M8.5 8c1.5 0 2.5-2 2.5-4M8.5 14c1.5 0 2.5-2 2.5-4M15.5 8C14 8 13 6 13 4M15.5 14C14 14 13 12 13 10"/></svg>`,
