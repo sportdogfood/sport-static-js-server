@@ -314,35 +314,28 @@ function getMatchBadge(aTxt, bTxt) {
     }
   ];
 
-  rowsSec.innerHTML = rows.map((r, i) => {
-    const dA = deltaFor(r.label, r.aTxt, r.bTxt, 'A');
-    const dB = deltaFor(r.label, r.aTxt, r.bTxt, 'B');
-    return `
-      <div class="row">
-        <div class="label">${esc(r.label)}</div>
+rowsSec.innerHTML = rows.map((r) => {
+  return `
+    <div class="row">
+      <div class="label">${esc(r.label)}</div>
 
-        <div class="value valueA" data-col="${esc(compFull)}">
-          ${r.aIcon}
-          <span class="txt">${esc(r.aTxt)}</span>
-          <span class="status">
-            <span class="check">${icons.check}</span>
-            <span class="delta ${esc(dA.cls)}">${esc(dA.txt)}</span>
-          </span>
-        </div>
-
-        <div class="value valueB" data-col="${esc(sportFull)}">
-          ${r.bIcon}
-          <span class="txt">${esc(r.bTxt)}</span>
-          <span class="status">
-            <span class="check">${icons.check}</span>
-            <span class="delta ${esc(dB.cls)}">${esc(dB.txt)}</span>
-          </span>
-        </div>
+      <div class="value valueA" data-col="${esc(compFull)}">
+        ${r.aIcon}
+        <span class="txt">${esc(r.aTxt)}</span>
+        <span class="status">${getMatchBadge(r.aTxt, r.bTxt)}</span>
       </div>
-    `;
-  }).join('');
+
+      <div class="value valueB" data-col="${esc(sportFull)}">
+        ${r.bIcon}
+        <span class="txt">${esc(r.bTxt)}</span>
+        <span class="status">${getMatchBadge(r.aTxt, r.bTxt)}</span>
+      </div>
+    </div>
+  `;
+}).join('');
+
 }
-// ===========================
+//===================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
 // ===========================
 export function paintSection2(mainRow, sdfRow) {
