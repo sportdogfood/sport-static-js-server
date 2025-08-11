@@ -225,7 +225,6 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
 // ===========================
 // Section 1 (exact row markup)
 // ===========================
-
 export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   const mount = document.querySelector(sectionSelector);
   if (!mount) return;
@@ -258,6 +257,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     /\b(bison|buffalo)\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
+  // --- ICON LIB (uses your CDN assets) ---
   const ICONS = {
     poultry: `${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg`,
     legumes: `${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg`,
@@ -283,6 +283,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     `;
   }
 
+  // Map attribute text -> proper icon wrapper
   function renderAttrIcon(kind, txt) {
     const t = (txt || '').toLowerCase();
 
@@ -311,11 +312,12 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
       else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
       else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
       const cls = `icon-flavor-${key}`;
-      return iconWrap(ICONS.flavor[key], cls);
+      return iconWrap(ICONS.flavor[key], cls); // no slash overlay for flavors
     }
     return '';
   }
 
+  // Equality badge (== / ≠)
   function getMatchBadge(aTxt, bTxt) {
     const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
     const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
@@ -357,15 +359,30 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   }).join('');
 
   // ──────────────────────────────────────────────
-  // PWR10 mirror rows
+  // PWR10 mirror (ALL Section 1 rows)
   // ──────────────────────────────────────────────
   try {
+    const grid = document.querySelector('.pwr10-rows-grid');
+    if (!grid) return;
+
     const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
     const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
+    // small helper to insert rows in order (after header if present)
+    const insertAfterHeader = (el) => {
+      const headerRow = grid.querySelector('#pwr10-compare-header-row');
+      grid.insertBefore(el, headerRow ? headerRow.nextSibling : grid.firstChild);
+    };
+
     rows.forEach((r, idx) => {
       const isMatch = (r.aTxt || '').toLowerCase() === (r.bTxt || '').toLowerCase();
-      const pwr10HTML = `
+
+      // remove prior on re-render
+      const prior = grid.querySelector(`#pwr10-s1-${idx}`);
+      if (prior) prior.remove();
+
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
         <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
           <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
           <div class="pwr10-vertical-divider"></div>
@@ -398,11 +415,15 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
             <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
           </div>
         </div>
-      `;
-      appendPwr10Row(`pwr10-s1-${idx}`, pwr10HTML);
+      `.trim();
+
+      insertAfterHeader(wrap.firstElementChild);
     });
-  } catch (err) { if (DEBUG) console.warn('[pwr10 paintSection1]', err); }
+  } catch (err) {
+    if (DEBUG) console.warn('[pwr10 S1]', err);
+  }
 }
+
 
 
 //===================
@@ -481,6 +502,77 @@ export function paintSection2(mainRow, sdfRow) {
     madlibEl.textContent =
       `${mainRow["data-brand"]} ${mainRow["data-one"]}: ${b.protein}% protein, ${b.fat}% fat, ${b.kcals_c} kcals/cup. ` +
       `Sport Dog Food ${sdfRow["data-one"]}: ${s.protein}% protein, ${s.fat}% fat, ${s.kcals_c} kcals/cup.`;
+  }
+
+  // ──────────────────────────────────────────────
+  // PWR10 mirror (ALL Section 2 rows)
+  // ──────────────────────────────────────────────
+  try {
+    const grid = document.querySelector('.pwr10-rows-grid');
+    if (!grid) return;
+
+    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+
+    const spec = [
+      { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein', fmt:(v)=>`${v}% Protein` },
+      { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat',     fmt:(v)=>`${v}% Fat` },
+      { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup',   fmt:(v)=>`${v} kcals/cup` },
+      { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg',    fmt:(v)=>`${v} kcals/kg` },
+    ];
+
+    spec.forEach(({ id, key, label, fmt }) => {
+      const a = b[key], c = s[key];
+      const isMatch = a === c;
+      const diff = c - a;
+      const diffTxt = Number.isFinite(diff) ? (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`)) : '';
+
+      // remove prior on re-render
+      const prior = grid.querySelector(`#${id}`);
+      if (prior) prior.remove();
+
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <div id="${id}" class="w-layout-grid pwr10-row-grid">
+          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
+          <div class="pwr10-vertical-divider"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon"></div>
+              <div class="pwr10-title"><div>${esc(fmt(a))}</div></div>
+              <div class="pwr10-status">
+                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+                <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
+              </div>
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+          </div>
+
+          <div class="pwr10-vertical-divider mobile"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon"></div>
+              <div class="pwr10-title"><div>${esc(fmt(c))}</div></div>
+              <div class="pwr10-status">
+                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+                <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
+              </div>
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+          </div>
+        </div>
+      `.trim();
+
+      // keep order under the header row if present; else prepend
+      const headerRow = grid.querySelector('#pwr10-compare-header-row');
+      grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
+    });
+  } catch (err) {
+    if (DEBUG) console.warn('[pwr10 S2]', err);
   }
 }
 
