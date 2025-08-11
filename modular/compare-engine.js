@@ -519,7 +519,8 @@ export function paintSection2(mainRow, sdfRow) {
 // ──────────────────────────────────────────────
 // PWR10 mirror (ALL Section 2 rows)
 // - Titles use % for protein/fat, bare numbers for kcals
-// - Uses .cmp-match badge instead of custom chips
+// - Uses .cmp-match badge
+// - Shows delta via .cmp2-diff (e.g., +3 / -1 / ±0)
 // - Applies .pwr10-title.section2
 try {
   const grid = document.querySelector('.pwr10-rows-grid');
@@ -536,7 +537,7 @@ try {
   ];
 
   spec.forEach(({ id, key, label, fmt }) => {
-    const a = b[key];  // competitor numeric from earlier in paintSection2
+    const a = b[key];  // competitor numeric (already computed earlier)
     const c = s[key];  // sport numeric
     const prior = grid.querySelector(`#${id}`);
     if (prior) prior.remove();
@@ -551,36 +552,36 @@ try {
         <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
         <div class="pwr10-vertical-divider"></div>
 
+        <!-- Column A: Competitor -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(a))}</div></div>
             ${badgeHTML}
+            <div class="cmp2-diff">${esc(diffTxt)}</div>
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
 
         <div class="pwr10-vertical-divider mobile"></div>
 
+        <!-- Column B: Sport -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(c))}</div></div>
             ${badgeHTML}
+            <div class="cmp2-diff">${esc(diffTxt)}</div>
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
       </div>
     `.trim();
 
-    // keep order immediately under header if present
     const headerRow = grid.querySelector('#pwr10-compare-header-row');
     grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
-
-    // Optional: if you still want a textual delta somewhere in PWR10 (not required)
-    // you could append: <div class="cmp2-diff">${esc(diffTxt)}</div>
   });
 } catch (err) {
   if (DEBUG) console.warn('[pwr10 S2]', err);
