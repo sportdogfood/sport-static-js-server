@@ -361,67 +361,71 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   // ──────────────────────────────────────────────
   // PWR10 mirror (ALL Section 1 rows)
   // ──────────────────────────────────────────────
-  try {
-    const grid = document.querySelector('.pwr10-rows-grid');
-    if (!grid) return;
+ // ──────────────────────────────────────────────
+// PWR10 mirror (ALL Section 1 rows) — with .pwr10-title.section1
+// ──────────────────────────────────────────────
+try {
+  const grid = document.querySelector('.pwr10-rows-grid');
+  if (!grid) return;
 
-    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
-    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+  const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+  const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-    // small helper to insert rows in order (after header if present)
-    const insertAfterHeader = (el) => {
-      const headerRow = grid.querySelector('#pwr10-compare-header-row');
-      grid.insertBefore(el, headerRow ? headerRow.nextSibling : grid.firstChild);
-    };
+  // small helper to insert rows in order (after header if present)
+  const insertAfterHeader = (el) => {
+    const headerRow = grid.querySelector('#pwr10-compare-header-row');
+    grid.insertBefore(el, headerRow ? headerRow.nextSibling : grid.firstChild);
+  };
 
-    rows.forEach((r, idx) => {
-      const isMatch = (r.aTxt || '').toLowerCase() === (r.bTxt || '').toLowerCase();
+  rows.forEach((r, idx) => {
+    const isMatch = (r.aTxt || '').toLowerCase() === (r.bTxt || '').toLowerCase();
 
-      // remove prior on re-render
-      const prior = grid.querySelector(`#pwr10-s1-${idx}`);
-      if (prior) prior.remove();
+    // remove prior on re-render
+    const prior = grid.querySelector(`#pwr10-s1-${idx}`);
+    if (prior) prior.remove();
 
-      const wrap = document.createElement('div');
-      wrap.innerHTML = `
-        <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
-          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
-          <div class="pwr10-vertical-divider"></div>
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
+        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
+        <div class="pwr10-vertical-divider"></div>
 
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
-              <div class="pwr10-title"><div>${esc(r.aTxt)}</div></div>
-              <div class="pwr10-status">
-                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-                <div class="pwr10-delta-pos"></div>
-              </div>
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
+            <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
+            <div class="pwr10-status">
+              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+              <div class="pwr10-delta-pos"></div>
             </div>
-            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
           </div>
-
-          <div class="pwr10-vertical-divider mobile"></div>
-
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
-              <div class="pwr10-title"><div>${esc(r.bTxt)}</div></div>
-              <div class="pwr10-status">
-                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-                <div class="pwr10-delta-pos"></div>
-              </div>
-            </div>
-            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-          </div>
+          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
         </div>
-      `.trim();
 
-      insertAfterHeader(wrap.firstElementChild);
-    });
-  } catch (err) {
-    if (DEBUG) console.warn('[pwr10 S1]', err);
-  }
+        <div class="pwr10-vertical-divider mobile"></div>
+
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
+            <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
+            <div class="pwr10-status">
+              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+              <div class="pwr10-delta-pos"></div>
+            </div>
+          </div>
+          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+        </div>
+      </div>
+    `.trim();
+
+    insertAfterHeader(wrap.firstElementChild);
+  });
+} catch (err) {
+  if (DEBUG) console.warn('[pwr10 S1]', err);
+}
+
 }
 
 
@@ -506,74 +510,81 @@ export function paintSection2(mainRow, sdfRow) {
 
   // ──────────────────────────────────────────────
   // PWR10 mirror (ALL Section 2 rows)
-  // ──────────────────────────────────────────────
-  try {
-    const grid = document.querySelector('.pwr10-rows-grid');
-    if (!grid) return;
+// ──────────────────────────────────────────────
+// PWR10 mirror (ALL Section 2 rows)
+// - Titles use ONLY the raw numeric value
+// - Adds .pwr10-title.section1
+// ──────────────────────────────────────────────
+try {
+  const grid = document.querySelector('.pwr10-rows-grid');
+  if (!grid) return;
 
-    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
-    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+  const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+  const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-    const spec = [
-      { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein', fmt:(v)=>`${v}% Protein` },
-      { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat',     fmt:(v)=>`${v}% Fat` },
-      { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup',   fmt:(v)=>`${v} kcals/cup` },
-      { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg',    fmt:(v)=>`${v} kcals/kg` },
-    ];
+  // numeric values already computed above: b (competitor) and s (sport)
+  const spec = [
+    { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein' },
+    { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat' },
+    { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup' },
+    { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg' },
+  ];
 
-    spec.forEach(({ id, key, label, fmt }) => {
-      const a = b[key], c = s[key];
-      const isMatch = a === c;
-      const diff = c - a;
-      const diffTxt = Number.isFinite(diff) ? (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`)) : '';
+  spec.forEach(({ id, key, label }) => {
+    const a = b[key];            // competitor numeric
+    const c = s[key];            // sport numeric
+    const isMatch = a === c;
+    const diff = c - a;
+    const diffTxt = Number.isFinite(diff) ? (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`)) : '';
 
-      // remove prior on re-render
-      const prior = grid.querySelector(`#${id}`);
-      if (prior) prior.remove();
+    // remove prior on re-render
+    const prior = grid.querySelector(`#${id}`);
+    if (prior) prior.remove();
 
-      const wrap = document.createElement('div');
-      wrap.innerHTML = `
-        <div id="${id}" class="w-layout-grid pwr10-row-grid">
-          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
-          <div class="pwr10-vertical-divider"></div>
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div id="${id}" class="w-layout-grid pwr10-row-grid">
+        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
+        <div class="pwr10-vertical-divider"></div>
 
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon"></div>
-              <div class="pwr10-title"><div>${esc(fmt(a))}</div></div>
-              <div class="pwr10-status">
-                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-                <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
-              </div>
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon"></div>
+            <div class="pwr10-title section1"><div>${esc(String(a))}</div></div>
+            <div class="pwr10-status">
+              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+              <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
             </div>
-            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
           </div>
-
-          <div class="pwr10-vertical-divider mobile"></div>
-
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon"></div>
-              <div class="pwr10-title"><div>${esc(fmt(c))}</div></div>
-              <div class="pwr10-status">
-                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-                <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
-              </div>
-            </div>
-            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
-          </div>
+          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
-      `.trim();
 
-      // keep order under the header row if present; else prepend
-      const headerRow = grid.querySelector('#pwr10-compare-header-row');
-      grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
-    });
-  } catch (err) {
-    if (DEBUG) console.warn('[pwr10 S2]', err);
-  }
+        <div class="pwr10-vertical-divider mobile"></div>
+
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon"></div>
+            <div class="pwr10-title section1"><div>${esc(String(c))}</div></div>
+            <div class="pwr10-status">
+              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+              <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
+            </div>
+          </div>
+          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+        </div>
+      </div>
+    `.trim();
+
+    // keep order under the header row if present; else prepend
+    const headerRow = grid.querySelector('#pwr10-compare-header-row');
+    grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
+  });
+} catch (err) {
+  if (DEBUG) console.warn('[pwr10 S2]', err);
+}
+
 }
 
 // ===========================
