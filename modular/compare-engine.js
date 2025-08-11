@@ -225,6 +225,7 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
 // ===========================
 // Section 1 (exact row markup)
 // ===========================
+
 export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   const mount = document.querySelector(sectionSelector);
   if (!mount) return;
@@ -257,7 +258,6 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     /\b(bison|buffalo)\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  // --- ICON LIB (uses your CDN assets) ---
   const ICONS = {
     poultry: `${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg`,
     legumes: `${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg`,
@@ -283,7 +283,6 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     `;
   }
 
-  // Map attribute text -> proper icon wrapper
   function renderAttrIcon(kind, txt) {
     const t = (txt || '').toLowerCase();
 
@@ -312,13 +311,11 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
       else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
       else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
       const cls = `icon-flavor-${key}`;
-      return iconWrap(ICONS.flavor[key], cls); // no slash overlay for flavors
+      return iconWrap(ICONS.flavor[key], cls);
     }
-
     return '';
   }
 
-  // Equality badge (== / ≠) — ensure esc() exists in your file
   function getMatchBadge(aTxt, bTxt) {
     const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
     const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
@@ -358,7 +355,55 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
       </div>
     `;
   }).join('');
+
+  // ──────────────────────────────────────────────
+  // PWR10 mirror rows
+  // ──────────────────────────────────────────────
+  try {
+    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+
+    rows.forEach((r, idx) => {
+      const isMatch = (r.aTxt || '').toLowerCase() === (r.bTxt || '').toLowerCase();
+      const pwr10HTML = `
+        <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
+          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
+          <div class="pwr10-vertical-divider"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
+              <div class="pwr10-title"><div>${esc(r.aTxt)}</div></div>
+              <div class="pwr10-status">
+                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+                <div class="pwr10-delta-pos"></div>
+              </div>
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+          </div>
+
+          <div class="pwr10-vertical-divider mobile"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
+              <div class="pwr10-title"><div>${esc(r.bTxt)}</div></div>
+              <div class="pwr10-status">
+                <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
+                <div class="pwr10-delta-pos"></div>
+              </div>
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+          </div>
+        </div>
+      `;
+      appendPwr10Row(`pwr10-s1-${idx}`, pwr10HTML);
+    });
+  } catch (err) { if (DEBUG) console.warn('[pwr10 paintSection1]', err); }
 }
+
 
 //===================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
