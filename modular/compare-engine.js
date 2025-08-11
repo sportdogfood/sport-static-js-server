@@ -221,6 +221,14 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
 }
 
+function pwr10CmpMatchBadge(aTxt, bTxt) {
+  const isMatch = (String(aTxt||'').toLowerCase() === String(bTxt||'').toLowerCase());
+  const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
+  const iconNe = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`;
+  const label = isMatch ? 'Match' : 'Different';
+  const cls = isMatch ? 'match' : 'diff';
+  return `<span class="cmp-match ${cls}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
+}
 
 // ===========================
 // Section 1 (exact row markup)
@@ -364,6 +372,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
  // ──────────────────────────────────────────────
 // PWR10 mirror (ALL Section 1 rows) — with .pwr10-title.section1
 // ──────────────────────────────────────────────
+// PWR10 mirror (ALL Section 1 rows) — uses .cmp-match badge + .pwr10-title.section1
 try {
   const grid = document.querySelector('.pwr10-rows-grid');
   if (!grid) return;
@@ -371,18 +380,16 @@ try {
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  // small helper to insert rows in order (after header if present)
   const insertAfterHeader = (el) => {
     const headerRow = grid.querySelector('#pwr10-compare-header-row');
     grid.insertBefore(el, headerRow ? headerRow.nextSibling : grid.firstChild);
   };
 
   rows.forEach((r, idx) => {
-    const isMatch = (r.aTxt || '').toLowerCase() === (r.bTxt || '').toLowerCase();
-
-    // remove prior on re-render
     const prior = grid.querySelector(`#pwr10-s1-${idx}`);
     if (prior) prior.remove();
+
+    const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt);
 
     const wrap = document.createElement('div');
     wrap.innerHTML = `
@@ -395,10 +402,7 @@ try {
           <div class="pwr10-row-input">
             <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
             <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
-            <div class="pwr10-status">
-              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-              <div class="pwr10-delta-pos"></div>
-            </div>
+            ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
         </div>
@@ -410,10 +414,7 @@ try {
           <div class="pwr10-row-input">
             <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
             <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
-            <div class="pwr10-status">
-              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-              <div class="pwr10-delta-pos"></div>
-            </div>
+            ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
         </div>
@@ -425,6 +426,7 @@ try {
 } catch (err) {
   if (DEBUG) console.warn('[pwr10 S1]', err);
 }
+
 
 }
 
@@ -515,6 +517,10 @@ export function paintSection2(mainRow, sdfRow) {
 // - Titles use ONLY the raw numeric value
 // - Adds .pwr10-title.section1
 // ──────────────────────────────────────────────
+// PWR10 mirror (ALL Section 2 rows)
+// - Titles use % for protein/fat, bare numbers for kcals
+// - Uses .cmp-match badge instead of custom chips
+// - Applies .pwr10-title.section2
 try {
   const grid = document.querySelector('.pwr10-rows-grid');
   if (!grid) return;
@@ -522,24 +528,22 @@ try {
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  // numeric values already computed above: b (competitor) and s (sport)
   const spec = [
-    { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein' },
-    { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat' },
-    { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup' },
-    { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg' },
+    { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein', fmt:(v)=>`${v}%` },
+    { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat',     fmt:(v)=>`${v}%` },
+    { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup',   fmt:(v)=>`${v}`  },
+    { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg',    fmt:(v)=>`${v}`  },
   ];
 
-  spec.forEach(({ id, key, label }) => {
-    const a = b[key];            // competitor numeric
-    const c = s[key];            // sport numeric
-    const isMatch = a === c;
-    const diff = c - a;
-    const diffTxt = Number.isFinite(diff) ? (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`)) : '';
-
-    // remove prior on re-render
+  spec.forEach(({ id, key, label, fmt }) => {
+    const a = b[key];  // competitor numeric from earlier in paintSection2
+    const c = s[key];  // sport numeric
     const prior = grid.querySelector(`#${id}`);
     if (prior) prior.remove();
+
+    const badgeHTML = pwr10CmpMatchBadge(String(a), String(c));
+    const delta = c - a;
+    const diffTxt = Number.isFinite(delta) ? (delta === 0 ? '±0' : (delta > 0 ? `+${delta}` : `${delta}`)) : '';
 
     const wrap = document.createElement('div');
     wrap.innerHTML = `
@@ -551,11 +555,8 @@ try {
           <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
-            <div class="pwr10-title section1"><div>${esc(String(a))}</div></div>
-            <div class="pwr10-status">
-              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-              <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
-            </div>
+            <div class="pwr10-title section2"><div>${esc(fmt(a))}</div></div>
+            ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
@@ -566,24 +567,25 @@ try {
           <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
-            <div class="pwr10-title section1"><div>${esc(String(c))}</div></div>
-            <div class="pwr10-status">
-              <div class="pwr10-check ${isMatch ? 'match' : 'diff'}">${isMatch ? 'Match' : 'Different'}</div>
-              <div class="pwr10-delta-pos">${esc(diffTxt)}</div>
-            </div>
+            <div class="pwr10-title section2"><div>${esc(fmt(c))}</div></div>
+            ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
       </div>
     `.trim();
 
-    // keep order under the header row if present; else prepend
+    // keep order immediately under header if present
     const headerRow = grid.querySelector('#pwr10-compare-header-row');
     grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
+
+    // Optional: if you still want a textual delta somewhere in PWR10 (not required)
+    // you could append: <div class="cmp2-diff">${esc(diffTxt)}</div>
   });
 } catch (err) {
   if (DEBUG) console.warn('[pwr10 S2]', err);
 }
+
 
 }
 
