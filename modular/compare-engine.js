@@ -809,37 +809,30 @@ export function paintSection3(mainRow, sdfRow) {
   sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
   // Lists
+  // Lists
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-
-  // Modal: wire button to open canonical modal
-  ensureIngSearchModal(); // ensure it exists once (or adapt to existing)
+  // Accordion search (replaces modal)
   const openBtn = sec3.querySelector('#open-ing-search');
   if (openBtn && !openBtn._wired) {
     openBtn._wired = true;
-    openBtn.addEventListener('click', () => openIngredientModal(mainRow, sdfRow));
-  }
-
-  // Swap order
-  const swapBtn    = sec3.querySelector('#swap-ing-order');
-  const listsWrap  = sec3.querySelector('#cmp3-lists');
-  const brandBlock = sec3.querySelector('#cmp3-brand-list');
-  const sportBlock = sec3.querySelector('#cmp3-sport-list');
-  if (swapBtn && !swapBtn._wired) {
-    swapBtn._wired = true;
-    swapBtn.addEventListener('click', () => {
-      const swapped = swapBtn.getAttribute('aria-pressed') === 'true';
-      swapBtn.setAttribute('aria-pressed', String(!swapped));
-      if (!swapped) {
-        if (sportBlock && listsWrap) listsWrap.insertBefore(sportBlock, brandBlock);
+    openBtn.setAttribute('aria-expanded', 'false');
+    openBtn.addEventListener('click', () => {
+      const isOpen = openBtn.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        closeSearchAccordion();
+        openBtn.setAttribute('aria-expanded', 'false');
       } else {
-        if (brandBlock && listsWrap) listsWrap.insertBefore(brandBlock, sportBlock);
+        openSearchAccordion(mainRow, sdfRow);
+        openBtn.setAttribute('aria-expanded', 'true');
       }
     });
   }
 }
 
+
+// Build/repair the Section 3 DOM scaffold if missing pieces
 // Build/repair the Section 3 DOM scaffold if missing pieces
 function ensureSection3Dom(sec3) {
   const ok =
@@ -849,7 +842,8 @@ function ensureSection3Dom(sec3) {
     sec3.querySelector('#cmp3-brand-list') &&
     sec3.querySelector('#cmp3-sport-list') &&
     sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
-    sec3.querySelector('[data-var="sport-1-sec3-inglist"]');
+    sec3.querySelector('[data-var="sport-1-sec3-inglist"]') &&
+    sec3.querySelector('#cmp3-search-accordion');
 
   if (ok) return;
 
@@ -858,8 +852,15 @@ function ensureSection3Dom(sec3) {
       <div class="cmp3-rows" id="cmp3-rows"></div>
 
       <div class="cmp3-actions">
-        <button class="cmp3-btn" id="open-ing-search" type="button">Search ingredients</button>
-        <button class="cmp3-btn" id="swap-ing-order" aria-pressed="false" type="button">Swap order (Sport ⇄ Compare)</button>
+        <button class="cmp3-btn" id="open-ing-search" type="button" aria-expanded="false">Search ingredients</button>
+        <!-- Inline accordion (replaces modal) -->
+        <div class="cmp3-accordion" id="cmp3-search-accordion" aria-hidden="true">
+          <div class="pwrf_searchbar" role="search">
+            <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
+            <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
+          </div>
+          <div class="pwrf_results" aria-live="polite"></div>
+        </div>
       </div>
 
       <div class="cmp3-lists" id="cmp3-lists">
@@ -877,7 +878,7 @@ function ensureSection3Dom(sec3) {
 }
 
 // ===========================
-// Modal (single canonical version): fixed size + body scroll lock
+// Accordion search (no modal) + body scroll lock
 // ===========================
 function lockBodyScroll() {
   const y = window.scrollY || 0;
@@ -893,90 +894,61 @@ function unlockBodyScroll() {
   window.scrollTo(0, y);
 }
 
-// Create the modal once; return it
-function ensureIngSearchModal() {
-  let modal = document.getElementById('ing-search-modal');
-  if (modal) return modal;
+function openSearchAccordion(mainRow, sdfRow) {
+  const sec3 = document.querySelector('#section-3');
+  if (!sec3) return;
 
-  modal = document.createElement('div');
-  modal.id = 'ing-search-modal';
-  modal.className = 'cmp3-modal';
-  modal.setAttribute('aria-hidden', 'true');
-  modal.innerHTML = `
-    <div class="cmp3-modal__backdrop" data-close="1"></div>
-    <div class="cmp3-modal__panel" role="dialog" aria-modal="true" aria-labelledby="ing-search-title">
-      <div class="cmp3-modal__head">
-        <h3 id="ing-search-title">Search Ingredients</h3>
-        <div class="pwrf_searchbar" role="search">
-          <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-          <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
-        </div>
-        <button class="cmp3-btn cmp3-modal__close" data-close="1" aria-label="Close" type="button">×</button>
-      </div>
-      <div class="cmp3-modal__body">
-        <div class="pwrf_results" aria-live="polite"></div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
+  const acc      = sec3.querySelector('#cmp3-search-accordion');
+  const inputEl  = acc?.querySelector('.pwrf_search-input');
+  const clearBtn = acc?.querySelector('.pwrf_clear-btn');
+  const resultsEl= acc?.querySelector('.pwrf_results');
 
-  // Close on backdrop/X
-  modal.addEventListener('click', (e) => {
-    const closer = e.target.closest('[data-close]');
-    if (closer) closeIngredientModal();
-  });
+  if (!acc || !inputEl || !clearBtn || !resultsEl) return;
 
-  // Close on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('open')) closeIngredientModal();
-  });
+  // Paint lists (reuses existing renderer)
+  paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
 
-  return modal;
-}
+  // Open accordion + lock scroll
+  acc.classList.add('open');
+  acc.setAttribute('aria-hidden', 'false');
+  lockBodyScroll();
 
-function openIngredientModal(mainRow, sdfRow) {
-  const modal = ensureIngSearchModal();
-  if (!modal.classList.contains('open')) {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
-    lockBodyScroll();
-  }
+  // Focus input
+  inputEl.focus();
 
-  // Preferred (canonical) structure
-  let resultsEl = modal.querySelector('.pwrf_results');
-  let inputEl   = modal.querySelector('.pwrf_search-input');
-  let clearBtn  = modal.querySelector('.pwrf_clear-btn');
-
-  // Fallback: support legacy static modal with .pwrf-filter-wrapper (inject searchbar inside it)
-  if (!resultsEl) {
-    const mount = modal.querySelector('.pwrf-filter-wrapper');
-    if (mount) {
-      mount.innerHTML = `
-        <div class="pwrf_searchbar" role="search">
-          <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-          <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
-        </div>
-        <div class="pwrf_results" aria-live="polite"></div>
-      `;
-      resultsEl = mount.querySelector('.pwrf_results');
-      inputEl   = mount.querySelector('.pwrf_search-input');
-      clearBtn  = mount.querySelector('.pwrf_clear-btn');
-    }
-  }
-
-  if (resultsEl && inputEl && clearBtn) {
-    paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
-    inputEl.focus();
+  // Close on Escape (once)
+  if (!acc._escHandler) {
+    acc._escHandler = (e) => {
+      if (e.key === 'Escape') closeSearchAccordion();
+    };
+    document.addEventListener('keydown', acc._escHandler);
   }
 }
 
-function closeIngredientModal() {
-  const modal = document.getElementById('ing-search-modal');
-  if (!modal) return;
-  modal.classList.remove('open');
-  modal.setAttribute('aria-hidden', 'true');
+function closeSearchAccordion() {
+  const sec3 = document.querySelector('#section-3');
+  if (!sec3) return;
+
+  const acc   = sec3.querySelector('#cmp3-search-accordion');
+  const btn   = sec3.querySelector('#open-ing-search');
+  if (!acc) return;
+
+  acc.classList.remove('open');
+  acc.setAttribute('aria-hidden', 'true');
+
+  // Remove Escape handler
+  if (acc._escHandler) {
+    document.removeEventListener('keydown', acc._escHandler);
+    acc._escHandler = null;
+  }
+
+  // Unlock scroll
   unlockBodyScroll();
+
+  // Return focus to the trigger
+  if (btn) btn.focus();
 }
+
 
 // Render the two lists + live filter (results don’t resize the modal)
 function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn) {
