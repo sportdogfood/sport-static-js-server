@@ -181,23 +181,49 @@ function setDataClass(el, base, key, value, map) {
   if (segment) el.classList.add(`${prefix}${segment}`);
 }
 
+// Ensure all PWR10 containers exist (sticky + section buckets)
+function ensurePwr10Scaffold(rootEl) {
+  const need = (cls) => {
+    let el = rootEl.querySelector(`:scope > .pwr10-rows-grid.${cls}`);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = `pwr10-rows-grid ${cls}`;
+      rootEl.appendChild(el);
+    }
+    return el;
+  };
+  const stickyWrap   = need('sticky-sections');
+  const s1TitleGrid  = need('section1-title');
+  const s1Grid       = need('section1');
+  const s2TitleGrid  = need('section2-title');
+  const s2Grid       = need('section2');
+  return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid };
+}
+
 // ===========================
-// Sticky header (exact markup)
+// Sticky header (PWR10 markup)
 // ===========================
-// Sticky header (exact markup)
-// ===========================
+
 export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '#compare-sticky') {
-  const root = document.querySelector(containerSelector);
-  if (!root) return;
+  const mount = document.querySelector(containerSelector);
+  if (!mount) return;
+
+  // Ensure the scaffold exists (sticky + section buckets)
+  const { stickyWrap } = ensurePwr10Scaffold(mount);
 
   const brandName  = (mainRow['data-brand'] || 'Competitor').trim();
   const brandProd  = (mainRow['data-one']   || '').trim();
   const sportBrand = 'SPORT DOG FOOD';
   const sportProd  = (sdfRow['data-one']    || '').trim();
 
-  // NEW: render the sticky bar using PWR10 classes instead of .cmp-head
-  root.innerHTML = `
-    <div class="w-layout-grid pwr10-row-grid pwr10-sticky">
+  // (Re)paint sticky row
+  let stickyRow = stickyWrap.querySelector('#pwr10-sticky-row');
+  if (stickyRow) stickyRow.remove();
+
+  stickyRow = document.createElement('div');
+  stickyRow.id = 'pwr10-sticky-row';
+  stickyRow.className = 'w-layout-grid pwr10-row-grid pwr10-sticky';
+  stickyRow.innerHTML = `
       <!-- Left rail label -->
       <div class="pwr10-row-label">
         <div class="pwr10-row-label2"><div>Compare</div></div>
@@ -236,23 +262,23 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
         </div>
         <div class="pwr10-row-input-label"><div>Sport</div></div>
       </div>
-    </div>
-  `.trim();
+  `;
+  stickyWrap.appendChild(stickyRow);
 
-  // lazy bg images (reuses your helper)
-  const imgs = root.querySelectorAll('.cmp-head-img');
+  // Set lazy bg images
+  const imgs = stickyRow.querySelectorAll('.cmp-head-img');
   if (imgs[0] && mainRow.previewengine) setLazyBackground(imgs[0], mainRow.previewengine);
   if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
 }
 
 
-// Paint the 3-col PWR10 header row (Compare/Sport) into .pwr10-rows-grid
+// Paint a non-sticky brand/title row into .pwr10-rows-grid.section1-title
 function paintPwr10HeaderRow(mainRow, sdfRow) {
-  const grid = document.querySelector('.pwr10-rows-grid');
+  const grid = document.querySelector('.pwr10-rows-grid.section1-title');
   if (!grid) return;
 
-  // remove prior header if re-rendering
-  const prior = grid.querySelector('#pwr10-compare-header-row');
+  // remove prior title if re-rendering
+  const prior = grid.querySelector('#pwr10-section1-title-row');
   if (prior) prior.remove();
 
   const compBrand = (mainRow['data-brand'] || 'Competitor').toUpperCase();
@@ -262,10 +288,10 @@ function paintPwr10HeaderRow(mainRow, sdfRow) {
 
   const wrap = document.createElement('div');
   wrap.innerHTML = `
-    <div id="pwr10-compare-header-row" class="w-layout-grid pwr10-row-grid">
+    <div id="pwr10-section1-title-row" class="w-layout-grid pwr10-row-grid">
       <!-- Left rail label -->
       <div class="pwr10-row-label">
-        <div class="pwr10-row-label2"><div>Compare</div></div>
+        <div class="pwr10-row-label2"><div>Section 1</div></div>
       </div>
 
       <div class="pwr10-vertical-divider"></div>
@@ -274,15 +300,13 @@ function paintPwr10HeaderRow(mainRow, sdfRow) {
       <div class="pwr10-row-value">
         <div class="pwr10-row-mobile-name"><div>${esc(compBrand)} ${esc(compName)}</div></div>
         <div class="pwr10-row-input">
-          <div class="pwr10-icon">
-            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
-          </div>
+          <div class="pwr10-icon"><div class="cmp-head-img lazy-bg" aria-hidden="true"></div></div>
           <div class="pwr10-title section1">
             <div class="cmp-head-brand">${esc(compBrand)}</div>
             <div class="cmp-head-name">${esc(compName)}</div>
           </div>
         </div>
-        <div class="pwr10-row-input-label"><div>Compare</div></div>
+        <div class="pwr10-row-input-label"><div>Brand</div></div>
       </div>
 
       <div class="pwr10-vertical-divider mobile"></div>
@@ -291,9 +315,7 @@ function paintPwr10HeaderRow(mainRow, sdfRow) {
       <div class="pwr10-row-value">
         <div class="pwr10-row-mobile-name"><div>${esc(sportBrand)} ${esc(sportName)}</div></div>
         <div class="pwr10-row-input">
-          <div class="pwr10-icon">
-            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
-          </div>
+          <div class="pwr10-icon"><div class="cmp-head-img lazy-bg" aria-hidden="true"></div></div>
           <div class="pwr10-title section1">
             <div class="cmp-head-brand">${esc(sportBrand)}</div>
             <div class="cmp-head-name">${esc(sportName)}</div>
@@ -304,8 +326,7 @@ function paintPwr10HeaderRow(mainRow, sdfRow) {
     </div>
   `.trim();
 
-  // Insert at the very top of the grid
-  grid.insertBefore(wrap.firstElementChild, grid.firstChild);
+  grid.appendChild(wrap.firstElementChild);
 
   // set lazy backgrounds if you have previewengine urls
   const imgs = grid.querySelectorAll('#pwr10-compare-header-row .cmp-head-img');
@@ -496,15 +517,14 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
 // ──────────────────────────────────────────────
 // PWR10 mirror (ALL Section 1 rows) — uses .cmp-match badge + .pwr10-title.section1
 try {
-  const grid = document.querySelector('.pwr10-rows-grid');
+  const grid = document.querySelector('.pwr10-rows-grid.section1');
   if (!grid) return;
 
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  const insertAfterHeader = (el) => {
-    const headerRow = grid.querySelector('#pwr10-compare-header-row');
-    grid.insertBefore(el, headerRow ? headerRow.nextSibling : grid.firstChild);
+ const insertRow = (el) => {
+    grid.appendChild(el);
   };
 
   rows.forEach((r, idx) => {
@@ -543,7 +563,7 @@ try {
       </div>
     `.trim();
 
-    insertAfterHeader(wrap.firstElementChild);
+     insertRow(wrap.firstElementChild);
   });
 } catch (err) {
   if (DEBUG) console.warn('[pwr10 S1]', err);
@@ -630,7 +650,7 @@ export function paintSection2(mainRow, sdfRow) {
     row('kcals_k', 'Kcals / Kg',    ''),
   ].join('');
 
-  // Optional summary text
+    // Optional summary text
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.textContent =
@@ -642,7 +662,7 @@ export function paintSection2(mainRow, sdfRow) {
   // PWR10 mirror (Section 2) — values only + match pill + inverse delta pill
   // ──────────────────────────────────────────────
   try {
-    const grid = document.querySelector('.pwr10-rows-grid');
+    const grid = document.querySelector('.pwr10-rows-grid.section2');
     if (!grid) return;
 
     const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -658,9 +678,6 @@ export function paintSection2(mainRow, sdfRow) {
 
     // Remove prior Section-2 PWR10 rows (safe re-render)
     grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
-
-    // Where to insert: right after header row if present
-    const headerRow = grid.querySelector('#pwr10-compare-header-row');
 
     // Build HTML for Section-2 PWR10 rows
     const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
@@ -707,11 +724,12 @@ export function paintSection2(mainRow, sdfRow) {
 
     const wrap = document.createElement('div');
     wrap.innerHTML = html;
-    grid.insertBefore(wrap, headerRow ? headerRow.nextSibling : grid.firstChild);
+    grid.appendChild(wrap);
   } catch (err) {
     console.error('[pwr10 S2]', err);
   }
 }
+
 
 
 // ===========================
