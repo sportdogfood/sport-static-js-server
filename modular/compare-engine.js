@@ -220,6 +220,72 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (cmpImg && mainRow.previewengine) setLazyBackground(cmpImg, mainRow.previewengine);
   if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
 }
+// Paint the 3-col PWR10 header row (Compare/Sport) into .pwr10-rows-grid
+function paintPwr10HeaderRow(mainRow, sdfRow) {
+  const grid = document.querySelector('.pwr10-rows-grid');
+  if (!grid) return;
+
+  // remove prior header if re-rendering
+  const prior = grid.querySelector('#pwr10-compare-header-row');
+  if (prior) prior.remove();
+
+  const compBrand = (mainRow['data-brand'] || 'Competitor').toUpperCase();
+  const compName  = (mainRow['data-one'] || '').trim();
+  const sportBrand = 'SPORT DOG FOOD';
+  const sportName  = (sdfRow['data-one'] || '').trim();
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div id="pwr10-compare-header-row" class="w-layout-grid pwr10-row-grid">
+      <!-- Left rail label -->
+      <div class="pwr10-row-label">
+        <div class="pwr10-row-label2"><div>Compare</div></div>
+      </div>
+
+      <div class="pwr10-vertical-divider"></div>
+
+      <!-- Competitor column -->
+      <div class="pwr10-row-value">
+        <div class="pwr10-row-mobile-name"><div>${esc(compBrand)} ${esc(compName)}</div></div>
+        <div class="pwr10-row-input">
+          <div class="pwr10-icon">
+            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+          </div>
+          <div class="pwr10-title section1">
+            <div class="cmp-head-brand">${esc(compBrand)}</div>
+            <div class="cmp-head-name">${esc(compName)}</div>
+          </div>
+        </div>
+        <div class="pwr10-row-input-label"><div>Compare</div></div>
+      </div>
+
+      <div class="pwr10-vertical-divider mobile"></div>
+
+      <!-- Sport column -->
+      <div class="pwr10-row-value">
+        <div class="pwr10-row-mobile-name"><div>${esc(sportBrand)} ${esc(sportName)}</div></div>
+        <div class="pwr10-row-input">
+          <div class="pwr10-icon">
+            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+          </div>
+          <div class="pwr10-title section1">
+            <div class="cmp-head-brand">${esc(sportBrand)}</div>
+            <div class="cmp-head-name">${esc(sportName)}</div>
+          </div>
+        </div>
+        <div class="pwr10-row-input-label"><div>Sport</div></div>
+      </div>
+    </div>
+  `.trim();
+
+  // Insert at the very top of the grid
+  grid.insertBefore(wrap.firstElementChild, grid.firstChild);
+
+  // set lazy backgrounds if you have previewengine urls
+  const imgs = grid.querySelectorAll('#pwr10-compare-header-row .cmp-head-img');
+  if (imgs[0] && mainRow.previewengine) setLazyBackground(imgs[0], mainRow.previewengine);
+  if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
+}
 
 function pwr10DeltaBadgePair(a, c) {
   const d = Number(c) - Number(a);
@@ -1050,6 +1116,8 @@ function renderAllSections(mainRow, sdfRow) {
       getCiRow(SDF_FORMULAS.herding)
     ]);
   }
+  // NEW: ensure PWR10 header row uses the correct HTML
+  paintPwr10HeaderRow(mainRow, sdfRow);
 }
 
 // ===========================
