@@ -221,6 +221,23 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
 }
 
+function pwr10DeltaBadgePair(a, c) {
+  const d = Number(c) - Number(a);
+  const sportCls = d === 0 ? 'same' : (d > 0 ? 'pos' : 'neg');
+  const compCls  = d === 0 ? 'same' : (d > 0 ? 'neg' : 'pos'); // inverse
+  const txt = d === 0 ? '±0' : (d > 0 ? `+${d}` : `${d}`);
+  const icon = (cls) => cls==='same'
+    ? '<svg viewBox="0 0 24 24"><path d="M5 9h14M5 15h14"/></svg>'
+    : (cls==='pos'
+        ? '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'
+        : '<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>');
+  const mk = (cls, aria) => `<span class="cmp-delta-badge ${cls}" aria-label="${esc(aria)}">${icon(cls)}<span>${esc(txt)}</span></span>`;
+  return {
+    comp:  mk(compCls,  d === 0 ? 'No difference' : `Competitor difference ${txt}`),
+    sport: mk(sportCls, d === 0 ? 'No difference' : `Sport difference ${txt}`),
+  };
+}
+
 function pwr10DeltaBadge(a, c) {
   const d = Number(c) - Number(a);
   const cls = d === 0 ? 'same' : (d > 0 ? 'pos' : 'neg');
@@ -530,70 +547,60 @@ export function paintSection2(mainRow, sdfRow) {
 // - Uses .cmp-match badge
 // - Inverse delta badges: sport = pos/neg/same; competitor = inverse
 // - Applies .pwr10-title.section2
-try {
-  const grid = document.querySelector('.pwr10-rows-grid');
-  if (!grid) return;
+// Paint Section 2 PWR10 rows
+function paintSection2PWR10(data) {
+  const grid = document.querySelector('.pwr10-rows-grid.section2');
+  if (!grid) return console.warn('[pwr10 S2] No Section 2 grid found');
 
-  const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
-  const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+  grid.innerHTML = data.map(row => {
+    const { label, aVal, cVal, brandA, brandC } = row;
 
-  const spec = [
-    { id:'pwr10-s2-protein', key:'protein', label:'Crude Protein', fmt:(v)=>`${v}%` },
-    { id:'pwr10-s2-fat',     key:'fat',     label:'Crude Fat',     fmt:(v)=>`${v}%` },
-    { id:'pwr10-s2-kc',      key:'kcals_c', label:'Kcals / Cup',   fmt:(v)=>`${v}`  },
-    { id:'pwr10-s2-kk',      key:'kcals_k', label:'Kcals / Kg',    fmt:(v)=>`${v}`  },
-  ];
+    // Parse numeric values for delta
+    const numA = parseFloat(aVal);
+    const numC = parseFloat(cVal);
 
-  spec.forEach(({ id, key, label, fmt }) => {
-    const a = b[key];  // competitor numeric (computed earlier in paintSection2)
-    const c = s[key];  // sport numeric
+    // Build the inverse delta badges
+    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
 
-    const prior = grid.querySelector(`#${id}`);
-    if (prior) prior.remove();
+    // Add % sign for Protein and Fat
+    let displayA = aVal;
+    let displayC = cVal;
+    if (/protein|fat/i.test(label)) {
+      displayA += '%';
+      displayC += '%';
+    }
 
-    const badgeHTML = pwr10CmpMatchBadge(String(a), String(c));
-    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(a, c);
+    return `
+      <div class="pwr10-row-grid section2">
+        <!-- Input label for all 3 -->
+        <div class="pwr10-row-input-label">${esc(label)}</div>
 
-    const wrap = document.createElement('div');
-    wrap.innerHTML = `
-      <div id="${id}" class="w-layout-grid pwr10-row-grid">
-        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
-        <div class="pwr10-vertical-divider"></div>
-
-        <!-- Column A: Competitor (inverse delta) -->
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon"></div>
-            <div class="pwr10-title section2"><div>${esc(fmt(a))}</div></div>
-            ${badgeHTML}
+        <!-- Competitor column -->
+        <div class="pwr10-col">
+          <div class="pwr10-icon empty"></div>
+          <div class="pwr10-title section2">${esc(displayA)}</div>
+          <div class="pwr10-row-mobile-name">${esc(brandA)}</div>
+          <div class="pwr10-status">
+            ${pwr10CmpMatchBadge(numA, numC)}
             ${compDelta}
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
 
-        <div class="pwr10-vertical-divider mobile"></div>
-
-        <!-- Column B: Sport (true delta) -->
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon"></div>
-            <div class="pwr10-title section2"><div>${esc(fmt(c))}</div></div>
-            ${badgeHTML}
+        <!-- Sport Dog Food column -->
+        <div class="pwr10-col">
+          <div class="pwr10-icon empty"></div>
+          <div class="pwr10-title section2">${esc(displayC)}</div>
+          <div class="pwr10-row-mobile-name">${esc(brandC)}</div>
+          <div class="pwr10-status">
+            ${pwr10CmpMatchBadge(numC, numA)}
             ${sportDelta}
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
       </div>
-    `.trim();
-
-    const headerRow = grid.querySelector('#pwr10-compare-header-row');
-    grid.insertBefore(wrap.firstElementChild, headerRow ? headerRow.nextSibling : grid.firstChild);
-  });
-} catch (err) {
-  if (DEBUG) console.warn('[pwr10 S2]', err);
+    `;
+  }).join('');
 }
+
 
 
 }
