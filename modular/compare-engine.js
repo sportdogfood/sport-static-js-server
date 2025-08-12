@@ -753,6 +753,7 @@ export function paintSection3(mainRow, sdfRow) {
   ensureSection3Dom(sec3);
 
   // Targets
+    // Targets
   const rowsRoot    = sec3.querySelector('#cmp3-rows');
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
@@ -763,6 +764,8 @@ export function paintSection3(mainRow, sdfRow) {
   // Totals overlay
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
+
+  // add semantic row classes (e.g., .cmp3-row.total.first, .cmp3-row.protein, etc.)
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
@@ -770,8 +773,13 @@ export function paintSection3(mainRow, sdfRow) {
     const diffTxt  = diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`);
     const badge    = diff === 0 ? 'Match' : 'Different';
     const badgeCls = diff === 0 ? 'match' : 'diff';
+
+    const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
+    const isFirst = classKey === 'total';
+    const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
+
     return `
-      <div class="cmp3-row" data-key="${esc(key)}">
+      <div class="${rowClass}" data-key="${esc(key)}">
         <div class="cmp3-label">${esc(label)}</div>
         <div class="cmp3-values">
           <span class="cmp3-badge brand">${b}</span>
@@ -782,6 +790,10 @@ export function paintSection3(mainRow, sdfRow) {
       </div>
     `;
   };
+
+  // ensure container carries .cmp3-rows class
+  rowsRoot.classList.add('cmp3-rows');
+
   rowsRoot.innerHTML = [
     overlayRow('total',        'Total Ingredients'),
     overlayRow('Protein',      'Protein'),
@@ -799,6 +811,7 @@ export function paintSection3(mainRow, sdfRow) {
   // Lists
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
+
 
   // Modal: wire button to open canonical modal
   ensureIngSearchModal(); // ensure it exists once (or adapt to existing)
