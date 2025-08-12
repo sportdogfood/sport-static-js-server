@@ -961,22 +961,39 @@ function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn)
     empty: g.querySelector('.pwrf_no-results')
   }));
 
-  function doFilter() {
-    const q = inputEl.value.trim().toLowerCase();
+ function doFilter() {
+    const raw = inputEl.value || '';
+    const q = raw.trim().toLowerCase();
+    const terms = q.split(/\s+/).filter(Boolean);
+
+    // show/hide clear button
     clearBtn.hidden = !q;
+
     groups.forEach(g => {
       let any = false;
       g.items.forEach(it => {
-        const ok = q && it.dataset.search.includes(q);
+        const hay = (it.dataset.search || '').toLowerCase();
+        const ok = terms.length > 0 && terms.every(t => hay.includes(t));
+
+        // robust toggle: attribute AND inline style (defeats aggressive CSS)
         it.hidden = !ok;
+        it.style.display = ok ? '' : 'none';
+
         if (ok) any = true;
       });
-      g.empty.hidden = any || !q;
+
+      // empty-state
+      const showEmpty = q && !any;
+      g.empty.hidden = !showEmpty;
+      g.empty.style.display = showEmpty ? '' : 'none';
     });
-    if (!q) { // stable empty state
+
+    // stable empty state when query is blank
+    if (!q) {
       groups.forEach(g => {
-        g.items.forEach(it => it.hidden = true);
+        g.items.forEach(it => { it.hidden = true; it.style.display = 'none'; });
         g.empty.hidden = true;
+        g.empty.style.display = 'none';
       });
     }
   }
@@ -984,16 +1001,19 @@ function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn)
   let to = 0;
   const debounced = () => { clearTimeout(to); to = setTimeout(doFilter, 100); };
 
-  inputEl.oninput = debounced; // replace any previous listeners
-  clearBtn.onclick = (e) => {
+  // use addEventListener so Webflow/other scripts don’t clobber handlers
+  inputEl.oninput = null;
+  clearBtn.onclick = null;
+  inputEl.addEventListener('input', debounced, { passive: true });
+  clearBtn.addEventListener('click', (e) => {
     e.preventDefault();
     inputEl.value = '';
     doFilter();
     inputEl.focus();
-  };
+  });
 
-  doFilter(); // start empty
-}
+  // initial pass (keeps start state fully hidden until user types)
+  doFilter();
 
 // Render inline ingredient list tags
 function renderIngListDivs(row) {
