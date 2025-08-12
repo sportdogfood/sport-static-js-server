@@ -272,67 +272,26 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
 }
 
 
-// Paint a non-sticky brand/title row into .pwr10-rows-grid.section1-title
+
+// Paint a placeholder into .pwr10-rows-grid.section1-title (no visible title row)
 function paintPwr10HeaderRow(mainRow, sdfRow) {
   const grid = document.querySelector('.pwr10-rows-grid.section1-title');
   if (!grid) return;
 
-  // remove prior title if re-rendering
-  const prior = grid.querySelector('#pwr10-section1-title-row');
-  if (prior) prior.remove();
+  // remove prior injected row/placeholder if re-rendering
+  const priorRow = grid.querySelector('#pwr10-section1-title-row');
+  if (priorRow) priorRow.remove();
+  const priorPh = grid.querySelector('#pwr10-section1-placeholder');
+  if (priorPh) priorPh.remove();
 
-  const compBrand = (mainRow['data-brand'] || 'Competitor').toUpperCase();
-  const compName  = (mainRow['data-one'] || '').trim();
-  const sportBrand = 'SPORT DOG FOOD';
-  const sportName  = (sdfRow['data-one'] || '').trim();
-
-  const wrap = document.createElement('div');
-  wrap.innerHTML = `
-    <div id="pwr10-section1-title-row" class="w-layout-grid pwr10-row-grid">
-      <!-- Left rail label -->
-      <div class="pwr10-row-label">
-        <div class="pwr10-row-label2"><div>Section 1</div></div>
-      </div>
-
-      <div class="pwr10-vertical-divider"></div>
-
-      <!-- Competitor column -->
-      <div class="pwr10-row-value">
-        <div class="pwr10-row-mobile-name"><div>${esc(compBrand)} ${esc(compName)}</div></div>
-        <div class="pwr10-row-input">
-          <div class="pwr10-icon"><div class="cmp-head-img lazy-bg" aria-hidden="true"></div></div>
-          <div class="pwr10-title section1">
-            <div class="cmp-head-brand">${esc(compBrand)}</div>
-            <div class="cmp-head-name">${esc(compName)}</div>
-          </div>
-        </div>
-        <div class="pwr10-row-input-label"><div>Brand</div></div>
-      </div>
-
-      <div class="pwr10-vertical-divider mobile"></div>
-
-      <!-- Sport column -->
-      <div class="pwr10-row-value">
-        <div class="pwr10-row-mobile-name"><div>${esc(sportBrand)} ${esc(sportName)}</div></div>
-        <div class="pwr10-row-input">
-          <div class="pwr10-icon"><div class="cmp-head-img lazy-bg" aria-hidden="true"></div></div>
-          <div class="pwr10-title section1">
-            <div class="cmp-head-brand">${esc(sportBrand)}</div>
-            <div class="cmp-head-name">${esc(sportName)}</div>
-          </div>
-        </div>
-        <div class="pwr10-row-input-label"><div>Sport</div></div>
-      </div>
-    </div>
-  `.trim();
-
-  grid.appendChild(wrap.firstElementChild);
-
-  // set lazy backgrounds if you have previewengine urls
-  const imgs = grid.querySelectorAll('#pwr10-compare-header-row .cmp-head-img');
-  if (imgs[0] && mainRow.previewengine) setLazyBackground(imgs[0], mainRow.previewengine);
-  if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
+  // add a hidden placeholder so the bucket exists for future content
+  const ph = document.createElement('div');
+  ph.id = 'pwr10-section1-placeholder';
+  ph.className = 'w-layout-grid pwr10-row-grid section1-title-placeholder';
+  ph.setAttribute('aria-hidden', 'true');
+  grid.appendChild(ph);
 }
+
 
 function pwr10DeltaBadgePair(a, c) {
   const d = Number(c) - Number(a);
