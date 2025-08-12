@@ -184,42 +184,68 @@ function setDataClass(el, base, key, value, map) {
 // ===========================
 // Sticky header (exact markup)
 // ===========================
+// Sticky header (exact markup)
+// ===========================
 export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '#compare-sticky') {
   const root = document.querySelector(containerSelector);
   if (!root) return;
 
-  const brandName = (mainRow['data-brand'] || '').trim() || 'Competitor';
-  const brandProd = (mainRow['data-one']   || '').trim();
+  const brandName  = (mainRow['data-brand'] || 'Competitor').trim();
+  const brandProd  = (mainRow['data-one']   || '').trim();
   const sportBrand = 'SPORT DOG FOOD';
-  const sportProd  = (sdfRow['data-one'] || '').trim();
+  const sportProd  = (sdfRow['data-one']    || '').trim();
 
+  // NEW: render the sticky bar using PWR10 classes instead of .cmp-head
   root.innerHTML = `
-    <header class="cmp-head" aria-label="Compare header">
-      <div class="label-spacer" aria-hidden="true"></div>
-
-      <div class="cmp-head-col" role="group" aria-label="Competitor">
-        <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
-        <div>
-          <div class="cmp-head-brand">${esc(brandName).toUpperCase()}</div>
-          <div class="cmp-head-name">${esc(brandProd)}</div>
-        </div>
+    <div class="w-layout-grid pwr10-row-grid pwr10-sticky">
+      <!-- Left rail label -->
+      <div class="pwr10-row-label">
+        <div class="pwr10-row-label2"><div>Compare</div></div>
       </div>
 
-      <div class="cmp-head-col" role="group" aria-label="Sport Dog Food">
-        <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
-        <div>
-          <div class="cmp-head-brand">${esc(sportBrand)}</div>
-          <div class="cmp-head-name">${esc(sportProd)}</div>
-        </div>
-      </div>
-    </header>
-  `;
+      <div class="pwr10-vertical-divider"></div>
 
-  // lazy bg images (keep your existing helper)
-  const [cmpImg, sdfImg] = root.querySelectorAll('.cmp-head-img');
-  if (cmpImg && mainRow.previewengine) setLazyBackground(cmpImg, mainRow.previewengine);
-  if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
+      <!-- Competitor column -->
+      <div class="pwr10-row-value">
+        <div class="pwr10-row-mobile-name"><div>${esc(brandName.toUpperCase())} ${esc(brandProd)}</div></div>
+        <div class="pwr10-row-input">
+          <div class="pwr10-icon">
+            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+          </div>
+          <div class="pwr10-title section1">
+            <div class="cmp-head-brand">${esc(brandName.toUpperCase())}</div>
+            <div class="cmp-head-name">${esc(brandProd)}</div>
+          </div>
+        </div>
+        <div class="pwr10-row-input-label"><div>Compare</div></div>
+      </div>
+
+      <div class="pwr10-vertical-divider mobile"></div>
+
+      <!-- Sport column -->
+      <div class="pwr10-row-value">
+        <div class="pwr10-row-mobile-name"><div>${esc(sportBrand)} ${esc(sportProd)}</div></div>
+        <div class="pwr10-row-input">
+          <div class="pwr10-icon">
+            <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
+          </div>
+          <div class="pwr10-title section1">
+            <div class="cmp-head-brand">${esc(sportBrand)}</div>
+            <div class="cmp-head-name">${esc(sportProd)}</div>
+          </div>
+        </div>
+        <div class="pwr10-row-input-label"><div>Sport</div></div>
+      </div>
+    </div>
+  `.trim();
+
+  // lazy bg images (reuses your helper)
+  const imgs = root.querySelectorAll('.cmp-head-img');
+  if (imgs[0] && mainRow.previewengine) setLazyBackground(imgs[0], mainRow.previewengine);
+  if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
 }
+
+
 // Paint the 3-col PWR10 header row (Compare/Sport) into .pwr10-rows-grid
 function paintPwr10HeaderRow(mainRow, sdfRow) {
   const grid = document.querySelector('.pwr10-rows-grid');
