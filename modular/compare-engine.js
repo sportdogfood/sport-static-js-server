@@ -527,7 +527,8 @@ export function paintSection2(mainRow, sdfRow) {
   // PWR10 mirror (ALL Section 2 rows)
 // PWR10 mirror (ALL Section 2 rows)
 // - Protein/Fat show %; Kcals are bare numbers
-// - Uses .cmp-match badge + delta badge (.cmp-delta-badge pos|neg|same)
+// - Uses .cmp-match badge
+// - Inverse delta badges: sport = pos/neg/same; competitor = inverse
 // - Applies .pwr10-title.section2
 try {
   const grid = document.querySelector('.pwr10-rows-grid');
@@ -551,7 +552,7 @@ try {
     if (prior) prior.remove();
 
     const badgeHTML = pwr10CmpMatchBadge(String(a), String(c));
-    const deltaBadge = pwr10DeltaBadge(a, c);
+    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(a, c);
 
     const wrap = document.createElement('div');
     wrap.innerHTML = `
@@ -559,28 +560,28 @@ try {
         <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
         <div class="pwr10-vertical-divider"></div>
 
-        <!-- Column A: Competitor -->
+        <!-- Column A: Competitor (inverse delta) -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(a))}</div></div>
             ${badgeHTML}
-            ${deltaBadge}
+            ${compDelta}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
 
         <div class="pwr10-vertical-divider mobile"></div>
 
-        <!-- Column B: Sport -->
+        <!-- Column B: Sport (true delta) -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(c))}</div></div>
             ${badgeHTML}
-            ${deltaBadge}
+            ${sportDelta}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
