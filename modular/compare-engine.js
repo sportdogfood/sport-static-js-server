@@ -529,33 +529,39 @@ try {
 
 
 //===================
+//===================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
-// ===========================
+//===================
 export function paintSection2(mainRow, sdfRow) {
+  // Head + subtitle
   const headerEl = document.querySelector('[data-var="section2-header"]');
-  if (headerEl) headerEl.textContent = "Performance Essentials";
+  if (headerEl) headerEl.textContent = 'Performance Essentials';
   const subtitleEl = document.querySelector('[data-var="section2-subtitle"]');
   if (subtitleEl) {
-    subtitleEl.textContent = `Protein, fat, and calories for ${mainRow["data-brand"]} ${mainRow["data-one"]} vs. Sport Dog Food ${sdfRow["data-one"]}`;
+    subtitleEl.textContent =
+      `Protein, fat, and calories for ${mainRow['data-brand']} ${mainRow['data-one']} vs. Sport Dog Food ${sdfRow['data-one']}`;
   }
 
+  // Classic bar rows target
   const root = document.querySelector('#section-2 .cmp2-rows');
   if (!root) return;
 
+  // Parse numeric values
   const vals = (row) => ({
-    protein: Number(row["ga_crude_protein_%"]) || 0,
-    fat:     Number(row["ga_crude_fat_%"])     || 0,
-    kcals_c: Number(row["ga_kcals_per_cup"])   || 0,
-    kcals_k: Number(row["ga_kcals_per_kg"])    || 0
+    protein: Number(row['ga_crude_protein_%']) || 0,
+    fat:     Number(row['ga_crude_fat_%'])     || 0,
+    kcals_c: Number(row['ga_kcals_per_cup'])   || 0,
+    kcals_k: Number(row['ga_kcals_per_kg'])    || 0,
   });
 
-  const b = vals(mainRow);
-  const s = vals(sdfRow);
+  const b = vals(mainRow); // competitor
+  const s = vals(sdfRow);  // sport
 
-  // visual maxes for bar widths
+  // Visual max caps for bar widths
   const MAX = { protein: 40, fat: 30, kcals_c: 600, kcals_k: 5500 };
   const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
 
+  // Single row template for the classic bar block
   const row = (key, label, unit = '') => {
     const bv = b[key], sv = s[key];
     const diff = sv - bv;
@@ -563,7 +569,6 @@ export function paintSection2(mainRow, sdfRow) {
     const badge    = (diff === 0) ? 'Match' : 'Different';
     const badgeCls = (diff === 0) ? 'match' : 'diff';
     const maxKey   = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
-
     const fmt = (v) => unit ? `${v}${unit}` : String(v);
 
     return `
@@ -591,85 +596,97 @@ export function paintSection2(mainRow, sdfRow) {
     `;
   };
 
+  // Paint classic bar rows
   root.innerHTML = [
     row('protein', 'Crude Protein', '%'),
     row('fat',     'Crude Fat',     '%'),
     row('kcals_c', 'Kcals / Cup',   ''),
-    row('kcals_k', 'Kcals / Kg',    '')
+    row('kcals_k', 'Kcals / Kg',    ''),
   ].join('');
 
-  // Optional summary
+  // Optional summary text
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.textContent =
-      `${mainRow["data-brand"]} ${mainRow["data-one"]}: ${b.protein}% protein, ${b.fat}% fat, ${b.kcals_c} kcals/cup. ` +
-      `Sport Dog Food ${sdfRow["data-one"]}: ${s.protein}% protein, ${s.fat}% fat, ${s.kcals_c} kcals/cup.`;
+      `${mainRow['data-brand']} ${mainRow['data-one']}: ${b.protein}% protein, ${b.fat}% fat, ${b.kcals_c} kcals/cup. ` +
+      `Sport Dog Food ${sdfRow['data-one']}: ${s.protein}% protein, ${s.fat}% fat, ${s.kcals_c} kcals/cup.`;
   }
 
   // ──────────────────────────────────────────────
-  // PWR10 mirror (ALL Section 2 rows)
-// PWR10 mirror (ALL Section 2 rows)
-// - Protein/Fat show %; Kcals are bare numbers
-// - Uses .cmp-match badge
-// - Inverse delta badges: sport = pos/neg/same; competitor = inverse
-// - Applies .pwr10-title.section2
-// Paint Section 2 PWR10 rows
-function paintSection2PWR10(data) {
-  const grid = document.querySelector('.pwr10-rows-grid.section2');
-  if (!grid) return console.warn('[pwr10 S2] No Section 2 grid found');
+  // PWR10 mirror (Section 2) — values only + match pill + inverse delta pill
+  // ──────────────────────────────────────────────
+  try {
+    const grid = document.querySelector('.pwr10-rows-grid');
+    if (!grid) return;
 
-  grid.innerHTML = data.map(row => {
-    const { label, aVal, cVal, brandA, brandC } = row;
+    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-    // Parse numeric values for delta
-    const numA = parseFloat(aVal);
-    const numC = parseFloat(cVal);
+    // Build rows payload for the painter
+    const data = [
+      { label:'Crude Protein', aVal:b.protein, cVal:s.protein, brandA:compShort, brandC:sportShort },
+      { label:'Crude Fat',     aVal:b.fat,     cVal:s.fat,     brandA:compShort, brandC:sportShort },
+      { label:'Kcals / Cup',   aVal:b.kcals_c, cVal:s.kcals_c, brandA:compShort, brandC:sportShort },
+      { label:'Kcals / Kg',    aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
+    ];
 
-    // Build the inverse delta badges
-    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
+    // Remove prior Section-2 PWR10 rows (safe re-render)
+    grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
 
-    // Add % sign for Protein and Fat
-    let displayA = aVal;
-    let displayC = cVal;
-    if (/protein|fat/i.test(label)) {
-      displayA += '%';
-      displayC += '%';
-    }
+    // Where to insert: right after header row if present
+    const headerRow = grid.querySelector('#pwr10-compare-header-row');
 
-    return `
-      <div class="pwr10-row-grid section2">
-        <!-- Input label for all 3 -->
-        <div class="pwr10-row-input-label">${esc(label)}</div>
+    // Build HTML for Section-2 PWR10 rows
+    const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
+      const numA = Number(aVal), numC = Number(cVal);
+      const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
 
-        <!-- Competitor column -->
-        <div class="pwr10-col">
-          <div class="pwr10-icon empty"></div>
-          <div class="pwr10-title section2">${esc(displayA)}</div>
-          <div class="pwr10-row-mobile-name">${esc(brandA)}</div>
-          <div class="pwr10-status">
-            ${pwr10CmpMatchBadge(numA, numC)}
-            ${compDelta}
+      const format = /protein|fat/i.test(label)
+        ? (v) => `${v}%`
+        : (v) => `${v}`;
+
+      return `
+        <div class="w-layout-grid pwr10-row-grid section2">
+          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
+          <div class="pwr10-vertical-divider"></div>
+
+          <!-- Competitor -->
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon"></div>
+              <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
+              ${pwr10CmpMatchBadge(numA, numC)}
+              ${compDelta}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+          </div>
+
+          <div class="pwr10-vertical-divider mobile"></div>
+
+          <!-- Sport -->
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon"></div>
+              <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
+              ${pwr10CmpMatchBadge(numC, numA)}
+              ${sportDelta}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
           </div>
         </div>
+      `;
+    }).join('');
 
-        <!-- Sport Dog Food column -->
-        <div class="pwr10-col">
-          <div class="pwr10-icon empty"></div>
-          <div class="pwr10-title section2">${esc(displayC)}</div>
-          <div class="pwr10-row-mobile-name">${esc(brandC)}</div>
-          <div class="pwr10-status">
-            ${pwr10CmpMatchBadge(numC, numA)}
-            ${sportDelta}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    grid.insertBefore(wrap, headerRow ? headerRow.nextSibling : grid.firstChild);
+  } catch (err) {
+    console.error('[pwr10 S2]', err);
+  }
 }
 
-
-
-}
 
 // ===========================
 // Section 3 (ingredients overlay + modal search + swap)
