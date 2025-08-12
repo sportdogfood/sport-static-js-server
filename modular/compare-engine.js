@@ -737,9 +737,18 @@ export function paintSection3(mainRow, sdfRow) {
     const name1 = (mainRow['data-one'] || '').trim();   // compare product name only
     const name2 = (sdfRow['data-one']  || '').trim();   // sdf product name
 
+ 
     return `
       <div class="${rowClass}" data-key="${esc(classKey)}">
         <div class="cmp3-title">
+          <div class="cmp3-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 9h16"></path>
+              <path d="M4 15h16"></path>
+              <path d="M10 3v18"></path>
+              <path d="M14 3v18"></path>
+            </svg>
+          </div>
           <div class="cmp3-label"><div>${esc(label)}</div></div>
         </div>
 
@@ -756,6 +765,7 @@ export function paintSection3(mainRow, sdfRow) {
         </div>
       </div>
     `;
+
   };
 
   // ensure container carries .cmp3-rows class
