@@ -676,58 +676,62 @@ export function paintSection2(mainRow, sdfRow) {
       { label:'Kcals / Kg',    aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
     ];
 
-    // Remove prior Section-2 PWR10 rows (safe re-render)
-    grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
+  // Remove prior Section-2 PWR10 rows (safe re-render)
+  grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
 
-    // Build HTML for Section-2 PWR10 rows
-    const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
-      const numA = Number(aVal), numC = Number(cVal);
-      const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
+  // Build HTML for Section-2 PWR10 rows
+  const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
+    const numA = Number(aVal), numC = Number(cVal);
+    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
 
-      const format = /protein|fat/i.test(label)
-        ? (v) => `${v}%`
-        : (v) => `${v}`;
+    const format = /protein|fat/i.test(label)
+      ? (v) => `${v}%`
+      : (v) => `${v}`;
 
-      return `
-        <div class="w-layout-grid pwr10-row-grid section2">
-          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
-          <div class="pwr10-vertical-divider"></div>
+    return `
+      <div class="w-layout-grid pwr10-row-grid section2">
+        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
+        <div class="pwr10-vertical-divider"></div>
 
-          <!-- Competitor -->
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon"></div>
-              <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
-              ${pwr10CmpMatchBadge(numA, numC)}
-              ${compDelta}
-            </div>
-            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+        <!-- Competitor -->
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon"></div>
+            <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
+            ${pwr10CmpMatchBadge(numA, numC)}
+            ${compDelta}
           </div>
-
-          <div class="pwr10-vertical-divider mobile"></div>
-
-          <!-- Sport -->
-          <div class="pwr10-row-value">
-            <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
-            <div class="pwr10-row-input">
-              <div class="pwr10-icon"></div>
-              <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
-              ${pwr10CmpMatchBadge(numC, numA)}
-              ${sportDelta}
-            </div>
-            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
-          </div>
+          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
-      `;
-    }).join('');
 
-    const wrap = document.createElement('div');
-    wrap.innerHTML = html;
-    grid.appendChild(wrap);
-  } catch (err) {
-    console.error('[pwr10 S2]', err);
-  }
+        <div class="pwr10-vertical-divider mobile"></div>
+
+        <!-- Sport -->
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon"></div>
+            <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
+            ${pwr10CmpMatchBadge(numC, numA)}
+            ${sportDelta}
+          </div>
+          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // ⬇️ Append rows as direct children (no extra wrapper div)
+  const frag = document.createDocumentFragment();
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  Array.from(temp.children).forEach(node => frag.appendChild(node));
+  grid.appendChild(frag);
+} catch (err) {
+  console.error('[pwr10 S2]', err);
+}
+
 }
 
 
