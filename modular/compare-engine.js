@@ -221,6 +221,19 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (sdfImg && sdfRow.previewengine)  setLazyBackground(sdfImg,  sdfRow.previewengine);
 }
 
+function pwr10DeltaBadge(a, c) {
+  const d = Number(c) - Number(a);
+  const cls = d === 0 ? 'same' : (d > 0 ? 'pos' : 'neg');
+  const txt = d === 0 ? '±0' : (d > 0 ? `+${d}` : `${d}`);
+  const aria = d === 0 ? 'No difference' : `Difference ${txt}`;
+  const icon = (cls === 'same')
+    ? '<svg viewBox="0 0 24 24"><path d="M5 9h14M5 15h14"/></svg>'
+    : (cls === 'pos'
+        ? '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'
+        : '<svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg>');
+  return `<span class="cmp-delta-badge ${cls}" aria-label="${esc(aria)}">${icon}<span>${esc(txt)}</span></span>`;
+}
+
 function pwr10CmpMatchBadge(aTxt, bTxt) {
   const isMatch = (String(aTxt||'').toLowerCase() === String(bTxt||'').toLowerCase());
   const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
@@ -512,15 +525,9 @@ export function paintSection2(mainRow, sdfRow) {
 
   // ──────────────────────────────────────────────
   // PWR10 mirror (ALL Section 2 rows)
-// ──────────────────────────────────────────────
 // PWR10 mirror (ALL Section 2 rows)
-// - Titles use ONLY the raw numeric value
-// - Adds .pwr10-title.section1
-// ──────────────────────────────────────────────
-// PWR10 mirror (ALL Section 2 rows)
-// - Titles use % for protein/fat, bare numbers for kcals
-// - Uses .cmp-match badge
-// - Shows delta via .cmp2-diff (e.g., +3 / -1 / ±0)
+// - Protein/Fat show %; Kcals are bare numbers
+// - Uses .cmp-match badge + delta badge (.cmp-delta-badge pos|neg|same)
 // - Applies .pwr10-title.section2
 try {
   const grid = document.querySelector('.pwr10-rows-grid');
@@ -537,14 +544,14 @@ try {
   ];
 
   spec.forEach(({ id, key, label, fmt }) => {
-    const a = b[key];  // competitor numeric (already computed earlier)
+    const a = b[key];  // competitor numeric (computed earlier in paintSection2)
     const c = s[key];  // sport numeric
+
     const prior = grid.querySelector(`#${id}`);
     if (prior) prior.remove();
 
     const badgeHTML = pwr10CmpMatchBadge(String(a), String(c));
-    const delta = c - a;
-    const diffTxt = Number.isFinite(delta) ? (delta === 0 ? '±0' : (delta > 0 ? `+${delta}` : `${delta}`)) : '';
+    const deltaBadge = pwr10DeltaBadge(a, c);
 
     const wrap = document.createElement('div');
     wrap.innerHTML = `
@@ -559,7 +566,7 @@ try {
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(a))}</div></div>
             ${badgeHTML}
-            <div class="cmp2-diff">${esc(diffTxt)}</div>
+            ${deltaBadge}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
@@ -573,7 +580,7 @@ try {
             <div class="pwr10-icon"></div>
             <div class="pwr10-title section2"><div>${esc(fmt(c))}</div></div>
             ${badgeHTML}
-            <div class="cmp2-diff">${esc(diffTxt)}</div>
+            ${deltaBadge}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
