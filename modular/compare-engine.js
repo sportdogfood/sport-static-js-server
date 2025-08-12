@@ -753,7 +753,7 @@ export function paintSection3(mainRow, sdfRow) {
   ensureSection3Dom(sec3);
 
   // Targets
-    // Targets
+
   const rowsRoot    = sec3.querySelector('#cmp3-rows');
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
@@ -765,28 +765,38 @@ export function paintSection3(mainRow, sdfRow) {
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
 
-  // add semantic row classes (e.g., .cmp3-row.total.first, .cmp3-row.protein, etc.)
+  // ── REPLACE overlayRow + rowsRoot.innerHTML WITH THIS ──
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
-    const diff = s - b;
-    const diffTxt  = diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`);
-    const badge    = diff === 0 ? 'Match' : 'Different';
-    const badgeCls = diff === 0 ? 'match' : 'diff';
+
+    // delta pill pair (brand vs sdf)
+    const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
 
     const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
     const isFirst = classKey === 'total';
     const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
 
+    const name1 = (mainRow['data-one'] || '').trim();   // compare product name only
+    const name2 = (sdfRow['data-one']  || '').trim();   // sdf product name
+
     return `
-      <div class="${rowClass}" data-key="${esc(key)}">
-        <div class="cmp3-label">${esc(label)}</div>
-        <div class="cmp3-values">
-          <span class="cmp3-badge brand">${b}</span>
-          <span class="cmp3-badge sport">${s}</span>
+      <div class="${rowClass}" data-key="${esc(classKey)}">
+        <div class="cmp3-title">
+          <div class="cmp3-label"><div>${esc(label)}</div></div>
         </div>
-        <div class="cmp3-diff">${esc(diffTxt)}</div>
-        <div class="cmp3-delta ${badgeCls}">${badge}</div>
+
+        <div class="cmp3-entry1">
+          <div class="cmp3-name1"><div>${esc(name1)}</div></div>
+          <div class="cmp3-badge brand"><div>${esc(String(b))}</div></div>
+          <div class="cmp3-diff1">${brandDelta}</div>
+        </div>
+
+        <div class="cmp3-entry3">
+          <div class="cmp3-name2"><div>${esc(name2)}</div></div>
+          <div class="cmp3-badge sdf"><div>${esc(String(s))}</div></div>
+          <div class="cmp3-diff2">${sdfDelta}</div>
+        </div>
       </div>
     `;
   };
@@ -801,6 +811,7 @@ export function paintSection3(mainRow, sdfRow) {
     overlayRow('Supplemental', 'Supplemental'),
     (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
   ].join('');
+  // ── END REPLACEMENT ──
 
   // Names
   brandNameEl.textContent = mainRow['data-brand']
@@ -808,7 +819,7 @@ export function paintSection3(mainRow, sdfRow) {
     : (mainRow['data-one'] || '');
   sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  // Lists
+
   // Lists
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
