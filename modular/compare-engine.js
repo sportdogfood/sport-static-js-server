@@ -528,9 +528,7 @@ try {
   if (DEBUG) console.warn('[pwr10 S1]', err);
 }
 
-
 }
-
 
 
 //===================
@@ -1014,7 +1012,7 @@ function paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn)
 
   // initial pass (keeps start state fully hidden until user types)
   doFilter();
-
+}
 // Render inline ingredient list tags
 function renderIngListDivs(row) {
   const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
