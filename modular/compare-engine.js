@@ -471,10 +471,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   // ──────────────────────────────────────────────
   // PWR10 mirror (ALL Section 1 rows)
   // ──────────────────────────────────────────────
- // ──────────────────────────────────────────────
-// PWR10 mirror (ALL Section 1 rows) — with .pwr10-title.section1
-// ──────────────────────────────────────────────
-// PWR10 mirror (ALL Section 1 rows) — uses .cmp-match badge + .pwr10-title.section1
+
 try {
   const grid = document.querySelector('.pwr10-rows-grid.section1');
   if (!grid) return;
@@ -531,7 +528,6 @@ try {
 }
 
 
-//===================
 //===================
 // Section 2 (Group 2 + two distinct bars per row, below each row)
 //===================
@@ -618,8 +614,11 @@ export function paintSection2(mainRow, sdfRow) {
   // ──────────────────────────────────────────────
   // PWR10 mirror (Section 2) — values only + match pill + inverse delta pill
   // ──────────────────────────────────────────────
+   // ──────────────────────────────────────────────
+  // PWR10 mirror (Section 2) — values only + match pill + inverse delta pill
+  // ──────────────────────────────────────────────
   try {
-    const grid = document.querySelector('.pwr10-rows-grid.section2');
+    const grid = document.querySelector('.pwr10-rows-grid');
     if (!grid) return;
 
     const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -633,61 +632,84 @@ export function paintSection2(mainRow, sdfRow) {
       { label:'Kcals / Kg',    aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
     ];
 
-  // Remove prior Section-2 PWR10 rows (safe re-render)
-  grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
+    // Remove prior Section-2 PWR10 rows (safe re-render)
+    grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
 
-  // Build HTML for Section-2 PWR10 rows
-  const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
-    const numA = Number(aVal), numC = Number(cVal);
-    const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
+    // Where to insert: right after header row if present
+    const headerRow = grid.querySelector('#pwr10-compare-header-row');
 
-    const format = /protein|fat/i.test(label)
-      ? (v) => `${v}%`
-      : (v) => `${v}`;
+    // Gauge asset + degree mapper
+    const GAUGE_SRC = `${CDN}/689c865c7c9020f40949a410_gauge-stick.png`;
+    const gaugeDeg = (label, v) => {
+      const n = Number(v) || 0;
+      if (/protein|fat/i.test(label)) return n;     // 15 -> 15deg
+      if (/cup/i.test(label))          return n/10; // 465 -> 46.5deg
+      if (/kg/i.test(label))           return n/100;// 4750 -> 47.5deg
+      return n;
+    };
 
-    return `
-      <div class="w-layout-grid pwr10-row-grid section2">
-        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
-        <div class="pwr10-vertical-divider"></div>
+    // Build HTML for Section-2 PWR10 rows (now with rotating gauge icon)
+    const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
+      const numA = Number(aVal), numC = Number(cVal);
+      const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
 
-        <!-- Competitor -->
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon"></div>
-            <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
-            ${pwr10CmpMatchBadge(numA, numC)}
-            ${compDelta}
+      const format = /protein|fat/i.test(label)
+        ? (v) => `${v}%`
+        : (v) => `${v}`;
+
+      const aDeg = gaugeDeg(label, numA);
+      const cDeg = gaugeDeg(label, numC);
+
+      return `
+        <div class="w-layout-grid pwr10-row-grid section2">
+          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(label)}</div></div></div>
+          <div class="pwr10-vertical-divider"></div>
+
+          <!-- Competitor -->
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon">
+                <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
+                     width="22" height="22"
+                     style="transform:rotate(${aDeg}deg)" aria-hidden="true">
+              </div>
+              <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
+              ${pwr10CmpMatchBadge(numA, numC)}
+              ${compDelta}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
-        </div>
 
-        <div class="pwr10-vertical-divider mobile"></div>
+          <div class="pwr10-vertical-divider mobile"></div>
 
-        <!-- Sport -->
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon"></div>
-            <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
-            ${pwr10CmpMatchBadge(numC, numA)}
-            ${sportDelta}
+          <!-- Sport -->
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon">
+                <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
+                     width="22" height="22"
+                     style="transform:rotate(${cDeg}deg)" aria-hidden="true">
+              </div>
+              <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
+              ${pwr10CmpMatchBadge(numC, numA)}
+              ${sportDelta}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(label)}</div></div>
         </div>
-      </div>
-    `;
-  }).join('');
+      `;
+    }).join('');
 
-  // ⬇️ Append rows as direct children (no extra wrapper div)
-  const frag = document.createDocumentFragment();
-  const temp = document.createElement('div');
-  temp.innerHTML = html;
-  Array.from(temp.children).forEach(node => frag.appendChild(node));
-  grid.appendChild(frag);
-} catch (err) {
-  console.error('[pwr10 S2]', err);
-}
+    const wrap = document.createElement('div');
+    wrap.innerHTML = html;
+    grid.insertBefore(wrap, headerRow ? headerRow.nextSibling : grid.firstChild);
+  } catch (err) {
+    console.error('[pwr10 S2]', err);
+  }
+
+
 
 }
 
