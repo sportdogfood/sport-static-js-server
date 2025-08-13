@@ -903,7 +903,7 @@ if (openBtn && acc && !openBtn._wired) {
     }
   });
 }
-
+}
 
 // Build/repair the Section 3 DOM scaffold if missing pieces
 // Build/repair the Section 3 DOM scaffold if missing pieces
