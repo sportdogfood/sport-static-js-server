@@ -932,18 +932,44 @@ function ensureSection3Dom(sec3) {
 // Accordion search (no modal) + body scroll lock
 // ===========================
 function lockBodyScroll() {
-  const y = window.scrollY || 0;
-  document.documentElement.classList.add('no-scroll');
-  document.body.style.top = `-${y}px`;
+  if (document.body.classList.contains('is-locked')) return;
+
+  const y = window.scrollY || document.documentElement.scrollTop || 0;
   document.body.dataset.scrollY = String(y);
+
+  // compensate for scrollbar disappearance
+  const sbw = window.innerWidth - document.documentElement.clientWidth;
+  if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
+
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${y}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+
+  document.documentElement.classList.add('no-scroll');
+  document.body.classList.add('is-locked');
 }
+
 function unlockBodyScroll() {
+  if (!document.body.classList.contains('is-locked')) return;
+
   const y = parseInt(document.body.dataset.scrollY || '0', 10);
+
+  document.body.classList.remove('is-locked');
   document.documentElement.classList.remove('no-scroll');
+
+  document.body.style.position = '';
   document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  document.body.style.paddingRight = '';
   delete document.body.dataset.scrollY;
+
   window.scrollTo(0, y);
 }
+
 
 function openSearchAccordion(mainRow, sdfRow) {
   const sec3 = document.querySelector('#section-3');
@@ -953,25 +979,26 @@ function openSearchAccordion(mainRow, sdfRow) {
   const inputEl  = acc?.querySelector('.pwrf_search-input');
   const clearBtn = acc?.querySelector('.pwrf_clear-btn');
   const resultsEl= acc?.querySelector('.pwrf_results');
+  const btn      = sec3.querySelector('#open-ing-search');
 
   if (!acc || !inputEl || !clearBtn || !resultsEl) return;
 
-  // Paint lists (reuses existing renderer)
   paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
 
-  // Open accordion + lock scroll
   acc.classList.add('open');
   acc.setAttribute('aria-hidden', 'false');
-  lockBodyScroll();
 
-  // Focus input
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'true');
+    btn.classList.add('opened');
+    btn.classList.remove('closed');
+  }
+
+  lockBodyScroll();
   inputEl.focus();
 
-  // Close on Escape (once)
   if (!acc._escHandler) {
-    acc._escHandler = (e) => {
-      if (e.key === 'Escape') closeSearchAccordion();
-    };
+    acc._escHandler = (e) => { if (e.key === 'Escape') closeSearchAccordion(); };
     document.addEventListener('keydown', acc._escHandler);
   }
 }
@@ -980,23 +1007,25 @@ function closeSearchAccordion() {
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
-  const acc   = sec3.querySelector('#cmp3-search-accordion');
-  const btn   = sec3.querySelector('#open-ing-search');
+  const acc = sec3.querySelector('#cmp3-search-accordion');
+  const btn = sec3.querySelector('#open-ing-search');
   if (!acc) return;
 
   acc.classList.remove('open');
   acc.setAttribute('aria-hidden', 'true');
 
-  // Remove Escape handler
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.classList.remove('opened');
+    btn.classList.add('closed');
+  }
+
   if (acc._escHandler) {
     document.removeEventListener('keydown', acc._escHandler);
     acc._escHandler = null;
   }
 
-  // Unlock scroll
   unlockBodyScroll();
-
-  // Return focus to the trigger
   if (btn) btn.focus();
 }
 
