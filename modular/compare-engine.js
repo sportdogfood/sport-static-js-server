@@ -1016,35 +1016,38 @@ function filterOneList(listBody, emptyEl, terms) {
 // ===========================
 // Render inline ingredient list tags + searchable hidden keys
 // ===========================
+// ===========================
+// Render inline ingredient list tags + searchable hidden keys (deduped)
+// ===========================
 function renderIngListDivs(row) {
-  const ids = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
+  const ids   = Array.isArray(row['ing-data-fives']) ? row['ing-data-fives'] : [];
   const pairs = ids.map(id => ({ id, ing: ING_MAP[id] })).filter(p => p.ing);
 
   return `
     <div class="ci-ings-list">
       ${pairs.map(({ id, ing }) => {
-        const display = esc(ing.displayAs || ing.Name || '');
-        const consumerTag = getConsumerTypeTag(ing['data-type']); // Protein | Plants | Supplemental | Other
+        const display      = esc(ing.displayAs || ing.Name || '');
+        const consumerTag  = getConsumerTypeTag(ing['data-type']); // Protein | Plants | Supplemental | Other
+        const consumerSlug = (consumerTag || 'Other').toLowerCase();
 
         // Pill tags
         const tags = [];
         if (ing['data-type']) {
-          const t = (consumerTag || 'Other').toLowerCase();
-          tags.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${esc(t)}">${esc(consumerTag)}</div>`);
+          tags.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${esc(consumerSlug)}">${esc(consumerTag)}</div>`);
         }
         if (ing.tagPoultry)     tags.push(`<div class="ci-ing-tag ci-tag-poultry" title="Poultry" aria-label="Poultry"></div>`);
         if (ing.tagAllergy)     tags.push(`<div class="ci-ing-tag ci-tag-allergy" title="Allergy" aria-label="Allergy"></div>`);
         if (ing.tagContentious) tags.push(`<div class="ci-ing-tag ci-tag-contentious" title="Contentious" aria-label="Contentious"></div>`);
-        if ( ing.supplementalType === 'Minerals')   tags.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
-        if ( ing.supplementalType === 'Vitamins')   tags.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
-        if ( ing.supplementalType === 'Probiotics') tags.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
+        if (ing.supplementalType === 'Minerals')   tags.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
+        if (ing.supplementalType === 'Vitamins')   tags.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
+        if (ing.supplementalType === 'Probiotics') tags.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
         const assist = (ing.supplementalAssist || '').toLowerCase();
         if (assist.includes('chelate') || assist.includes('complex')) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
         }
 
-        // Hidden keyword soup (for filtering/search)
-        const keys = [
+        // Build a deduped keyword soup for search
+        const raw = [
           ing.Name, ing.displayAs, ing.groupWith,
           ing['data-type'] || '', ing.recordType || '',
           ing.animalType || '',   ing.animalAssist || '',
@@ -1053,36 +1056,34 @@ function renderIngListDivs(row) {
           ...(ing.tags || [])
         ].join(' ').toLowerCase();
 
-        // Light flags (optional for CSS/logic)
-      // Hidden keyword soup (deduped)
-const raw = [
-  ing.Name, ing.displayAs, ing.groupWith,
-  ing['data-type'] || '', ing.recordType || '',
-  ing.animalType || '',   ing.animalAssist || '',
-  ing.plantType || '',    ing.plantAssist || '',
-  ing.supplementalType || '', ing.supplementalAssist || '',
-  ...(ing.tags || [])
-].join(' ').toLowerCase();
+        const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean)) ).join(' ');
 
-const keys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
+        // Light flags for optional CSS hooks
+        const flags = [
+          consumerSlug,
+          ing.tagPoultry     ? 'poultry'     : '',
+          ing.tagAllergy     ? 'allergy'     : '',
+          ing.tagContentious ? 'contentious' : ''
+        ].filter(Boolean).join(' ');
 
         return `
           <div
             class="ci-ing-wrapper"
-            data-search="${esc(keys)}"
+            data-search="${esc(searchKeys)}"
             data-ing-id="${esc(id)}"
-            data-consumer="${esc((consumerTag || 'Other').toLowerCase())}"
+            data-consumer="${esc(consumerSlug)}"
             data-flags="${esc(flags)}"
           >
             <div class="ci-ing-displayas">${display}</div>
             <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join('')}</div>
-            <span class="ci-ing-keys" hidden aria-hidden="true">${esc(keys)}</span>
+            <span class="ci-ing-keys" hidden aria-hidden="true">${esc(searchKeys)}</span>
           </div>
         `;
       }).join('')}
     </div>
   `;
 }
+
 
 
 // ===========================
