@@ -671,7 +671,7 @@ export function paintSection2(mainRow, sdfRow) {
             <div class="pwr10-row-input">
               <div class="pwr10-icon">
                 <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
-                     width="22" height="22"
+                     width="auto" height="60"
                      style="transform:rotate(${aDeg}deg)" aria-hidden="true">
               </div>
               <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
@@ -689,7 +689,7 @@ export function paintSection2(mainRow, sdfRow) {
             <div class="pwr10-row-input">
               <div class="pwr10-icon">
                 <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
-                     width="22" height="22"
+                     width="auto" height="60"
                      style="transform:rotate(${cDeg}deg)" aria-hidden="true">
               </div>
               <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
