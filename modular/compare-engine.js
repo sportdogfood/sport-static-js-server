@@ -321,69 +321,7 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
 }
 
-function openSearchAccordion(mainRow, sdfRow) {
-  const sec3 = document.querySelector('#section-3');
-  if (!sec3) return;
 
-  const acc      = sec3.querySelector('#cmp3-search-accordion');
-  const inputEl  = acc?.querySelector('.pwrf_search-input');
-  const clearBtn = acc?.querySelector('.pwrf_clear-btn');
-  const resultsEl= acc?.querySelector('.pwrf_results');
-  const btn      = sec3.querySelector('#open-ing-search');
-
-  if (!acc || !inputEl || !clearBtn || !resultsEl) return;
-
-  // (re)paint lists each time it opens so results are fresh
-  paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
-
-  acc.classList.add('open');
-  acc.setAttribute('aria-hidden', 'false');
-
-  if (btn) {
-    btn.setAttribute('aria-expanded', 'true');
-    btn.classList.add('opened');
-    btn.classList.remove('closed');
-    // optional label swap:
-    // btn.textContent = 'Close search';
-  }
-
-  lockBodyScroll();
-  inputEl.focus();
-
-  // Close on Escape
-  if (!acc._escHandler) {
-    acc._escHandler = (e) => { if (e.key === 'Escape') closeSearchAccordion(); };
-    document.addEventListener('keydown', acc._escHandler);
-  }
-}
-
-function closeSearchAccordion() {
-  const sec3 = document.querySelector('#section-3');
-  if (!sec3) return;
-
-  const acc = sec3.querySelector('#cmp3-search-accordion');
-  const btn = sec3.querySelector('#open-ing-search');
-  if (!acc) return;
-
-  acc.classList.remove('open');
-  acc.setAttribute('aria-hidden', 'true');
-
-  if (btn) {
-    btn.setAttribute('aria-expanded', 'false');
-    btn.classList.remove('opened');
-    btn.classList.add('closed');
-    // optional label swap:
-    // btn.textContent = 'Search ingredients';
-  }
-
-  if (acc._escHandler) {
-    document.removeEventListener('keydown', acc._escHandler);
-    acc._escHandler = null;
-  }
-
-  unlockBodyScroll();
-  if (btn) btn.focus();
-}
 
 
 // Paint a placeholder into .pwr10-rows-grid.section1-title (no visible title row)
@@ -743,9 +681,7 @@ export function paintSection2(mainRow, sdfRow) {
 // ──────────────────────────────────────────────
 // PWR10 mirror (Section 2) — values + match + delta + evaluation indicator
 // ──────────────────────────────────────────────
-// ──────────────────────────────────────────────
-// PWR10 mirror (Section 2) — values + match + delta + evaluation indicator
-// ──────────────────────────────────────────────
+
 try {
   // target ONLY the Section-2 grid
   const grid = document.querySelector('.pwr10-rows-grid.section2');
@@ -867,14 +803,10 @@ try {
 } catch (err) {
   console.error('[pwr10 S2]', err);
 }
-
-
 }
 
-
-
 // ===========================
-// Section 3 (ingredients overlay + modal search + swap)
+// Section 3 (ingredients overlay + accordion search + swap)
 // ===========================
 export function paintSection3(mainRow, sdfRow) {
   // headers
@@ -886,11 +818,10 @@ export function paintSection3(mainRow, sdfRow) {
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
-  // Ensure DOM scaffold exists
+  // Ensure DOM scaffold exists (accordion is ABOVE the button and has an × close)
   ensureSection3Dom(sec3);
 
   // Targets
-
   const rowsRoot    = sec3.querySelector('#cmp3-rows');
   const brandNameEl = sec3.querySelector('[data-var="brand-1-sec3-name"]');
   const sportNameEl = sec3.querySelector('[data-var="sport-1-sec3-name"]');
@@ -902,22 +833,18 @@ export function paintSection3(mainRow, sdfRow) {
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
 
-  // ── REPLACE overlayRow + rowsRoot.innerHTML WITH THIS ──
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
 
-    // delta pill pair (brand vs sdf)
     const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
-
     const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
     const isFirst = classKey === 'total';
     const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
 
-    const name1 = (mainRow['data-one'] || '').trim();   // compare product name only
-    const name2 = (sdfRow['data-one']  || '').trim();   // sdf product name
+    const name1 = (mainRow['data-one'] || '').trim();
+    const name2 = (sdfRow['data-one']  || '').trim();
 
- 
     return `
       <div class="${rowClass}" data-key="${esc(classKey)}">
         <div class="cmp3-title">
@@ -945,12 +872,9 @@ export function paintSection3(mainRow, sdfRow) {
         </div>
       </div>
     `;
-
   };
 
-  // ensure container carries .cmp3-rows class
   rowsRoot.classList.add('cmp3-rows');
-
   rowsRoot.innerHTML = [
     overlayRow('total',        'Total Ingredients'),
     overlayRow('Protein',      'Protein'),
@@ -958,7 +882,6 @@ export function paintSection3(mainRow, sdfRow) {
     overlayRow('Supplemental', 'Supplemental'),
     (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
   ].join('');
-  // ── END REPLACEMENT ──
 
   // Names
   brandNameEl.textContent = mainRow['data-brand']
@@ -966,45 +889,14 @@ export function paintSection3(mainRow, sdfRow) {
     : (mainRow['data-one'] || '');
   sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-
   // Lists
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-// inside paintSection3, after ensureSection3Dom(...)
-// inside paintSection3, after ensureSection3Dom(sec3)
-const openBtn = sec3.querySelector('#open-ing-search');
-const acc     = sec3.querySelector('#cmp3-search-accordion');
-
-if (openBtn && acc && !openBtn._wired) {
-  openBtn._wired = true;
-
-  // Initial closed state
-  openBtn.classList.add('closed');
-  openBtn.classList.remove('opened');
-  openBtn.setAttribute('aria-expanded', 'false');
-  // If you want to control the label via JS, uncomment:
-  // openBtn.textContent = 'Search ingredients';
-
-  acc.classList.remove('open');
-  acc.setAttribute('aria-hidden', 'true');
-
-  // Click toggles via the helper functions (which set classes/ARIA/body lock)
-  openBtn.addEventListener('click', () => {
-    const isOpen = openBtn.getAttribute('aria-expanded') === 'true';
-    if (isOpen) {
-      closeSearchAccordion();            // removes .open, unlocks body, updates btn classes
-      // openBtn.textContent = 'Search ingredients'; // optional
-    } else {
-      openSearchAccordion(mainRow, sdfRow); // adds .open, locks body, updates btn classes
-      // openBtn.textContent = 'Close search';       // optional
-    }
-  });
+  // Wire accordion (button + internal ×)
+  wireSection3Accordion(mainRow, sdfRow, sec3);
 }
 
-}
-
-// Build/repair the Section 3 DOM scaffold if missing pieces
 // ===========================
 // Section 3 DOM scaffold (accordion ABOVE button & includes × close)
 // ===========================
@@ -1057,7 +949,7 @@ function ensureSection3Dom(sec3) {
 }
 
 // ===========================
-// Body scroll lock helpers
+// Body scroll lock helpers (keep ONE copy in the file)
 // ===========================
 function lockBodyScroll() {
   if (document.body.classList.contains('is-locked')) return;
@@ -1065,7 +957,6 @@ function lockBodyScroll() {
   const y = window.scrollY || document.documentElement.scrollTop || 0;
   document.body.dataset.scrollY = String(y);
 
-  // compensate for scrollbar disappearance
   const sbw = window.innerWidth - document.documentElement.clientWidth;
   if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
 
@@ -1123,8 +1014,6 @@ function openSearchAccordion(mainRow, sdfRow) {
     btn.setAttribute('aria-expanded', 'true');
     btn.classList.add('opened');
     btn.classList.remove('closed');
-    // Optional label swap:
-    // btn.textContent = 'Close search';
   }
 
   lockBodyScroll();
@@ -1152,8 +1041,6 @@ function closeSearchAccordion() {
     btn.setAttribute('aria-expanded', 'false');
     btn.classList.remove('opened');
     btn.classList.add('closed');
-    // Optional label swap:
-    // btn.textContent = 'Search ingredients';
   }
 
   if (acc._escHandler) {
@@ -1166,7 +1053,7 @@ function closeSearchAccordion() {
 }
 
 // ===========================
-// Call this from inside paintSection3, RIGHT AFTER ensureSection3Dom(sec3);
+// Wire button + internal × (call once from paintSection3)
 // ===========================
 function wireSection3Accordion(mainRow, sdfRow, sec3) {
   const openBtn  = sec3.querySelector('#open-ing-search');
@@ -1200,12 +1087,6 @@ function wireSection3Accordion(mainRow, sdfRow, sec3) {
   }
 }
 
-/* -------------------------------------------
-   Usage inside paintSection3(mainRow, sdfRow):
-   ensureSection3Dom(sec3);
-   // ...existing Section 3 rendering...
-   wireSection3Accordion(mainRow, sdfRow, sec3);
--------------------------------------------- */
 
 
 // Render the two lists + live filter (results don’t resize the modal)
