@@ -808,9 +808,7 @@ try {
 // ===========================
 // Section 3 (ingredients overlay + inline search above lists)
 // ===========================
-/ ===========================
-// Section 3 (inline lists + simple search above lists)
-// ===========================
+
 export function paintSection3(mainRow, sdfRow) {
   // headers
   const h = document.querySelector('[data-var="section3-header"]');
