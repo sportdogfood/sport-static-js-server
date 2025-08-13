@@ -680,6 +680,9 @@ export function paintSection2(mainRow, sdfRow) {
 // ──────────────────────────────────────────────
 // PWR10 mirror (Section 2) — values + match + delta + evaluation indicator
 // ──────────────────────────────────────────────
+// ──────────────────────────────────────────────
+// PWR10 mirror (Section 2) — values + match + delta + evaluation indicator
+// ──────────────────────────────────────────────
 try {
   // target ONLY the Section-2 grid
   const grid = document.querySelector('.pwr10-rows-grid.section2');
@@ -688,11 +691,12 @@ try {
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
+  // ✅ add a metric key for the per-metric class on the icon
   const data = [
-    { label:'Crude Protein', aVal:b.protein, cVal:s.protein, brandA:compShort, brandC:sportShort },
-    { label:'Crude Fat',     aVal:b.fat,     cVal:s.fat,     brandA:compShort, brandC:sportShort },
-    { label:'Kcals / Cup',   aVal:b.kcals_c, cVal:s.kcals_c, brandA:compShort, brandC:sportShort },
-    { label:'Kcals / Kg',    aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
+    { label:'Crude Protein', metric:'protein',  aVal:b.protein, cVal:s.protein, brandA:compShort, brandC:sportShort },
+    { label:'Crude Fat',     metric:'fat',      aVal:b.fat,     cVal:s.fat,     brandA:compShort, brandC:sportShort },
+    { label:'Kcals / Cup',   metric:'kcalscup', aVal:b.kcals_c, cVal:s.kcals_c, brandA:compShort, brandC:sportShort },
+    { label:'Kcals / Kg',    metric:'kcalskg',  aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
   ];
 
   // clear prior S2 rows
@@ -711,7 +715,6 @@ try {
     return n;
   };
 
-  // threshold evaluation
   const evalMetric = (label, v) => {
     const n = Number(v) || 0;
     if (/protein/i.test(label)) return n > 25;
@@ -727,7 +730,7 @@ try {
       : `<div class="cmp-indicator exclaim"><img alt="" src="${EXCLAIM_ICON}"></div>`
   );
 
-  const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
+  const html = data.map(({ label, metric, aVal, cVal, brandA, brandC }) => {
     const numA = Number(aVal), numC = Number(cVal);
     const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
 
@@ -739,7 +742,7 @@ try {
     const aDeg = gaugeDeg(label, numA);
     const cDeg = gaugeDeg(label, numC);
 
-    // evaluations
+    // evaluations -> produce `check` or `exclaim`
     const aPass = evalMetric(label, numA);
     const cPass = evalMetric(label, numC);
     const aIconCls = aPass ? 'check' : 'exclaim';
@@ -756,7 +759,8 @@ try {
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
           <div class="pwr10-row-input ${aBgCls}">
-            <div class="pwr10-icon ${aIconCls}">
+            <!-- ✅ add metric class on icon: e.g., 'pwr10-icon check protein' -->
+            <div class="pwr10-icon ${aIconCls} ${metric}">
               <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
                    width="auto" height="60"
                    style="transform:rotate(${aDeg}deg)" aria-hidden="true">
@@ -775,7 +779,8 @@ try {
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
           <div class="pwr10-row-input ${cBgCls}">
-            <div class="pwr10-icon ${cIconCls}">
+            <!-- ✅ add metric class on icon: e.g., 'pwr10-icon exclaim kcalskg' -->
+            <div class="pwr10-icon ${cIconCls} ${metric}">
               <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
                    width="auto" height="60"
                    style="transform:rotate(${cDeg}deg)" aria-hidden="true">
@@ -799,6 +804,7 @@ try {
 } catch (err) {
   console.error('[pwr10 S2]', err);
 }
+
 
 }
 
