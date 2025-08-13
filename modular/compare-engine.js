@@ -808,6 +808,9 @@ try {
 // ===========================
 // Section 3 (ingredients overlay + inline search above lists)
 // ===========================
+/ ===========================
+// Section 3 (inline lists + simple search above lists)
+// ===========================
 export function paintSection3(mainRow, sdfRow) {
   // headers
   const h = document.querySelector('[data-var="section3-header"]');
@@ -818,7 +821,7 @@ export function paintSection3(mainRow, sdfRow) {
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
 
-  // Ensure DOM scaffold exists (INLINE SEARCH; no accordion)
+  // Ensure DOM scaffold exists (search bar ABOVE lists)
   ensureSection3Dom(sec3);
 
   // Targets
@@ -836,7 +839,6 @@ export function paintSection3(mainRow, sdfRow) {
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
     const s = countsS[key] ?? 0;
-
     const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
     const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
     const isFirst = classKey === 'total';
@@ -845,7 +847,7 @@ export function paintSection3(mainRow, sdfRow) {
     const name1 = (mainRow['data-one'] || '').trim();
     const name2 = (sdfRow['data-one']  || '').trim();
 
-    return `
+    return 
       <div class="${rowClass}" data-key="${esc(classKey)}">
         <div class="cmp3-title">
           <div class="cmp3-icon" aria-hidden="true">
@@ -871,7 +873,7 @@ export function paintSection3(mainRow, sdfRow) {
           <div class="cmp3-diff2">${sdfDelta}</div>
         </div>
       </div>
-    `;
+    ;
   };
 
   rowsRoot.classList.add('cmp3-rows');
@@ -885,41 +887,60 @@ export function paintSection3(mainRow, sdfRow) {
 
   // Names
   brandNameEl.textContent = mainRow['data-brand']
-    ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
+    ? ${mainRow['data-brand']} ${mainRow['data-one'] || ''}.trim()
     : (mainRow['data-one'] || '');
-  sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+  sportNameEl.textContent = Sport Dog Food ${sdfRow['data-one'] || ''}.trim();
 
-  // Lists (render with hidden keys for search)
+  // Lists (inline pills with hidden keys already present)
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-  // Wire inline search above the lists
-  wireInlineIngredientSearch(sec3, mainRow, sdfRow);
+  // Append no-result cards to each list (brand + sport)
+  appendEmptyCards(brandListEl, {
+    general: 'No ingredients matched your search.'
+  });
+  appendEmptyCards(sportListEl, {
+    general: 'No ingredients matched your search.',
+    contentious:
+      // tweak copy as you like
+      "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
+  });
+
+  // Wire simple search to filter both lists
+  setupIngredientSearch(sec3);
 }
 
+
 // ===========================
-// Section 3 DOM scaffold (INLINE SEARCH above lists; no accordion)
+// Section 3 DOM scaffold (search ABOVE lists)
 // ===========================
 function ensureSection3Dom(sec3) {
   const ok =
     sec3.querySelector('.cmp3') &&
     sec3.querySelector('#cmp3-rows') &&
-    sec3.querySelector('.cmp3-search-inline .pwrf_search-input') &&
     sec3.querySelector('#cmp3-lists') &&
-    sec3.querySelector('#cmp3-brand-list .ci-list-body') &&
-    sec3.querySelector('#cmp3-sport-list .ci-list-body');
+    sec3.querySelector('#cmp3-brand-list') &&
+    sec3.querySelector('#cmp3-sport-list') &&
+    sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
+    sec3.querySelector('[data-var="sport-1-sec3-inglist"]') &&
+    sec3.querySelector('#cmp3-searchbar') && // new simple search
+    sec3.querySelector('#pwrf-search-input') &&
+    sec3.querySelector('#pwrf-clear-btn');
 
   if (ok) return;
 
-  sec3.innerHTML = `
+  sec3.innerHTML = 
     <div class="cmp3">
       <div class="cmp3-rows" id="cmp3-rows"></div>
 
-      <!-- Inline search (replaces the old accordion) -->
-      <div class="cmp3-search-inline">
-        <div class="pwrf_searchbar" role="search">
-          <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients">
-          <button class="pwrf_clear-btn" type="button" aria-label="Clear" hidden>×</button>
+      <div class="cmp3-actions">
+        <!-- Simple search bar (no accordion) -->
+        <div class="pwrf_toolbar" id="cmp3-searchbar">
+          <div class="pwrf_searchbar" role="search">
+            <input type="text" id="pwrf-search-input" class="pwrf_search-input"
+                   placeholder="Search ingredients…" aria-label="Search ingredients" />
+            <button id="pwrf-clear-btn" class="pwrf_clear-btn" type="button" aria-label="Clear" hidden>×</button>
+          </div>
         </div>
       </div>
 
@@ -927,95 +948,156 @@ function ensureSection3Dom(sec3) {
         <div class="ci-list brand" id="cmp3-brand-list">
           <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
           <div class="ci-list-body" data-var="brand-1-sec3-inglist"></div>
-          <div class="ci-no-results" hidden>No results found.</div>
         </div>
         <div class="ci-list sport" id="cmp3-sport-list">
           <div class="ci-list-head" data-var="sport-1-sec3-name"></div>
           <div class="ci-list-body" data-var="sport-1-sec3-inglist"></div>
-          <div class="ci-no-results" hidden>No results found.</div>
         </div>
       </div>
     </div>
-  `;
+  ;
 }
 
+
 // ===========================
-// Inline ingredient search wiring (filters both lists)
+// Helpers: empty cards + search wiring
 // ===========================
-function wireInlineIngredientSearch(sec3, mainRow, sdfRow) {
-  const inputEl  = sec3.querySelector('.cmp3-search-inline .pwrf_search-input');
-  const clearBtn = sec3.querySelector('.cmp3-search-inline .pwrf_clear-btn');
+function appendEmptyCards(listContainer, { general, contentious }) {
+  // we append these AFTER the .ci-ings-list created by renderIngListDivs
+  const already = listContainer.querySelector('.ci-no-results');
+  if (!already) {
+    const n = document.createElement('div');
+    n.className = 'ci-no-results';
+    n.hidden = true;
+    n.style.display = 'none';
+    n.textContent = general || 'No results.';
+    listContainer.appendChild(n);
+  }
+  if (contentious && !listContainer.querySelector('.ci-no-results-contentious')) {
+    const n2 = document.createElement('div');
+    n2.className = 'ci-no-results-contentious';
+    n2.hidden = true;
+    n2.style.display = 'none';
+    n2.textContent = contentious;
+    listContainer.appendChild(n2);
+  }
+}
 
-  const brandBody = sec3.querySelector('#cmp3-brand-list [data-var="brand-1-sec3-inglist"]');
-  const sportBody = sec3.querySelector('#cmp3-sport-list [data-var="sport-1-sec3-inglist"]');
+/**
+ * Build a token set of "contentious" terms from ING_MAP (where tagContentious is true),
+ * then filter both lists as the user types. Potatoes are excluded from contentious logic.
+ */
+function setupIngredientSearch(sec3) {
+  const input   = sec3.querySelector('#pwrf-search-input');
+  const clearBtn= sec3.querySelector('#pwrf-clear-btn');
+  const brandBox= sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+  const sportBox= sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+  if (!input || !clearBtn || !brandBox || !sportBox) return;
 
-  const brandEmpty = sec3.querySelector('#cmp3-brand-list .ci-no-results');
-  const sportEmpty = sec3.querySelector('#cmp3-sport-list .ci-no-results');
+  // contentious tokens from your data
+  // (displayAs/Name/groupWith + tags of any ingredient that is marked contentious)
+  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet','sweet-potatoes','sweet-potato']);
+  const contentiousTokens = (() => {
+    const set = new Set();
+    Object.values(ING_MAP || {}).forEach(ing => {
+      if (!ing || !ing.tagContentious) return;
+      const raw = [
+        ing.Name, ing.displayAs, ing.groupWith,
+        ing['data-type'] || '', ing.recordType || '',
+        ing.animalType || '',   ing.animalAssist || '',
+        ing.plantType || '',    ing.plantAssist || '',
+        ing.supplementalType || '', ing.supplementalAssist || '',
+        ...(ing.tags || [])
+      ].join(' ').toLowerCase();
+      raw.split(/\s+/).forEach(t => {
+        const tok = t.trim();
+        if (!tok || CONTENTIOUS_EXCLUDES.has(tok)) return;
+        set.add(tok);
+      });
+    });
+    return set;
+  })();
 
-  if (!inputEl || !clearBtn || !brandBody || !sportBody || !brandEmpty || !sportEmpty) return;
-  if (inputEl._wired) return; // prevent dupes
-  inputEl._wired = true;
+  const brandEmpty    = sec3.querySelector('#cmp3-brand-list .ci-no-results');
+  const sportEmpty    = sec3.querySelector('#cmp3-sport-list .ci-no-results');
+  const sportContEmpty= sec3.querySelector('#cmp3-sport-list .ci-no-results-contentious');
 
-  // Label the empty cards with proper names
-  const brandName = (mainRow['data-brand']
-    ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
-    : (mainRow['data-one'] || 'Competitor')).trim();
-  brandEmpty.textContent = `No ${brandName.toLowerCase()} ingredients found.`;
-  sportEmpty.textContent = `No sport dog food ingredients found.`;
-
-function filterOneList(listBody, emptyEl, terms) {
-  const items = listBody.querySelectorAll('.ci-ing-wrapper');
-  const needTerms = Array.isArray(terms) ? terms.filter(Boolean) : [];
-  let shown = 0;
-
-  items.forEach(it => {
-    // cache token set once per item
-    if (!it._tokenSet) {
-      const str = (it.dataset.search || '').toLowerCase();
-      it._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
+  // cache tokens per pill once
+  const cacheTokens = (wrap) => {
+    if (!wrap._tokenSet) {
+      const str = (wrap.dataset.search || '').toLowerCase();
+      wrap._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
     }
+    return wrap._tokenSet;
+  };
 
-    const ok = needTerms.length === 0
-      ? true                   // show all when no query
-      : needTerms.every(t => it._tokenSet.has(t)); // all terms must be present
+  const filterList = (listEl, terms) => {
+    const items = listEl.querySelectorAll('.ci-ing-wrapper');
+    let shown = 0;
+    items.forEach(it => {
+      const set = cacheTokens(it);
+      const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
+      it.hidden = !ok;
+      it.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+    return shown;
+  };
 
-    it.hidden = !ok;
-    it.style.display = ok ? '' : 'none';
-    if (ok) shown++;
-  });
+  const toggle = (el, show) => {
+    if (!el) return;
+    el.hidden = !show;
+    el.style.display = show ? '' : 'none';
+  };
 
-  emptyEl.hidden = shown !== 0;
-  emptyEl.style.display = emptyEl.hidden ? 'none' : '';
-}
+  const doFilter = () => {
+    const raw   = (input.value || '').trim().toLowerCase();
+    const terms = Array.from(new Set(raw.split(/\s+/).filter(Boolean)));
 
+    // show/hide clear
+    clearBtn.hidden = terms.length === 0;
 
-  function doFilter() {
-    const q = (inputEl.value || '').trim().toLowerCase();
-    const terms = q.split(/\s+/).filter(Boolean);
-    clearBtn.hidden = !q;
+    const brandShown = filterList(brandBox, terms);
+    const sportShown = filterList(sportBox, terms);
 
-    filterOneList(brandBody, brandEmpty, terms);
-    filterOneList(sportBody, sportEmpty, terms);
+    // brand generic empty
+    toggle(brandEmpty, terms.length > 0 && brandShown === 0);
+
+    // sport empties:
+    //   if no sport results AND query intersects with contentious tokens (excluding potatoes),
+    //   show the contentious card; otherwise show the generic empty.
+    let showContMsg = false;
+    if (terms.length > 0 && sportShown === 0) {
+      showContMsg = terms.some(t => contentiousTokens.has(t));
+    }
+    toggle(sportContEmpty, showContMsg);
+    toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
+
+    // when query is blank -> show all, hide empties
+    if (terms.length === 0) {
+      toggle(brandEmpty, false);
+      toggle(sportEmpty, false);
+      toggle(sportContEmpty, false);
+    }
+  };
+
+  // wire once
+  if (!input._wired) {
+    input._wired = true;
+    input.addEventListener('input', doFilter, { passive: true });
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      input.value = '';
+      doFilter();
+      input.focus();
+    });
   }
 
-  let to = 0;
-  const debounced = () => { clearTimeout(to); to = setTimeout(doFilter, 100); };
-
-  inputEl.addEventListener('input', debounced, { passive: true });
-  clearBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    inputEl.value = '';
-    doFilter();
-    inputEl.focus();
-  });
-
-  // First pass (blank query shows everything)
+  // initial (blank => show all, hide empties)
   doFilter();
 }
 
-// ===========================
-// Render inline ingredient list tags + searchable hidden keys
-// ===========================
+
 // ===========================
 // Render inline ingredient list tags + searchable hidden keys (deduped)
 // ===========================
