@@ -875,36 +875,34 @@ const overlayRow = (key, label) => {
   `;
 };
 
+rowsRoot.classList.add('cmp3-rows');
+rowsRoot.innerHTML = [
+  overlayRow('total',        'Total Ingredients'),
+  overlayRow('Protein',      'Protein'),
+  overlayRow('Plants',       'Plants'),
+  overlayRow('Supplemental', 'Supplemental'),
+  (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
+].join('');
 
-  rowsRoot.classList.add('cmp3-rows');
-  rowsRoot.innerHTML = [
-    overlayRow('total',        'Total Ingredients'),
-    overlayRow('Protein',      'Protein'),
-    overlayRow('Plants',       'Plants'),
-    overlayRow('Supplemental', 'Supplemental'),
-    (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
-  ].join('');
+// Names
+brandNameEl.textContent = mainRow['data-brand']
+  ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
+  : `${mainRow['data-one'] || ''}`;
+sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  // Names
-  brandNameEl.textContent = mainRow['data-brand']
-    ? ${mainRow['data-brand']} ${mainRow['data-one'] || ''}.trim()
-    : (mainRow['data-one'] || '');
-  sportNameEl.textContent = Sport Dog Food ${sdfRow['data-one'] || ''}.trim();
+// Lists (inline pills with hidden keys already present)
+brandListEl.innerHTML = renderIngListDivs(mainRow);
+sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-  // Lists (inline pills with hidden keys already present)
-  brandListEl.innerHTML = renderIngListDivs(mainRow);
-  sportListEl.innerHTML = renderIngListDivs(sdfRow);
-
-  // Append no-result cards to each list (brand + sport)
-  appendEmptyCards(brandListEl, {
-    general: 'No ingredients matched your search.'
-  });
-  appendEmptyCards(sportListEl, {
-    general: 'No ingredients matched your search.',
-    contentious:
-      // tweak copy as you like
-      "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
-  });
+// Append no-result cards to each list (brand + sport)
+appendEmptyCards(brandListEl, {
+  general: 'No ingredients matched your search.'
+});
+appendEmptyCards(sportListEl, {
+  general: 'No ingredients matched your search.',
+  contentious:
+    "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
+});
 
   // Wire simple search to filter both lists
   setupIngredientSearch(sec3);
