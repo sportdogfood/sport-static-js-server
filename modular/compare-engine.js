@@ -321,6 +321,69 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (imgs[1] && sdfRow.previewengine)  setLazyBackground(imgs[1],  sdfRow.previewengine);
 }
 
+function openSearchAccordion(mainRow, sdfRow) {
+  const sec3 = document.querySelector('#section-3');
+  if (!sec3) return;
+
+  const acc      = sec3.querySelector('#cmp3-search-accordion');
+  const inputEl  = acc?.querySelector('.pwrf_search-input');
+  const clearBtn = acc?.querySelector('.pwrf_clear-btn');
+  const resultsEl= acc?.querySelector('.pwrf_results');
+  const btn      = sec3.querySelector('#open-ing-search');
+
+  if (!acc || !inputEl || !clearBtn || !resultsEl) return;
+
+  // (re)paint lists each time it opens so results are fresh
+  paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
+
+  acc.classList.add('open');
+  acc.setAttribute('aria-hidden', 'false');
+
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'true');
+    btn.classList.add('opened');
+    btn.classList.remove('closed');
+    // optional label swap:
+    // btn.textContent = 'Close search';
+  }
+
+  lockBodyScroll();
+  inputEl.focus();
+
+  // Close on Escape
+  if (!acc._escHandler) {
+    acc._escHandler = (e) => { if (e.key === 'Escape') closeSearchAccordion(); };
+    document.addEventListener('keydown', acc._escHandler);
+  }
+}
+
+function closeSearchAccordion() {
+  const sec3 = document.querySelector('#section-3');
+  if (!sec3) return;
+
+  const acc = sec3.querySelector('#cmp3-search-accordion');
+  const btn = sec3.querySelector('#open-ing-search');
+  if (!acc) return;
+
+  acc.classList.remove('open');
+  acc.setAttribute('aria-hidden', 'true');
+
+  if (btn) {
+    btn.setAttribute('aria-expanded', 'false');
+    btn.classList.remove('opened');
+    btn.classList.add('closed');
+    // optional label swap:
+    // btn.textContent = 'Search ingredients';
+  }
+
+  if (acc._escHandler) {
+    document.removeEventListener('keydown', acc._escHandler);
+    acc._escHandler = null;
+  }
+
+  unlockBodyScroll();
+  if (btn) btn.focus();
+}
 
 
 // Paint a placeholder into .pwr10-rows-grid.section1-title (no visible title row)
@@ -942,6 +1005,9 @@ if (openBtn && acc && !openBtn._wired) {
 }
 
 // Build/repair the Section 3 DOM scaffold if missing pieces
+// ===========================
+// Section 3 DOM scaffold (accordion ABOVE button & includes × close)
+// ===========================
 function ensureSection3Dom(sec3) {
   const ok =
     sec3.querySelector('.cmp3') &&
@@ -990,64 +1056,8 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
-// ---- wiring for search button + accordion (toggle + lock) ----
-const openBtn  = sec3.querySelector('#open-ing-search');
-const acc      = sec3.querySelector('#cmp3-search-accordion');
-const inputEl  = acc?.querySelector('.pwrf_search-input');
-const clearBtn = acc?.querySelector('.pwrf_clear-btn');
-const closeBtn = acc?.querySelector('.pwrf_close-btn');
-const resultsEl= acc?.querySelector('.pwrf_results');
-
-if (openBtn && acc && inputEl && clearBtn && resultsEl && !openBtn._wired) {
-  openBtn._wired = true;
-
-  // closed state baseline
-  openBtn.setAttribute('aria-expanded', 'false');
-  acc.classList.remove('open');
-  acc.setAttribute('aria-hidden', 'true');
-
-  const openAccordion = () => {
-    // (re)paint results on open
-    paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
-
-    acc.classList.add('open');
-    acc.setAttribute('aria-hidden', 'false');
-    openBtn.setAttribute('aria-expanded', 'true');
-
-    lockBodyScroll();
-    inputEl.focus();
-
-    if (!acc._escHandler) {
-      acc._escHandler = (e) => { if (e.key === 'Escape') closeAccordion(); };
-      document.addEventListener('keydown', acc._escHandler);
-    }
-  };
-
-  const closeAccordion = () => {
-    acc.classList.remove('open');
-    acc.setAttribute('aria-hidden', 'true');
-    openBtn.setAttribute('aria-expanded', 'false');
-
-    if (acc._escHandler) {
-      document.removeEventListener('keydown', acc._escHandler);
-      acc._escHandler = null;
-    }
-
-    unlockBodyScroll();
-    openBtn.focus();
-  };
-
-  const toggleAccordion = () => {
-    const isOpen = acc.classList.contains('open');
-    if (isOpen) closeAccordion(); else openAccordion();
-  };
-
-  openBtn.addEventListener('click', toggleAccordion);
-  closeBtn.addEventListener('click', closeAccordion);
-}
-
 // ===========================
-// Accordion search (no modal) + body scroll lock
+// Body scroll lock helpers
 // ===========================
 function lockBodyScroll() {
   if (document.body.classList.contains('is-locked')) return;
@@ -1055,6 +1065,7 @@ function lockBodyScroll() {
   const y = window.scrollY || document.documentElement.scrollTop || 0;
   document.body.dataset.scrollY = String(y);
 
+  // compensate for scrollbar disappearance
   const sbw = window.innerWidth - document.documentElement.clientWidth;
   if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
 
@@ -1087,7 +1098,9 @@ function unlockBodyScroll() {
   window.scrollTo(0, y);
 }
 
-
+// ===========================
+// Global accordion open/close (single source of truth)
+// ===========================
 function openSearchAccordion(mainRow, sdfRow) {
   const sec3 = document.querySelector('#section-3');
   if (!sec3) return;
@@ -1100,6 +1113,7 @@ function openSearchAccordion(mainRow, sdfRow) {
 
   if (!acc || !inputEl || !clearBtn || !resultsEl) return;
 
+  // (re)paint lists each time it opens so results are fresh
   paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
 
   acc.classList.add('open');
@@ -1109,11 +1123,14 @@ function openSearchAccordion(mainRow, sdfRow) {
     btn.setAttribute('aria-expanded', 'true');
     btn.classList.add('opened');
     btn.classList.remove('closed');
+    // Optional label swap:
+    // btn.textContent = 'Close search';
   }
 
   lockBodyScroll();
   inputEl.focus();
 
+  // Close on Escape
   if (!acc._escHandler) {
     acc._escHandler = (e) => { if (e.key === 'Escape') closeSearchAccordion(); };
     document.addEventListener('keydown', acc._escHandler);
@@ -1135,6 +1152,8 @@ function closeSearchAccordion() {
     btn.setAttribute('aria-expanded', 'false');
     btn.classList.remove('opened');
     btn.classList.add('closed');
+    // Optional label swap:
+    // btn.textContent = 'Search ingredients';
   }
 
   if (acc._escHandler) {
@@ -1145,6 +1164,48 @@ function closeSearchAccordion() {
   unlockBodyScroll();
   if (btn) btn.focus();
 }
+
+// ===========================
+// Call this from inside paintSection3, RIGHT AFTER ensureSection3Dom(sec3);
+// ===========================
+function wireSection3Accordion(mainRow, sdfRow, sec3) {
+  const openBtn  = sec3.querySelector('#open-ing-search');
+  const acc      = sec3.querySelector('#cmp3-search-accordion');
+  const inputEl  = acc?.querySelector('.pwrf_search-input');
+  const clearBtn = acc?.querySelector('.pwrf_clear-btn');
+  const closeBtn = acc?.querySelector('.pwrf_close-btn');
+  const resultsEl= acc?.querySelector('.pwrf_results');
+
+  if (openBtn && acc && inputEl && clearBtn && resultsEl && !openBtn._wired) {
+    openBtn._wired = true;
+
+    // baseline closed state
+    openBtn.setAttribute('aria-expanded', 'false');
+    openBtn.classList.add('closed');
+    openBtn.classList.remove('opened');
+    acc.classList.remove('open');
+    acc.setAttribute('aria-hidden', 'true');
+
+    // Toggle on the main button
+    openBtn.addEventListener('click', () => {
+      if (acc.classList.contains('open')) {
+        closeSearchAccordion();
+      } else {
+        openSearchAccordion(mainRow, sdfRow);
+      }
+    });
+
+    // × close inside the accordion
+    if (closeBtn) closeBtn.addEventListener('click', closeSearchAccordion);
+  }
+}
+
+/* -------------------------------------------
+   Usage inside paintSection3(mainRow, sdfRow):
+   ensureSection3Dom(sec3);
+   // ...existing Section 3 rendering...
+   wireSection3Accordion(mainRow, sdfRow, sec3);
+-------------------------------------------- */
 
 
 // Render the two lists + live filter (results don’t resize the modal)
