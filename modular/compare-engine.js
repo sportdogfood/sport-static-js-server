@@ -490,9 +490,6 @@ function renderAttrIcon(kind, txt) {
     `;
   }).join('');
 
-  // ──────────────────────────────────────────────
-  // PWR10 mirror (ALL Section 1 rows)
-  // ──────────────────────────────────────────────
 
 // ──────────────────────────────────────────────
 // PWR10 mirror (ALL Section 1 rows)
@@ -529,7 +526,7 @@ try {
           <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon ${aBg}">${renderAttrIcon(r.kind, r.aTxt)}</div>
-            <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
+            <div class="pwr10-title section11"><div>${esc(r.aTxt)}</div></div>
             ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
@@ -541,7 +538,7 @@ try {
           <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
           <div class="pwr10-row-input">
             <div class="pwr10-icon ${bBg}">${renderAttrIcon(r.kind, r.bTxt)}</div>
-            <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
+            <div class="pwr10-title section11"><div>${esc(r.bTxt)}</div></div>
             ${badgeHTML}
           </div>
           <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
