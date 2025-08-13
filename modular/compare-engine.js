@@ -865,44 +865,36 @@ export function paintSection3(mainRow, sdfRow) {
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
 // inside paintSection3, after ensureSection3Dom(...)
+// inside paintSection3, after ensureSection3Dom(sec3)
 const openBtn = sec3.querySelector('#open-ing-search');
 const acc     = sec3.querySelector('#cmp3-search-accordion');
 
 if (openBtn && acc && !openBtn._wired) {
   openBtn._wired = true;
+
+  // Initial closed state
+  openBtn.classList.add('closed');
+  openBtn.classList.remove('opened');
   openBtn.setAttribute('aria-expanded', 'false');
+  // If you want to control the label via JS, uncomment:
+  // openBtn.textContent = 'Search ingredients';
+
+  acc.classList.remove('open');
   acc.setAttribute('aria-hidden', 'true');
 
+  // Click toggles via the helper functions (which set classes/ARIA/body lock)
   openBtn.addEventListener('click', () => {
     const isOpen = openBtn.getAttribute('aria-expanded') === 'true';
-    const nextOpen = !isOpen;
-
-    // toggle attributes + label
-    openBtn.setAttribute('aria-expanded', String(nextOpen));
-    openBtn.textContent = nextOpen ? 'Close search' : 'Search ingredients';
-    acc.setAttribute('aria-hidden', nextOpen ? 'false' : 'true');
-
-    // super-light body lock
-    if (nextOpen) {
-      const y = window.scrollY || 0;
-      openBtn.dataset.scrollY = String(y);
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${y}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.width = '100%';
+    if (isOpen) {
+      closeSearchAccordion();            // removes .open, unlocks body, updates btn classes
+      // openBtn.textContent = 'Search ingredients'; // optional
     } else {
-      const y = parseInt(openBtn.dataset.scrollY || '0', 10);
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.right = '';
-      document.body.style.width = '';
-      delete openBtn.dataset.scrollY;
-      window.scrollTo(0, y);
+      openSearchAccordion(mainRow, sdfRow); // adds .open, locks body, updates btn classes
+      // openBtn.textContent = 'Close search';       // optional
     }
   });
 }
+
 }
 
 // Build/repair the Section 3 DOM scaffold if missing pieces
