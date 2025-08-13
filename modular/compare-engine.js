@@ -352,7 +352,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   const sportFull = `Sport Dog Food — ${(sdfRow['data-one'] || '').trim()}`.trim();
 
   const dietText = v =>
-    /free/i.test(v) ? 'Grain Free' :
+    /free/i.test(v) ? 'Grain-Free' :
     /grain/i.test(v) ? 'Grain Inclusive' : '—';
   const legumesText = v =>
     /(free|no)/i.test(v) ? 'Legume-Free' :
