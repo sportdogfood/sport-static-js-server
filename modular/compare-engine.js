@@ -912,6 +912,9 @@ export function paintSection3(mainRow, sdfRow) {
 // ===========================
 // Section 3 DOM scaffold (search ABOVE lists)
 // ===========================
+// ===========================
+// Section 3 DOM scaffold (search ABOVE lists + suggestions area)
+// ===========================
 function ensureSection3Dom(sec3) {
   const ok =
     sec3.querySelector('.cmp3') &&
@@ -921,9 +924,10 @@ function ensureSection3Dom(sec3) {
     sec3.querySelector('#cmp3-sport-list') &&
     sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
     sec3.querySelector('[data-var="sport-1-sec3-inglist"]') &&
-    sec3.querySelector('#cmp3-searchbar') && // simple search
+    sec3.querySelector('#cmp3-searchbar') &&
     sec3.querySelector('#pwrf-search-input') &&
-    sec3.querySelector('#pwrf-clear-btn');
+    sec3.querySelector('#pwrf-clear-btn') &&
+    sec3.querySelector('#cmp3-suggest');
 
   if (ok) return;
 
@@ -932,13 +936,14 @@ function ensureSection3Dom(sec3) {
       <div class="cmp3-rows" id="cmp3-rows"></div>
 
       <div class="cmp3-actions">
-        <!-- Simple search bar (no accordion) -->
+        <!-- Simple search bar (no accordion) + suggestions -->
         <div class="pwrf_toolbar" id="cmp3-searchbar">
           <div class="pwrf_searchbar" role="search">
-            <input type="text" id="pwrf-search-input" class="pwrf_search_input pwrf_search-input"
-                   placeholder="Search ingredients…" aria-label="Search ingredients">
+            <input type="text" id="pwrf-search-input" class="pwrf_search-input"
+                   placeholder="Search ingredients…" aria-label="Search ingredients" />
             <button id="pwrf-clear-btn" class="pwrf_clear-btn" type="button" aria-label="Clear" hidden>×</button>
           </div>
+          <div class="cmp3-suggest" id="cmp3-suggest" aria-live="polite"></div>
         </div>
       </div>
 
@@ -958,39 +963,111 @@ function ensureSection3Dom(sec3) {
 
 
 // ===========================
-// Helpers: empty cards + search wiring
+// Suggestions index (Fuse or fallback)
 // ===========================
-function appendEmptyCards(listContainer, { general, contentious }) {
-  const already = listContainer.querySelector('.ci-no-results');
-  if (!already) {
-    const n = document.createElement('div');
-    n.className = 'ci-no-results';
-    n.hidden = true;
-    n.style.display = 'none';
-    n.textContent = general || 'No results.';
-    listContainer.appendChild(n);
-  }
-  if (contentious && !listContainer.querySelector('.ci-no-results-contentious')) {
-    const n2 = document.createElement('div');
-    n2.className = 'ci-no-results-contentious';
-    n2.hidden = true;
-    n2.style.display = 'none';
-    n2.textContent = contentious;
-    listContainer.appendChild(n2);
-  }
-}
-
-/**
- * Build a token set of "contentious" terms from ING_MAP (where tagContentious is true),
- * then filter both lists as the user types. Potatoes are excluded from contentious logic.
- */
-function setupIngredientSearch(sec3) {
-  const input    = sec3.querySelector('#pwrf-search-input');
-  const clearBtn = sec3.querySelector('#pwrf-clear-btn');
+function makeSuggestionIndex(sec3) {
   const brandBox = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
   const sportBox = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
-  if (!input || !clearBtn || !brandBox || !sportBox) return;
 
+  const tokens = new Set();
+
+  const eat = (wrap) => {
+    // visible label
+    const label = (wrap.querySelector('.ci-ing-displayas')?.textContent || '').trim().toLowerCase();
+    if (label) tokens.add(label);
+
+    // data-search tokens
+    const raw = (wrap.getAttribute('data-search') || '').toLowerCase();
+    raw.split(/\s+/).forEach(t => {
+      if (!t) return;
+      if (t.length < 2) return; // drop 1-char noise
+      tokens.add(t);
+    });
+  };
+
+  [brandBox, sportBox].forEach(box => {
+    if (!box) return;
+    box.querySelectorAll('.ci-ing-wrapper').forEach(eat);
+  });
+
+  const list = Array.from(tokens);
+
+  let fuse = null;
+  if (window.Fuse) {
+    fuse = new window.Fuse(list, {
+      includeScore: true,
+      threshold: 0.3,            // fairly strict (encourages correct spelling)
+      minMatchCharLength: 2,
+      ignoreLocation: true,
+      useExtendedSearch: false
+    });
+  }
+
+  return { fuse, list };
+}
+
+
+// ===========================
+// Render suggestion pills under the search bar
+// ===========================
+function renderSuggestPills({ box, items, onPick }) {
+  if (!box) return;
+  if (!items || !items.length) {
+    box.innerHTML = '';
+    box.style.display = 'none';
+    return;
+  }
+  const html = items.slice(0, 8).map(s =>
+    `<button type="button" class="cmp3-suggest-pill" data-val="${s.replace(/"/g,'&quot;')}">${s}</button>`
+  ).join('');
+  box.innerHTML = html;
+  box.style.display = '';
+
+  // wire clicks
+  box.querySelectorAll('.cmp3-suggest-pill').forEach(btn => {
+    btn.onclick = (e) => onPick(String(btn.getAttribute('data-val') || '').trim());
+  });
+}
+
+
+// ===========================
+// Inline ingredient search + suggestions (filters both lists)
+// ===========================
+function setupIngredientSearch(sec3) {
+  const input     = sec3.querySelector('#pwrf-search-input');
+  const clearBtn  = sec3.querySelector('#pwrf-clear-btn');
+  const suggestEl = sec3.querySelector('#cmp3-suggest');
+
+  const brandBox  = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+  const sportBox  = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+
+  // ensure empty cards exist (brand + sport)
+  const ensureEmpty = (rootSel, cls, text) => {
+    const root = sec3.querySelector(rootSel);
+    if (!root) return null;
+    let el = root.querySelector(`.${cls}`);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = cls;
+      el.hidden = true;
+      el.style.display = 'none';
+      el.textContent = text || 'No results.';
+      root.appendChild(el);
+    }
+    return el;
+  };
+
+  const brandEmpty     = ensureEmpty('#cmp3-brand-list', 'ci-no-results', 'No ingredients matched your search.');
+  const sportEmpty     = ensureEmpty('#cmp3-sport-list', 'ci-no-results', 'No ingredients matched your search.');
+  const sportContEmpty = ensureEmpty('#cmp3-sport-list', 'ci-no-results-contentious',
+    "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
+  );
+
+  if (!input || !clearBtn || !brandBox || !sportBox) return;
+  if (input._wired) return;
+  input._wired = true;
+
+  // contentious tokens (excluding potatoes)
   const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet','sweet-potatoes','sweet-potato']);
   const contentiousTokens = (() => {
     const set = new Set();
@@ -1013,13 +1090,10 @@ function setupIngredientSearch(sec3) {
     return set;
   })();
 
-  const brandEmpty     = sec3.querySelector('#cmp3-brand-list .ci-no-results');
-  const sportEmpty     = sec3.querySelector('#cmp3-sport-list .ci-no-results');
-  const sportContEmpty = sec3.querySelector('#cmp3-sport-list .ci-no-results-contentious');
-
+  // cache token sets per pill for fast exact-term filtering
   const cacheTokens = (wrap) => {
     if (!wrap._tokenSet) {
-      const str = (wrap.dataset.search || '').toLowerCase();
+      const str = (wrap.getAttribute('data-search') || '').toLowerCase();
       wrap._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
     }
     return wrap._tokenSet;
@@ -1044,15 +1118,52 @@ function setupIngredientSearch(sec3) {
     el.style.display = show ? '' : 'none';
   };
 
-  const doFilter = () => {
-    const raw   = (input.value || '').trim().toLowerCase();
-    const terms = Array.from(new Set(raw.split(/\s+/).filter(Boolean)));
+  // build suggestions index
+  let { fuse, list } = makeSuggestionIndex(sec3);
 
-    clearBtn.hidden = terms.length === 0;
+  const suggestFor = (lastTerm, existingTerms) => {
+    if (!lastTerm || lastTerm.length < 2) return [];
+    let candidates = [];
+    if (fuse) {
+      candidates = fuse.search(lastTerm).map(r => r.item);
+    } else {
+      const lt = lastTerm.toLowerCase();
+      candidates = list.filter(s => s.startsWith(lt) || s.includes(lt));
+    }
+    // drop ones already in query
+    const taken = new Set(existingTerms);
+    return candidates.filter(s => !taken.has(s)).slice(0, 8);
+  };
+
+  const applySuggestion = (s) => {
+    const raw = input.value;
+    const endsWithSpace = /\s$/.test(raw);
+    let parts = raw.trim().split(/\s+/).filter(Boolean);
+    if (!endsWithSpace && parts.length) parts.pop(); // replace last partial
+    parts.push(s);
+    input.value = parts.join(' ') + ' ';
+    doFilter(); // re-filter with strict/exact tokens
+    renderSuggest(''); // clear suggestions
+    input.focus();
+  };
+
+  const renderSuggest = (lastTerm, existingTerms = []) => {
+    const items = suggestFor(lastTerm, existingTerms);
+    renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
+  };
+
+  const doFilter = () => {
+    const raw   = (input.value || '').toLowerCase();
+    const parts = raw.trim().split(/\s+/).filter(Boolean);
+    const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
+    const terms = lastIsPartial ? parts.slice(0, -1) : parts; // exact-term filter ignores partial trailing token
+
+    clearBtn.hidden = parts.length === 0;
 
     const brandShown = filterList(brandBox, terms);
     const sportShown = filterList(sportBox, terms);
 
+    // empties
     toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
     let showContMsg = false;
@@ -1062,26 +1173,35 @@ function setupIngredientSearch(sec3) {
     toggle(sportContEmpty, showContMsg);
     toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
-    if (terms.length === 0) {
+    // suggestions for the trailing partial
+    const existing = new Set(terms);
+    renderSuggest(lastIsPartial, Array.from(existing));
+
+    // blank query => show all, hide empties + suggestions
+    if (parts.length === 0) {
       toggle(brandEmpty, false);
       toggle(sportEmpty, false);
       toggle(sportContEmpty, false);
+      renderSuggest('');
     }
   };
 
-  if (!input._wired) {
-    input._wired = true;
-    input.addEventListener('input', doFilter, { passive: true });
-    clearBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      input.value = '';
-      doFilter();
-      input.focus();
-    });
-  }
+  input.addEventListener('input', doFilter, { passive: true });
+  clearBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    input.value = '';
+    doFilter();
+    input.focus();
+  });
 
+  // Rebuild suggestions index after lists are painted (in case of re-render)
+  // Call this if you repaint lists elsewhere:
+  input._reindex = () => { ({ fuse, list } = makeSuggestionIndex(sec3)); };
+
+  // initial (blank => show all, hide empties/suggestions)
   doFilter();
 }
+
 
 
 // ===========================
