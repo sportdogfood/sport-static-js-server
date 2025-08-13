@@ -494,6 +494,9 @@ function renderAttrIcon(kind, txt) {
   // PWR10 mirror (ALL Section 1 rows)
   // ──────────────────────────────────────────────
 
+// ──────────────────────────────────────────────
+// PWR10 mirror (ALL Section 1 rows)
+// ──────────────────────────────────────────────
 try {
   const grid = document.querySelector('.pwr10-rows-grid.section1');
   if (!grid) return;
@@ -501,52 +504,52 @@ try {
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
- const insertRow = (el) => {
-    grid.appendChild(el);
-  };
+  const insertRow = (el) => { grid.appendChild(el); };
 
   rows.forEach((r, idx) => {
     const prior = grid.querySelector(`#pwr10-s1-${idx}`);
     if (prior) prior.remove();
 
-    const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt);
-
     const wrap = document.createElement('div');
-const aBg = bgClassFor(r.kind, 'A', r.aTxt);  // returns e.g. "shade-diet-1"
-const bBg = bgClassFor(r.kind, 'B', r.bTxt);
-const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt, 'section1');
 
-wrap.innerHTML = `
-  <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
-    <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
-    <div class="pwr10-vertical-divider"></div>
+    const aBg = bgClassFor(r.kind, 'A', r.aTxt); // e.g. "shade-diet-1"
+    const bBg = bgClassFor(r.kind, 'B', r.bTxt);
 
-    <div class="pwr10-row-value">
-      <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-      <div class="pwr10-row-input">
-        <div class="pwr10-icon ${aBg}">${renderAttrIcon(r.kind, r.aTxt)}</div>
-        <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
-        ${badgeHTML}
+    // Prefer helper with 3rd param; otherwise inject `.section1` via string replace
+    const badgeHTML = (pwr10CmpMatchBadge.length >= 3)
+      ? pwr10CmpMatchBadge(r.aTxt, r.bTxt, 'section1')
+      : pwr10CmpMatchBadge(r.aTxt, r.bTxt).replace('cmp-match ', 'cmp-match section1 ');
+
+    wrap.innerHTML = `
+      <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
+        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
+        <div class="pwr10-vertical-divider"></div>
+
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon ${aBg}">${renderAttrIcon(r.kind, r.aTxt)}</div>
+            <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
+            ${badgeHTML}
+          </div>
+          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+        </div>
+
+        <div class="pwr10-vertical-divider mobile"></div>
+
+        <div class="pwr10-row-value">
+          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+          <div class="pwr10-row-input">
+            <div class="pwr10-icon ${bBg}">${renderAttrIcon(r.kind, r.bTxt)}</div>
+            <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
+            ${badgeHTML}
+          </div>
+          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+        </div>
       </div>
-      <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-    </div>
+    `.trim();
 
-    <div class="pwr10-vertical-divider mobile"></div>
-
-    <div class="pwr10-row-value">
-      <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-      <div class="pwr10-row-input">
-        <div class="pwr10-icon ${bBg}">${renderAttrIcon(r.kind, r.bTxt)}</div>
-        <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
-        ${badgeHTML}
-      </div>
-      <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-    </div>
-  </div>
-`.trim();
-
-
-     insertRow(wrap.firstElementChild);
+    insertRow(wrap.firstElementChild);
   });
 } catch (err) {
   if (DEBUG) console.warn('[pwr10 S1]', err);
