@@ -187,6 +187,39 @@ function bgClassFor(kind, side, txt){
   }
   return '';
 }
+// State-based shade class for Section 1 icons (no column suffixes)
+function shadeClassFor(kind, txt) {
+  const t = String(txt || '').toLowerCase();
+
+  // Diet (grain)
+  if (kind === 'diet') {
+    if (/free/.test(t))  return 'shade-grain-free';
+    if (/grain/.test(t)) return 'shade-grain';
+    return '';
+  }
+
+  // Legumes
+  if (kind === 'legumes') {
+    return /(free|no)/.test(t) ? 'shade-legumes-free' : 'shade-legumes';
+  }
+
+  // Poultry
+  if (kind === 'poultry') {
+    return /(free|no)/.test(t) ? 'shade-poultry-free' : 'shade-poultry';
+  }
+
+  // Primary Protein (aka "flavor")
+  if (kind === 'flavor') {
+    if (/\b(poultry|chicken)\b/.test(t))  return 'shade-protein-poultry';
+    if (/\b(beef)\b/.test(t))             return 'shade-protein-beef';
+    if (/\b(fish|salmon)\b/.test(t))      return 'shade-protein-fish';
+    if (/\b(bison|buffalo)\b/.test(t))    return 'shade-protein-buffalo';
+    if (/\bmeat\b/.test(t))               return 'shade-protein-meat';
+    return 'shade-protein-unknown';
+  }
+
+  return '';
+}
 
 // (kept, hyphen-safe class setter; not strictly required elsewhere)
 function setDataClass(el, base, key, value, map) {
@@ -509,8 +542,13 @@ try {
 
     const wrap = document.createElement('div');
 
-    const aBg = bgClassFor(r.kind, 'A', r.aTxt); // e.g. "shade-diet-1"
-    const bBg = bgClassFor(r.kind, 'B', r.bTxt);
+// REMOVE these two lines:
+// const aBg = bgClassFor(r.kind, 'A', r.aTxt); // e.g. "shade-diet-1"
+// const bBg = bgClassFor(r.kind, 'B', r.bTxt);
+
+// ADD these:
+const aShade = shadeClassFor(r.kind, r.aTxt);
+const bShade = shadeClassFor(r.kind, r.bTxt);
 
     // Prefer helper with 3rd param; otherwise inject `.section1` via string replace
     const badgeHTML = (pwr10CmpMatchBadge.length >= 3)
@@ -525,7 +563,7 @@ try {
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
           <div class="pwr10-row-input">
-            <div class="pwr10-icon ${aBg}">${renderAttrIcon(r.kind, r.aTxt)}</div>
+            <div class="pwr10-icon ${aShade}">${renderAttrIcon(r.kind, r.aTxt)}</div>
             <div class="pwr10-title section11"><div>${esc(r.aTxt)}</div></div>
             ${badgeHTML}
           </div>
@@ -537,7 +575,7 @@ try {
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
           <div class="pwr10-row-input">
-            <div class="pwr10-icon ${bBg}">${renderAttrIcon(r.kind, r.bTxt)}</div>
+           <div class="pwr10-icon ${bShade}">${renderAttrIcon(r.kind, r.bTxt)}</div>
             <div class="pwr10-title section11"><div>${esc(r.bTxt)}</div></div>
             ${badgeHTML}
           </div>
