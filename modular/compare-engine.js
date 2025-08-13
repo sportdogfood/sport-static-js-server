@@ -834,45 +834,47 @@ export function paintSection3(mainRow, sdfRow) {
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
 
-  const overlayRow = (key, label) => {
-    const b = countsB[key] ?? 0;
-    const s = countsS[key] ?? 0;
-    const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
-    const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
-    const isFirst = classKey === 'total';
-    const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
+const overlayRow = (key, label) => {
+  const b = countsB[key] ?? 0;
+  const s = countsS[key] ?? 0;
 
-    const name1 = (mainRow['data-one'] || '').trim();
-    const name2 = (sdfRow['data-one']  || '').trim();
+  const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
+  const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
+  const isFirst = classKey === 'total';
+  const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
 
-    return 
-      <div class="${rowClass}" data-key="${esc(classKey)}">
-        <div class="cmp3-title">
-          <div class="cmp3-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <path d="M4 9h16"></path>
-              <path d="M4 15h16"></path>
-              <path d="M10 3v18"></path>
-              <path d="M14 3v18"></path>
-            </svg>
-          </div>
-          <div class="cmp3-label"><div>${esc(label)}</div></div>
+  const name1 = (mainRow['data-one'] || '').trim();
+  const name2 = (sdfRow['data-one']  || '').trim();
+
+  return /* html */ `
+    <div class="${rowClass}" data-key="${esc(classKey)}">
+      <div class="cmp3-title">
+        <div class="cmp3-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 9h16"></path>
+            <path d="M4 15h16"></path>
+            <path d="M10 3v18"></path>
+            <path d="M14 3v18"></path>
+          </svg>
         </div>
-
-        <div class="cmp3-entry1">
-          <div class="cmp3-name1"><div>${esc(name1)}</div></div>
-          <div class="cmp3-badge brand"><div>${esc(String(b))}</div></div>
-          <div class="cmp3-diff1">${brandDelta}</div>
-        </div>
-
-        <div class="cmp3-entry3">
-          <div class="cmp3-name2"><div>${esc(name2)}</div></div>
-          <div class="cmp3-badge sdf"><div>${esc(String(s))}</div></div>
-          <div class="cmp3-diff2">${sdfDelta}</div>
-        </div>
+        <div class="cmp3-label"><div>${esc(label)}</div></div>
       </div>
-    ;
-  };
+
+      <div class="cmp3-entry1">
+        <div class="cmp3-name1"><div>${esc(name1)}</div></div>
+        <div class="cmp3-badge brand"><div>${esc(String(b))}</div></div>
+        <div class="cmp3-diff1">${brandDelta}</div>
+      </div>
+
+      <div class="cmp3-entry3">
+        <div class="cmp3-name2"><div>${esc(name2)}</div></div>
+        <div class="cmp3-badge sdf"><div>${esc(String(s))}</div></div>
+        <div class="cmp3-diff2">${sdfDelta}</div>
+      </div>
+    </div>
+  `;
+};
+
 
   rowsRoot.classList.add('cmp3-rows');
   rowsRoot.innerHTML = [
