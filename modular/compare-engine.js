@@ -170,6 +170,23 @@ function getIngredientCategoryCounts(row) {
   }
   return counts;
 }
+// Decide background classes per kind/value/side
+function bgClassFor(kind, side, txt){
+  const sideTone = (side === 'A') ? '1' : '2'; // A=competitor, B=sport
+  const t = (txt || '').toLowerCase();
+
+  if (kind === 'diet')     return `bg-diet-${sideTone}`;
+  if (kind === 'legumes')  return `bg-legumes-${sideTone}`;
+  if (kind === 'poultry')  return `bg-poultry-${sideTone}`;
+
+  if (kind === 'flavor') {
+    if (/\b(poultry|chicken)\b/.test(t)) return 'bg-protein-poultry';
+    if (/\b(beef|meat|buffalo|bison)\b/.test(t)) return 'bg-protein-beef';
+    if (/\b(fish|salmon)\b/.test(t)) return 'bg-protein-fish';
+    return 'bg-protein-unknown';
+  }
+  return '';
+}
 
 // (kept, hyphen-safe class setter; not strictly required elsewhere)
 function setDataClass(el, base, key, value, map) {
@@ -380,52 +397,55 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
       buffalo: `${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg`
     }
   };
+// Replace your existing iconWrap + renderAttrIcon bodies with these:
 
-  function iconWrap(src, cls, { slash } = {}) {
-    const slashDiv = (slash === undefined || slash === null)
-      ? ''
-      : `<div class="slash${slash ? '' : ' no-slash'}"></div>`;
-    return `
-      <div class="icon-wrapper">
-        ${slashDiv}
-        <img src="${src}" loading="lazy" alt="" class="${cls}">
-      </div>
-    `;
+function iconWrap(src, cls, { slash } = {}) {
+  return `
+    <div class="icon-wrapper">
+      <img src="${src}" loading="lazy" alt="" class="${cls}">
+      ${slash ? `
+        <svg class="icon-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <line x1="12" y1="88" x2="88" y2="12"></line>
+        </svg>
+      ` : ''}
+    </div>
+  `;
+}
+
+// Map attribute text -> proper icon wrapper (unchanged logic; “slash” now uses the SVG overlay)
+function renderAttrIcon(kind, txt) {
+  const t = (txt || '').toLowerCase();
+
+  if (kind === 'diet') {
+    const isFree = /free/.test(t);
+    const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
+    return iconWrap(ICONS.grain, cls, { slash: isFree });
   }
 
-  // Map attribute text -> proper icon wrapper
-  function renderAttrIcon(kind, txt) {
-    const t = (txt || '').toLowerCase();
-
-    if (kind === 'diet') {
-      const isFree = /free/.test(t);
-      const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
-      return iconWrap(ICONS.grain, cls, { slash: isFree });
-    }
-
-    if (kind === 'legumes') {
-      const isFree = /(free|no)/.test(t);
-      const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
-      return iconWrap(ICONS.legumes, cls, { slash: isFree });
-    }
-
-    if (kind === 'poultry') {
-      const isFree = /(free|no)/.test(t);
-      const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
-      return iconWrap(ICONS.poultry, cls, { slash: isFree });
-    }
-
-    if (kind === 'flavor') {
-      let key = 'meat';
-      if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
-      else if (/\b(beef)\b/.test(t))      key = 'beef';
-      else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
-      else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
-      const cls = `icon-flavor-${key}`;
-      return iconWrap(ICONS.flavor[key], cls); // no slash overlay for flavors
-    }
-    return '';
+  if (kind === 'legumes') {
+    const isFree = /(free|no)/.test(t);
+    const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
+    return iconWrap(ICONS.legumes, cls, { slash: isFree });
   }
+
+  if (kind === 'poultry') {
+    const isFree = /(free|no)/.test(t);
+    const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
+    return iconWrap(ICONS.poultry, cls, { slash: isFree });
+  }
+
+  if (kind === 'flavor') {
+    let key = 'meat';
+    if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
+    else if (/\b(beef)\b/.test(t))      key = 'beef';
+    else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
+    else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
+    const cls = `icon-flavor-${key}`;
+    return iconWrap(ICONS.flavor[key], cls, { slash: false });
+  }
+  return '';
+}
+
 
   // Equality badge (== / ≠)
   function getMatchBadge(aTxt, bTxt) {
@@ -490,34 +510,38 @@ try {
     const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt);
 
     const wrap = document.createElement('div');
-    wrap.innerHTML = `
-      <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
-        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
-        <div class="pwr10-vertical-divider"></div>
+  const aBg = bgClassFor(r.kind, 'A', r.aTxt);
+const bBg = bgClassFor(r.kind, 'B', r.bTxt);
 
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
-            <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
-            ${badgeHTML}
-          </div>
-          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-        </div>
+wrap.innerHTML = `
+  <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
+    <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
+    <div class="pwr10-vertical-divider"></div>
 
-        <div class="pwr10-vertical-divider mobile"></div>
-
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
-            <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
-            ${badgeHTML}
-          </div>
-          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-        </div>
+    <div class="pwr10-row-value">
+      <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+      <div class="pwr10-row-input ${aBg}">
+        <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
+        <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
+        ${badgeHTML}
       </div>
-    `.trim();
+      <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+    </div>
+
+    <div class="pwr10-vertical-divider mobile"></div>
+
+    <div class="pwr10-row-value">
+      <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+      <div class="pwr10-row-input ${bBg}">
+        <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
+        <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
+        ${badgeHTML}
+      </div>
+      <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+    </div>
+  </div>
+`.trim();
+
 
      insertRow(wrap.firstElementChild);
   });
