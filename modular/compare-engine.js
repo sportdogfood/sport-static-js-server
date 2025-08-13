@@ -238,7 +238,7 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
           <div class="pwr10-icon">
             <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
           </div>
-          <div class="pwr10-title section1">
+          <div class="pwr10-title section-sticky">
             <div class="cmp-head-brand">${esc(brandName.toUpperCase())}</div>
             <div class="cmp-head-name">${esc(brandProd)}</div>
           </div>
@@ -255,7 +255,7 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
           <div class="pwr10-icon">
             <div class="cmp-head-img lazy-bg" aria-hidden="true"></div>
           </div>
-          <div class="pwr10-title section1">
+          <div class="pwr10-title section-sticky">
             <div class="cmp-head-brand">${esc(sportBrand)}</div>
             <div class="cmp-head-name">${esc(sportProd)}</div>
           </div>
@@ -612,18 +612,17 @@ export function paintSection2(mainRow, sdfRow) {
   }
 
 
- // ──────────────────────────────────────────────
-// PWR10 mirror (Section 2) — values only + match pill + inverse delta pill
+// ──────────────────────────────────────────────
+// PWR10 mirror (Section 2) — values + match + delta + evaluation indicator
 // ──────────────────────────────────────────────
 try {
-  // ✅ target ONLY the Section-2 grid
+  // target ONLY the Section-2 grid
   const grid = document.querySelector('.pwr10-rows-grid.section2');
   if (!grid) return;
 
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
   const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-  // Build rows payload for the painter
   const data = [
     { label:'Crude Protein', aVal:b.protein, cVal:s.protein, brandA:compShort, brandC:sportShort },
     { label:'Crude Fat',     aVal:b.fat,     cVal:s.fat,     brandA:compShort, brandC:sportShort },
@@ -631,11 +630,14 @@ try {
     { label:'Kcals / Kg',    aVal:b.kcals_k, cVal:s.kcals_k, brandA:compShort, brandC:sportShort },
   ];
 
-  // Remove prior Section-2 PWR10 rows (safe re-render)
+  // clear prior S2 rows
   grid.querySelectorAll('.pwr10-row-grid.section2').forEach(n => n.remove());
 
-  // Gauge asset + degree mapper
-  const GAUGE_SRC = `${CDN}/689c865c7c9020f40949a410_gauge-stick.png`;
+  // gauge + evaluation helpers
+  const GAUGE_SRC    = `${CDN}/689c865c7c9020f40949a410_gauge-stick.png`;
+  const CHECK_ICON   = `${CDN}/618aa6ac2614d4537c3b83d9_ui-snippet-icon-check.svg`;
+  const EXCLAIM_ICON = `${CDN}/689c91a3cc958318e962d0ce_exclamation-solid-full.svg`;
+
   const gaugeDeg = (label, v) => {
     const n = Number(v) || 0;
     if (/protein|fat/i.test(label)) return n;      // 15 -> 15deg
@@ -644,7 +646,22 @@ try {
     return n;
   };
 
-  // Build HTML
+  // threshold evaluation
+  const evalMetric = (label, v) => {
+    const n = Number(v) || 0;
+    if (/protein/i.test(label)) return n > 25;
+    if (/fat/i.test(label))     return n > 14;
+    if (/cup/i.test(label))     return n > 420;
+    if (/kg/i.test(label))      return n > 3600;
+    return false;
+  };
+
+  const indicatorHTML = (pass) => (
+    pass
+      ? `<div class="cmp-indicator check"><img alt="" src="${CHECK_ICON}" class="indicator-check"></div>`
+      : `<div class="cmp-indicator exclaim"><img alt="" src="${EXCLAIM_ICON}"></div>`
+  );
+
   const html = data.map(({ label, aVal, cVal, brandA, brandC }) => {
     const numA = Number(aVal), numC = Number(cVal);
     const { comp: compDelta, sport: sportDelta } = pwr10DeltaBadgePair(numA, numC);
@@ -653,8 +670,17 @@ try {
       ? (v) => `${v}%`
       : (v) => `${v}`;
 
+    // rotations
     const aDeg = gaugeDeg(label, numA);
     const cDeg = gaugeDeg(label, numC);
+
+    // evaluations
+    const aPass = evalMetric(label, numA);
+    const cPass = evalMetric(label, numC);
+    const aIconCls = aPass ? 'check' : 'exclaim';
+    const cIconCls = cPass ? 'check' : 'exclaim';
+    const aBgCls   = aPass ? 'eval-ok' : 'eval-attn';
+    const cBgCls   = cPass ? 'eval-ok' : 'eval-attn';
 
     return `
       <div class="w-layout-grid pwr10-row-grid section2">
@@ -664,11 +690,12 @@ try {
         <!-- Competitor -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(brandA)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon">
+          <div class="pwr10-row-input ${aBgCls}">
+            <div class="pwr10-icon ${aIconCls}">
               <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
                    width="auto" height="60"
                    style="transform:rotate(${aDeg}deg)" aria-hidden="true">
+              ${indicatorHTML(aPass)}
             </div>
             <div class="pwr10-title section2"><div>${esc(format(numA))}</div></div>
             ${pwr10CmpMatchBadge(numA, numC)}
@@ -682,11 +709,12 @@ try {
         <!-- Sport -->
         <div class="pwr10-row-value">
           <div class="pwr10-row-mobile-name"><div>${esc(brandC)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon">
+          <div class="pwr10-row-input ${cBgCls}">
+            <div class="pwr10-icon ${cIconCls}">
               <img src="${GAUGE_SRC}" loading="lazy" alt="" class="rotate-gauge"
                    width="auto" height="60"
                    style="transform:rotate(${cDeg}deg)" aria-hidden="true">
+              ${indicatorHTML(cPass)}
             </div>
             <div class="pwr10-title section2"><div>${esc(format(numC))}</div></div>
             ${pwr10CmpMatchBadge(numC, numA)}
@@ -698,7 +726,6 @@ try {
     `;
   }).join('');
 
-  // ⬇️ Append rows as direct children of the Section-2 grid
   const frag = document.createDocumentFragment();
   const temp = document.createElement('div');
   temp.innerHTML = html;
@@ -707,6 +734,7 @@ try {
 } catch (err) {
   console.error('[pwr10 S2]', err);
 }
+
 }
 
 
