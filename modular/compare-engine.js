@@ -514,7 +514,7 @@ try {
 const bBg = bgClassFor(r.kind, 'B', r.bTxt);
 
 wrap.innerHTML = `
-  <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid">
+  <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
     <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
     <div class="pwr10-vertical-divider"></div>
 
@@ -541,6 +541,7 @@ wrap.innerHTML = `
     </div>
   </div>
 `.trim();
+
 
 
      insertRow(wrap.firstElementChild);
