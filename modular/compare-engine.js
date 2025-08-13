@@ -340,13 +340,15 @@ function pwr10DeltaBadge(a, c) {
   return `<span class="cmp-delta-badge ${cls}" aria-label="${esc(aria)}">${icon}<span>${esc(txt)}</span></span>`;
 }
 
-function pwr10CmpMatchBadge(aTxt, bTxt) {
+// helper: allow an optional extra class for the pill
+function pwr10CmpMatchBadge(aTxt, bTxt, extraClass = '') {
   const isMatch = (String(aTxt||'').toLowerCase() === String(bTxt||'').toLowerCase());
   const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
   const iconNe = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`;
-  const label = isMatch ? 'Match' : 'Different';
+  const label = isMatch ? 'Match' : 'Diff';
   const cls = isMatch ? 'match' : 'diff';
-  return `<span class="cmp-match ${cls}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
+  const extra = extraClass ? ` ${extraClass}` : '';
+  return `<span class="cmp-match ${cls}${extra}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
 }
 
 // ===========================
@@ -510,8 +512,9 @@ try {
     const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt);
 
     const wrap = document.createElement('div');
-  const aBg = bgClassFor(r.kind, 'A', r.aTxt);
+const aBg = bgClassFor(r.kind, 'A', r.aTxt);  // returns e.g. "shade-diet-1"
 const bBg = bgClassFor(r.kind, 'B', r.bTxt);
+const badgeHTML = pwr10CmpMatchBadge(r.aTxt, r.bTxt, 'section1');
 
 wrap.innerHTML = `
   <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
@@ -520,8 +523,8 @@ wrap.innerHTML = `
 
     <div class="pwr10-row-value">
       <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-      <div class="pwr10-row-input ${aBg}">
-        <div class="pwr10-icon">${renderAttrIcon(r.kind, r.aTxt)}</div>
+      <div class="pwr10-row-input">
+        <div class="pwr10-icon ${aBg}">${renderAttrIcon(r.kind, r.aTxt)}</div>
         <div class="pwr10-title section1"><div>${esc(r.aTxt)}</div></div>
         ${badgeHTML}
       </div>
@@ -532,8 +535,8 @@ wrap.innerHTML = `
 
     <div class="pwr10-row-value">
       <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-      <div class="pwr10-row-input ${bBg}">
-        <div class="pwr10-icon">${renderAttrIcon(r.kind, r.bTxt)}</div>
+      <div class="pwr10-row-input">
+        <div class="pwr10-icon ${bBg}">${renderAttrIcon(r.kind, r.bTxt)}</div>
         <div class="pwr10-title section1"><div>${esc(r.bTxt)}</div></div>
         ${badgeHTML}
       </div>
@@ -541,7 +544,6 @@ wrap.innerHTML = `
     </div>
   </div>
 `.trim();
-
 
 
      insertRow(wrap.firstElementChild);
