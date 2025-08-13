@@ -805,10 +805,10 @@ try {
 }
 }
 
+
 // ===========================
 // Section 3 (ingredients overlay + inline search above lists)
 // ===========================
-
 export function paintSection3(mainRow, sdfRow) {
   // headers
   const h = document.querySelector('[data-var="section3-header"]');
@@ -834,75 +834,75 @@ export function paintSection3(mainRow, sdfRow) {
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
 
-const overlayRow = (key, label) => {
-  const b = countsB[key] ?? 0;
-  const s = countsS[key] ?? 0;
+  const overlayRow = (key, label) => {
+    const b = countsB[key] ?? 0;
+    const s = countsS[key] ?? 0;
 
-  const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
-  const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
-  const isFirst = classKey === 'total';
-  const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
+    const { comp: brandDelta, sport: sdfDelta } = pwr10DeltaBadgePair(b, s);
+    const classKey = String(key).toLowerCase(); // total | protein | plants | supplemental | other
+    const isFirst = classKey === 'total';
+    const rowClass = ['cmp3-row', classKey, isFirst ? 'first' : ''].filter(Boolean).join(' ');
 
-  const name1 = (mainRow['data-one'] || '').trim();
-  const name2 = (sdfRow['data-one']  || '').trim();
+    const name1 = (mainRow['data-one'] || '').trim();
+    const name2 = (sdfRow['data-one']  || '').trim();
 
-  return /* html */ `
-    <div class="${rowClass}" data-key="${esc(classKey)}">
-      <div class="cmp3-title">
-        <div class="cmp3-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M4 9h16"></path>
-            <path d="M4 15h16"></path>
-            <path d="M10 3v18"></path>
-            <path d="M14 3v18"></path>
-          </svg>
+    return /* html */ `
+      <div class="${rowClass}" data-key="${esc(classKey)}">
+        <div class="cmp3-title">
+          <div class="cmp3-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 9h16"></path>
+              <path d="M4 15h16"></path>
+              <path d="M10 3v18"></path>
+              <path d="M14 3v18"></path>
+            </svg>
+          </div>
+          <div class="cmp3-label"><div>${esc(label)}</div></div>
         </div>
-        <div class="cmp3-label"><div>${esc(label)}</div></div>
+
+        <div class="cmp3-entry1">
+          <div class="cmp3-name1"><div>${esc(name1)}</div></div>
+          <div class="cmp3-badge brand"><div>${esc(String(b))}</div></div>
+          <div class="cmp3-diff1">${brandDelta}</div>
+        </div>
+
+        <div class="cmp3-entry3">
+          <div class="cmp3-name2"><div>${esc(name2)}</div></div>
+          <div class="cmp3-badge sdf"><div>${esc(String(s))}</div></div>
+          <div class="cmp3-diff2">${sdfDelta}</div>
+        </div>
       </div>
+    `;
+  };
 
-      <div class="cmp3-entry1">
-        <div class="cmp3-name1"><div>${esc(name1)}</div></div>
-        <div class="cmp3-badge brand"><div>${esc(String(b))}</div></div>
-        <div class="cmp3-diff1">${brandDelta}</div>
-      </div>
+  rowsRoot.classList.add('cmp3-rows');
+  rowsRoot.innerHTML = [
+    overlayRow('total',        'Total Ingredients'),
+    overlayRow('Protein',      'Protein'),
+    overlayRow('Plants',       'Plants'),
+    overlayRow('Supplemental', 'Supplemental'),
+    (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
+  ].join('');
 
-      <div class="cmp3-entry3">
-        <div class="cmp3-name2"><div>${esc(name2)}</div></div>
-        <div class="cmp3-badge sdf"><div>${esc(String(s))}</div></div>
-        <div class="cmp3-diff2">${sdfDelta}</div>
-      </div>
-    </div>
-  `;
-};
+  // Names
+  brandNameEl.textContent = mainRow['data-brand']
+    ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
+    : `${mainRow['data-one'] || ''}`;
+  sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
 
-rowsRoot.classList.add('cmp3-rows');
-rowsRoot.innerHTML = [
-  overlayRow('total',        'Total Ingredients'),
-  overlayRow('Protein',      'Protein'),
-  overlayRow('Plants',       'Plants'),
-  overlayRow('Supplemental', 'Supplemental'),
-  (countsB.Other || countsS.Other) ? overlayRow('Other', 'Other') : ''
-].join('');
+  // Lists (inline pills with hidden keys already present)
+  brandListEl.innerHTML = renderIngListDivs(mainRow);
+  sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-// Names
-brandNameEl.textContent = mainRow['data-brand']
-  ? `${mainRow['data-brand']} ${mainRow['data-one'] || ''}`.trim()
-  : `${mainRow['data-one'] || ''}`;
-sportNameEl.textContent = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
-
-// Lists (inline pills with hidden keys already present)
-brandListEl.innerHTML = renderIngListDivs(mainRow);
-sportListEl.innerHTML = renderIngListDivs(sdfRow);
-
-// Append no-result cards to each list (brand + sport)
-appendEmptyCards(brandListEl, {
-  general: 'No ingredients matched your search.'
-});
-appendEmptyCards(sportListEl, {
-  general: 'No ingredients matched your search.',
-  contentious:
-    "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
-});
+  // Append no-result cards to each list (brand + sport)
+  appendEmptyCards(brandListEl, {
+    general: 'No ingredients matched your search.'
+  });
+  appendEmptyCards(sportListEl, {
+    general: 'No ingredients matched your search.',
+    contentious:
+      "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
+  });
 
   // Wire simple search to filter both lists
   setupIngredientSearch(sec3);
@@ -921,13 +921,13 @@ function ensureSection3Dom(sec3) {
     sec3.querySelector('#cmp3-sport-list') &&
     sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
     sec3.querySelector('[data-var="sport-1-sec3-inglist"]') &&
-    sec3.querySelector('#cmp3-searchbar') && // new simple search
+    sec3.querySelector('#cmp3-searchbar') && // simple search
     sec3.querySelector('#pwrf-search-input') &&
     sec3.querySelector('#pwrf-clear-btn');
 
   if (ok) return;
 
-  sec3.innerHTML = 
+  sec3.innerHTML = `
     <div class="cmp3">
       <div class="cmp3-rows" id="cmp3-rows"></div>
 
@@ -935,8 +935,8 @@ function ensureSection3Dom(sec3) {
         <!-- Simple search bar (no accordion) -->
         <div class="pwrf_toolbar" id="cmp3-searchbar">
           <div class="pwrf_searchbar" role="search">
-            <input type="text" id="pwrf-search-input" class="pwrf_search-input"
-                   placeholder="Search ingredients…" aria-label="Search ingredients" />
+            <input type="text" id="pwrf-search-input" class="pwrf_search_input pwrf_search-input"
+                   placeholder="Search ingredients…" aria-label="Search ingredients">
             <button id="pwrf-clear-btn" class="pwrf_clear-btn" type="button" aria-label="Clear" hidden>×</button>
           </div>
         </div>
@@ -953,7 +953,7 @@ function ensureSection3Dom(sec3) {
         </div>
       </div>
     </div>
-  ;
+  `;
 }
 
 
@@ -961,7 +961,6 @@ function ensureSection3Dom(sec3) {
 // Helpers: empty cards + search wiring
 // ===========================
 function appendEmptyCards(listContainer, { general, contentious }) {
-  // we append these AFTER the .ci-ings-list created by renderIngListDivs
   const already = listContainer.querySelector('.ci-no-results');
   if (!already) {
     const n = document.createElement('div');
@@ -986,14 +985,12 @@ function appendEmptyCards(listContainer, { general, contentious }) {
  * then filter both lists as the user types. Potatoes are excluded from contentious logic.
  */
 function setupIngredientSearch(sec3) {
-  const input   = sec3.querySelector('#pwrf-search-input');
-  const clearBtn= sec3.querySelector('#pwrf-clear-btn');
-  const brandBox= sec3.querySelector('#cmp3-brand-list .ci-ings-list');
-  const sportBox= sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+  const input    = sec3.querySelector('#pwrf-search-input');
+  const clearBtn = sec3.querySelector('#pwrf-clear-btn');
+  const brandBox = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+  const sportBox = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
   if (!input || !clearBtn || !brandBox || !sportBox) return;
 
-  // contentious tokens from your data
-  // (displayAs/Name/groupWith + tags of any ingredient that is marked contentious)
   const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet','sweet-potatoes','sweet-potato']);
   const contentiousTokens = (() => {
     const set = new Set();
@@ -1016,11 +1013,10 @@ function setupIngredientSearch(sec3) {
     return set;
   })();
 
-  const brandEmpty    = sec3.querySelector('#cmp3-brand-list .ci-no-results');
-  const sportEmpty    = sec3.querySelector('#cmp3-sport-list .ci-no-results');
-  const sportContEmpty= sec3.querySelector('#cmp3-sport-list .ci-no-results-contentious');
+  const brandEmpty     = sec3.querySelector('#cmp3-brand-list .ci-no-results');
+  const sportEmpty     = sec3.querySelector('#cmp3-sport-list .ci-no-results');
+  const sportContEmpty = sec3.querySelector('#cmp3-sport-list .ci-no-results-contentious');
 
-  // cache tokens per pill once
   const cacheTokens = (wrap) => {
     if (!wrap._tokenSet) {
       const str = (wrap.dataset.search || '').toLowerCase();
@@ -1052,18 +1048,13 @@ function setupIngredientSearch(sec3) {
     const raw   = (input.value || '').trim().toLowerCase();
     const terms = Array.from(new Set(raw.split(/\s+/).filter(Boolean)));
 
-    // show/hide clear
     clearBtn.hidden = terms.length === 0;
 
     const brandShown = filterList(brandBox, terms);
     const sportShown = filterList(sportBox, terms);
 
-    // brand generic empty
     toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
-    // sport empties:
-    //   if no sport results AND query intersects with contentious tokens (excluding potatoes),
-    //   show the contentious card; otherwise show the generic empty.
     let showContMsg = false;
     if (terms.length > 0 && sportShown === 0) {
       showContMsg = terms.some(t => contentiousTokens.has(t));
@@ -1071,7 +1062,6 @@ function setupIngredientSearch(sec3) {
     toggle(sportContEmpty, showContMsg);
     toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
-    // when query is blank -> show all, hide empties
     if (terms.length === 0) {
       toggle(brandEmpty, false);
       toggle(sportEmpty, false);
@@ -1079,7 +1069,6 @@ function setupIngredientSearch(sec3) {
     }
   };
 
-  // wire once
   if (!input._wired) {
     input._wired = true;
     input.addEventListener('input', doFilter, { passive: true });
@@ -1091,7 +1080,6 @@ function setupIngredientSearch(sec3) {
     });
   }
 
-  // initial (blank => show all, hide empties)
   doFilter();
 }
 
@@ -1110,7 +1098,6 @@ function renderIngListDivs(row) {
         const consumerTag  = getConsumerTypeTag(ing['data-type']); // Protein | Plants | Supplemental | Other
         const consumerSlug = (consumerTag || 'Other').toLowerCase();
 
-        // Pill tags
         const tags = [];
         if (ing['data-type']) {
           tags.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${esc(consumerSlug)}">${esc(consumerTag)}</div>`);
@@ -1126,7 +1113,6 @@ function renderIngListDivs(row) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
         }
 
-        // Build a deduped keyword soup for search
         const raw = [
           ing.Name, ing.displayAs, ing.groupWith,
           ing['data-type'] || '', ing.recordType || '',
@@ -1136,9 +1122,8 @@ function renderIngListDivs(row) {
           ...(ing.tags || [])
         ].join(' ').toLowerCase();
 
-        const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean)) ).join(' ');
+        const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
 
-        // Light flags for optional CSS hooks
         const flags = [
           consumerSlug,
           ing.tagPoultry     ? 'poultry'     : '',
