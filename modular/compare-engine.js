@@ -963,19 +963,31 @@ function wireInlineIngredientSearch(sec3, mainRow, sdfRow) {
   brandEmpty.textContent = `No ${brandName.toLowerCase()} ingredients found.`;
   sportEmpty.textContent = `No sport dog food ingredients found.`;
 
-  function filterOneList(listBody, emptyEl, terms) {
-    const items = listBody.querySelectorAll('.ci-ing-wrapper');
-    let shown = 0;
-    items.forEach(it => {
-      const hay = (it.dataset.search || '').toLowerCase();
-      const ok = terms.length === 0 ? true : terms.every(t => hay.includes(t));
-      it.hidden = !ok;
-      it.style.display = ok ? '' : 'none';
-      if (ok) shown++;
-    });
-    emptyEl.hidden = shown !== 0;
-    emptyEl.style.display = emptyEl.hidden ? 'none' : '';
-  }
+function filterOneList(listBody, emptyEl, terms) {
+  const items = listBody.querySelectorAll('.ci-ing-wrapper');
+  const needTerms = Array.isArray(terms) ? terms.filter(Boolean) : [];
+  let shown = 0;
+
+  items.forEach(it => {
+    // cache token set once per item
+    if (!it._tokenSet) {
+      const str = (it.dataset.search || '').toLowerCase();
+      it._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
+    }
+
+    const ok = needTerms.length === 0
+      ? true                   // show all when no query
+      : needTerms.every(t => it._tokenSet.has(t)); // all terms must be present
+
+    it.hidden = !ok;
+    it.style.display = ok ? '' : 'none';
+    if (ok) shown++;
+  });
+
+  emptyEl.hidden = shown !== 0;
+  emptyEl.style.display = emptyEl.hidden ? 'none' : '';
+}
+
 
   function doFilter() {
     const q = (inputEl.value || '').trim().toLowerCase();
@@ -1042,12 +1054,17 @@ function renderIngListDivs(row) {
         ].join(' ').toLowerCase();
 
         // Light flags (optional for CSS/logic)
-        const flags = [
-          consumerTag ? consumerTag.toLowerCase() : '',
-          ing.tagPoultry ? 'poultry' : '',
-          ing.tagAllergy ? 'allergy' : '',
-          ing.tagContentious ? 'contentious' : ''
-        ].filter(Boolean).join(' ');
+      // Hidden keyword soup (deduped)
+const raw = [
+  ing.Name, ing.displayAs, ing.groupWith,
+  ing['data-type'] || '', ing.recordType || '',
+  ing.animalType || '',   ing.animalAssist || '',
+  ing.plantType || '',    ing.plantAssist || '',
+  ing.supplementalType || '', ing.supplementalAssist || '',
+  ...(ing.tags || [])
+].join(' ').toLowerCase();
+
+const keys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
 
         return `
           <div
