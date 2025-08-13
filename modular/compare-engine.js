@@ -230,6 +230,26 @@ function setDataClass(el, base, key, value, map) {
   let segment = segmentKey ? map[segmentKey] : (value || '').toLowerCase().replace(/\s+/g, '-');
   if (segment) el.classList.add(`${prefix}${segment}`);
 }
+// Ensures generic + (optional) contentious empty cards exist in a list container
+function appendEmptyCards(listContainer, { general, contentious }) {
+  if (!listContainer) return;
+
+  const ensure = (cls, text) => {
+    let el = listContainer.querySelector(`.${cls}`);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = cls;
+      el.hidden = true;
+      el.style.display = 'none';
+      el.textContent = text || 'No results.';
+      listContainer.appendChild(el);
+    }
+    return el;
+  };
+
+  if (general)     ensure('ci-no-results', general);
+  if (contentious) ensure('ci-no-results-contentious', contentious);
+}
 
 // Ensure all PWR10 containers exist (sticky + section buckets)
 function ensurePwr10Scaffold(rootEl) {
