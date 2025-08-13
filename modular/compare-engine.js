@@ -942,7 +942,6 @@ if (openBtn && acc && !openBtn._wired) {
 }
 
 // Build/repair the Section 3 DOM scaffold if missing pieces
-// Build/repair the Section 3 DOM scaffold if missing pieces
 function ensureSection3Dom(sec3) {
   const ok =
     sec3.querySelector('.cmp3') &&
@@ -952,7 +951,8 @@ function ensureSection3Dom(sec3) {
     sec3.querySelector('#cmp3-sport-list') &&
     sec3.querySelector('[data-var="brand-1-sec3-inglist"]') &&
     sec3.querySelector('[data-var="sport-1-sec3-inglist"]') &&
-    sec3.querySelector('#cmp3-search-accordion');
+    sec3.querySelector('#cmp3-search-accordion') &&
+    sec3.querySelector('#open-ing-search');
 
   if (ok) return;
 
@@ -961,15 +961,19 @@ function ensureSection3Dom(sec3) {
       <div class="cmp3-rows" id="cmp3-rows"></div>
 
       <div class="cmp3-actions">
-        <button class="cmp3-btn" id="open-ing-search" type="button" aria-expanded="false">Search ingredients</button>
-        <!-- Inline accordion (replaces modal) -->
+        <!-- Accordion placed ABOVE the toggle button -->
         <div class="cmp3-accordion" id="cmp3-search-accordion" aria-hidden="true">
-          <div class="pwrf_searchbar" role="search">
-            <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients"/>
-            <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
+          <div class="pwrf_toolbar">
+            <div class="pwrf_searchbar" role="search">
+              <input type="text" class="pwrf_search-input" placeholder="Search ingredients…" aria-label="Search ingredients" />
+              <button class="pwrf_clear-btn" type="button" aria-label="Clear">×</button>
+            </div>
+            <button class="pwrf_close-btn" type="button" aria-label="Close search">×</button>
           </div>
           <div class="pwrf_results" aria-live="polite"></div>
         </div>
+
+        <button class="cmp3-btn" id="open-ing-search" type="button" aria-expanded="false">Search ingredients</button>
       </div>
 
       <div class="cmp3-lists" id="cmp3-lists">
@@ -986,6 +990,62 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
+// ---- wiring for search button + accordion (toggle + lock) ----
+const openBtn  = sec3.querySelector('#open-ing-search');
+const acc      = sec3.querySelector('#cmp3-search-accordion');
+const inputEl  = acc?.querySelector('.pwrf_search-input');
+const clearBtn = acc?.querySelector('.pwrf_clear-btn');
+const closeBtn = acc?.querySelector('.pwrf_close-btn');
+const resultsEl= acc?.querySelector('.pwrf_results');
+
+if (openBtn && acc && inputEl && clearBtn && resultsEl && !openBtn._wired) {
+  openBtn._wired = true;
+
+  // closed state baseline
+  openBtn.setAttribute('aria-expanded', 'false');
+  acc.classList.remove('open');
+  acc.setAttribute('aria-hidden', 'true');
+
+  const openAccordion = () => {
+    // (re)paint results on open
+    paintDualIngredientLists(mainRow, sdfRow, resultsEl, inputEl, clearBtn);
+
+    acc.classList.add('open');
+    acc.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+
+    lockBodyScroll();
+    inputEl.focus();
+
+    if (!acc._escHandler) {
+      acc._escHandler = (e) => { if (e.key === 'Escape') closeAccordion(); };
+      document.addEventListener('keydown', acc._escHandler);
+    }
+  };
+
+  const closeAccordion = () => {
+    acc.classList.remove('open');
+    acc.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+
+    if (acc._escHandler) {
+      document.removeEventListener('keydown', acc._escHandler);
+      acc._escHandler = null;
+    }
+
+    unlockBodyScroll();
+    openBtn.focus();
+  };
+
+  const toggleAccordion = () => {
+    const isOpen = acc.classList.contains('open');
+    if (isOpen) closeAccordion(); else openAccordion();
+  };
+
+  openBtn.addEventListener('click', toggleAccordion);
+  closeBtn.addEventListener('click', closeAccordion);
+}
+
 // ===========================
 // Accordion search (no modal) + body scroll lock
 // ===========================
@@ -995,7 +1055,6 @@ function lockBodyScroll() {
   const y = window.scrollY || document.documentElement.scrollTop || 0;
   document.body.dataset.scrollY = String(y);
 
-  // compensate for scrollbar disappearance
   const sbw = window.innerWidth - document.documentElement.clientWidth;
   if (sbw > 0) document.body.style.paddingRight = `${sbw}px`;
 
