@@ -1106,6 +1106,7 @@ function renderSuggestPills({ box, items, onPick }) {
 }
 
 
+
 // ===========================
 // Inline ingredient search + suggestions (filters both lists)
 // ===========================
@@ -1113,9 +1114,24 @@ function setupIngredientSearch(sec3) {
   const input     = sec3.querySelector('#pwrf-search-input');
   const clearBtn  = sec3.querySelector('#pwrf-clear-btn');
   const suggestEl = sec3.querySelector('#cmp3-suggest');
+  const bar       = sec3.querySelector('.pwrf_searchbar');
 
   const brandBox  = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
   const sportBox  = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+
+  if (!input || !clearBtn || !brandBox || !sportBox) return;
+  if (input._wired) return;
+  input._wired = true;
+
+  // --- FIX: allow CSS/JS to toggle the button ---
+  clearBtn.hidden = false;              // remove attribute so style can show it
+
+  // Copilot-like focus styling on wrapper (adds/removes .is-focused)
+  if (bar && !bar._focusWired) {
+    bar._focusWired = true;
+    input.addEventListener('focus', () => bar.classList.add('is-focused'));
+    input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
+  }
 
   // ensure empty cards exist (brand + sport)
   const ensureEmpty = (rootSel, cls, text) => {
@@ -1139,12 +1155,8 @@ function setupIngredientSearch(sec3) {
     "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
   );
 
-  if (!input || !clearBtn || !brandBox || !sportBox) return;
-  if (input._wired) return;
-  input._wired = true;
-
   // contentious tokens (excluding potatoes)
-  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet','sweet-potatoes','sweet-potato']);
+  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet-potatoes','sweet-potato']);
   const contentiousTokens = (() => {
     const set = new Set();
     Object.values(ING_MAP || {}).forEach(ing => {
@@ -1194,19 +1206,18 @@ function setupIngredientSearch(sec3) {
     el.style.display = show ? '' : 'none';
   };
 
-  // build suggestions index
+  // suggestions index
   let { fuse, list } = makeSuggestionIndex(sec3);
 
   const suggestFor = (lastTerm, existingTerms) => {
     if (!lastTerm || lastTerm.length < 2) return [];
     let candidates = [];
-    if (fuse) {
+    if (window.Fuse && fuse) {
       candidates = fuse.search(lastTerm).map(r => r.item);
     } else {
       const lt = lastTerm.toLowerCase();
       candidates = list.filter(s => s.startsWith(lt) || s.includes(lt));
     }
-    // drop ones already in query
     const taken = new Set(existingTerms);
     return candidates.filter(s => !taken.has(s)).slice(0, 8);
   };
@@ -1218,8 +1229,8 @@ function setupIngredientSearch(sec3) {
     if (!endsWithSpace && parts.length) parts.pop(); // replace last partial
     parts.push(s);
     input.value = parts.join(' ') + ' ';
-    doFilter(); // re-filter with strict/exact tokens
-    renderSuggest(''); // clear suggestions
+    doFilter();                // re-filter with strict/exact tokens
+    renderSuggest('');         // clear suggestions
     input.focus();
   };
 
@@ -1228,13 +1239,17 @@ function setupIngredientSearch(sec3) {
     renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
   };
 
+  // show/hide the clear button like Copilot
+  const syncClear = () => { clearBtn.style.display = input.value ? 'inline-flex' : 'none'; };
+  input.addEventListener('input', syncClear, { passive: true });
+
   const doFilter = () => {
     const raw   = (input.value || '').toLowerCase();
     const parts = raw.trim().split(/\s+/).filter(Boolean);
     const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
     const terms = lastIsPartial ? parts.slice(0, -1) : parts; // exact-term filter ignores partial trailing token
 
-    clearBtn.hidden = parts.length === 0;
+    syncClear();
 
     const brandShown = filterList(brandBox, terms);
     const sportShown = filterList(sportBox, terms);
@@ -1249,7 +1264,7 @@ function setupIngredientSearch(sec3) {
     toggle(sportContEmpty, showContMsg);
     toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
-    // suggestions for the trailing partial
+    // suggestions for trailing partial
     const existing = new Set(terms);
     renderSuggest(lastIsPartial, Array.from(existing));
 
@@ -1262,7 +1277,7 @@ function setupIngredientSearch(sec3) {
     }
   };
 
-  input.addEventListener('input', doFilter, { passive: true });
+  // clear button behavior
   clearBtn.addEventListener('click', (e) => {
     e.preventDefault();
     input.value = '';
@@ -1271,12 +1286,13 @@ function setupIngredientSearch(sec3) {
   });
 
   // Rebuild suggestions index after lists are painted (in case of re-render)
-  // Call this if you repaint lists elsewhere:
   input._reindex = () => { ({ fuse, list } = makeSuggestionIndex(sec3)); };
 
-  // initial (blank => show all, hide empties/suggestions)
+  // initial paint (blank => show all, hide empties/suggestions, hide clear)
   doFilter();
+  syncClear();
 }
+
 
 
 
