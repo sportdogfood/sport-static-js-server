@@ -1136,26 +1136,31 @@ function setupIngredientSearch(sec3) {
   }
 
   // --- helpers unchanged ---
-  const ensureEmpty = (rootSel, cls, text) => {
-    const root = sec3.querySelector(rootSel);
-    if (!root) return null;
-    let el = root.querySelector(`.${cls}`);
-    if (!el) {
-      el = document.createElement('div');
-      el.className = cls;
-      el.hidden = true;
-      el.style.display = 'none';
-      el.textContent = text || 'No results.';
-      root.appendChild(el);
-    }
-    return el;
-  };
+// ensure empty cards exist (brand + sport)
+const ensureEmpty = (rootSel, cls, html) => {
+  const root = sec3.querySelector(rootSel);
+  if (!root) return null;
+  let el = root.querySelector(`.${cls}`);
+  if (!el) {
+    el = document.createElement('div');
+    el.className = cls;
+    el.hidden = true;
+    el.style.display = 'none';
+    el.innerHTML = html || 'No results.';   // ⬅️ use innerHTML so the Clear link renders
+    root.appendChild(el);
+  }
+  return el;
+};
 
-  const brandEmpty     = ensureEmpty('#cmp3-brand-list', 'ci-no-results', 'No ingredients matched your search.');
-  const sportEmpty     = ensureEmpty('#cmp3-sport-list', 'ci-no-results', 'No ingredients matched your search.');
-  const sportContEmpty = ensureEmpty('#cmp3-sport-list', 'ci-no-results-contentious',
-    "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
-  );
+const brandEmpty = ensureEmpty('#cmp3-brand-list','ci-no-results',
+  'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+);
+const sportEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results',
+  'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+);
+const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious',
+  'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+);
 
   const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet-potato','sweet-potatoes']);
   const contentiousTokens = (() => {
@@ -1238,35 +1243,61 @@ function setupIngredientSearch(sec3) {
     input.focus();
   };
 
-  // Hoisted declaration avoids init-order issues
-  function doFilter() {
-    const raw   = (input.value || '').toLowerCase();
-    const parts = raw.trim().split(/\s+/).filter(Boolean);
-    const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
-    const terms = lastIsPartial ? parts.slice(0, -1) : parts;
+// Hoisted declaration avoids init-order issues
+function doFilter() {
+  const raw   = (input.value || '').toLowerCase();
+  const parts = raw.trim().split(/\s+/).filter(Boolean);
+  const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
+  const terms = lastIsPartial ? parts.slice(0, -1) : parts;
 
-    const brandShown = filterList(brandBox, terms);
-    const sportShown = filterList(sportBox, terms);
+  // Apply filters to both lists
+  const brandShown = filterList(brandBox, terms);
+  const sportShown = filterList(sportBox, terms);
 
-    toggle(brandEmpty, terms.length > 0 && brandShown === 0);
+  // Brand "no results"
+  toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
-    let showContMsg = false;
-    if (terms.length > 0 && sportShown === 0) {
-      showContMsg = terms.some(t => contentiousTokens.has(t));
-    }
-    toggle(sportContEmpty, showContMsg);
-    toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
+  // —— Dynamic contentious logic ——
+  // Find contentious ingredients that are VISIBLE in the brand list
+  const contentiousInBrand = Array.from(
+    brandBox.querySelectorAll('.ci-ing-wrapper')
+  ).filter(it => {
+    if (it.hidden) return false;
+    const flags = String(it.getAttribute('data-flags') || '');
+    return /\bcontentious\b/.test(flags);
+  });
 
-    const existing = new Set(terms);
-    renderSuggest(lastIsPartial, Array.from(existing));
+  // Choose the first visible contentious ingredient name (if any)
+  const firstContentiousName =
+    contentiousInBrand[0]?.querySelector('.ci-ing-displayas')?.textContent?.trim() || '';
 
-    if (parts.length === 0) {
-      toggle(brandEmpty, false);
-      toggle(sportEmpty, false);
-      toggle(sportContEmpty, false);
-      renderSuggest('');
-    }
+  // Show contentious message only if: there are terms, Sport shows none, and Brand shows at least one contentious item
+  const showContMsg = (terms.length > 0 && sportShown === 0 && contentiousInBrand.length > 0);
+
+  // Update the dynamic message
+  if (sportContEmpty && showContMsg) {
+    sportContEmpty.innerHTML =
+      `Sport Dog Food avoids most contentious ingredients. <strong>${esc(firstContentiousName)}</strong> is an ingredient that you won't find in any of our formulas. ` +
+      `<a class="ci-clear" href="#" data-act="clear">Clear</a>`;
   }
+
+  // Toggle Sport empties
+  toggle(sportContEmpty, showContMsg);
+  toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
+
+  // Suggestions for trailing partial
+  const existing = new Set(terms);
+  renderSuggest(lastIsPartial, Array.from(existing));
+
+  // Blank query => show all, hide empties + suggestions
+  if (parts.length === 0) {
+    toggle(brandEmpty, false);
+    toggle(sportEmpty, false);
+    toggle(sportContEmpty, false);
+    renderSuggest('');
+  }
+}
+
 
   // Bind filter on input (only this one)
   input.addEventListener('input', doFilter, { passive: true });
