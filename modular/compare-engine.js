@@ -1176,18 +1176,53 @@ function visibleItems(listRoot) {
     .filter(el => !el.hidden && el.style.display !== 'none');
 }
 
+function collapseLimit() {
+  return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
+}
+
+// Return items that MATCH the query (even if collapsed)
+function matchedItems(listRoot) {
+  return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
+    .filter(el => el.dataset.smMatch === '1');
+}
+
+function initSeeMoreForList(listRoot) {
+  if (!listRoot || listRoot._seeMoreWired) return;
+  listRoot._seeMoreWired = true;
+
+  let wrap = listRoot.querySelector('.ci-see-more-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'ci-see-more-wrap';
+    wrap.innerHTML = `
+      <div class="ci-fade" aria-hidden="true"></div>
+      <button type="button" class="ci-see-more-btn" aria-expanded="false">Show more</button>
+    `;
+    listRoot.appendChild(wrap);
+  }
+
+  const btn = wrap.querySelector('.ci-see-more-btn');
+  btn.addEventListener('click', () => {
+    const expanded = listRoot.dataset.expanded === 'true';
+    listRoot.dataset.expanded = String(!expanded);
+    applySeeMore(listRoot);
+  });
+
+  applySeeMore(listRoot);
+}
+
 function applySeeMore(listRoot) {
-  const limit = collapseLimit();
-  const items = visibleItems(listRoot);
+  const limit   = collapseLimit();
+  const matches = matchedItems(listRoot);      // ✅ use matches, not current visibility
   const expanded = listRoot.dataset.expanded === 'true';
   const wrap = listRoot.querySelector('.ci-see-more-wrap');
-  const btn = wrap?.querySelector('.ci-see-more-btn');
+  const btn  = wrap?.querySelector('.ci-see-more-btn');
   const fade = wrap?.querySelector('.ci-fade');
 
-  // Nothing to collapse
-  if (!items.length || items.length <= limit) {
-    // show all items
-    items.forEach(el => { el.style.display = ''; el.hidden = false; });
+  // If no matches or <= limit, no button needed
+  if (!matches.length || matches.length <= limit) {
+    // show all matches
+    matches.forEach(el => { el.style.display = ''; el.hidden = false; });
     if (wrap) wrap.style.display = 'none';
     if (btn)  btn.setAttribute('aria-expanded', 'false');
     listRoot.dataset.expanded = 'false';
@@ -1196,31 +1231,25 @@ function applySeeMore(listRoot) {
 
   // We have more than the limit
   if (!expanded) {
-    // show first N, hide the rest
-    items.forEach((el, i) => {
+    // show first N matches, hide the rest (ONLY hide due to see-more)
+    matches.forEach((el, i) => {
       const show = i < limit;
       el.style.display = show ? '' : 'none';
-      el.hidden = !show;
+      el.hidden = !show; // hide overflow for a11y/tab order
     });
     if (wrap) wrap.style.display = '';
-    if (btn) {
-      btn.textContent = `Show all ${items.length}`;
-      btn.setAttribute('aria-expanded', 'false');
-    }
-    if (fade) fade.style.display = ''; // show gradient fade
+    if (btn) { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
+    if (fade) fade.style.display = '';
   } else {
-    // show everything
-    items.forEach(el => { el.style.display = ''; el.hidden = false; });
+    // show all matches
+    matches.forEach(el => { el.style.display = ''; el.hidden = false; });
     if (wrap) wrap.style.display = '';
-    if (btn) {
-      btn.textContent = 'Show less';
-      btn.setAttribute('aria-expanded', 'true');
-    }
+    if (btn) { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
     if (fade) fade.style.display = 'none';
   }
 }
 
-// Call this whenever filtering finishes so the button/fade stay correct
+// Re-apply per list (brand + sport) whenever things change
 function refreshSeeMore() {
   const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
   const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
@@ -1291,18 +1320,25 @@ const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious
     return wrap._tokenSet;
   };
 
-  const filterList = (listEl, terms) => {
-    const items = listEl.querySelectorAll('.ci-ing-wrapper');
-    let shown = 0;
-    items.forEach(it => {
-      const set = cacheTokens(it);
-      const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
-      it.hidden = !ok;
-      it.style.display = ok ? '' : 'none';
-      if (ok) shown++;
-    });
-    return shown;
-  };
+const filterList = (listEl, terms) => {
+  const items = listEl.querySelectorAll('.ci-ing-wrapper');
+  let shown = 0;
+  items.forEach(it => {
+    const set = cacheTokens(it);
+    const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
+
+    // ✅ mark current match state for see-more to use later
+    if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
+
+    // normal visibility for filter
+    it.hidden = !ok;
+    it.style.display = ok ? '' : 'none';
+
+    if (ok) shown++;
+  });
+  return shown;
+};
+
 
   const toggle = (el, show) => {
     if (!el) return;
@@ -1425,8 +1461,7 @@ function doFilter() {
 
   // Initial render
   doFilter();
-// ⬇️ add this directly after doFilter()
-refreshSeeMore();
+  refreshSeeMore();
 
 }
 
