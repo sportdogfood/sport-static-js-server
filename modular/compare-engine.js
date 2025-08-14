@@ -1135,7 +1135,106 @@ function setupIngredientSearch(sec3) {
     input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
   }
 
-  // --- helpers unchanged ---
+// ──────────────────────────────────────────────
+// SEE MORE (per list)
+// ──────────────────────────────────────────────
+function collapseLimit() {
+  return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
+}
+
+function initSeeMoreForList(listRoot) {
+  if (!listRoot || listRoot._seeMoreWired) return;
+  listRoot._seeMoreWired = true;
+
+  // Wrap will host the button + fade
+  let wrap = listRoot.querySelector('.ci-see-more-wrap');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'ci-see-more-wrap';
+    wrap.innerHTML = `
+      <div class="ci-fade" aria-hidden="true"></div>
+      <button type="button" class="ci-see-more-btn" aria-expanded="false">Show more</button>
+    `;
+    listRoot.appendChild(wrap);
+  }
+
+  const btn = wrap.querySelector('.ci-see-more-btn');
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    listRoot.dataset.expanded = String(!expanded);
+    applySeeMore(listRoot); // re-apply
+  });
+
+  // Apply once initially
+  applySeeMore(listRoot);
+}
+
+function visibleItems(listRoot) {
+  // Count only currently visible ingredient pills
+  return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
+    .filter(el => !el.hidden && el.style.display !== 'none');
+}
+
+function applySeeMore(listRoot) {
+  const limit = collapseLimit();
+  const items = visibleItems(listRoot);
+  const expanded = listRoot.dataset.expanded === 'true';
+  const wrap = listRoot.querySelector('.ci-see-more-wrap');
+  const btn = wrap?.querySelector('.ci-see-more-btn');
+  const fade = wrap?.querySelector('.ci-fade');
+
+  // Nothing to collapse
+  if (!items.length || items.length <= limit) {
+    // show all items
+    items.forEach(el => { el.style.display = ''; el.hidden = false; });
+    if (wrap) wrap.style.display = 'none';
+    if (btn)  btn.setAttribute('aria-expanded', 'false');
+    listRoot.dataset.expanded = 'false';
+    return;
+  }
+
+  // We have more than the limit
+  if (!expanded) {
+    // show first N, hide the rest
+    items.forEach((el, i) => {
+      const show = i < limit;
+      el.style.display = show ? '' : 'none';
+      el.hidden = !show;
+    });
+    if (wrap) wrap.style.display = '';
+    if (btn) {
+      btn.textContent = `Show all ${items.length}`;
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    if (fade) fade.style.display = ''; // show gradient fade
+  } else {
+    // show everything
+    items.forEach(el => { el.style.display = ''; el.hidden = false; });
+    if (wrap) wrap.style.display = '';
+    if (btn) {
+      btn.textContent = 'Show less';
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    if (fade) fade.style.display = 'none';
+  }
+}
+
+// Call this whenever filtering finishes so the button/fade stay correct
+function refreshSeeMore() {
+  const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+  const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+  if (brandListRoot) { initSeeMoreForList(brandListRoot); applySeeMore(brandListRoot); }
+  if (sportListRoot) { initSeeMoreForList(sportListRoot); applySeeMore(sportListRoot); }
+}
+
+// Re-apply limits on resize (e.g., crossing 600px)
+let _smResizeId;
+window.addEventListener('resize', () => {
+  if (_smResizeId) cancelAnimationFrame(_smResizeId);
+  _smResizeId = requestAnimationFrame(refreshSeeMore);
+});
+
 // ensure empty cards exist (brand + sport)
 const ensureEmpty = (rootSel, cls, html) => {
   const root = sec3.querySelector(rootSel);
@@ -1162,7 +1261,7 @@ const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious
   'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
 );
 
-  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet-potato','sweet-potatoes']);
+  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes']);
   const contentiousTokens = (() => {
     const set = new Set();
     Object.values(ING_MAP || {}).forEach(ing => {
@@ -1296,6 +1395,8 @@ function doFilter() {
     toggle(sportContEmpty, false);
     renderSuggest('');
   }
+  // ⬇️ add this as the last line in doFilter()
+  refreshSeeMore();
 }
 
 
@@ -1324,6 +1425,9 @@ function doFilter() {
 
   // Initial render
   doFilter();
+// ⬇️ add this directly after doFilter()
+refreshSeeMore();
+
 }
 
 
