@@ -1241,7 +1241,9 @@ function setupIngredientSearch(sec3) {
   };
 
   // Show/hide the clear button like Copilot
-  const syncClear = () => { clearBtn.style.display = input.value ? 'inline-flex' : 'none'; };
+const syncClear = () => { clearBtn.style.display = input.value ? 'inline-flex' : 'none'; };
+input.addEventListener('input', syncClear,  { passive: true });
+input.addEventListener('input', doFilter,   { passive: true });
 
   const doFilter = () => {
     const raw   = (input.value || '').toLowerCase();
