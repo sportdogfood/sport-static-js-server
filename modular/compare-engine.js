@@ -252,35 +252,39 @@ function appendEmptyCards(listContainer, { general, contentious }) {
 }
 
 
-// - Works whether the page has only classes or already has IDs
+// Ensure all PWR10 containers exist (sticky + section buckets)
 function ensurePwr10Scaffold(rootEl) {
   const need = (cls, id) => {
-    // Prefer an existing ID, otherwise fall back to the classed grid
     let el =
       (id && rootEl.querySelector(`:scope > #${id}`)) ||
       rootEl.querySelector(`:scope > .pwr10-rows-grid.${cls}`);
 
-    // Create if missing
     if (!el) {
-      el = document.createElement('section'); // or 'div' if you prefer
+      el = document.createElement('div'); // or 'section'
       el.className = `pwr10-rows-grid ${cls}`;
       if (id) el.id = id;
       rootEl.appendChild(el);
     } else if (id && !el.id) {
-      // Upgrade an existing classed grid to also have the expected id
-      el.id = id;
+      el.id = id; // upgrade existing classed grid to the id your painters expect
     }
     return el;
   };
 
-  const stickyWrap   = need('sticky-sections');                 // (no id needed)
+  // You already have <section id="compare-sticky"> in the page; leave it as-is.
+  const stickyWrap   = need('sticky-sections');                 // no id needed
   const s1TitleGrid  = need('section1-title', 'pwr10-section1-title');
   const s1Grid       = need('section1',       'pwr10-section1');
   const s2TitleGrid  = need('section2-title', 'pwr10-section2-title');
   const s2Grid       = need('section2',       'pwr10-section2');
+  const s3Grid       = need('section3',       'pwr10-section3'); // holder for section-3
 
-  // Optional: ensure a holder for Section 3 (your inner #section-3 will be built by ensureSection3Dom)
-  const s3Grid       = need('section3',       'pwr10-section3');
+  // Ensure the inner #section-3 node exists inside the section3 grid
+  if (!s3Grid.querySelector('#section-3')) {
+    const sec3 = document.createElement('section');
+    sec3.id = 'section-3';
+    sec3.className = 'pwr10-ce';
+    s3Grid.appendChild(sec3);
+  }
 
   return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
 }
@@ -1679,6 +1683,7 @@ export function renderComparePage() {
 
   window.CCI = { mainRow, sdfRow: initialRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
+  const grids = ensurePwr10Scaffold(document.body);
   // Sticky header immediately
   if (typeof renderStickyCompareHeader === 'function') {
     renderStickyCompareHeader(mainRow, initialRow);
