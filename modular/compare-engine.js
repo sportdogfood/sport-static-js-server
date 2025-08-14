@@ -251,24 +251,40 @@ function appendEmptyCards(listContainer, { general, contentious }) {
   if (contentious) ensure('ci-no-results-contentious', contentious);
 }
 
-// Ensure all PWR10 containers exist (sticky + section buckets)
+
+// - Works whether the page has only classes or already has IDs
 function ensurePwr10Scaffold(rootEl) {
-  const need = (cls) => {
-    let el = rootEl.querySelector(`:scope > .pwr10-rows-grid.${cls}`);
+  const need = (cls, id) => {
+    // Prefer an existing ID, otherwise fall back to the classed grid
+    let el =
+      (id && rootEl.querySelector(`:scope > #${id}`)) ||
+      rootEl.querySelector(`:scope > .pwr10-rows-grid.${cls}`);
+
+    // Create if missing
     if (!el) {
-      el = document.createElement('div');
+      el = document.createElement('section'); // or 'div' if you prefer
       el.className = `pwr10-rows-grid ${cls}`;
+      if (id) el.id = id;
       rootEl.appendChild(el);
+    } else if (id && !el.id) {
+      // Upgrade an existing classed grid to also have the expected id
+      el.id = id;
     }
     return el;
   };
-  const stickyWrap   = need('sticky-sections');
-  const s1TitleGrid  = need('section1-title');
-  const s1Grid       = need('section1');
-  const s2TitleGrid  = need('section2-title');
-  const s2Grid       = need('section2');
-  return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid };
+
+  const stickyWrap   = need('sticky-sections');                 // (no id needed)
+  const s1TitleGrid  = need('section1-title', 'pwr10-section1-title');
+  const s1Grid       = need('section1',       'pwr10-section1');
+  const s2TitleGrid  = need('section2-title', 'pwr10-section2-title');
+  const s2Grid       = need('section2',       'pwr10-section2');
+
+  // Optional: ensure a holder for Section 3 (your inner #section-3 will be built by ensureSection3Dom)
+  const s3Grid       = need('section3',       'pwr10-section3');
+
+  return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
 }
+
 
 // ===========================
 // Sticky header (PWR10 markup)
