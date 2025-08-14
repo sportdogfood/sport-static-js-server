@@ -926,19 +926,20 @@ export function paintSection3(mainRow, sdfRow) {
 
   // Wire simple search to filter both lists
   setupIngredientSearch(sec3);
+initCmp3Carousel(sec3);
 }
 
 
-// ===========================
-// Section 3 DOM scaffold (search ABOVE lists)
-// ===========================
 // ===========================
 // Section 3 DOM scaffold (search ABOVE lists + suggestions area)
 // ===========================
 function ensureSection3Dom(sec3) {
   const ok =
     sec3.querySelector('.cmp3') &&
+    sec3.querySelector('.cmp3-rows-wrap') &&
     sec3.querySelector('#cmp3-rows') &&
+    sec3.querySelector('.cmp3-prev') &&
+    sec3.querySelector('.cmp3-next') &&
     sec3.querySelector('#cmp3-lists') &&
     sec3.querySelector('#cmp3-brand-list') &&
     sec3.querySelector('#cmp3-sport-list') &&
@@ -953,10 +954,15 @@ function ensureSection3Dom(sec3) {
 
   sec3.innerHTML = `
     <div class="cmp3">
-      <div class="cmp3-rows" id="cmp3-rows"></div>
+      <!-- Card strip with arrows ABOVE actions/search -->
+      <div class="cmp3-rows-wrap">
+        <button class="cmp3-arrow cmp3-prev" aria-label="Scroll left" type="button">‹</button>
+        <div class="cmp3-rows" id="cmp3-rows"></div>
+        <button class="cmp3-arrow cmp3-next" aria-label="Scroll right" type="button">›</button>
+      </div>
 
+      <!-- Actions/search BELOW the cards -->
       <div class="cmp3-actions">
-        <!-- Simple search bar (no accordion) + suggestions -->
         <div class="pwrf_toolbar" id="cmp3-searchbar">
           <div class="pwrf_searchbar" role="search">
             <input type="text" id="pwrf-search-input" class="pwrf_search-input"
@@ -967,6 +973,7 @@ function ensureSection3Dom(sec3) {
         </div>
       </div>
 
+      <!-- Two lists -->
       <div class="cmp3-lists" id="cmp3-lists">
         <div class="ci-list brand" id="cmp3-brand-list">
           <div class="ci-list-head" data-var="brand-1-sec3-name"></div>
@@ -981,6 +988,55 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
+// ===========================
+// Section 3 carousel init
+// ===========================
+function initCmp3Carousel(sec3){
+  const scroller = sec3.querySelector('#cmp3-rows');
+  const prev = sec3.querySelector('.cmp3-prev');
+  const next = sec3.querySelector('.cmp3-next');
+  if (!scroller || !prev || !next) return;
+
+  // Scroll by ~one card
+  const gap = 12; // keep in sync with CSS gap if you change it
+  const oneCardWidth = () => {
+    const el = scroller.querySelector('.cmp3-row');
+    return el ? Math.ceil(el.getBoundingClientRect().width + gap) : Math.ceil(scroller.clientWidth * 0.9);
+  };
+  const scrollByCard = (dir) => scroller.scrollBy({ left: dir * oneCardWidth(), behavior: 'smooth' });
+  prev.onclick = () => scrollByCard(-1);
+  next.onclick = () => scrollByCard(+1);
+
+  // Drag / swipe
+  let isDown=false, startX=0, startScroll=0;
+  const onDown = (e) => {
+    isDown = true;
+    startX = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
+    startScroll = scroller.scrollLeft;
+    scroller.classList.add('dragging');
+  };
+  const onMove = (e) => {
+    if (!isDown) return;
+    const x = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
+    scroller.scrollLeft = startScroll - (x - startX);
+    e.preventDefault();
+  };
+  const onUp = () => { isDown = false; scroller.classList.remove('dragging'); };
+
+  scroller.addEventListener('mousedown', onDown, { passive:true });
+  scroller.addEventListener('touchstart', onDown, { passive:true });
+  document.addEventListener('mousemove', onMove, { passive:false });
+  document.addEventListener('touchmove', onMove, { passive:false });
+  document.addEventListener('mouseup', onUp, { passive:true });
+  document.addEventListener('touchend', onUp, { passive:true });
+
+  // Keyboard support
+  scroller.setAttribute('tabindex','0');
+  scroller.addEventListener('keydown', (e)=>{
+    if (e.key === 'ArrowRight') scrollByCard(+1);
+    if (e.key === 'ArrowLeft')  scrollByCard(-1);
+  });
+}
 
 // ===========================
 // Suggestions index (Fuse or fallback)
