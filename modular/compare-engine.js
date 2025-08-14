@@ -289,7 +289,6 @@ function ensurePwr10Scaffold(rootEl) {
   return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
 }
 
-
 // ===========================
 // Sticky header (PWR10 markup)
 // ===========================
