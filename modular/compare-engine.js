@@ -1110,6 +1110,7 @@ function renderSuggestPills({ box, items, onPick }) {
 // ===========================
 // Inline ingredient search + suggestions (filters both lists)
 // ===========================
+
 function setupIngredientSearch(sec3) {
   const input     = sec3.querySelector('#pwrf-search-input');
   const clearBtn  = sec3.querySelector('#pwrf-clear-btn');
@@ -1123,10 +1124,10 @@ function setupIngredientSearch(sec3) {
   if (input._wired) return;
   input._wired = true;
 
-  // --- FIX: allow CSS/JS to toggle the button ---
-  clearBtn.hidden = false;              // remove attribute so style can show it
+  // Allow CSS/JS to control visibility
+  clearBtn.hidden = false;
 
-  // Copilot-like focus styling on wrapper (adds/removes .is-focused)
+  // Copilot-like focus styling on wrapper
   if (bar && !bar._focusWired) {
     bar._focusWired = true;
     input.addEventListener('focus', () => bar.classList.add('is-focused'));
@@ -1156,7 +1157,7 @@ function setupIngredientSearch(sec3) {
   );
 
   // contentious tokens (excluding potatoes)
-  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet-potatoes','sweet-potato']);
+  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes','sweet-potato','sweet-potatoes']);
   const contentiousTokens = (() => {
     const set = new Set();
     Object.values(ING_MAP || {}).forEach(ing => {
@@ -1239,9 +1240,8 @@ function setupIngredientSearch(sec3) {
     renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
   };
 
-  // show/hide the clear button like Copilot
+  // Show/hide the clear button like Copilot
   const syncClear = () => { clearBtn.style.display = input.value ? 'inline-flex' : 'none'; };
-  input.addEventListener('input', syncClear, { passive: true });
 
   const doFilter = () => {
     const raw   = (input.value || '').toLowerCase();
@@ -1277,12 +1277,21 @@ function setupIngredientSearch(sec3) {
     }
   };
 
-  // clear button behavior
+  // clear button
   clearBtn.addEventListener('click', (e) => {
     e.preventDefault();
     input.value = '';
     doFilter();
     input.focus();
+  });
+
+  // optional: ESC clears input
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && input.value) {
+      input.value = '';
+      doFilter();
+      e.preventDefault();
+    }
   });
 
   // Rebuild suggestions index after lists are painted (in case of re-render)
