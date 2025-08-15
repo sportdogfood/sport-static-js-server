@@ -428,9 +428,7 @@ function pwr10CmpMatchBadge(aTxt, bTxt, extraClass = '') {
 // ===========================
 // Section 1 (exact row markup)
 // ===========================
-// ===========================
-// Section 1 (exact row markup)
-// ===========================
+
 export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   // Build display helpers
   const compFull  = `${(mainRow['data-brand'] || 'Competitor')} — ${(mainRow['data-one'] || '').trim()}`.trim();
@@ -1112,163 +1110,109 @@ function setupIngredientSearch(sec3) {
   const clearBtn  = sec3.querySelector('#pwrf-clear-btn');
   const suggestEl = sec3.querySelector('#cmp3-suggest');
   const bar       = sec3.querySelector('.pwrf_searchbar');
-
   if (!input || !clearBtn) return;
 
   // Always grab FRESH list nodes (lists are re-rendered on each paint)
   const getBrandBox = () => sec3.querySelector('#cmp3-brand-list .ci-ings-list');
   const getSportBox = () => sec3.querySelector('#cmp3-sport-list .ci-ings-list');
 
-  // First-time wiring only (listeners, focus styles, etc.)
-  if (!input._wired) {
-    input._wired = true;
+  // ───────── helpers (arrow funcs = safer than function decls in blocks)
+  const collapseLimit = () =>
+    window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
 
-    // Make the clear button available
-    clearBtn.hidden = false;
-    clearBtn.style.display = '';
+  const matchedItems = (listRoot) =>
+    Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
+      .filter(el => el.dataset.smMatch === '1');
 
-    if (bar && !bar._focusWired) {
-      bar._focusWired = true;
-      input.addEventListener('focus', () => bar.classList.add('is-focused'));
-      input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
+  const applySeeMore = (listRoot) => {
+    const limit    = collapseLimit();
+    const matches  = matchedItems(listRoot);
+    const expanded = listRoot.dataset.expanded === 'true';
+    const wrap = listRoot.querySelector('.ci-see-more-wrap');
+    const btn  = wrap?.querySelector('.ci-see-more-btn');
+    const fade = wrap?.querySelector('.ci-fade');
+
+    if (!matches.length || matches.length <= limit) {
+      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
+      if (wrap) wrap.style.display = 'none';
+      if (btn)  btn.setAttribute('aria-expanded', 'false');
+      listRoot.dataset.expanded = 'false';
+      return;
     }
 
-
-// ──────────────────────────────────────────────
-// SEE MORE (per list) — single definitions
-// ──────────────────────────────────────────────
-function collapseLimit() {
-  return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
-}
-
-// Return items that MATCH the query (even if collapsed)
-function matchedItems(listRoot) {
-  return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
-    .filter(el => el.dataset.smMatch === '1');
-}
-
-function initSeeMoreForList(listRoot) {
-  if (!listRoot || listRoot._seeMoreWired) return;
-  listRoot._seeMoreWired = true;
-
-  let wrap = listRoot.querySelector('.ci-see-more-wrap');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.className = 'ci-see-more-wrap';
-    wrap.innerHTML = `
-      <div class="ci-fade" aria-hidden="true"></div>
-      <button type="button" class="ci-see-more-btn" aria-expanded="false">Show more</button>
-    `;
-    listRoot.appendChild(wrap);
-  }
-
-  const btn = wrap.querySelector('.ci-see-more-btn');
-  btn.addEventListener('click', () => {
-    const expanded = listRoot.dataset.expanded === 'true';
-    listRoot.dataset.expanded = String(!expanded);
-    applySeeMore(listRoot);
-  });
-
-  applySeeMore(listRoot);
-}
-
-function applySeeMore(listRoot) {
-  const limit    = collapseLimit();
-  const matches  = matchedItems(listRoot);
-  const expanded = listRoot.dataset.expanded === 'true';
-  const wrap = listRoot.querySelector('.ci-see-more-wrap');
-  const btn  = wrap?.querySelector('.ci-see-more-btn');
-  const fade = wrap?.querySelector('.ci-fade');
-
-  if (!matches.length || matches.length <= limit) {
-    matches.forEach(el => { el.style.display = ''; el.hidden = false; });
-    if (wrap) wrap.style.display = 'none';
-    if (btn)  btn.setAttribute('aria-expanded', 'false');
-    listRoot.dataset.expanded = 'false';
-    return;
-  }
-
-  if (!expanded) {
-    matches.forEach((el, i) => {
-      const show = i < limit;
-      el.style.display = show ? '' : 'none';
-      el.hidden = !show;
-    });
-    if (wrap) wrap.style.display = '';
-    if (btn) { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
-    if (fade) fade.style.display = '';
-  } else {
-    matches.forEach(el => { el.style.display = ''; el.hidden = false; });
-    if (wrap) wrap.style.display = '';
-    if (btn) { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
-    if (fade) fade.style.display = 'none';
-  }
-}
-
-// Re-apply per list (brand + sport) whenever things change
-function refreshSeeMore() {
-  const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
-  const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
-  if (brandListRoot) { initSeeMoreForList(brandListRoot); applySeeMore(brandListRoot); }
-  if (sportListRoot) { initSeeMoreForList(sportListRoot); applySeeMore(sportListRoot); }
-}
-
-// Re-apply limits on resize (e.g., crossing 600px)
-// (only wired once because this whole block lives inside `if (!input._wired)`)
-let _smResizeId;
-window.addEventListener('resize', () => {
-  if (_smResizeId) cancelAnimationFrame(_smResizeId);
-  _smResizeId = requestAnimationFrame(refreshSeeMore);
-});
-
-
-// ensure empty cards exist (brand + sport)
-const ensureEmpty = (rootSel, cls, html) => {
-  const root = sec3.querySelector(rootSel);
-  if (!root) return null;
-  let el = root.querySelector(`.${cls}`);
-  if (!el) {
-    el = document.createElement('div');
-    el.className = cls;
-    el.hidden = true;
-    el.style.display = 'none';
-    el.innerHTML = html || 'No results.';   // ⬅️ use innerHTML so the Clear link renders
-    root.appendChild(el);
-  }
-  return el;
-};
-
-const brandEmpty = ensureEmpty('#cmp3-brand-list','ci-no-results',
-  'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
-);
-const sportEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results',
-  'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
-);
-const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious',
-  'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
-);
-
-  const CONTENTIOUS_EXCLUDES = new Set(['potato','potatoes']);
-  const contentiousTokens = (() => {
-    const set = new Set();
-    Object.values(ING_MAP || {}).forEach(ing => {
-      if (!ing || !ing.tagContentious) return;
-      const raw = [
-        ing.Name, ing.displayAs, ing.groupWith,
-        ing['data-type'] || '', ing.recordType || '',
-        ing.animalType || '',   ing.animalAssist || '',
-        ing.plantType || '',    ing.plantAssist || '',
-        ing.supplementalType || '', ing.supplementalAssist || '',
-        ...(ing.tags || [])
-      ].join(' ').toLowerCase();
-      raw.split(/\s+/).forEach(t => {
-        const tok = t.trim();
-        if (!tok || CONTENTIOUS_EXCLUDES.has(tok)) return;
-        set.add(tok);
+    if (!expanded) {
+      matches.forEach((el, i) => {
+        const show = i < limit;
+        el.style.display = show ? '' : 'none';
+        el.hidden = !show;
       });
+      if (wrap) wrap.style.display = '';
+      if (btn)  { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
+      if (fade) fade.style.display = '';
+    } else {
+      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
+      if (wrap) wrap.style.display = '';
+      if (btn)  { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
+      if (fade) fade.style.display = 'none';
+    }
+  };
+
+  const initSeeMoreForList = (listRoot) => {
+    if (!listRoot || listRoot._seeMoreWired) return;
+    listRoot._seeMoreWired = true;
+
+    let wrap = listRoot.querySelector('.ci-see-more-wrap');
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.className = 'ci-see-more-wrap';
+      wrap.innerHTML = `
+        <div class="ci-fade" aria-hidden="true"></div>
+        <button type="button" class="ci-see-more-btn" aria-expanded="false">Show more</button>
+      `;
+      listRoot.appendChild(wrap);
+    }
+
+    const btn = wrap.querySelector('.ci-see-more-btn');
+    btn.addEventListener('click', () => {
+      const expanded = listRoot.dataset.expanded === 'true';
+      listRoot.dataset.expanded = String(!expanded);
+      applySeeMore(listRoot);
     });
-    return set;
-  })();
+
+    applySeeMore(listRoot);
+  };
+
+  const refreshSeeMore = () => {
+    const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+    const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+    if (brandListRoot) { initSeeMoreForList(brandListRoot); applySeeMore(brandListRoot); }
+    if (sportListRoot) { initSeeMoreForList(sportListRoot); applySeeMore(sportListRoot); }
+  };
+
+  const ensureEmpty = (rootSel, cls, html) => {
+    const root = sec3.querySelector(rootSel);
+    if (!root) return null;
+    let el = root.querySelector(`.${cls}`);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = cls;
+      el.hidden = true;
+      el.style.display = 'none';
+      el.innerHTML = html || 'No results.';
+      root.appendChild(el);
+    }
+    return el;
+  };
+
+  const brandEmpty = ensureEmpty('#cmp3-brand-list','ci-no-results',
+    'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+  );
+  const sportEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results',
+    'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+  );
+  const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious',
+    'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
+  );
 
   const cacheTokens = (wrap) => {
     if (!wrap._tokenSet) {
@@ -1278,25 +1222,19 @@ const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious
     return wrap._tokenSet;
   };
 
-const filterList = (listEl, terms) => {
-  const items = listEl.querySelectorAll('.ci-ing-wrapper');
-  let shown = 0;
-  items.forEach(it => {
-    const set = cacheTokens(it);
-    const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
-
-    // ✅ mark current match state for see-more to use later
-    if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
-
-    // normal visibility for filter
-    it.hidden = !ok;
-    it.style.display = ok ? '' : 'none';
-
-    if (ok) shown++;
-  });
-  return shown;
-};
-
+  const filterList = (listEl, terms) => {
+    const items = listEl.querySelectorAll('.ci-ing-wrapper');
+    let shown = 0;
+    items.forEach(it => {
+      const set = cacheTokens(it);
+      const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
+      if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
+      it.hidden = !ok;
+      it.style.display = ok ? '' : 'none';
+      if (ok) shown++;
+    });
+    return shown;
+  };
 
   const toggle = (el, show) => {
     if (!el) return;
@@ -1336,96 +1274,100 @@ const filterList = (listEl, terms) => {
     input.focus();
   };
 
-// Hoisted declaration avoids init-order issues
-function doFilter() {
-  const brandBox = getBrandBox();
-  const sportBox = getSportBox();
-  if (!brandBox || !sportBox) return;
+  const doFilter = () => {
+    const brandBox = getBrandBox();
+    const sportBox = getSportBox();
+    if (!brandBox || !sportBox) return;
 
-  const raw   = (input.value || '').toLowerCase();
-  const parts = raw.trim().split(/\s+/).filter(Boolean);
-  const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
-  const terms = lastIsPartial ? parts.slice(0, -1) : parts;
+    const raw   = (input.value || '').toLowerCase();
+    const parts = raw.trim().split(/\s+/).filter(Boolean);
+    const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
+    const terms = lastIsPartial ? parts.slice(0, -1) : parts;
 
-  const brandShown = filterList(brandBox, terms);
-  const sportShown = filterList(sportBox, terms);
+    const brandShown = filterList(brandBox, terms);
+    const sportShown = filterList(sportBox, terms);
 
-  // Brand "no results"
-  toggle(brandEmpty, terms.length > 0 && brandShown === 0);
+    toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
-  // —— Dynamic contentious logic ——
-  // Find contentious ingredients that are VISIBLE in the brand list
-  const contentiousInBrand = Array.from(
-    brandBox.querySelectorAll('.ci-ing-wrapper')
-  ).filter(it => {
-    if (it.hidden) return false;
-    const flags = String(it.getAttribute('data-flags') || '');
-    return /\bcontentious\b/.test(flags);
-  });
+    const contentiousInBrand = Array.from(
+      brandBox.querySelectorAll('.ci-ing-wrapper')
+    ).filter(it => {
+      if (it.hidden) return false;
+      const flags = String(it.getAttribute('data-flags') || '');
+      return /\bcontentious\b/.test(flags);
+    });
 
-  // Choose the first visible contentious ingredient name (if any)
-  const firstContentiousName =
-    contentiousInBrand[0]?.querySelector('.ci-ing-displayas')?.textContent?.trim() || '';
+    const firstContentiousName =
+      contentiousInBrand[0]?.querySelector('.ci-ing-displayas')?.textContent?.trim() || '';
 
-  // Show contentious message only if: there are terms, Sport shows none, and Brand shows at least one contentious item
-  const showContMsg = (terms.length > 0 && sportShown === 0 && contentiousInBrand.length > 0);
+    const showContMsg = (terms.length > 0 && sportShown === 0 && contentiousInBrand.length > 0);
 
-  // Update the dynamic message
-  if (sportContEmpty && showContMsg) {
-    sportContEmpty.innerHTML =
-      `Sport Dog Food avoids most contentious ingredients. <strong>${esc(firstContentiousName)}</strong> is an ingredient that you won't find in any of our formulas. ` +
-      `<a class="ci-clear" href="#" data-act="clear">Clear</a>`;
-  }
+    if (sportContEmpty && showContMsg) {
+      sportContEmpty.innerHTML =
+        `Sport Dog Food avoids most contentious ingredients. <strong>${esc(firstContentiousName)}</strong> is an ingredient that you won't find in any of our formulas. ` +
+        `<a class="ci-clear" href="#" data-act="clear">Clear</a>`;
+    }
 
-  // Toggle Sport empties
-  toggle(sportContEmpty, showContMsg);
-  toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
+    toggle(sportContEmpty, showContMsg);
+    toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
-  // Suggestions for trailing partial
-  const existing = new Set(terms);
-  renderSuggest(lastIsPartial, Array.from(existing));
+    const existing = new Set(terms);
+    renderSuggest(lastIsPartial, Array.from(existing));
 
-  // Blank query => show all, hide empties + suggestions
-  if (parts.length === 0) {
-    toggle(brandEmpty, false);
-    toggle(sportEmpty, false);
-    toggle(sportContEmpty, false);
-    renderSuggest('');
-  }
-  // ⬇️ add this as the last line in doFilter()
-  refreshSeeMore();
-}
+    if (parts.length === 0) {
+      toggle(brandEmpty, false);
+      toggle(sportEmpty, false);
+      toggle(sportContEmpty, false);
+      renderSuggest('');
+    }
 
+    refreshSeeMore();
+  };
 
-  // Bind filter on input (only this one)
-  input.addEventListener('input', doFilter, { passive: true });
+  // ───────── one-time wiring
+  if (!input._wired) {
+    input._wired = true;
 
-  // Clear button just clears; no visibility toggling
-  clearBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    input.value = '';
-    doFilter();
-    input.focus();
-  });
+    clearBtn.hidden = false;
+    clearBtn.style.display = '';
 
-  // ESC clears
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && input.value) {
+    if (bar && !bar._focusWired) {
+      bar._focusWired = true;
+      input.addEventListener('focus', () => bar.classList.add('is-focused'));
+      input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
+    }
+
+    input.addEventListener('input', doFilter, { passive: true });
+
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
       input.value = '';
       doFilter();
-      e.preventDefault();
-    }
-  });
+      input.focus();
+    });
 
-  // Reindex hook
-  input._reindex = () => { ({ fuse, list } = makeSuggestionIndex(sec3)); };
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && input.value) {
+        input.value = '';
+        doFilter();
+        e.preventDefault();
+      }
+    });
 
-  // Initial render
-  doFilter();
-  refreshSeeMore();
+    input._reindex = () => { ({ fuse, list } = makeSuggestionIndex(sec3)); };
 
+    let _smResizeId;
+    window.addEventListener('resize', () => {
+      if (_smResizeId) cancelAnimationFrame(_smResizeId);
+      _smResizeId = requestAnimationFrame(refreshSeeMore);
+    });
+
+    // Initial render
+    doFilter();
+    refreshSeeMore();
+  }
 }
-}
+
 
 
 
