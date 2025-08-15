@@ -1132,46 +1132,7 @@ function setupIngredientSearch(sec3) {
       input.addEventListener('focus', () => bar.classList.add('is-focused'));
       input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
     }
-// ──────────────────────────────────────────────
-// SEE MORE (per list)
-// ──────────────────────────────────────────────
-function collapseLimit() {
-  return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
-}
 
-function initSeeMoreForList(listRoot) {
-  if (!listRoot || listRoot._seeMoreWired) return;
-  listRoot._seeMoreWired = true;
-
-  // Wrap will host the button + fade
-  let wrap = listRoot.querySelector('.ci-see-more-wrap');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.className = 'ci-see-more-wrap';
-    wrap.innerHTML = `
-      <div class="ci-fade" aria-hidden="true"></div>
-      <button type="button" class="ci-see-more-btn" aria-expanded="false">Show more</button>
-    `;
-    listRoot.appendChild(wrap);
-  }
-
-  const btn = wrap.querySelector('.ci-see-more-btn');
-  btn.addEventListener('click', () => {
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
-    btn.setAttribute('aria-expanded', String(!expanded));
-    listRoot.dataset.expanded = String(!expanded);
-    applySeeMore(listRoot); // re-apply
-  });
-
-  // Apply once initially
-  applySeeMore(listRoot);
-}
-
-function visibleItems(listRoot) {
-  // Count only currently visible ingredient pills
-  return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
-    .filter(el => !el.hidden && el.style.display !== 'none');
-}
 
 // ──────────────────────────────────────────────
 // SEE MORE (per list) — single definitions
