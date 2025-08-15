@@ -325,76 +325,49 @@ function s1FlavorText(v) {
        : '—';
 }
 
-// Ensure all PWR10 containers exist (sticky + section buckets)
-// Ensure all PWR10 containers exist (sticky + section buckets) with anchor-aware placement
-function ensurePwr10Scaffold(rootEl, opts = {}) {
-  const placement = opts.placement || {
-    // keep sticky grid inside the existing sticky section
-    'sticky-sections': { inside: '#compare-sticky' },
 
-    // then flow S1 title after sticky, S1 after title
-    'section1-title':  { after:  '#compare-sticky' },
-    'section1':        { after:  '#pwr10-section1-title' },
+// NEW SCAFFOLD: ordered grids + exact data-var placeholders (no content injection)
+export function initCompareScaffold() {
+  const q = (s) => document.querySelector(s);
 
-    // then S2 title after S1, S2 after S2 title
-    'section2-title':  { after:  '#pwr10-section1' },
-    'section2':        { after:  '#pwr10-section2-title' },
-
-    // finally S3 after S2
-    'section3':        { after:  '#pwr10-section2' }
-  };
-
-  const q = (sel) => (sel ? document.querySelector(sel) : null);
-
-  const insert = (el, where = {}) => {
+  // ── place/move helper
+  function place(el, where) {
+    if (!where) return;
     if (where.inside) {
-      const parent = q(where.inside);
-      if (parent && el.parentNode !== parent) parent.appendChild(el);
-      return;
-    }
-    if (where.before) {
-      const ref = q(where.before);
-      if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref);
-      return;
+      const p = q(where.inside); if (p && el.parentNode !== p) p.appendChild(el); return;
     }
     if (where.after) {
-      const ref = q(where.after);
-      if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling);
-      return;
+      const ref = q(where.after); if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling); return;
     }
-    // default: append to provided root
-    (rootEl || document.body).appendChild(el);
-  };
+    if (where.before) {
+      const ref = q(where.before); if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref); return;
+    }
+  }
 
-  // Create or adopt a grid with .pwr10-rows-grid.<cls> and optional id
-  const need = (cls, id) => {
-    // try to adopt existing by id anywhere, else by class
-    let el = (id && document.getElementById(id))
-          || document.querySelector(`.pwr10-rows-grid.${cls}`);
-
+  // ── ensure one grid by class (+ optional id), then position it
+  function ensureGrid(cls, id, where) {
+    let el = (id && q('#' + id)) || document.querySelector(`.pwr10-rows-grid.${cls}`);
     if (!el) {
-      el = document.createElement('div'); // could be 'section' if you prefer
+      el = document.createElement('div');
       el.className = `pwr10-rows-grid ${cls}`;
       if (id) el.id = id;
-      insert(el, placement[cls]);
-    } else {
-      // ensure id if grid existed without it
-      if (id && !el.id) el.id = id;
-      // make sure it's positioned where we want
-      insert(el, placement[cls]);
+    } else if (id && !el.id) {
+      el.id = id;
     }
+    place(el, where);
+    if (!el.parentNode) (document.body).appendChild(el);
     return el;
-  };
+  }
 
-  // You already have <section id="compare-sticky"> in the page; leave it as-is.
-  const stickyWrap   = need('sticky-sections');                 // no id needed
-  const s1TitleGrid  = need('section1-title', 'pwr10-section1-title');
-  const s1Grid       = need('section1',       'pwr10-section1');
-  const s2TitleGrid  = need('section2-title', 'pwr10-section2-title');
-  const s2Grid       = need('section2',       'pwr10-section2');
-  const s3Grid       = need('section3',       'pwr10-section3'); // holder for section-3
+  // ── build ordered anchors
+  const stickyWrap  = ensureGrid('sticky-sections', null,                      { inside: '#compare-sticky' });
+  const s1TitleGrid = ensureGrid('section1-title', 'pwr10-section1-title',     { after:  '#compare-sticky' });
+  const s1Grid      = ensureGrid('section1',       'pwr10-section1',           { after:  '#pwr10-section1-title' });
+  const s2TitleGrid = ensureGrid('section2-title', 'pwr10-section2-title',     { after:  '#pwr10-section1' });
+  const s2Grid      = ensureGrid('section2',       'pwr10-section2',           { after:  '#pwr10-section2-title' });
+  const s3Grid      = ensureGrid('section3',       'pwr10-section3',           { after:  '#pwr10-section2' });
 
-  // Ensure the inner #section-3 node exists inside the section3 grid
+  // ensure inner #section-3 inside S3 grid
   if (!s3Grid.querySelector('#section-3')) {
     const sec3 = document.createElement('section');
     sec3.id = 'section-3';
@@ -402,9 +375,50 @@ function ensurePwr10Scaffold(rootEl, opts = {}) {
     s3Grid.appendChild(sec3);
   }
 
+  // ── data-var helpers
+  const ensureVar = (name) => {
+    let el = q(`[data-var="${name}"]`);
+    if (!el) { el = document.createElement('div'); el.setAttribute('data-var', name); }
+    return el;
+  };
+  const ensureVarGroup = (parent, key, names, at = 'beforebegin') => {
+    if (!parent) return null;
+    let wrap = parent.querySelector(`.pwr10-varwrap[data-key="${key}"]`);
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.className = 'pwr10-varwrap';
+      wrap.dataset.key = key;
+      // default: mount at top of parent
+      parent.insertBefore(wrap, parent.firstChild);
+    }
+    names.forEach(n => { const el = ensureVar(n); if (!wrap.contains(el)) wrap.appendChild(el); });
+    return wrap;
+  };
+
+  // ── mount placeholders exactly where needed
+  // Section 1 (title grid)
+  ensureVarGroup(s1TitleGrid, 's1', ['section1-header', 'section1-subtitle', 'section1-madlib']);
+
+  // Section 2 (title grid)
+  ensureVarGroup(s2TitleGrid, 's2', ['section2-header', 'section2-subtitle', 'section2-madlib']);
+
+  // Section 3 (top of S3 grid)
+  ensureVarGroup(s3Grid, 's3', ['section3-header', 'section3-subtitle', 'section3-madlib']);
+
+  // Section K (placed AFTER S3 grid)
+  let kWrap = s3Grid.nextElementSibling;
+  if (!(kWrap && kWrap.classList.contains('pwr10-varwrap-k'))) {
+    kWrap = document.createElement('div');
+    kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
+    s3Grid.parentNode.insertBefore(kWrap, s3Grid.nextSibling);
+  }
+  ['sectionk-header', 'sectionk-madlib'].forEach(n => {
+    const el = ensureVar(n);
+    if (!kWrap.contains(el)) kWrap.appendChild(el);
+  });
+
   return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
 }
-
 
 // ===========================
 // Sticky header (PWR10 markup)
@@ -415,7 +429,13 @@ export function renderStickyCompareHeader(mainRow, sdfRow, containerSelector = '
   if (!mount) return;
 
   // Ensure the scaffold exists (sticky + section buckets)
-  const { stickyWrap } = ensurePwr10Scaffold(mount);
+// Use the grid created by initCompareScaffold (create if missing)
+let stickyWrap = mount.querySelector('.pwr10-rows-grid.sticky-sections');
+if (!stickyWrap) {
+  stickyWrap = document.createElement('div');
+  stickyWrap.className = 'pwr10-rows-grid sticky-sections';
+  mount.appendChild(stickyWrap);
+}
 
   const brandName  = (mainRow['data-brand'] || 'Competitor').trim();
   const brandProd  = (mainRow['data-one']   || '').trim();
@@ -1096,55 +1116,106 @@ function ensureSection3Dom(sec3) {
   `;
 }
 
+
 // ===========================
 // Section 3 carousel init
 // ===========================
-function initCmp3Carousel(sec3){
-  const scroller = sec3.querySelector('#cmp3-rows');
-  const prev = sec3.querySelector('.cmp3-prev');
-  const next = sec3.querySelector('.cmp3-next');
+function initCmp3Carousel(sec3) {
+  const scroller = sec3?.querySelector('#cmp3-rows');
+  const prev     = sec3?.querySelector('.cmp3-prev');
+  const next     = sec3?.querySelector('.cmp3-next');
   if (!scroller || !prev || !next) return;
 
-  // Scroll by ~one card
-  const gap = 12; // keep in sync with CSS gap if you change it
-  const oneCardWidth = () => {
-    const el = scroller.querySelector('.cmp3-row');
-    return el ? Math.ceil(el.getBoundingClientRect().width + gap) : Math.ceil(scroller.clientWidth * 0.9);
+  // Avoid duplicate listeners if paintSection3 runs more than once
+  if (scroller._carouselWired) return;
+  scroller._carouselWired = true;
+
+  // Derive card width + gap from computed styles
+  const getGap = () => {
+    const s = window.getComputedStyle(scroller);
+    const g = parseFloat(s.columnGap || s.gap || '12');
+    return Number.isFinite(g) ? g : 12;
   };
-  const scrollByCard = (dir) => scroller.scrollBy({ left: dir * oneCardWidth(), behavior: 'smooth' });
-  prev.onclick = () => scrollByCard(-1);
-  next.onclick = () => scrollByCard(+1);
+
+  const oneCardWidth = () => {
+    const el  = scroller.querySelector('.cmp3-row');
+    const gap = getGap();
+    const w   = el ? el.getBoundingClientRect().width : scroller.clientWidth * 0.9;
+    return Math.ceil(w + gap);
+  };
+
+  const scrollByCard = (dir) =>
+    scroller.scrollBy({ left: dir * oneCardWidth(), behavior: 'smooth' });
+
+  // Click arrows
+  const onPrev = () => scrollByCard(-1);
+  const onNext = () => scrollByCard(+1);
+  prev.addEventListener('click', onPrev);
+  next.addEventListener('click', onNext);
 
   // Drag / swipe
-  let isDown=false, startX=0, startScroll=0;
+  let isDown = false, startX = 0, startScroll = 0;
+
   const onDown = (e) => {
     isDown = true;
     startX = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
     startScroll = scroller.scrollLeft;
-    scroller.classList.add('dragging');
+    scroller.classList.add('dragging'); // style .dragging { user-select:none; cursor:grabbing; }
   };
+
   const onMove = (e) => {
     if (!isDown) return;
     const x = (e.touches ? e.touches[0].pageX : e.pageX) || 0;
     scroller.scrollLeft = startScroll - (x - startX);
-    e.preventDefault();
+    if (e.cancelable) e.preventDefault(); // only when allowed
   };
-  const onUp = () => { isDown = false; scroller.classList.remove('dragging'); };
 
-  scroller.addEventListener('mousedown', onDown, { passive:true });
-  scroller.addEventListener('touchstart', onDown, { passive:true });
-  document.addEventListener('mousemove', onMove, { passive:false });
-  document.addEventListener('touchmove', onMove, { passive:false });
-  document.addEventListener('mouseup', onUp, { passive:true });
-  document.addEventListener('touchend', onUp, { passive:true });
+  const onUp = () => {
+    isDown = false;
+    scroller.classList.remove('dragging');
+  };
+
+  scroller.addEventListener('mousedown',  onDown);
+  scroller.addEventListener('touchstart', onDown, { passive: true });
+  document.addEventListener('mousemove',  onMove);                 // mousemove must not be passive
+  document.addEventListener('touchmove',  onMove, { passive: false }); // we call preventDefault
+  document.addEventListener('mouseup',    onUp);
+  document.addEventListener('touchend',   onUp);
+  document.addEventListener('touchcancel',onUp);
+
+  // Wheel / trackpad horizontal scroll
+  const onWheel = (e) => {
+    // Only act on horizontal intent; let vertical scrolling pass through
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY)) return;
+    scroller.scrollLeft += e.deltaX;
+  };
+  scroller.addEventListener('wheel', onWheel, { passive: true });
 
   // Keyboard support
-  scroller.setAttribute('tabindex','0');
-  scroller.addEventListener('keydown', (e)=>{
-    if (e.key === 'ArrowRight') scrollByCard(+1);
-    if (e.key === 'ArrowLeft')  scrollByCard(-1);
+  scroller.setAttribute('tabindex', '0');
+  scroller.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { scrollByCard(+1); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { scrollByCard(-1); e.preventDefault(); }
+    else if (e.key === 'Home') { scroller.scrollTo({ left: 0, behavior: 'smooth' }); e.preventDefault(); }
+    else if (e.key === 'End') { scroller.scrollTo({ left: scroller.scrollWidth, behavior: 'smooth' }); e.preventDefault(); }
   });
+
+  // Optional: expose a cleanup if you ever need to re-init manually
+  scroller._carouselDestroy = () => {
+    prev.removeEventListener('click', onPrev);
+    next.removeEventListener('click', onNext);
+    scroller.removeEventListener('mousedown', onDown);
+    scroller.removeEventListener('touchstart', onDown, { passive: true });
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('touchmove', onMove, { passive: false });
+    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('touchend', onUp);
+    document.removeEventListener('touchcancel', onUp);
+    scroller.removeEventListener('wheel', onWheel);
+    scroller._carouselWired = false;
+  };
 }
+
 
 // ===========================
 // Suggestions index (Fuse or fallback)
@@ -1747,8 +1818,7 @@ export function renderComparePage() {
 
   window.CCI = { mainRow, sdfRow: initialRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
-const root = document.querySelector('#compare-sticky') || document.body;
-const grids = ensurePwr10Scaffold(root);
+initCompareScaffold();
   // Sticky header immediately
   if (typeof renderStickyCompareHeader === 'function') {
     renderStickyCompareHeader(mainRow, initialRow);
