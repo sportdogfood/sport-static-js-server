@@ -285,11 +285,35 @@ function appendEmptyCards(listContainer, { general, contentious }) {
   if (contentious) ensure('ci-no-results-contentious', contentious);
 }
 
-// Set a [data-var="..."] node's textContent, if present
-function setVarText(varName, text) {
-  const el = document.querySelector(`[data-var="${varName}"]`);
-  if (el) el.textContent = String(text ?? '');
+// ---- Section-1 text helpers (unique names; no chance of collision) ----
+function s1DietText(v) {
+  if (!v) return '—';
+  return /free/i.test(v) ? 'Grain-Free'
+       : /grain/i.test(v) ? 'Grain Inclusive'
+       : '—';
 }
+function s1LegumesText(v) {
+  if (!v) return '—';
+  return /(free|no)/i.test(v) ? 'Legume-Free'
+       : /legume|pea/i.test(v) ? 'Contains Legumes'
+       : '—';
+}
+function s1PoultryText(v) {
+  if (!v) return '—';
+  return /(free|no)/i.test(v) ? 'Poultry-Free'
+       : /poultry|chicken/i.test(v) ? 'Contains Poultry'
+       : '—';
+}
+function s1FlavorText(v) {
+  if (!v) return '—';
+  return /\b(chicken|poultry)\b/i.test(v) ? 'Poultry'
+       : /\b(beef)\b/i.test(v)            ? 'Beef'
+       : /\b(fish|salmon)\b/i.test(v)     ? 'Fish'
+       : /\b(bison|buffalo)\b/i.test(v)   ? 'Buffalo'
+       : /\bmeat\b/i.test(v)              ? 'Meat'
+       : '—';
+}
+
 // Ensure all PWR10 containers exist (sticky + section buckets)
 function ensurePwr10Scaffold(rootEl) {
   const need = (cls, id) => {
@@ -463,9 +487,7 @@ function pwr10CmpMatchBadge(aTxt, bTxt, extraClass = '') {
   return `<span class="cmp-match ${cls}${extra}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
 }
 
-// ===========================
-// Section 1 (exact row markup)
-// ===========================
+
 
 // ===========================
 // Section 1 (exact row markup)
@@ -485,12 +507,19 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     `Diet, legumes, poultry, and primary protein for ${brand} ${brandName} vs. Sport Dog Food ${sdfName}.`
   );
 
-  const lhsDiet   = dietText(mainRow['data-diet'] || mainRow['data-grain'] || '');
-  const rhsDiet   = dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || '');
+  const lhsDiet   = s1DietText(mainRow['data-diet'] || mainRow['data-grain'] || '');
+  const rhsDiet   = s1DietText(sdfRow['data-diet']  || sdfRow['data-grain']  || '');
   const lhsLP     = buildLegumePoultryPhrase(mainRow);
   const rhsLP     = buildLegumePoultryPhrase(sdfRow);
-  const lhsFlavor = flavorText(mainRow['specs_primary_flavor'] || '');
-  const rhsFlavor = flavorText(sdfRow['specs_primary_flavor']  || '');
+  const lhsFlavor = s1FlavorText(mainRow['specs_primary_flavor'] || '');
+  const rhsFlavor = s1FlavorText(sdfRow['specs_primary_flavor']  || '');
+
+  const rows = [
+    { label:'Diet',            aTxt: s1DietText(mainRow['data-diet'] || mainRow['data-grain'] || ''), bTxt: s1DietText(sdfRow['data-diet'] || sdfRow['data-grain'] || ''), kind:'diet' },
+    { label:'Legumes',         aTxt: s1LegumesText(mainRow['data-legumes'] || ''),                     bTxt: s1LegumesText(sdfRow['data-legumes'] || ''),                     kind:'legumes' },
+    { label:'Poultry',         aTxt: s1PoultryText(mainRow['data-poultry'] || ''),                     bTxt: s1PoultryText(sdfRow['data-poultry'] || ''),                     kind:'poultry' },
+    { label:'Primary Protein', aTxt: s1FlavorText(mainRow['specs_primary_flavor'] || ''),              bTxt: s1FlavorText(sdfRow['specs_primary_flavor'] || ''),              kind:'flavor' }
+  ];
 
   setVarText(
     'section1-madlib',
@@ -541,7 +570,6 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     return '';
   }
 
-  // Equality badge for classic rows
   function getMatchBadge(aTxt, bTxt) {
     const isMatch = (String(aTxt||'').toLowerCase() === String(bTxt||'').toLowerCase());
     const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
@@ -550,13 +578,6 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     const cls = isMatch ? 'match' : 'diff';
     return `<span class="cmp-match ${cls}" aria-label="Attributes ${esc(label)}">${isMatch ? iconEq : iconNe}<span class="cmp-match-txt">${esc(label)}</span></span>`;
   }
-
-  const rows = [
-    { label:'Diet',            aTxt: dietText(mainRow['data-diet'] || mainRow['data-grain'] || ''), bTxt: dietText(sdfRow['data-diet'] || sdfRow['data-grain'] || ''), kind:'diet' },
-    { label:'Legumes',         aTxt: legumesText(mainRow['data-legumes'] || ''),                     bTxt: legumesText(sdfRow['data-legumes'] || ''),                     kind:'legumes' },
-    { label:'Poultry',         aTxt: poultryText(mainRow['data-poultry'] || ''),                     bTxt: poultryText(sdfRow['data-poultry'] || ''),                     kind:'poultry' },
-    { label:'Primary Protein', aTxt: flavorText(mainRow['specs_primary_flavor'] || ''),              bTxt: flavorText(sdfRow['specs_primary_flavor'] || ''),              kind:'flavor' }
-  ];
 
   // ---- Classic Section 1 is OPTIONAL
   const mount = document.querySelector(sectionSelector);
