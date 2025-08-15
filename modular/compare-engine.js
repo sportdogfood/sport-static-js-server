@@ -125,7 +125,18 @@ export function paintCompareShell({
 // Data helpers
 // ===========================
 const SDF_FORMULAS = { cub: "29280", dock: "29099", herding: "28979" };
-const ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+const RAW_ING_MAP = { ...ING_ANIM, ...ING_PLANT, ...ING_SUPP };
+const ING_MAP = Object.fromEntries(
+  Object.entries(RAW_ING_MAP).map(([id, ing]) => [
+    id,
+    {
+      ...ing,
+      // normalize new fields (use empty string if not provided in the source)
+      ['cont-cf-explain-contentious']: ing['cont-cf-explain-contentious'] ?? '',
+      termDescription: ing.termDescription ?? ''
+    }
+  ])
+);
 
 function getSdfFormula(row) {
   if (!row) return SDF_FORMULAS.dock;
@@ -1514,6 +1525,8 @@ function renderIngListDivs(row) {
         const display      = esc(ing.displayAs || ing.Name || '');
         const consumerTag  = getConsumerTypeTag(ing['data-type']); // Protein | Plants | Supplemental | Other
         const consumerSlug = (consumerTag || 'Other').toLowerCase();
+        const contentiousExplain = ing['cont-cf-explain-contentious'] || '';
+        const termDescription    = ing.termDescription || '';
 
         const tags = [];
         if (ing['data-type']) {
@@ -1530,14 +1543,16 @@ function renderIngListDivs(row) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
         }
 
-        const raw = [
-          ing.Name, ing.displayAs, ing.groupWith,
-          ing['data-type'] || '', ing.recordType || '',
-          ing.animalType || '',   ing.animalAssist || '',
-          ing.plantType || '',    ing.plantAssist || '',
-          ing.supplementalType || '', ing.supplementalAssist || '',
-          ...(ing.tags || [])
-        ].join(' ').toLowerCase();
+      const raw = [
+  ing.Name, ing.displayAs, ing.groupWith,
+  ing['data-type'] || '', ing.recordType || '',
+  ing.animalType || '',   ing.animalAssist || '',
+  ing.plantType || '',    ing.plantAssist || '',
+  ing.supplementalType || '', ing.supplementalAssist || '',
+  ...(ing.tags || []),
+  contentiousExplain,      // NEW: searchable
+  termDescription          // NEW: searchable
+].join(' ').toLowerCase();
 
         const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
 
@@ -1548,19 +1563,30 @@ function renderIngListDivs(row) {
           ing.tagContentious ? 'contentious' : ''
         ].filter(Boolean).join(' ');
 
-        return `
-          <div
-            class="ci-ing-wrapper"
-            data-search="${esc(searchKeys)}"
-            data-ing-id="${esc(id)}"
-            data-consumer="${esc(consumerSlug)}"
-            data-flags="${esc(flags)}"
-          >
-            <div class="ci-ing-displayas">${display}</div>
-            <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join('')}</div>
-            <span class="ci-ing-keys" hidden aria-hidden="true">${esc(searchKeys)}</span>
-          </div>
-        `;
+     
+         return `
+  <div
+    class="ci-ing-wrapper"
+    data-search="${esc(searchKeys)}"
+    data-ing-id="${esc(id)}"
+    data-consumer="${esc(consumerSlug)}"
+    data-flags="${esc(flags)}"
+    data-explain-contentious="${esc(contentiousExplain)}"
+    data-term-description="${esc(termDescription)}"
+  >
+    <div class="ci-ing-displayas">${display}</div>
+    <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join('')}</div>
+
+    <!-- NEW hidden meta for UI/overlays/tooltips -->
+    <div class="ci-ing-meta" hidden aria-hidden="true">
+      <div class="ci-ing-explain-contentious">${esc(contentiousExplain)}</div>
+      <div class="ci-ing-term-description">${esc(termDescription)}</div>
+    </div>
+
+    <span class="ci-ing-keys" hidden aria-hidden="true">${esc(searchKeys)}</span>
+  </div>
+`;
+
       }).join('')}
     </div>
   `;
