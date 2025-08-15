@@ -159,6 +159,40 @@ function getConsumerTypeTag(type) {
   if (["digestive enzyme", "vitamins", "probiotics", "yeast", "minerals", "preservative", "colorant", "joint support", "prebiotic", "amino acid", "flavor enhancer"].includes(t)) return "Supplemental";
   return "Other";
 }
+// -- small util for [data-var="..."] hooks
+function setVarText(varName, text) {
+  const el = document.querySelector(`[data-var="${varName}"]`);
+  if (el) el.textContent = String(text ?? '');
+}
+
+// --- Hoisted helpers (file-scope so they're always available) ---
+function dietText(v) {
+  if (!v) return '—';
+  return /free/i.test(v) ? 'Grain-Free'
+       : /grain/i.test(v) ? 'Grain Inclusive'
+       : '—';
+}
+function legumesText(v) {
+  if (!v) return '—';
+  return /(free|no)/i.test(v) ? 'Legume-Free'
+       : /legume|pea/i.test(v) ? 'Contains Legumes'
+       : '—';
+}
+function poultryText(v) {
+  if (!v) return '—';
+  return /(free|no)/i.test(v) ? 'Poultry-Free'
+       : /poultry|chicken/i.test(v) ? 'Contains Poultry'
+       : '—';
+}
+function flavorText(v) {
+  if (!v) return '—';
+  return /\b(chicken|poultry)\b/i.test(v) ? 'Poultry'
+       : /\b(beef)\b/i.test(v)            ? 'Beef'
+       : /\b(fish|salmon)\b/i.test(v)     ? 'Fish'
+       : /\b(bison|buffalo)\b/i.test(v)   ? 'Buffalo'
+       : /\bmeat\b/i.test(v)              ? 'Meat'
+       : '—';
+}
 
 function getIngredientCategoryCounts(row) {
   const ids = Array.isArray(row["ing-data-fives"]) ? row["ing-data-fives"] : [];
@@ -433,53 +467,36 @@ function pwr10CmpMatchBadge(aTxt, bTxt, extraClass = '') {
 // Section 1 (exact row markup)
 // ===========================
 
+// ===========================
+// Section 1 (exact row markup)
+// ===========================
 export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
-  // Build display helpers
   const compFull  = `${(mainRow['data-brand'] || 'Competitor')} — ${(mainRow['data-one'] || '').trim()}`.trim();
   const sportFull = `Sport Dog Food — ${(sdfRow['data-one'] || '').trim()}`.trim();
-// ---- Section 1 header + subtitle + madlib (optional hooks) ----
-{
+
+  // ---- Section 1 header + subtitle + madlib (optional hooks) ----
   const brand     = (mainRow['data-brand'] || 'Competitor').trim();
   const brandName = (mainRow['data-one'] || '').trim();
   const sdfName   = (sdfRow['data-one']  || '').trim();
 
-  // Header / subtitle mirrors your Section 2 style
-  setVarText('section1-header',   'Formula Basics');
+  setVarText('section1-header', 'Formula Basics');
   setVarText(
     'section1-subtitle',
     `Diet, legumes, poultry, and primary protein for ${brand} ${brandName} vs. Sport Dog Food ${sdfName}.`
   );
 
-  // Compact comparison sentence
-  const lhsDiet    = dietText(mainRow['data-diet'] || mainRow['data-grain'] || '');
-  const rhsDiet    = dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || '');
-  const lhsLP      = buildLegumePoultryPhrase(mainRow);
-  const rhsLP      = buildLegumePoultryPhrase(sdfRow);
-  const lhsFlavor  = flavorText(mainRow['specs_primary_flavor'] || '');
-  const rhsFlavor  = flavorText(sdfRow['specs_primary_flavor']  || '');
+  const lhsDiet   = dietText(mainRow['data-diet'] || mainRow['data-grain'] || '');
+  const rhsDiet   = dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || '');
+  const lhsLP     = buildLegumePoultryPhrase(mainRow);
+  const rhsLP     = buildLegumePoultryPhrase(sdfRow);
+  const lhsFlavor = flavorText(mainRow['specs_primary_flavor'] || '');
+  const rhsFlavor = flavorText(sdfRow['specs_primary_flavor']  || '');
 
-  const s1Madlib = (
+  setVarText(
+    'section1-madlib',
     `${brand} ${brandName}: ${lhsDiet}, ${lhsLP}; primary protein: ${lhsFlavor}. ` +
     `Sport Dog Food ${sdfName}: ${rhsDiet}, ${rhsLP}; primary protein: ${rhsFlavor}.`
   );
-  setVarText('section1-madlib', s1Madlib);
-}
-
-  const dietText = v =>
-    /free/i.test(v) ? 'Grain-Free' :
-    /grain/i.test(v) ? 'Grain Inclusive' : '—';
-  const legumesText = v =>
-    /(free|no)/i.test(v) ? 'Legume-Free' :
-    /legume|pea/i.test(v) ? 'Contains Legumes' : '—';
-  const poultryText = v =>
-    /(free|no)/i.test(v) ? 'Poultry-Free' :
-    /poultry|chicken/i.test(v) ? 'Contains Poultry' : '—';
-  const flavorText = v =>
-    /\b(chicken|poultry)\b/i.test(v) ? 'Poultry' :
-    /\b(beef)\b/i.test(v) ? 'Beef' :
-    /\b(fish|salmon)\b/i.test(v) ? 'Fish' :
-    /\b(bison|buffalo)\b/i.test(v) ? 'Buffalo' :
-    /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
   // --- ICON LIB + helpers (same assets you already use) ---
   const ICONS = {
@@ -510,30 +527,16 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
 
   function renderAttrIcon(kind, txt) {
     const t = String(txt || '').toLowerCase();
-
-    if (kind === 'diet') {
-      const isFree = /free/.test(t);
-      const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
-      return iconWrap(ICONS.grain, cls, { slash: isFree });
-    }
-    if (kind === 'legumes') {
-      const isFree = /(free|no)/.test(t);
-      const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
-      return iconWrap(ICONS.legumes, cls, { slash: isFree });
-    }
-    if (kind === 'poultry') {
-      const isFree = /(free|no)/.test(t);
-      const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
-      return iconWrap(ICONS.poultry, cls, { slash: isFree });
-    }
+    if (kind === 'diet')    { const isFree = /free/.test(t); return iconWrap(ICONS.grain,   isFree ? 'icon-grain_free'   : 'icon-grain_in',   { slash: isFree }); }
+    if (kind === 'legumes') { const isFree = /(free|no)/.test(t); return iconWrap(ICONS.legumes, isFree ? 'icon-legumes-free' : 'icon-legumes', { slash: isFree }); }
+    if (kind === 'poultry') { const isFree = /(free|no)/.test(t); return iconWrap(ICONS.poultry, isFree ? 'icon-poultry-free' : 'icon-poultry', { slash: isFree }); }
     if (kind === 'flavor') {
       let key = 'meat';
       if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
-      else if (/\b(beef)\b/.test(t))      key = 'beef';
+      else if (/\b(beef)\b/.test(t))       key = 'beef';
       else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
       else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
-      const cls = `icon-flavor-${key}`;
-      return iconWrap(ICONS.flavor[key], cls, { slash: false });
+      return iconWrap(ICONS.flavor[key], `icon-flavor-${key}`, { slash: false });
     }
     return '';
   }
@@ -558,7 +561,6 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   // ---- Classic Section 1 is OPTIONAL
   const mount = document.querySelector(sectionSelector);
   if (mount) {
-    // ensure <section class="rows"> exists inside #section-1
     let rowsSec = mount.querySelector(':scope > section.rows');
     if (!rowsSec) {
       rowsSec = document.createElement('section');
