@@ -649,11 +649,7 @@ export function paintSection2(mainRow, sdfRow) {
       `Protein, fat, and calories for ${mainRow['data-brand']} ${mainRow['data-one']} vs. Sport Dog Food ${sdfRow['data-one']}`;
   }
 
-  // Classic bar rows target
-  const root = document.querySelector('#section-2 .cmp2-rows');
-  if (!root) return;
-
-  // Parse numeric values
+  // Parse numeric values (do this BEFORE checking for classic DOM)
   const vals = (row) => ({
     protein: Number(row['ga_crude_protein_%']) || 0,
     fat:     Number(row['ga_crude_fat_%'])     || 0,
@@ -664,54 +660,50 @@ export function paintSection2(mainRow, sdfRow) {
   const b = vals(mainRow); // competitor
   const s = vals(sdfRow);  // sport
 
-  // Visual max caps for bar widths
-  const MAX = { protein: 40, fat: 30, kcals_c: 600, kcals_k: 5500 };
-  const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
+  // Classic bar rows are OPTIONAL; only paint if the node exists
+  const classicRoot = document.querySelector('#section-2 .cmp2-rows');
+  if (classicRoot) {
+    const MAX = { protein: 40, fat: 30, kcals_c: 600, kcals_k: 5500 };
+    const pct = (val, max) => Math.max(2, Math.round((val / max) * 100));
+    const row = (key, label, unit = '') => {
+      const bv = b[key], sv = s[key];
+      const diff = sv - bv;
+      const diffTxt  = isNaN(diff) ? '—' : (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`));
+      const badge    = (diff === 0) ? 'Match' : 'Different';
+      const badgeCls = (diff === 0) ? 'match' : 'diff';
+      const maxKey   = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
+      const fmt = (v) => unit ? `${v}${unit}` : String(v);
 
-  // Single row template for the classic bar block
-  const row = (key, label, unit = '') => {
-    const bv = b[key], sv = s[key];
-    const diff = sv - bv;
-    const diffTxt  = isNaN(diff) ? '—' : (diff === 0 ? '±0' : (diff > 0 ? `+${diff}` : `${diff}`));
-    const badge    = (diff === 0) ? 'Match' : 'Different';
-    const badgeCls = (diff === 0) ? 'match' : 'diff';
-    const maxKey   = key in MAX ? MAX[key] : Math.max(bv, sv) || 1;
-    const fmt = (v) => unit ? `${v}${unit}` : String(v);
-
-    return `
-      <div class="cmp2-row" data-key="${esc(key)}">
-        <div class="cmp2-label">${esc(label)}</div>
-        <div class="cmp2-diff">${esc(diffTxt)}</div>
-        <div class="cmp2-delta ${badgeCls}">${badge}</div>
-      </div>
-
-      <div class="cmp2-bars">
-        <div class="cmp2-bar brand" aria-label="Competitor ${esc(label)}">
-          <div class="cmp2-track"><div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div></div>
-          <div class="cmp2-values">
-            <span class="cmp2-badge brand">${esc(fmt(bv))}</span>
-          </div>
+      return `
+        <div class="cmp2-row" data-key="${esc(key)}">
+          <div class="cmp2-label">${esc(label)}</div>
+          <div class="cmp2-diff">${esc(diffTxt)}</div>
+          <div class="cmp2-delta ${badgeCls}">${badge}</div>
         </div>
 
-        <div class="cmp2-bar sport" aria-label="Sport Dog Food ${esc(label)}">
-          <div class="cmp2-track"><div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div></div>
-          <div class="cmp2-values">
-            <span class="cmp2-badge sport">${esc(fmt(sv))}</span>
+        <div class="cmp2-bars">
+          <div class="cmp2-bar brand" aria-label="Competitor ${esc(label)}">
+            <div class="cmp2-track"><div class="cmp2-fill brand" style="width:${pct(bv, maxKey)}%"></div></div>
+            <div class="cmp2-values"><span class="cmp2-badge brand">${esc(fmt(bv))}</span></div>
+          </div>
+
+          <div class="cmp2-bar sport" aria-label="Sport Dog Food ${esc(label)}">
+            <div class="cmp2-track"><div class="cmp2-fill sport" style="width:${pct(sv, maxKey)}%"></div></div>
+            <div class="cmp2-values"><span class="cmp2-badge sport">${esc(fmt(sv))}</span></div>
           </div>
         </div>
-      </div>
-    `;
-  };
+      `;
+    };
 
-  // Paint classic bar rows
-  root.innerHTML = [
-    row('protein', 'Crude Protein', '%'),
-    row('fat',     'Crude Fat',     '%'),
-    row('kcals_c', 'Kcals / Cup',   ''),
-    row('kcals_k', 'Kcals / Kg',    ''),
-  ].join('');
+    classicRoot.innerHTML = [
+      row('protein', 'Crude Protein', '%'),
+      row('fat',     'Crude Fat',     '%'),
+      row('kcals_c', 'Kcals / Cup'),
+      row('kcals_k', 'Kcals / Kg'),
+    ].join('');
+  }
 
-    // Optional summary text
+  // Optional summary text (independent of classic root)
   const madlibEl = document.querySelector('[data-var="section2-madlib"]');
   if (madlibEl) {
     madlibEl.textContent =
