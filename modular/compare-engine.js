@@ -1105,59 +1105,35 @@ function renderSuggestPills({ box, items, onPick }) {
 // Inline ingredient search + suggestions (filters both lists)
 // ===========================
 
+// ===========================
+// Inline ingredient search + suggestions (filters both lists)
+// ===========================
 function setupIngredientSearch(sec3) {
   const input     = sec3.querySelector('#pwrf-search-input');
   const clearBtn  = sec3.querySelector('#pwrf-clear-btn');
   const suggestEl = sec3.querySelector('#cmp3-suggest');
   const bar       = sec3.querySelector('.pwrf_searchbar');
+
   if (!input || !clearBtn) return;
 
   // Always grab FRESH list nodes (lists are re-rendered on each paint)
   const getBrandBox = () => sec3.querySelector('#cmp3-brand-list .ci-ings-list');
   const getSportBox = () => sec3.querySelector('#cmp3-sport-list .ci-ings-list');
 
-  // ───────── helpers (arrow funcs = safer than function decls in blocks)
-  const collapseLimit = () =>
-    window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
+  // ──────────────────────────────────────────────
+  // SEE MORE (per list) — single definitions
+  // ──────────────────────────────────────────────
+  function collapseLimit() {
+    return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
+  }
 
-  const matchedItems = (listRoot) =>
-    Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
+  // Return items that MATCH the query (even if collapsed)
+  function matchedItems(listRoot) {
+    return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
       .filter(el => el.dataset.smMatch === '1');
+  }
 
-  const applySeeMore = (listRoot) => {
-    const limit    = collapseLimit();
-    const matches  = matchedItems(listRoot);
-    const expanded = listRoot.dataset.expanded === 'true';
-    const wrap = listRoot.querySelector('.ci-see-more-wrap');
-    const btn  = wrap?.querySelector('.ci-see-more-btn');
-    const fade = wrap?.querySelector('.ci-fade');
-
-    if (!matches.length || matches.length <= limit) {
-      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
-      if (wrap) wrap.style.display = 'none';
-      if (btn)  btn.setAttribute('aria-expanded', 'false');
-      listRoot.dataset.expanded = 'false';
-      return;
-    }
-
-    if (!expanded) {
-      matches.forEach((el, i) => {
-        const show = i < limit;
-        el.style.display = show ? '' : 'none';
-        el.hidden = !show;
-      });
-      if (wrap) wrap.style.display = '';
-      if (btn)  { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
-      if (fade) fade.style.display = '';
-    } else {
-      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
-      if (wrap) wrap.style.display = '';
-      if (btn)  { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
-      if (fade) fade.style.display = 'none';
-    }
-  };
-
-  const initSeeMoreForList = (listRoot) => {
+  function initSeeMoreForList(listRoot) {
     if (!listRoot || listRoot._seeMoreWired) return;
     listRoot._seeMoreWired = true;
 
@@ -1180,15 +1156,60 @@ function setupIngredientSearch(sec3) {
     });
 
     applySeeMore(listRoot);
-  };
+  }
 
-  const refreshSeeMore = () => {
+  function applySeeMore(listRoot) {
+    const limit    = collapseLimit();
+    const matches  = matchedItems(listRoot);
+    const expanded = listRoot.dataset.expanded === 'true';
+    const wrap = listRoot.querySelector('.ci-see-more-wrap');
+    const btn  = wrap?.querySelector('.ci-see-more-btn');
+    const fade = wrap?.querySelector('.ci-fade');
+
+    if (!matches.length || matches.length <= limit) {
+      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
+      if (wrap) wrap.style.display = 'none';
+      if (btn)  btn.setAttribute('aria-expanded', 'false');
+      listRoot.dataset.expanded = 'false';
+      return;
+    }
+
+    if (!expanded) {
+      matches.forEach((el, i) => {
+        const show = i < limit;
+        el.style.display = show ? '' : 'none';
+        el.hidden = !show;
+      });
+      if (wrap) wrap.style.display = '';
+      if (btn) { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
+      if (fade) fade.style.display = '';
+    } else {
+      matches.forEach(el => { el.style.display = ''; el.hidden = false; });
+      if (wrap) wrap.style.display = '';
+      if (btn) { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
+      if (fade) fade.style.display = 'none';
+    }
+  }
+
+  // Re-apply per list (brand + sport) whenever things change
+  function refreshSeeMore() {
     const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
     const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
     if (brandListRoot) { initSeeMoreForList(brandListRoot); applySeeMore(brandListRoot); }
     if (sportListRoot) { initSeeMoreForList(sportListRoot); applySeeMore(sportListRoot); }
-  };
+  }
 
+  // Re-apply limits on resize (e.g., crossing 600px)
+  if (!window._cmp3SeeMoreResize) {
+    let _smResizeId;
+    window.addEventListener('resize', () => {
+      if (_smResizeId) cancelAnimationFrame(_smResizeId);
+      _smResizeId = requestAnimationFrame(refreshSeeMore);
+    });
+    window._cmp3SeeMoreResize = true;
+  }
+
+  // ensure empty cards exist (brand + sport) with a "Clear" link
   const ensureEmpty = (rootSel, cls, html) => {
     const root = sec3.querySelector(rootSel);
     if (!root) return null;
@@ -1214,34 +1235,17 @@ function setupIngredientSearch(sec3) {
     'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
   );
 
-  const cacheTokens = (wrap) => {
-    if (!wrap._tokenSet) {
-      const str = (wrap.getAttribute('data-search') || '').toLowerCase();
-      wrap._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
-    }
-    return wrap._tokenSet;
-  };
+  // Delegated handler for the inline "Clear" links
+  sec3.addEventListener('click', (e) => {
+    const a = e.target.closest('.ci-clear');
+    if (!a) return;
+    e.preventDefault();
+    input.value = '';
+    doFilter();
+    input.focus();
+  });
 
-  const filterList = (listEl, terms) => {
-    const items = listEl.querySelectorAll('.ci-ing-wrapper');
-    let shown = 0;
-    items.forEach(it => {
-      const set = cacheTokens(it);
-      const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
-      if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
-      it.hidden = !ok;
-      it.style.display = ok ? '' : 'none';
-      if (ok) shown++;
-    });
-    return shown;
-  };
-
-  const toggle = (el, show) => {
-    if (!el) return;
-    el.hidden = !show;
-    el.style.display = show ? '' : 'none';
-  };
-
+  // Suggestions (Fuse or fallback)
   let { fuse, list } = makeSuggestionIndex(sec3);
 
   const suggestFor = (lastTerm, existingTerms) => {
@@ -1274,7 +1278,42 @@ function setupIngredientSearch(sec3) {
     input.focus();
   };
 
-  const doFilter = () => {
+  // Filtering helpers
+  const cacheTokens = (wrap) => {
+    if (!wrap._tokenSet) {
+      const str = (wrap.getAttribute('data-search') || '').toLowerCase();
+      wrap._tokenSet = new Set(str.split(/\s+/).filter(Boolean));
+    }
+    return wrap._tokenSet;
+  };
+
+  const filterList = (listEl, terms) => {
+    const items = listEl.querySelectorAll('.ci-ing-wrapper');
+    let shown = 0;
+    items.forEach(it => {
+      const set = cacheTokens(it);
+      const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
+
+      // mark current match state for see-more to use later
+      if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
+
+      // normal visibility for filter
+      it.hidden = !ok;
+      it.style.display = ok ? '' : 'none';
+
+      if (ok) shown++;
+    });
+    return shown;
+  };
+
+  const toggle = (el, show) => {
+    if (!el) return;
+    el.hidden = !show;
+    el.style.display = show ? '' : 'none';
+  };
+
+  // Hoisted declaration avoids init-order issues
+  function doFilter() {
     const brandBox = getBrandBox();
     const sportBox = getSportBox();
     if (!brandBox || !sportBox) return;
@@ -1287,15 +1326,13 @@ function setupIngredientSearch(sec3) {
     const brandShown = filterList(brandBox, terms);
     const sportShown = filterList(sportBox, terms);
 
+    // Brand "no results"
     toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
+    // —— Dynamic contentious logic (based on visible flags on brand side) ——
     const contentiousInBrand = Array.from(
       brandBox.querySelectorAll('.ci-ing-wrapper')
-    ).filter(it => {
-      if (it.hidden) return false;
-      const flags = String(it.getAttribute('data-flags') || '');
-      return /\bcontentious\b/.test(flags);
-    });
+    ).filter(it => !it.hidden && /\bcontentious\b/.test(String(it.getAttribute('data-flags') || '')));
 
     const firstContentiousName =
       contentiousInBrand[0]?.querySelector('.ci-ing-displayas')?.textContent?.trim() || '';
@@ -1308,12 +1345,15 @@ function setupIngredientSearch(sec3) {
         `<a class="ci-clear" href="#" data-act="clear">Clear</a>`;
     }
 
+    // Toggle Sport empties
     toggle(sportContEmpty, showContMsg);
     toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
+    // Suggestions for trailing partial
     const existing = new Set(terms);
     renderSuggest(lastIsPartial, Array.from(existing));
 
+    // Blank query => show all, hide empties + suggestions
     if (parts.length === 0) {
       toggle(brandEmpty, false);
       toggle(sportEmpty, false);
@@ -1321,13 +1361,22 @@ function setupIngredientSearch(sec3) {
       renderSuggest('');
     }
 
+    // Re-apply collapses to whatever is currently matched
     refreshSeeMore();
+  }
+
+  // helper so we can call the same steps on first paint and after switches
+  const applyFilterAndCollapse = () => {
+    if (typeof input._reindex === 'function') input._reindex(); // rebuild suggestion index
+    doFilter();       // re-filter brand/sport lists based on current input value
+    refreshSeeMore(); // re-apply per-list collapse
   };
 
-  // ───────── one-time wiring
+  // First-time wiring only (listeners, focus styles, etc.)
   if (!input._wired) {
     input._wired = true;
 
+    // Make the clear button available
     clearBtn.hidden = false;
     clearBtn.style.display = '';
 
@@ -1337,8 +1386,10 @@ function setupIngredientSearch(sec3) {
       input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
     }
 
+    // Bind filter on input
     input.addEventListener('input', doFilter, { passive: true });
 
+    // Clear button
     clearBtn.addEventListener('click', (e) => {
       e.preventDefault();
       input.value = '';
@@ -1346,6 +1397,7 @@ function setupIngredientSearch(sec3) {
       input.focus();
     });
 
+    // ESC clears
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && input.value) {
         input.value = '';
@@ -1354,19 +1406,29 @@ function setupIngredientSearch(sec3) {
       }
     });
 
+    // Reindex hook used by applyFilterAndCollapse
     input._reindex = () => { ({ fuse, list } = makeSuggestionIndex(sec3)); };
 
-    let _smResizeId;
-    window.addEventListener('resize', () => {
-      if (_smResizeId) cancelAnimationFrame(_smResizeId);
-      _smResizeId = requestAnimationFrame(refreshSeeMore);
-    });
+    // Observe the lists container; when Section 3 re-renders on switch,
+    // re-apply filter + collapse to the fresh nodes
+    const listsRoot = sec3.querySelector('#cmp3-lists');
+    if (listsRoot && !input._listsObserver) {
+      const mo = new MutationObserver(() => {
+        requestAnimationFrame(applyFilterAndCollapse);
+      });
+      mo.observe(listsRoot, { childList: true, subtree: true });
+      input._listsObserver = mo;
+    }
 
     // Initial render
-    doFilter();
-    refreshSeeMore();
+    applyFilterAndCollapse();
+  } else {
+    // already wired (e.g., after a formula switch): just re-apply to new content
+    if (typeof input._reindex === 'function') input._reindex();
+    applyFilterAndCollapse();
   }
 }
+
 
 
 
