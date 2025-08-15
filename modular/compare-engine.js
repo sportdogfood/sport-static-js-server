@@ -326,20 +326,62 @@ function s1FlavorText(v) {
 }
 
 // Ensure all PWR10 containers exist (sticky + section buckets)
-function ensurePwr10Scaffold(rootEl) {
+// Ensure all PWR10 containers exist (sticky + section buckets) with anchor-aware placement
+function ensurePwr10Scaffold(rootEl, opts = {}) {
+  const placement = opts.placement || {
+    // keep sticky grid inside the existing sticky section
+    'sticky-sections': { inside: '#compare-sticky' },
+
+    // then flow S1 title after sticky, S1 after title
+    'section1-title':  { after:  '#compare-sticky' },
+    'section1':        { after:  '#pwr10-section1-title' },
+
+    // then S2 title after S1, S2 after S2 title
+    'section2-title':  { after:  '#pwr10-section1' },
+    'section2':        { after:  '#pwr10-section2-title' },
+
+    // finally S3 after S2
+    'section3':        { after:  '#pwr10-section2' }
+  };
+
+  const q = (sel) => (sel ? document.querySelector(sel) : null);
+
+  const insert = (el, where = {}) => {
+    if (where.inside) {
+      const parent = q(where.inside);
+      if (parent && el.parentNode !== parent) parent.appendChild(el);
+      return;
+    }
+    if (where.before) {
+      const ref = q(where.before);
+      if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref);
+      return;
+    }
+    if (where.after) {
+      const ref = q(where.after);
+      if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling);
+      return;
+    }
+    // default: append to provided root
+    (rootEl || document.body).appendChild(el);
+  };
+
+  // Create or adopt a grid with .pwr10-rows-grid.<cls> and optional id
   const need = (cls, id) => {
- let el =
-  (id && (document.getElementById(id) || rootEl.querySelector(`#${id}`))) ||
-  rootEl.querySelector(`.pwr10-rows-grid.${cls}`) ||
-  document.querySelector(`.pwr10-rows-grid.${cls}`);
+    // try to adopt existing by id anywhere, else by class
+    let el = (id && document.getElementById(id))
+          || document.querySelector(`.pwr10-rows-grid.${cls}`);
 
     if (!el) {
-      el = document.createElement('div'); // or 'section'
+      el = document.createElement('div'); // could be 'section' if you prefer
       el.className = `pwr10-rows-grid ${cls}`;
       if (id) el.id = id;
-      rootEl.appendChild(el);
-    } else if (id && !el.id) {
-      el.id = id; // upgrade existing classed grid to the id your painters expect
+      insert(el, placement[cls]);
+    } else {
+      // ensure id if grid existed without it
+      if (id && !el.id) el.id = id;
+      // make sure it's positioned where we want
+      insert(el, placement[cls]);
     }
     return el;
   };
@@ -362,6 +404,7 @@ function ensurePwr10Scaffold(rootEl) {
 
   return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
 }
+
 
 // ===========================
 // Sticky header (PWR10 markup)
