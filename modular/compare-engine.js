@@ -1179,11 +1179,6 @@ function renderSuggestPills({ box, items, onPick }) {
 }
 
 
-
-// ===========================
-// Inline ingredient search + suggestions (filters both lists)
-// ===========================
-
 // ===========================
 // Inline ingredient search + suggestions (filters both lists)
 // ===========================
@@ -1509,9 +1504,6 @@ function setupIngredientSearch(sec3) {
 }
 
 
-
-
-
 // ===========================
 // Render inline ingredient list tags + searchable hidden keys (deduped)
 // ===========================
@@ -1543,28 +1535,26 @@ function renderIngListDivs(row) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
         }
 
-      const raw = [
+  // Build the searchable corpus (EXCLUDES contentiousExplain & termDescription)
+const raw = [
   ing.Name, ing.displayAs, ing.groupWith,
   ing['data-type'] || '', ing.recordType || '',
   ing.animalType || '',   ing.animalAssist || '',
   ing.plantType || '',    ing.plantAssist || '',
   ing.supplementalType || '', ing.supplementalAssist || '',
-  ...(ing.tags || []),
-  contentiousExplain,      // NEW: searchable
-  termDescription          // NEW: searchable
+  ...(ing.tags || [])
 ].join(' ').toLowerCase();
 
-        const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
+const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
 
-        const flags = [
-          consumerSlug,
-          ing.tagPoultry     ? 'poultry'     : '',
-          ing.tagAllergy     ? 'allergy'     : '',
-          ing.tagContentious ? 'contentious' : ''
-        ].filter(Boolean).join(' ');
-
-     
-         return `
+// Flags unchanged
+const flags = [
+  consumerSlug,
+  ing.tagPoultry     ? 'poultry'     : '',
+  ing.tagAllergy     ? 'allergy'     : '',
+  ing.tagContentious ? 'contentious' : ''
+].filter(Boolean).join(' ');
+ return `
   <div
     class="ci-ing-wrapper"
     data-search="${esc(searchKeys)}"
