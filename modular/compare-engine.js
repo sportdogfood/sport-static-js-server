@@ -1173,6 +1173,9 @@ function visibleItems(listRoot) {
     .filter(el => !el.hidden && el.style.display !== 'none');
 }
 
+// ──────────────────────────────────────────────
+// SEE MORE (per list) — single definitions
+// ──────────────────────────────────────────────
 function collapseLimit() {
   return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
 }
@@ -1209,16 +1212,14 @@ function initSeeMoreForList(listRoot) {
 }
 
 function applySeeMore(listRoot) {
-  const limit   = collapseLimit();
-  const matches = matchedItems(listRoot);      // ✅ use matches, not current visibility
+  const limit    = collapseLimit();
+  const matches  = matchedItems(listRoot);
   const expanded = listRoot.dataset.expanded === 'true';
   const wrap = listRoot.querySelector('.ci-see-more-wrap');
   const btn  = wrap?.querySelector('.ci-see-more-btn');
   const fade = wrap?.querySelector('.ci-fade');
 
-  // If no matches or <= limit, no button needed
   if (!matches.length || matches.length <= limit) {
-    // show all matches
     matches.forEach(el => { el.style.display = ''; el.hidden = false; });
     if (wrap) wrap.style.display = 'none';
     if (btn)  btn.setAttribute('aria-expanded', 'false');
@@ -1226,19 +1227,16 @@ function applySeeMore(listRoot) {
     return;
   }
 
-  // We have more than the limit
   if (!expanded) {
-    // show first N matches, hide the rest (ONLY hide due to see-more)
     matches.forEach((el, i) => {
       const show = i < limit;
       el.style.display = show ? '' : 'none';
-      el.hidden = !show; // hide overflow for a11y/tab order
+      el.hidden = !show;
     });
     if (wrap) wrap.style.display = '';
     if (btn) { btn.textContent = `Show all ${matches.length}`; btn.setAttribute('aria-expanded', 'false'); }
     if (fade) fade.style.display = '';
   } else {
-    // show all matches
     matches.forEach(el => { el.style.display = ''; el.hidden = false; });
     if (wrap) wrap.style.display = '';
     if (btn) { btn.textContent = 'Show less'; btn.setAttribute('aria-expanded', 'true'); }
@@ -1255,11 +1253,13 @@ function refreshSeeMore() {
 }
 
 // Re-apply limits on resize (e.g., crossing 600px)
+// (only wired once because this whole block lives inside `if (!input._wired)`)
 let _smResizeId;
 window.addEventListener('resize', () => {
   if (_smResizeId) cancelAnimationFrame(_smResizeId);
   _smResizeId = requestAnimationFrame(refreshSeeMore);
 });
+
 
 // ensure empty cards exist (brand + sport)
 const ensureEmpty = (rootSel, cls, html) => {
