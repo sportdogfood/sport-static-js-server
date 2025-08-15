@@ -1383,7 +1383,7 @@ function setupIngredientSearch(sec3) {
   const toggle = (el, show) => {
     if (!el) return;
     el.hidden = !show;
-    el.style.display = show ? '' : 'none';
+   el.style.display = show ? 'block' : 'none';
   };
 
   // Hoisted declaration avoids init-order issues
