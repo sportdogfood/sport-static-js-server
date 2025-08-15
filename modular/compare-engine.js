@@ -327,98 +327,117 @@ function s1FlavorText(v) {
 
 
 // NEW SCAFFOLD: ordered grids + exact data-var placeholders (no content injection)
-export function initCompareScaffold() {
-  const q = (s) => document.querySelector(s);
+// ===========================
+// Scaffold V2 (nested containers)
+// ===========================
+export function initCompareScaffoldV2() {
+  const $ = (s) => document.querySelector(s);
+  const insertAfter = (ref, el) => {
+    if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling);
+  };
 
-  // ── place/move helper
-  function place(el, where) {
-    if (!where) return;
-    if (where.inside) {
-      const p = q(where.inside); if (p && el.parentNode !== p) p.appendChild(el); return;
-    }
-    if (where.after) {
-      const ref = q(where.after); if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref.nextSibling); return;
-    }
-    if (where.before) {
-      const ref = q(where.before); if (ref && ref.parentNode) ref.parentNode.insertBefore(el, ref); return;
-    }
+  // ensure sticky grid lives INSIDE #compare-sticky
+  let stickyHost = $('#compare-sticky');
+  if (!stickyHost) {
+    stickyHost = document.createElement('section');
+    stickyHost.id = 'compare-sticky';
+    document.body.insertBefore(stickyHost, document.body.firstChild);
+  }
+  let stickyWrap = stickyHost.querySelector('.pwr10-rows-grid.sticky-sections');
+  if (!stickyWrap) {
+    stickyWrap = document.createElement('div');
+    stickyWrap.className = 'pwr10-rows-grid sticky-sections';
+    stickyHost.appendChild(stickyWrap);
   }
 
-  // ── ensure one grid by class (+ optional id), then position it
-  function ensureGrid(cls, id, where) {
-    let el = (id && q('#' + id)) || document.querySelector(`.pwr10-rows-grid.${cls}`);
+  // helper: ensure a container by id, placed after a reference selector
+  const ensureContainer = (id, afterSel) => {
+    let el = $('#' + id);
     if (!el) {
       el = document.createElement('div');
-      el.className = `pwr10-rows-grid ${cls}`;
-      if (id) el.id = id;
-    } else if (id && !el.id) {
       el.id = id;
+      const after = $(afterSel);
+      if (after) insertAfter(after, el); else document.body.appendChild(el);
     }
-    place(el, where);
-    if (!el.parentNode) (document.body).appendChild(el);
     return el;
+  };
+
+  // helper: ensure a grid inside a parent, with classes + id
+  const ensureGridIn = (parent, cls, id) => {
+    if (!parent) return null;
+    let grid = (id && parent.querySelector('#' + id)) || parent.querySelector(`.pwr10-rows-grid.${cls}`);
+    if (!grid) {
+      grid = document.createElement('div');
+      grid.className = `pwr10-rows-grid ${cls}`;
+      if (id) grid.id = id;
+      parent.appendChild(grid);
+    } else {
+      grid.classList.add('pwr10-rows-grid', cls);
+      if (id && !grid.id) grid.id = id;
+    }
+    return grid;
+  };
+
+  // SECTION 1
+  const s1 = ensureContainer('pwr10-section1', '#compare-sticky');
+  const s1Title = ensureGridIn(s1, 'section1-title', 'pwr10-section1-title');
+  const s1Grid  = ensureGridIn(s1, 'section1',       'pwr10-section1-grid');
+
+  // SECTION 2
+  const s2 = ensureContainer('pwr10-section2', '#pwr10-section1');
+  const s2Title = ensureGridIn(s2, 'section2-title', 'pwr10-section2-title');
+  const s2Grid  = ensureGridIn(s2, 'section2',       'pwr10-section2-grid');
+
+  // SECTION 3
+  const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
+  const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
+
+  // Section 3 children: varwrap + #section-3.pwr10-ce
+  let s3Varwrap = s3Grid.querySelector('.pwr10-varwrap');
+  if (!s3Varwrap) {
+    s3Varwrap = document.createElement('div');
+    s3Varwrap.className = 'pwr10-varwrap';
+    s3Grid.insertBefore(s3Varwrap, s3Grid.firstChild);
   }
 
-  // ── build ordered anchors
-  const stickyWrap  = ensureGrid('sticky-sections', null,                      { inside: '#compare-sticky' });
-  const s1TitleGrid = ensureGrid('section1-title', 'pwr10-section1-title',     { after:  '#compare-sticky' });
-  const s1Grid      = ensureGrid('section1',       'pwr10-section1',           { after:  '#pwr10-section1-title' });
-  const s2TitleGrid = ensureGrid('section2-title', 'pwr10-section2-title',     { after:  '#pwr10-section1' });
-  const s2Grid      = ensureGrid('section2',       'pwr10-section2',           { after:  '#pwr10-section2-title' });
-  const s3Grid      = ensureGrid('section3',       'pwr10-section3',           { after:  '#pwr10-section2' });
-
-  // ensure inner #section-3 inside S3 grid
-  if (!s3Grid.querySelector('#section-3')) {
-    const sec3 = document.createElement('section');
+  let sec3 = s3Grid.querySelector('#section-3');
+  if (!sec3) {
+    sec3 = document.createElement('section');
     sec3.id = 'section-3';
     sec3.className = 'pwr10-ce';
     s3Grid.appendChild(sec3);
   }
 
-  // ── data-var helpers
-  const ensureVar = (name) => {
-    let el = q(`[data-var="${name}"]`);
-    if (!el) { el = document.createElement('div'); el.setAttribute('data-var', name); }
+  // data-var placeholders (titles/madlibs)
+  const ensureVar = (name, parent) => {
+    let el = document.querySelector(`[data-var="${name}"]`);
+    if (!el) {
+      el = document.createElement('div');
+      el.setAttribute('data-var', name);
+    }
+    if (parent && !parent.contains(el)) parent.appendChild(el);
     return el;
   };
-  const ensureVarGroup = (parent, key, names, at = 'beforebegin') => {
-    if (!parent) return null;
-    let wrap = parent.querySelector(`.pwr10-varwrap[data-key="${key}"]`);
-    if (!wrap) {
-      wrap = document.createElement('div');
-      wrap.className = 'pwr10-varwrap';
-      wrap.dataset.key = key;
-      // default: mount at top of parent
-      parent.insertBefore(wrap, parent.firstChild);
-    }
-    names.forEach(n => { const el = ensureVar(n); if (!wrap.contains(el)) wrap.appendChild(el); });
-    return wrap;
-  };
 
-  // ── mount placeholders exactly where needed
-  // Section 1 (title grid)
-  ensureVarGroup(s1TitleGrid, 's1', ['section1-header', 'section1-subtitle', 'section1-madlib']);
+  // S1/S2 titles get their 3 placeholders
+  ['section1-header','section1-subtitle','section1-madlib'].forEach(n => ensureVar(n, s1Title));
+  ['section2-header','section2-subtitle','section2-madlib'].forEach(n => ensureVar(n, s2Title));
 
-  // Section 2 (title grid)
-  ensureVarGroup(s2TitleGrid, 's2', ['section2-header', 'section2-subtitle', 'section2-madlib']);
+  // S3 varwrap gets its 3 placeholders
+  ['section3-header','section3-subtitle','section3-madlib'].forEach(n => ensureVar(n, s3Varwrap));
 
-  // Section 3 (top of S3 grid)
-  ensureVarGroup(s3Grid, 's3', ['section3-header', 'section3-subtitle', 'section3-madlib']);
-
-  // Section K (placed AFTER S3 grid)
-  let kWrap = s3Grid.nextElementSibling;
+  // Optional Section K: after S3
+  let kWrap = s3.nextElementSibling;
   if (!(kWrap && kWrap.classList.contains('pwr10-varwrap-k'))) {
     kWrap = document.createElement('div');
     kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
-    s3Grid.parentNode.insertBefore(kWrap, s3Grid.nextSibling);
+    insertAfter(s3, kWrap);
   }
-  ['sectionk-header', 'sectionk-madlib'].forEach(n => {
-    const el = ensureVar(n);
-    if (!kWrap.contains(el)) kWrap.appendChild(el);
-  });
+  ['sectionk-header','sectionk-madlib'].forEach(n => ensureVar(n, kWrap));
 
-  return { stickyWrap, s1TitleGrid, s1Grid, s2TitleGrid, s2Grid, s3Grid };
+  return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid, s3, s3Grid, s3Varwrap, sec3 };
 }
+
 
 // ===========================
 // Sticky header (PWR10 markup)
@@ -687,8 +706,11 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
 
   // ---- PWR10 mirror (always runs)
   try {
-    const grid = document.querySelector('#pwr10-section1') ||
-                 document.querySelector('.pwr10-rows-grid.section1');
+  const grid =
+  document.querySelector('#pwr10-section1-grid') ||
+  document.querySelector('#pwr10-section1 .pwr10-rows-grid.section1') ||
+  document.querySelector('#pwr10-section1') ||
+  document.querySelector('.pwr10-rows-grid.section1');
     if (!grid) return;
 
     const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -825,8 +847,11 @@ export function paintSection2(mainRow, sdfRow) {
 
 try {
   // target ONLY the Section-2 grid
-const grid = document.querySelector('#pwr10-section2') ||
-             document.querySelector('.pwr10-rows-grid.section2');
+const grid =
+  document.querySelector('#pwr10-section2-grid') ||
+  document.querySelector('#pwr10-section2 .pwr10-rows-grid.section2') ||
+  document.querySelector('#pwr10-section2') ||
+  document.querySelector('.pwr10-rows-grid.section2');
   if (!grid) return;
 
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -1818,7 +1843,8 @@ export function renderComparePage() {
 
   window.CCI = { mainRow, sdfRow: initialRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
-initCompareScaffold();
+// before: initCompareScaffold();
+initCompareScaffoldV2();
   // Sticky header immediately
   if (typeof renderStickyCompareHeader === 'function') {
     renderStickyCompareHeader(mainRow, initialRow);
