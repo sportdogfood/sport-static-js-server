@@ -987,15 +987,7 @@ export function paintSection3(mainRow, sdfRow) {
   brandListEl.innerHTML = renderIngListDivs(mainRow);
   sportListEl.innerHTML = renderIngListDivs(sdfRow);
 
-  // Append no-result cards to each list (brand + sport)
-  appendEmptyCards(brandListEl, {
-    general: 'No ingredients matched your search.'
-  });
-  appendEmptyCards(sportListEl, {
-    general: 'No ingredients matched your search.',
-    contentious:
-      "Sport Dog Food avoids most contentious ingredients (legumes/pea concentrates, animal by-products, artificial preservatives, etc.). Aside from potatoes, you won’t find those here."
-  });
+
 
   // Wire simple search to filter both lists
   setupIngredientSearch(sec3);
