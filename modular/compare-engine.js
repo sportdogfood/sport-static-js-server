@@ -428,19 +428,11 @@ function pwr10CmpMatchBadge(aTxt, bTxt, extraClass = '') {
 // ===========================
 // Section 1 (exact row markup)
 // ===========================
+// ===========================
+// Section 1 (exact row markup)
+// ===========================
 export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
-  const mount = document.querySelector(sectionSelector);
-  if (!mount) return;
-
-  // ensure <section class="rows"> exists inside #section-1
-  let rowsSec = mount.querySelector(':scope > section.rows');
-  if (!rowsSec) {
-    rowsSec = document.createElement('section');
-    rowsSec.className = 'rows';
-    rowsSec.setAttribute('aria-label', 'Attribute comparison');
-    mount.appendChild(rowsSec);
-  }
-
+  // Build display helpers
   const compFull  = `${(mainRow['data-brand'] || 'Competitor')} — ${(mainRow['data-one'] || '').trim()}`.trim();
   const sportFull = `Sport Dog Food — ${(sdfRow['data-one'] || '').trim()}`.trim();
 
@@ -460,7 +452,7 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
     /\b(bison|buffalo)\b/i.test(v) ? 'Buffalo' :
     /\bmeat\b/i.test(v) ? 'Meat' : '—';
 
-  // --- ICON LIB (uses your CDN assets) ---
+  // --- ICON LIB + helpers (same assets you already use) ---
   const ICONS = {
     poultry: `${CDN}/688e4fa168bfe5b6f24adf2e_poultry.svg`,
     legumes: `${CDN}/688e4f9f149ae9bbfc330912_peas-sm.svg`,
@@ -473,59 +465,53 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
       buffalo: `${CDN}/688e4f91f9ebb5f9cadc8af7_buffalo-sm.svg`
     }
   };
-// Replace your existing iconWrap + renderAttrIcon bodies with these:
 
-function iconWrap(src, cls, { slash } = {}) {
-  return `
-    <div class="icon-wrapper">
-      <img src="${src}" loading="lazy" alt="" class="${cls}">
-      ${slash ? `
-        <svg class="icon-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <line x1="12" y1="88" x2="88" y2="12"></line>
-        </svg>
-      ` : ''}
-    </div>
-  `;
-}
-
-// Map attribute text -> proper icon wrapper (unchanged logic; “slash” now uses the SVG overlay)
-function renderAttrIcon(kind, txt) {
-  const t = (txt || '').toLowerCase();
-
-  if (kind === 'diet') {
-    const isFree = /free/.test(t);
-    const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
-    return iconWrap(ICONS.grain, cls, { slash: isFree });
+  function iconWrap(src, cls, { slash } = {}) {
+    return `
+      <div class="icon-wrapper">
+        <img src="${src}" loading="lazy" alt="" class="${cls}">
+        ${slash ? `
+          <svg class="icon-slash" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <line x1="12" y1="88" x2="88" y2="12"></line>
+          </svg>
+        ` : ''}
+      </div>
+    `;
   }
 
-  if (kind === 'legumes') {
-    const isFree = /(free|no)/.test(t);
-    const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
-    return iconWrap(ICONS.legumes, cls, { slash: isFree });
+  function renderAttrIcon(kind, txt) {
+    const t = String(txt || '').toLowerCase();
+
+    if (kind === 'diet') {
+      const isFree = /free/.test(t);
+      const cls = isFree ? 'icon-grain_free' : 'icon-grain_in';
+      return iconWrap(ICONS.grain, cls, { slash: isFree });
+    }
+    if (kind === 'legumes') {
+      const isFree = /(free|no)/.test(t);
+      const cls = isFree ? 'icon-legumes-free' : 'icon-legumes';
+      return iconWrap(ICONS.legumes, cls, { slash: isFree });
+    }
+    if (kind === 'poultry') {
+      const isFree = /(free|no)/.test(t);
+      const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
+      return iconWrap(ICONS.poultry, cls, { slash: isFree });
+    }
+    if (kind === 'flavor') {
+      let key = 'meat';
+      if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
+      else if (/\b(beef)\b/.test(t))      key = 'beef';
+      else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
+      else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
+      const cls = `icon-flavor-${key}`;
+      return iconWrap(ICONS.flavor[key], cls, { slash: false });
+    }
+    return '';
   }
 
-  if (kind === 'poultry') {
-    const isFree = /(free|no)/.test(t);
-    const cls = isFree ? 'icon-poultry-free' : 'icon-poultry';
-    return iconWrap(ICONS.poultry, cls, { slash: isFree });
-  }
-
-  if (kind === 'flavor') {
-    let key = 'meat';
-    if (/\b(poultry|chicken)\b/.test(t)) key = 'poultry';
-    else if (/\b(beef)\b/.test(t))      key = 'beef';
-    else if (/\b(fish|salmon)\b/.test(t)) key = 'fish';
-    else if (/\b(bison|buffalo)\b/.test(t)) key = 'buffalo';
-    const cls = `icon-flavor-${key}`;
-    return iconWrap(ICONS.flavor[key], cls, { slash: false });
-  }
-  return '';
-}
-
-
-  // Equality badge (== / ≠)
+  // Equality badge for classic rows
   function getMatchBadge(aTxt, bTxt) {
-    const isMatch = (aTxt || '').toLowerCase() === (bTxt || '').toLowerCase();
+    const isMatch = (String(aTxt||'').toLowerCase() === String(bTxt||'').toLowerCase());
     const iconEq = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14"/></svg>`;
     const iconNe = `<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 9h14M5 15h14M4 4l16 16"/></svg>`;
     const label = isMatch ? 'Match' : 'Different';
@@ -540,99 +526,94 @@ function renderAttrIcon(kind, txt) {
     { label:'Primary Protein', aTxt: flavorText(mainRow['specs_primary_flavor'] || ''),              bTxt: flavorText(sdfRow['specs_primary_flavor'] || ''),              kind:'flavor' }
   ];
 
-  rowsSec.innerHTML = rows.map((r) => {
-    const aIcon = renderAttrIcon(r.kind, r.aTxt);
-    const bIcon = renderAttrIcon(r.kind, r.bTxt);
-    const badge = getMatchBadge(r.aTxt, r.bTxt);
-
-    return `
-      <div class="row">
-        <div class="label">${esc(r.label)}</div>
-
-        <div class="value valueA" data-col="${esc(compFull)}">
-          ${aIcon}
-          <span class="txt">${esc(r.aTxt)}</span>
-          <span class="status">${badge}</span>
-        </div>
-
-        <div class="value valueB" data-col="${esc(sportFull)}">
-          ${bIcon}
-          <span class="txt">${esc(r.bTxt)}</span>
-          <span class="status">${badge}</span>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-
-// ──────────────────────────────────────────────
-// PWR10 mirror (ALL Section 1 rows)
-// ──────────────────────────────────────────────
-try {
-  const grid = document.querySelector('#pwr10-section1') ||
-             document.querySelector('.pwr10-rows-grid.section1');
-
-  if (!grid) return;
-
-  const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
-  const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
-
-  const insertRow = (el) => { grid.appendChild(el); };
-
-  rows.forEach((r, idx) => {
-    const prior = grid.querySelector(`#pwr10-s1-${idx}`);
-    if (prior) prior.remove();
-
-    const wrap = document.createElement('div');
-
-// REMOVE these two lines:
-// const aBg = bgClassFor(r.kind, 'A', r.aTxt); // e.g. "shade-diet-1"
-// const bBg = bgClassFor(r.kind, 'B', r.bTxt);
-
-// ADD these:
-const aShade = shadeClassFor(r.kind, r.aTxt);
-const bShade = shadeClassFor(r.kind, r.bTxt);
-
-    // Prefer helper with 3rd param; otherwise inject `.section1` via string replace
-    const badgeHTML = (pwr10CmpMatchBadge.length >= 3)
-      ? pwr10CmpMatchBadge(r.aTxt, r.bTxt, 'section1')
-      : pwr10CmpMatchBadge(r.aTxt, r.bTxt).replace('cmp-match ', 'cmp-match section1 ');
-
-    wrap.innerHTML = `
-      <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
-        <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
-        <div class="pwr10-vertical-divider"></div>
-
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
-          <div class="pwr10-row-input">
-            <div class="pwr10-icon ${aShade}">${renderAttrIcon(r.kind, r.aTxt)}</div>
-            <div class="pwr10-title section11"><div>${esc(r.aTxt)}</div></div>
-            ${badgeHTML}
+  // ---- Classic Section 1 is OPTIONAL
+  const mount = document.querySelector(sectionSelector);
+  if (mount) {
+    // ensure <section class="rows"> exists inside #section-1
+    let rowsSec = mount.querySelector(':scope > section.rows');
+    if (!rowsSec) {
+      rowsSec = document.createElement('section');
+      rowsSec.className = 'rows';
+      rowsSec.setAttribute('aria-label', 'Attribute comparison');
+      mount.appendChild(rowsSec);
+    }
+    rowsSec.innerHTML = rows.map((r) => {
+      const aIcon = renderAttrIcon(r.kind, r.aTxt);
+      const bIcon = renderAttrIcon(r.kind, r.bTxt);
+      const badge = getMatchBadge(r.aTxt, r.bTxt);
+      return `
+        <div class="row">
+          <div class="label">${esc(r.label)}</div>
+          <div class="value valueA" data-col="${esc(compFull)}">
+            ${aIcon}
+            <span class="txt">${esc(r.aTxt)}</span>
+            <span class="status">${badge}</span>
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
-        </div>
-
-        <div class="pwr10-vertical-divider mobile"></div>
-
-        <div class="pwr10-row-value">
-          <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
-          <div class="pwr10-row-input">
-           <div class="pwr10-icon ${bShade}">${renderAttrIcon(r.kind, r.bTxt)}</div>
-            <div class="pwr10-title section11"><div>${esc(r.bTxt)}</div></div>
-            ${badgeHTML}
+          <div class="value valueB" data-col="${esc(sportFull)}">
+            ${bIcon}
+            <span class="txt">${esc(r.bTxt)}</span>
+            <span class="status">${badge}</span>
           </div>
-          <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
         </div>
-      </div>
-    `.trim();
+      `;
+    }).join('');
+  }
 
-    insertRow(wrap.firstElementChild);
-  });
-} catch (err) {
-  if (DEBUG) console.warn('[pwr10 S1]', err);
-}
+  // ---- PWR10 mirror (always runs)
+  try {
+    const grid = document.querySelector('#pwr10-section1') ||
+                 document.querySelector('.pwr10-rows-grid.section1');
+    if (!grid) return;
 
+    const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
+    const sportShort = `Sport Dog Food ${sdfRow['data-one'] || ''}`.trim();
+
+    rows.forEach((r, idx) => {
+      const prior = grid.querySelector(`#pwr10-s1-${idx}`);
+      if (prior) prior.remove();
+
+      const aShade = shadeClassFor(r.kind, r.aTxt);
+      const bShade = shadeClassFor(r.kind, r.bTxt);
+
+      const badgeHTML = (pwr10CmpMatchBadge.length >= 3)
+        ? pwr10CmpMatchBadge(r.aTxt, r.bTxt, 'section1')
+        : pwr10CmpMatchBadge(r.aTxt, r.bTxt).replace('cmp-match ', 'cmp-match section1 ');
+
+      const wrap = document.createElement('div');
+      wrap.innerHTML = `
+        <div id="pwr10-s1-${idx}" class="w-layout-grid pwr10-row-grid section1">
+          <div class="pwr10-row-label"><div class="pwr10-row-label2"><div>${esc(r.label)}</div></div></div>
+          <div class="pwr10-vertical-divider"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(compShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon ${aShade}">${renderAttrIcon(r.kind, r.aTxt)}</div>
+              <div class="pwr10-title section11"><div>${esc(r.aTxt)}</div></div>
+              ${badgeHTML}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+          </div>
+
+          <div class="pwr10-vertical-divider mobile"></div>
+
+          <div class="pwr10-row-value">
+            <div class="pwr10-row-mobile-name"><div>${esc(sportShort)}</div></div>
+            <div class="pwr10-row-input">
+              <div class="pwr10-icon ${bShade}">${renderAttrIcon(r.kind, r.bTxt)}</div>
+              <div class="pwr10-title section11"><div>${esc(r.bTxt)}</div></div>
+              ${badgeHTML}
+            </div>
+            <div class="pwr10-row-input-label"><div>${esc(r.label)}</div></div>
+          </div>
+        </div>
+      `.trim();
+
+      grid.appendChild(wrap.firstElementChild);
+    });
+  } catch (err) {
+    if (DEBUG) console.warn('[pwr10 S1]', err);
+  }
 }
 
 
