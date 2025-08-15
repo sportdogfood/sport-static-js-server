@@ -251,7 +251,11 @@ function appendEmptyCards(listContainer, { general, contentious }) {
   if (contentious) ensure('ci-no-results-contentious', contentious);
 }
 
-
+// Set a [data-var="..."] node's textContent, if present
+function setVarText(varName, text) {
+  const el = document.querySelector(`[data-var="${varName}"]`);
+  if (el) el.textContent = String(text ?? '');
+}
 // Ensure all PWR10 containers exist (sticky + section buckets)
 function ensurePwr10Scaffold(rootEl) {
   const need = (cls, id) => {
@@ -433,6 +437,33 @@ export function paintSection1(mainRow, sdfRow, sectionSelector = '#section-1') {
   // Build display helpers
   const compFull  = `${(mainRow['data-brand'] || 'Competitor')} — ${(mainRow['data-one'] || '').trim()}`.trim();
   const sportFull = `Sport Dog Food — ${(sdfRow['data-one'] || '').trim()}`.trim();
+// ---- Section 1 header + subtitle + madlib (optional hooks) ----
+{
+  const brand     = (mainRow['data-brand'] || 'Competitor').trim();
+  const brandName = (mainRow['data-one'] || '').trim();
+  const sdfName   = (sdfRow['data-one']  || '').trim();
+
+  // Header / subtitle mirrors your Section 2 style
+  setVarText('section1-header',   'Formula Basics');
+  setVarText(
+    'section1-subtitle',
+    `Diet, legumes, poultry, and primary protein for ${brand} ${brandName} vs. Sport Dog Food ${sdfName}.`
+  );
+
+  // Compact comparison sentence
+  const lhsDiet    = dietText(mainRow['data-diet'] || mainRow['data-grain'] || '');
+  const rhsDiet    = dietText(sdfRow['data-diet']  || sdfRow['data-grain']  || '');
+  const lhsLP      = buildLegumePoultryPhrase(mainRow);
+  const rhsLP      = buildLegumePoultryPhrase(sdfRow);
+  const lhsFlavor  = flavorText(mainRow['specs_primary_flavor'] || '');
+  const rhsFlavor  = flavorText(sdfRow['specs_primary_flavor']  || '');
+
+  const s1Madlib = (
+    `${brand} ${brandName}: ${lhsDiet}, ${lhsLP}; primary protein: ${lhsFlavor}. ` +
+    `Sport Dog Food ${sdfName}: ${rhsDiet}, ${rhsLP}; primary protein: ${rhsFlavor}.`
+  );
+  setVarText('section1-madlib', s1Madlib);
+}
 
   const dietText = v =>
     /free/i.test(v) ? 'Grain-Free' :
@@ -847,6 +878,20 @@ export function paintSection3(mainRow, sdfRow) {
   // Totals overlay
   const countsB = getIngredientCategoryCounts(mainRow);
   const countsS = getIngredientCategoryCounts(sdfRow);
+// Optional Section 3 madlib (ingredient totals & categories)
+{
+  const brand     = (mainRow['data-brand'] || 'Competitor').trim();
+  const brandName = (mainRow['data-one']    || '').trim();
+  const sdfName   = (sdfRow['data-one']     || '').trim();
+
+  const s3Madlib =
+    `${brand} ${brandName} lists ${countsB.total} ingredients ` +
+    `(${countsB.Protein} protein, ${countsB.Plants} plants, ${countsB.Supplemental} supplemental). ` +
+    `Sport Dog Food ${sdfName} lists ${countsS.total} ` +
+    `(${countsS.Protein} protein, ${countsS.Plants} plants, ${countsS.Supplemental} supplemental).`;
+
+  setVarText('section3-madlib', s3Madlib);
+}
 
   const overlayRow = (key, label) => {
     const b = countsB[key] ?? 0;
