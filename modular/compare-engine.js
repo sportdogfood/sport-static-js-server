@@ -735,7 +735,7 @@ const grid = document.querySelector('#pwr10-section2') ||
     if (/protein/i.test(label)) return n > 25;
     if (/fat/i.test(label))     return n > 14;
     if (/cup/i.test(label))     return n > 420;
-    if (/kg/i.test(label))      return n > 3600;
+    if (/kg/i.test(label))      return n > 3400;
     return false;
   };
 
