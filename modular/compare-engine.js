@@ -936,7 +936,7 @@ export function paintSection3(mainRow, sdfRow) {
 
   rowsRoot.classList.add('cmp3-rows');
   rowsRoot.innerHTML = [
-    overlayRow('total',        'Total Ingredients'),
+    overlayRow('total',        'Evaluated'),
     overlayRow('Protein',      'Protein'),
     overlayRow('Plants',       'Plants'),
     overlayRow('Supplemental', 'Supplemental'),
