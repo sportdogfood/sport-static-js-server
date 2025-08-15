@@ -255,9 +255,10 @@ function appendEmptyCards(listContainer, { general, contentious }) {
 // Ensure all PWR10 containers exist (sticky + section buckets)
 function ensurePwr10Scaffold(rootEl) {
   const need = (cls, id) => {
-    let el =
-      (id && rootEl.querySelector(`:scope > #${id}`)) ||
-      rootEl.querySelector(`:scope > .pwr10-rows-grid.${cls}`);
+ let el =
+  (id && (document.getElementById(id) || rootEl.querySelector(`#${id}`))) ||
+  rootEl.querySelector(`.pwr10-rows-grid.${cls}`) ||
+  document.querySelector(`.pwr10-rows-grid.${cls}`);
 
     if (!el) {
       el = document.createElement('div'); // or 'section'
@@ -568,7 +569,9 @@ function renderAttrIcon(kind, txt) {
 // PWR10 mirror (ALL Section 1 rows)
 // ──────────────────────────────────────────────
 try {
-  const grid = document.querySelector('.pwr10-rows-grid.section1');
+  const grid = document.querySelector('#pwr10-section1') ||
+             document.querySelector('.pwr10-rows-grid.section1');
+
   if (!grid) return;
 
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -723,7 +726,8 @@ export function paintSection2(mainRow, sdfRow) {
 
 try {
   // target ONLY the Section-2 grid
-  const grid = document.querySelector('.pwr10-rows-grid.section2');
+const grid = document.querySelector('#pwr10-section2') ||
+             document.querySelector('.pwr10-rows-grid.section2');
   if (!grid) return;
 
   const compShort  = `${(mainRow['data-brand'] || 'Competitor')} ${mainRow['data-one'] || ''}`.trim();
@@ -1682,7 +1686,8 @@ export function renderComparePage() {
 
   window.CCI = { mainRow, sdfRow: initialRow, ING_ANIM, ING_PLANT, ING_SUPP };
 
-  const grids = ensurePwr10Scaffold(document.body);
+const root = document.querySelector('#compare-sticky') || document.body;
+const grids = ensurePwr10Scaffold(root);
   // Sticky header immediately
   if (typeof renderStickyCompareHeader === 'function') {
     renderStickyCompareHeader(mainRow, initialRow);
