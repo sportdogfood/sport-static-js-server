@@ -1113,24 +1113,25 @@ function setupIngredientSearch(sec3) {
   const suggestEl = sec3.querySelector('#cmp3-suggest');
   const bar       = sec3.querySelector('.pwrf_searchbar');
 
-  const brandBox  = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
-  const sportBox  = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
+  if (!input || !clearBtn) return;
 
-  if (!input || !clearBtn || !brandBox || !sportBox) return;
-  if (input._wired) return;
-  input._wired = true;
+  // Always grab FRESH list nodes (lists are re-rendered on each paint)
+  const getBrandBox = () => sec3.querySelector('#cmp3-brand-list .ci-ings-list');
+  const getSportBox = () => sec3.querySelector('#cmp3-sport-list .ci-ings-list');
 
-  // Make the clear button available; no JS toggling
-  clearBtn.hidden = false;
-  clearBtn.style.display = ''; // let CSS decide
+  // First-time wiring only (listeners, focus styles, etc.)
+  if (!input._wired) {
+    input._wired = true;
 
-  // Optional: focus styling on the wrapper (kept; safe)
-  if (bar && !bar._focusWired) {
-    bar._focusWired = true;
-    input.addEventListener('focus', () => bar.classList.add('is-focused'));
-    input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
-  }
+    // Make the clear button available
+    clearBtn.hidden = false;
+    clearBtn.style.display = '';
 
+    if (bar && !bar._focusWired) {
+      bar._focusWired = true;
+      input.addEventListener('focus', () => bar.classList.add('is-focused'));
+      input.addEventListener('blur',  () => bar.classList.remove('is-focused'));
+    }
 // ──────────────────────────────────────────────
 // SEE MORE (per list)
 // ──────────────────────────────────────────────
@@ -1376,12 +1377,15 @@ const filterList = (listEl, terms) => {
 
 // Hoisted declaration avoids init-order issues
 function doFilter() {
+  const brandBox = getBrandBox();
+  const sportBox = getSportBox();
+  if (!brandBox || !sportBox) return;
+
   const raw   = (input.value || '').toLowerCase();
   const parts = raw.trim().split(/\s+/).filter(Boolean);
   const lastIsPartial = !/\s$/.test(input.value) && parts.length ? parts[parts.length - 1] : '';
   const terms = lastIsPartial ? parts.slice(0, -1) : parts;
 
-  // Apply filters to both lists
   const brandShown = filterList(brandBox, terms);
   const sportShown = filterList(sportBox, terms);
 
