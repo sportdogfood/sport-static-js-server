@@ -1513,6 +1513,39 @@ function setupIngredientSearch(sec3) {
     renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
   };
 
+// ──────────────────────────────────────────────
+// Make each ingredient card clickable / keyboard accessible
+// ──────────────────────────────────────────────
+if (!sec3._ingClickWired) {
+  sec3._ingClickWired = true;
+  sec3.addEventListener('click', (e) => {
+    // ignore clicks on "Clear" links or see-more buttons
+    if (e.target.closest('.ci-clear, .ci-see-more-btn')) return;
+
+    const wrap = e.target.closest('.ci-ing-wrapper');
+    if (!wrap || wrap.hidden || wrap.style.display === 'none') return;
+
+    const name = wrap.querySelector('.ci-ing-displayas')?.textContent?.trim();
+    if (!name) return;
+
+    applySuggestion(name);
+  });
+}
+
+if (!sec3._ingKeyWired) {
+  sec3._ingKeyWired = true;
+  sec3.addEventListener('keydown', (e) => {
+    const wrap = e.target.closest('.ci-ing-wrapper');
+    if (!wrap) return;
+
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    const name = wrap.querySelector('.ci-ing-displayas')?.textContent?.trim();
+    if (!name) return;
+
+    e.preventDefault();
+    applySuggestion(name);
+  });
+}
   // ──────────────────────────────────────────────
   // Filtering
   // ──────────────────────────────────────────────
