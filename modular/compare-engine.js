@@ -1323,6 +1323,14 @@ function setupIngredientSearch(sec3) {
   const suggestEl = sec3.querySelector('#cmp3-suggest');
   const bar       = sec3.querySelector('.pwrf_searchbar');
 
+  // Hardcoded pills to show when Fuse isn't ready and input is empty
+  const DEFAULT_SUGGEST_PILLS = [
+    'protein','plants','supplemental',
+    'allergy','contentious','poultry',
+    'minerals','vitamins','probiotics',
+    'upgraded','chelated'
+  ];
+
   if (!input || !clearBtn) return;
 
   // Always grab FRESH list nodes (lists are re-rendered on each paint)
@@ -1330,18 +1338,15 @@ function setupIngredientSearch(sec3) {
   const getSportBox = () => sec3.querySelector('#cmp3-sport-list .ci-ings-list');
 
   // ──────────────────────────────────────────────
-  // SEE MORE (per list) — single definitions
+  // SEE MORE (per list)
   // ──────────────────────────────────────────────
   function collapseLimit() {
     return window.matchMedia('(max-width: 600px)').matches ? 8 : 12;
   }
-
-  // Return items that MATCH the query (even if collapsed)
   function matchedItems(listRoot) {
     return Array.from(listRoot.querySelectorAll('.ci-ing-wrapper'))
       .filter(el => el.dataset.smMatch === '1');
   }
-
   function initSeeMoreForList(listRoot) {
     if (!listRoot || listRoot._seeMoreWired) return;
     listRoot._seeMoreWired = true;
@@ -1366,7 +1371,6 @@ function setupIngredientSearch(sec3) {
 
     applySeeMore(listRoot);
   }
-
   function applySeeMore(listRoot) {
     const limit    = collapseLimit();
     const matches  = matchedItems(listRoot);
@@ -1399,16 +1403,12 @@ function setupIngredientSearch(sec3) {
       if (fade) fade.style.display = 'none';
     }
   }
-
-  // Re-apply per list (brand + sport) whenever things change
   function refreshSeeMore() {
     const brandListRoot = sec3.querySelector('#cmp3-brand-list .ci-ings-list');
     const sportListRoot = sec3.querySelector('#cmp3-sport-list .ci-ings-list');
     if (brandListRoot) { initSeeMoreForList(brandListRoot); applySeeMore(brandListRoot); }
     if (sportListRoot) { initSeeMoreForList(sportListRoot); applySeeMore(sportListRoot); }
   }
-
-  // Re-apply limits on resize (e.g., crossing 600px)
   if (!window._cmp3SeeMoreResize) {
     let _smResizeId;
     window.addEventListener('resize', () => {
@@ -1418,44 +1418,45 @@ function setupIngredientSearch(sec3) {
     window._cmp3SeeMoreResize = true;
   }
 
-  // ensure empty cards exist (brand + sport) with a "Clear" link
-// ensure empty cards exist (brand + sport) with a "Clear" link
-const ensureEmpty = (rootSel, cls, html) => {
-  const root = sec3.querySelector(rootSel);
-  if (!root) return null;
+  // ──────────────────────────────────────────────
+  // Empty states INSIDE .ci-list-body
+  // ──────────────────────────────────────────────
+  const ensureEmpty = (rootSel, cls, html) => {
+    const root = sec3.querySelector(rootSel);
+    if (!root) return null;
+    const host = root.classList.contains('ci-list-body')
+      ? root
+      : (root.querySelector('.ci-list-body') || root);
 
-  // Prefer the body; fall back to root if someone changed markup
-  const host = root.classList.contains('ci-list-body')
-    ? root
-    : (root.querySelector('.ci-list-body') || root);
+    let el = host.querySelector(`.${cls}`) || root.querySelector(`.${cls}`);
+    if (!el) {
+      el = document.createElement('div');
+      el.className = cls;
+      el.hidden = true;
+      el.style.display = 'none'; // JS controls visibility; CSS sets flex when shown
+      el.innerHTML = html || 'No results.';
+    }
+    if (el.parentNode !== host) host.appendChild(el); // move if needed
+    return el;
+  };
 
-  // Find or create the empty-state element
-  let el = host.querySelector(`.${cls}`) || root.querySelector(`.${cls}`);
-  if (!el) {
-    el = document.createElement('div');
-    el.className = cls;
-    el.hidden = true;
-    el.style.display = 'none';
-    el.innerHTML = html || 'No results.';
-  }
-
-  // If it was previously under .ci-list, move it into .ci-list-body
-  if (el.parentNode !== host) host.appendChild(el);
-  return el;
-};
-
-
-  const brandEmpty = ensureEmpty('#cmp3-brand-list','ci-no-results',
+  const brandEmpty = ensureEmpty(
+    '#cmp3-brand-list',
+    'ci-no-results',
     'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
   );
-  const sportEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results',
+  const sportEmpty = ensureEmpty(
+    '#cmp3-sport-list',
+    'ci-no-results',
     'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
   );
-  const sportContEmpty = ensureEmpty('#cmp3-sport-list','ci-no-results-contentious',
+  const sportContEmpty = ensureEmpty(
+    '#cmp3-sport-list',
+    'ci-no-results-contentious',
     'Sport Dog Food avoids most contentious ingredients. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
   );
 
-  // Delegated handler for the inline "Clear" links
+  // Delegated "Clear" links
   sec3.addEventListener('click', (e) => {
     const a = e.target.closest('.ci-clear');
     if (!a) return;
@@ -1465,7 +1466,9 @@ const ensureEmpty = (rootSel, cls, html) => {
     input.focus();
   });
 
-  // Suggestions (Fuse or fallback)
+  // ──────────────────────────────────────────────
+  // Suggestions (Fuse or fallback) + defaults until Fuse is ready
+  // ──────────────────────────────────────────────
   let { fuse, list } = makeSuggestionIndex(sec3);
 
   const suggestFor = (lastTerm, existingTerms) => {
@@ -1481,11 +1484,6 @@ const ensureEmpty = (rootSel, cls, html) => {
     return candidates.filter(s => !taken.has(s)).slice(0, 8);
   };
 
-  const renderSuggest = (lastTerm, existingTerms = []) => {
-    const items = suggestFor(lastTerm, existingTerms);
-    renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
-  };
-
   const applySuggestion = (s) => {
     const raw = input.value;
     const endsWithSpace = /\s$/.test(raw);
@@ -1494,11 +1492,30 @@ const ensureEmpty = (rootSel, cls, html) => {
     parts.push(s);
     input.value = parts.join(' ') + ' ';
     doFilter();
-    renderSuggest('');
+    renderSuggest(''); // re-evaluate pills
     input.focus();
   };
 
-  // Filtering helpers
+  const renderSuggest = (lastTerm, existingTerms = []) => {
+    const fuseReady = !!(window.Fuse && fuse);
+    // Empty input: show defaults until Fuse is ready
+    if (!lastTerm && !fuseReady) {
+      renderSuggestPills({ box: suggestEl, items: DEFAULT_SUGGEST_PILLS, onPick: applySuggestion });
+      return;
+    }
+    // Empty input and Fuse ready: hide
+    if (!lastTerm) {
+      renderSuggestPills({ box: suggestEl, items: [], onPick: applySuggestion });
+      return;
+    }
+    // Typing: show dynamic suggestions (Fuse or fallback)
+    const items = suggestFor(lastTerm, existingTerms);
+    renderSuggestPills({ box: suggestEl, items, onPick: applySuggestion });
+  };
+
+  // ──────────────────────────────────────────────
+  // Filtering
+  // ──────────────────────────────────────────────
   const cacheTokens = (wrap) => {
     if (!wrap._tokenSet) {
       const str = (wrap.getAttribute('data-search') || '').toLowerCase();
@@ -1514,10 +1531,10 @@ const ensureEmpty = (rootSel, cls, html) => {
       const set = cacheTokens(it);
       const ok = terms.length === 0 ? true : terms.every(t => set.has(t));
 
-      // mark current match state for see-more to use later
+      // mark match for see-more
       if (ok) it.dataset.smMatch = '1'; else delete it.dataset.smMatch;
 
-      // normal visibility for filter
+      // visibility
       it.hidden = !ok;
       it.style.display = ok ? '' : 'none';
 
@@ -1529,10 +1546,9 @@ const ensureEmpty = (rootSel, cls, html) => {
   const toggle = (el, show) => {
     if (!el) return;
     el.hidden = !show;
-   el.style.display = show ? '' : 'none';
+    el.style.display = show ? '' : 'none'; // '' lets CSS display:flex apply
   };
 
-  // Hoisted declaration avoids init-order issues
   function doFilter() {
     const brandBox = getBrandBox();
     const sportBox = getSportBox();
@@ -1546,10 +1562,10 @@ const ensureEmpty = (rootSel, cls, html) => {
     const brandShown = filterList(brandBox, terms);
     const sportShown = filterList(sportBox, terms);
 
-    // Brand "no results"
+    // Brand empty
     toggle(brandEmpty, terms.length > 0 && brandShown === 0);
 
-    // —— Dynamic contentious logic (based on visible flags on brand side) ——
+    // Contentious-derived sport empty
     const contentiousInBrand = Array.from(
       brandBox.querySelectorAll('.ci-ing-wrapper')
     ).filter(it => !it.hidden && /\bcontentious\b/.test(String(it.getAttribute('data-flags') || '')));
@@ -1565,20 +1581,19 @@ const ensureEmpty = (rootSel, cls, html) => {
         `<a class="ci-clear" href="#" data-act="clear">Clear</a>`;
     }
 
-    // Toggle Sport empties
     toggle(sportContEmpty, showContMsg);
     toggle(sportEmpty, terms.length > 0 && sportShown === 0 && !showContMsg);
 
-    // Suggestions for trailing partial
+    // Suggestions for trailing partial (and defaults when empty)
     const existing = new Set(terms);
     renderSuggest(lastIsPartial, Array.from(existing));
 
-    // Blank query => show all, hide empties + suggestions
+    // Blank query => show all, hide empties + (maybe) show defaults
     if (parts.length === 0) {
       toggle(brandEmpty, false);
       toggle(sportEmpty, false);
       toggle(sportContEmpty, false);
-      renderSuggest('');
+      renderSuggest(''); // will show defaults if Fuse not ready
     }
 
     // Re-apply collapses to whatever is currently matched
@@ -1592,7 +1607,7 @@ const ensureEmpty = (rootSel, cls, html) => {
     refreshSeeMore(); // re-apply per-list collapse
   };
 
-  // First-time wiring only (listeners, focus styles, etc.)
+  // First-time wiring only
   if (!input._wired) {
     input._wired = true;
 
@@ -1642,12 +1657,16 @@ const ensureEmpty = (rootSel, cls, html) => {
 
     // Initial render
     applyFilterAndCollapse();
+    renderSuggest(''); // show defaults if Fuse isn't ready yet
   } else {
     // already wired (e.g., after a formula switch): just re-apply to new content
     if (typeof input._reindex === 'function') input._reindex();
     applyFilterAndCollapse();
+    renderSuggest('');
   }
 }
+
+
 
 
 // ===========================
