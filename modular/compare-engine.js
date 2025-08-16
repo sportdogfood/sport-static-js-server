@@ -1419,20 +1419,31 @@ function setupIngredientSearch(sec3) {
   }
 
   // ensure empty cards exist (brand + sport) with a "Clear" link
-  const ensureEmpty = (rootSel, cls, html) => {
-    const root = sec3.querySelector(rootSel);
-    if (!root) return null;
-    let el = root.querySelector(`.${cls}`);
-    if (!el) {
-      el = document.createElement('div');
-      el.className = cls;
-      el.hidden = true;
-      el.style.display = 'none';
-      el.innerHTML = html || 'No results.';
-      root.appendChild(el);
-    }
-    return el;
-  };
+// ensure empty cards exist (brand + sport) with a "Clear" link
+const ensureEmpty = (rootSel, cls, html) => {
+  const root = sec3.querySelector(rootSel);
+  if (!root) return null;
+
+  // Prefer the body; fall back to root if someone changed markup
+  const host = root.classList.contains('ci-list-body')
+    ? root
+    : (root.querySelector('.ci-list-body') || root);
+
+  // Find or create the empty-state element
+  let el = host.querySelector(`.${cls}`) || root.querySelector(`.${cls}`);
+  if (!el) {
+    el = document.createElement('div');
+    el.className = cls;
+    el.hidden = true;
+    el.style.display = 'none';
+    el.innerHTML = html || 'No results.';
+  }
+
+  // If it was previously under .ci-list, move it into .ci-list-body
+  if (el.parentNode !== host) host.appendChild(el);
+  return el;
+};
+
 
   const brandEmpty = ensureEmpty('#cmp3-brand-list','ci-no-results',
     'No ingredients matched your search. <a class="ci-clear" href="#" data-act="clear">Clear</a>'
