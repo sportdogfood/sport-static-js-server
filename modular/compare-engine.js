@@ -327,7 +327,7 @@ function s1FlavorText(v) {
 
 
 // ===========================
-// Scaffold V2 (nested containers) — with styling classes
+// Scaffold V2 (nested containers) — minimal S3 (anchor only)
 // ===========================
 export function initCompareScaffoldV2() {
   const $ = (s) => document.querySelector(s);
@@ -350,45 +350,16 @@ export function initCompareScaffoldV2() {
   }
 
   // helper: ensure a container by id, placed after a reference selector
-// helper: ensure a container by id, placed after a reference selector
-// Parent strategy:
-//  1) use the anchor's parent (afterSel)
-//  2) else use the parent of an existing PWR10 section (S2, then S1, then sticky)
-//  3) else fallback to document.body
-const ensureContainer = (id, afterSel) => {
-  let el = document.getElementById(id);
-  let after = afterSel ? document.querySelector(afterSel) : null;
-
-  const pickParent = () => {
-    if (after && after.parentNode) return after.parentNode;
-    const sibIds = ['pwr10-section2', 'pwr10-section1', 'compare-sticky'];
-    for (const sid of sibIds) {
-      const sib = document.getElementById(sid);
-      if (sib && sib.parentNode) return sib.parentNode;
+  const ensureContainer = (id, afterSel) => {
+    let el = $('#' + id);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = id;
+      const after = $(afterSel);
+      if (after) insertAfter(after, el); else document.body.appendChild(el);
     }
-    return document.body;
-  };
-
-  const parent = pickParent();
-  const ref = after ? after.nextSibling : null;
-
-  if (!el) {
-    el = document.createElement('div');
-    el.id = id;
-    parent.insertBefore(el, ref);
     return el;
-  }
-
-  // Normalize location/order if it already exists
-  if (el.parentNode !== parent) {
-    parent.insertBefore(el, ref);
-  } else if (after && el.previousSibling !== after) {
-    parent.insertBefore(el, ref);
-  }
-
-  return el;
-};
-
+  };
 
   // helper: ensure a grid inside a parent, with classes + id
   const ensureGridIn = (parent, cls, id) => {
@@ -406,7 +377,7 @@ const ensureContainer = (id, afterSel) => {
     return grid;
   };
 
-  // ---------- NEW: helper to compute classes for each data-var ----------
+  // helper: classes for S1/S2 placeholders
   const classesForVar = (name) => {
     const role =
       /-header$/.test(name)   ? ['pwr-title', 'pwr10-title'] :
@@ -419,7 +390,7 @@ const ensureContainer = (id, afterSel) => {
     return [...role, ...scopeCls, ...varHandle];
   };
 
-  // ---------- NEW: ensureVar adds the styling classes ----------
+  // ensureVar (used ONLY for S1/S2 below)
   const ensureVar = (name, parent) => {
     let el = document.querySelector(`[data-var="${name}"]`);
     if (!el) {
@@ -431,124 +402,45 @@ const ensureContainer = (id, afterSel) => {
     return el;
   };
 
-  // SECTION 1
+  // ===== SECTION 1 =====
   const s1 = ensureContainer('pwr10-section1', '#compare-sticky');
   const s1Title = ensureGridIn(s1, 'section1-title', 'pwr10-section1-title');
   const s1Grid  = ensureGridIn(s1, 'section1',       'pwr10-section1-grid');
   s1Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s1', 'scope-s1');
+  // S1 placeholders
+  ensureVar('section1-header',   s1Title);
+  ensureVar('section1-subtitle', s1Title);
+  ensureVar('section1-madlib',   s1Title);
 
-  // SECTION 2
+  // ===== SECTION 2 =====
   const s2 = ensureContainer('pwr10-section2', '#pwr10-section1');
   const s2Title = ensureGridIn(s2, 'section2-title', 'pwr10-section2-title');
   const s2Grid  = ensureGridIn(s2, 'section2',       'pwr10-section2-grid');
   s2Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s2', 'scope-s2');
+  // S2 placeholders
+  ensureVar('section2-header',   s2Title);
+  ensureVar('section2-subtitle', s2Title);
+  ensureVar('section2-madlib',   s2Title);
 
-  // SECTION 3 — keep titles as direct-children for CSS compatibility; single #section-3
-// SECTION 3 — mount into explicit anchor if present, otherwise move there when it appears
-const S3_ANCHOR_SEL = '#pwr10-s3-anchor';
-
-// Create/find the Section 3 outer container as usual
-const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
-
-// If someone accidentally styled the outer wrapper as the CE container, neutralize it
-s3.classList.remove('pwr10-ce-cont');
-
-// If the anchor exists now, mount S3 inside it; otherwise, wait and move it when it appears
-(function ensureS3InAnchor() {
-  const anchor = document.querySelector(S3_ANCHOR_SEL);
-  if (anchor) {
-    if (s3.parentNode !== anchor) anchor.appendChild(s3);
-    return; // we're done
-  }
-  // Anchor not in DOM yet — watch for it, then move S3 once and stop
-  const mo = new MutationObserver(() => {
-    const a = document.querySelector(S3_ANCHOR_SEL);
-    if (!a) return;
-    a.appendChild(s3);
-    mo.disconnect();
-  });
-  mo.observe(document.documentElement, { childList: true, subtree: true });
-})();
-
-// Proceed to build the grid/CE inside S3 as you already do
-const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
-s3Grid.classList.add('scope-s3x');
-
-// ----- CE container + single #section-3 (unchanged below this line)
-let ceCont = s3Grid.querySelector('.pwr10-ce-contx');
-if (!ceCont) {
-  ceCont = document.createElement('div');
-  ceCont.className = 'pwr10-ce-contx';
-  s3Grid.appendChild(ceCont);
-}
-
-const sec3All = Array.from(document.querySelectorAll('#section-3'));
-let sec3 = sec3All[0] || null;
-if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
-if (!sec3) { sec3 = document.createElement('section'); sec3.id = 'section-3'; }
-sec3.classList.add('pwr10-cex');
-if (sec3.parentNode !== ceCont) ceCont.appendChild(sec3);
-
-// titles as direct children (keep your existing ensureVarCompat calls, etc) …
-
-
-  // ----- Titles as DIRECT CHILDREN of the grid (no wrapper dependency)
-  const ensureVarCompat = (name) => {
-    let el = document.querySelector(`[data-var="${name}"]`);
-    if (!el) { el = document.createElement('div'); el.setAttribute('data-var', name); }
-    if (/-header$/.test(name))   el.classList.add('pwr-title','pwr10-title');
-    if (/-subtitle$/.test(name)) el.classList.add('pwr-subtitle','pwr10-subtitle');
-    if (/-madlib$/.test(name))   el.classList.add('pwr-madlib','pwr10-madlib');
-    el.classList.add('scope-s3', `var-${name}`, name);
-    if (el.parentNode !== s3Grid || el.nextElementSibling !== ceCont) {
-      s3Grid.insertBefore(el, ceCont);
+  // ===== SECTION 3 (anchor-only) =====
+  // DO NOT add/modify any classes or divs for Section 3 or Section K.
+  // Only ensure #pwr10-section3 sits inside #pwr10-s3-anchor if the anchor exists.
+  const s3Anchor = document.getElementById('pwr10-s3-anchor');
+  if (s3Anchor) {
+    let s3 = document.getElementById('pwr10-section3');
+    if (!s3) {
+      s3 = document.createElement('div');
+      s3.id = 'pwr10-section3';
     }
-    return el;
-  };
-
-  // S1/S2 title buckets (unchanged location; just ensure classes)
-  const ensureVarNoMove = (name, parent) => {
-    let el = document.querySelector(`[data-var="${name}"]`);
-    if (!el) { el = document.createElement('div'); el.setAttribute('data-var', name); parent && parent.appendChild(el); }
-    if (/-header$/.test(name))   el.classList.add('pwr-title','pwr10-title');
-    if (/-subtitle$/.test(name)) el.classList.add('pwr-subtitle','pwr10-subtitle');
-    if (/-madlib$/.test(name))   el.classList.add('pwr-madlib','pwr10-madlib');
-    if (/^section1-/.test(name)) el.classList.add('scope-s1');
-    if (/^section2-/.test(name)) el.classList.add('scope-s2');
-    el.classList.add(`var-${name}`, name);
-    return el;
-  };
-
-  ensureVarNoMove('section1-header',   s1Title);
-  ensureVarNoMove('section1-subtitle', s1Title);
-  ensureVarNoMove('section1-madlib',   s1Title);
-
-  ensureVarNoMove('section2-header',   s2Title);
-  ensureVarNoMove('section2-subtitle', s2Title);
-  ensureVarNoMove('section2-madlib',   s2Title);
-
-  // Section 3 titles: direct children (compat)
-  ensureVarCompat('section3-header');
-  ensureVarCompat('section3-subtitle');
-  ensureVarCompat('section3-madlib');
-
-  // Remove any now-empty wrapper we may have created earlier (optional)
-  const oldWrap = s3Grid.querySelector('.pwr10-varwrap');
-  if (oldWrap && oldWrap.children.length === 0) oldWrap.remove();
-
-  // Optional Section K (unchanged)
-  let kWrap = s3.nextElementSibling;
-  if (!(kWrap && kWrap.classList.contains('pwr10-varwrap-k'))) {
-    kWrap = document.createElement('div');
-    kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
-    insertAfter(s3, kWrap);
+    if (s3.parentNode !== s3Anchor) {
+      s3Anchor.appendChild(s3); // move without touching classes/children
+    }
   }
-  ensureVarNoMove('sectionk-header', kWrap);
-  ensureVarNoMove('sectionk-madlib', kWrap);
+  // (No Section 3 placeholders, grids, or Section K touches.)
 
-  // return includes s3Varwrap: null for backward compatibility with old callers
-  return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid, s3, s3Grid, s3Varwrap: null, sec3 };
+  return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid };
 }
+
 
 
 // ===========================
