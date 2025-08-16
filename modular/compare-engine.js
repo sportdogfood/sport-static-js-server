@@ -1666,6 +1666,7 @@ function renderIngListDivs(row) {
         const contentiousExplain = ing['cont-cf-explain-contentious'] || '';
         const termDescription    = ing.termDescription || '';
 
+        // Chip tags (visual)
         const tags = [];
         if (ing['data-type']) {
           tags.push(`<div class="ci-ing-tag ci-tag-default ci-tag-${esc(consumerSlug)}">${esc(consumerTag)}</div>`);
@@ -1676,31 +1677,70 @@ function renderIngListDivs(row) {
         if (ing.supplementalType === 'Minerals')   tags.push(`<div class="ci-ing-tag ci-tag-mineral">mineral</div>`);
         if (ing.supplementalType === 'Vitamins')   tags.push(`<div class="ci-ing-tag ci-tag-vitamin">vitamin</div>`);
         if (ing.supplementalType === 'Probiotics') tags.push(`<div class="ci-ing-tag ci-tag-probiotic">probiotic</div>`);
+
+        // Upgraded mineral detection
         const assist = (ing.supplementalAssist || '').toLowerCase();
-        if (assist.includes('chelate') || assist.includes('complex')) {
+        const isUpgraded = assist.includes('chelate') || assist.includes('complex');
+        if (isUpgraded) {
           tags.push(`<div class="ci-ing-tag ci-tag-upgraded">upgraded mineral</div>`);
         }
 
-  // Build the searchable corpus (EXCLUDES contentiousExplain & termDescription)
-const raw = [
-  ing.Name, ing.displayAs, ing.groupWith,
-  ing['data-type'] || '', ing.recordType || '',
-  ing.animalType || '',   ing.animalAssist || '',
-  ing.plantType || '',    ing.plantAssist || '',
-  ing.supplementalType || '', ing.supplementalAssist || '',
-  ...(ing.tags || [])
-].join(' ').toLowerCase();
+        // --- Build searchable corpus (EXCLUDES long-form texts) ---
+        const baseParts = [
+          ing.Name, ing.displayAs, ing.groupWith,
+          ing['data-type'] || '', ing.recordType || '',
+          ing.animalType || '',   ing.animalAssist || '',
+          ing.plantType || '',    ing.plantAssist || '',
+          ing.supplementalType || '', ing.supplementalAssist || '',
+          ...(ing.tags || [])
+        ];
 
-const searchKeys = Array.from(new Set(raw.split(/\s+/).filter(Boolean))).join(' ');
+        const tokenSet = new Set(
+          baseParts
+            .map(String)
+            .join(' ')
+            .toLowerCase()
+            .split(/\s+/)
+            .filter(Boolean)
+        );
 
-// Flags unchanged
-const flags = [
-  consumerSlug,
-  ing.tagPoultry     ? 'poultry'     : '',
-  ing.tagAllergy     ? 'allergy'     : '',
-  ing.tagContentious ? 'contentious' : ''
-].filter(Boolean).join(' ');
- return `
+        // helpers
+        const add = (s) => { if (s) tokenSet.add(String(s).toLowerCase()); };
+
+        // category tokens
+        add(consumerTag);   // "Protein"|"Plants"|"Supplemental"|"Other"
+        add(consumerSlug);  // "protein"|"plants"|"supplemental"|"other"
+
+        // boolean/chip flags
+        if (ing.tagPoultry)     add('poultry');
+        if (ing.tagAllergy)     add('allergy');
+        if (ing.tagContentious) add('contentious');
+
+        // supplemental subtype -> singular + plural
+        switch (ing.supplementalType) {
+          case 'Minerals':   add('mineral');   add('minerals');   break;
+          case 'Vitamins':   add('vitamin');   add('vitamins');   break;
+          case 'Probiotics': add('probiotic'); add('probiotics'); break;
+        }
+
+        // upgraded mineral hints
+        if (isUpgraded) {
+          add('upgraded'); add('upgraded-mineral');
+          add('chelate'); add('chelated'); add('complex');
+        }
+
+        const searchKeys = Array.from(tokenSet).join(' ');
+
+        // Wrapper flags (for CSS like border-color by flag)
+        const flags = [
+          consumerSlug,
+          ing.tagPoultry     ? 'poultry'     : '',
+          ing.tagAllergy     ? 'allergy'     : '',
+          ing.tagContentious ? 'contentious' : '',
+          isUpgraded         ? 'upgraded'    : ''
+        ].filter(Boolean).join(' ');
+
+        return `
   <div
     class="ci-ing-wrapper"
     data-search="${esc(searchKeys)}"
@@ -1713,7 +1753,7 @@ const flags = [
     <div class="ci-ing-displayas">${display}</div>
     <div class="ci-ing-tag-wrapper hide-scrollbar">${tags.join('')}</div>
 
-    <!-- NEW hidden meta for UI/overlays/tooltips -->
+    <!-- Hidden meta for UI/overlays/tooltips -->
     <div class="ci-ing-meta" hidden aria-hidden="true">
       <div class="ci-ing-explain-contentious">${esc(contentiousExplain)}</div>
       <div class="ci-ing-term-description">${esc(termDescription)}</div>
@@ -1722,7 +1762,6 @@ const flags = [
     <span class="ci-ing-keys" hidden aria-hidden="true">${esc(searchKeys)}</span>
   </div>
 `;
-
       }).join('')}
     </div>
   `;
