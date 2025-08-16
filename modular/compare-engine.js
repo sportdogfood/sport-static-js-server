@@ -461,13 +461,16 @@ const ensureVarWithClasses = (name, parent) => {
 };
 
 // ---------- titles wrapper ABOVE CE ----------
+// ensure titles wrapper exists and is classed
 let s3Varwrap = s3Grid.querySelector('.pwr10-varwrap');
 if (!s3Varwrap) {
   s3Varwrap = document.createElement('div');
   s3Varwrap.className = 'pwr10-varwrap';
   s3Grid.appendChild(s3Varwrap);
 }
-// ensure it is first child (above CE container)
+// NEW: give it the same styling hooks as other title bars
+s3Varwrap.classList.add('pwr10-titlebar', 'pwr10-titlebar--s3', 'scope-s3');
+// keep it above CE
 if (s3Grid.firstElementChild !== s3Varwrap) {
   s3Grid.insertBefore(s3Varwrap, s3Grid.firstChild);
 }
