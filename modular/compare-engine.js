@@ -326,9 +326,8 @@ function s1FlavorText(v) {
 }
 
 
-// NEW SCAFFOLD: ordered grids + exact data-var placeholders (no content injection)
 // ===========================
-// Scaffold V2 (nested containers)
+// Scaffold V2 (nested containers) — with styling classes
 // ===========================
 export function initCompareScaffoldV2() {
   const $ = (s) => document.querySelector(s);
@@ -378,15 +377,53 @@ export function initCompareScaffoldV2() {
     return grid;
   };
 
+  // ---------- NEW: helper to compute classes for each data-var ----------
+  const classesForVar = (name) => {
+    // base role class by suffix
+    const role =
+      /-header$/.test(name)   ? ['pwr-title', 'pwr10-title'] :
+      /-subtitle$/.test(name) ? ['pwr-subtitle', 'pwr10-subtitle'] :
+      /-madlib$/.test(name)   ? ['pwr-madlib', 'pwr10-madlib'] : [];
+
+    // section scope (1,2,3,k)
+    const m = name.match(/^section(\d+|k)-/i);
+    const scope = m ? String(m[1]).toLowerCase() : null;
+    const scopeCls = scope ? [`scope-s${scope}`] : [];
+
+    // var-specific handle
+    const varHandle = [`var-${name}`, name]; // e.g. var-section1-header + (exact name as a class)
+
+    return [...role, ...scopeCls, ...varHandle];
+  };
+
+  // ---------- NEW: ensureVar adds the styling classes ----------
+  const ensureVar = (name, parent) => {
+    // prefer existing element anywhere; otherwise create
+    let el = document.querySelector(`[data-var="${name}"]`);
+    if (!el) {
+      el = document.createElement('div');
+      el.setAttribute('data-var', name);
+    }
+    // add computed classes (idempotent)
+    classesForVar(name).forEach(c => el.classList.add(c));
+    // mount in requested parent
+    if (parent && !parent.contains(el)) parent.appendChild(el);
+    return el;
+  };
+
   // SECTION 1
   const s1 = ensureContainer('pwr10-section1', '#compare-sticky');
   const s1Title = ensureGridIn(s1, 'section1-title', 'pwr10-section1-title');
   const s1Grid  = ensureGridIn(s1, 'section1',       'pwr10-section1-grid');
+  // NEW: titlebar classes on the grid wrapper
+  s1Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s1', 'scope-s1');
 
   // SECTION 2
   const s2 = ensureContainer('pwr10-section2', '#pwr10-section1');
   const s2Title = ensureGridIn(s2, 'section2-title', 'pwr10-section2-title');
   const s2Grid  = ensureGridIn(s2, 'section2',       'pwr10-section2-grid');
+  // NEW: titlebar classes on the grid wrapper
+  s2Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s2', 'scope-s2');
 
   // SECTION 3
   const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
@@ -408,23 +445,20 @@ export function initCompareScaffoldV2() {
     s3Grid.appendChild(sec3);
   }
 
-  // data-var placeholders (titles/madlibs)
-  const ensureVar = (name, parent) => {
-    let el = document.querySelector(`[data-var="${name}"]`);
-    if (!el) {
-      el = document.createElement('div');
-      el.setAttribute('data-var', name);
-    }
-    if (parent && !parent.contains(el)) parent.appendChild(el);
-    return el;
-  };
-
+  // data-var placeholders (titles/madlibs) — now with styling classes
   // S1/S2 titles get their 3 placeholders
-  ['section1-header','section1-subtitle','section1-madlib'].forEach(n => ensureVar(n, s1Title));
-  ['section2-header','section2-subtitle','section2-madlib'].forEach(n => ensureVar(n, s2Title));
+  ensureVar('section1-header',   s1Title);
+  ensureVar('section1-subtitle', s1Title);
+  ensureVar('section1-madlib',   s1Title);
+
+  ensureVar('section2-header',   s2Title);
+  ensureVar('section2-subtitle', s2Title);
+  ensureVar('section2-madlib',   s2Title);
 
   // S3 varwrap gets its 3 placeholders
-  ['section3-header','section3-subtitle','section3-madlib'].forEach(n => ensureVar(n, s3Varwrap));
+  ensureVar('section3-header',   s3Varwrap);
+  ensureVar('section3-subtitle', s3Varwrap);
+  ensureVar('section3-madlib',   s3Varwrap);
 
   // Optional Section K: after S3
   let kWrap = s3.nextElementSibling;
@@ -433,7 +467,8 @@ export function initCompareScaffoldV2() {
     kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
     insertAfter(s3, kWrap);
   }
-  ['sectionk-header','sectionk-madlib'].forEach(n => ensureVar(n, kWrap));
+  ensureVar('sectionk-header', kWrap);
+  ensureVar('sectionk-madlib', kWrap);
 
   return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid, s3, s3Grid, s3Varwrap, sec3 };
 }
