@@ -350,16 +350,45 @@ export function initCompareScaffoldV2() {
   }
 
   // helper: ensure a container by id, placed after a reference selector
-  const ensureContainer = (id, afterSel) => {
-    let el = $('#' + id);
-    if (!el) {
-      el = document.createElement('div');
-      el.id = id;
-      const after = $(afterSel);
-      if (after) insertAfter(after, el); else document.body.appendChild(el);
+// helper: ensure a container by id, placed after a reference selector
+// Parent strategy:
+//  1) use the anchor's parent (afterSel)
+//  2) else use the parent of an existing PWR10 section (S2, then S1, then sticky)
+//  3) else fallback to document.body
+const ensureContainer = (id, afterSel) => {
+  let el = document.getElementById(id);
+  let after = afterSel ? document.querySelector(afterSel) : null;
+
+  const pickParent = () => {
+    if (after && after.parentNode) return after.parentNode;
+    const sibIds = ['pwr10-section2', 'pwr10-section1', 'compare-sticky'];
+    for (const sid of sibIds) {
+      const sib = document.getElementById(sid);
+      if (sib && sib.parentNode) return sib.parentNode;
     }
-    return el;
+    return document.body;
   };
+
+  const parent = pickParent();
+  const ref = after ? after.nextSibling : null;
+
+  if (!el) {
+    el = document.createElement('div');
+    el.id = id;
+    parent.insertBefore(el, ref);
+    return el;
+  }
+
+  // Normalize location/order if it already exists
+  if (el.parentNode !== parent) {
+    parent.insertBefore(el, ref);
+  } else if (after && el.previousSibling !== after) {
+    parent.insertBefore(el, ref);
+  }
+
+  return el;
+};
+
 
   // helper: ensure a grid inside a parent, with classes + id
   const ensureGridIn = (parent, cls, id) => {
