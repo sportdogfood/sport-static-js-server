@@ -444,24 +444,53 @@ const ensureContainer = (id, afterSel) => {
   s2Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s2', 'scope-s2');
 
   // SECTION 3 — keep titles as direct-children for CSS compatibility; single #section-3
-  const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
-  const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
-  s3Grid.classList.add('scope-s3');
+// SECTION 3 — mount into explicit anchor if present, otherwise move there when it appears
+const S3_ANCHOR_SEL = '#pwr10-s3-anchor';
 
-  // ----- CE container + single #section-3
-  let ceCont = s3Grid.querySelector('.pwr10-ce-cont');
-  if (!ceCont) {
-    ceCont = document.createElement('div');
-    ceCont.className = 'pwr10-ce-cont';
-    s3Grid.appendChild(ceCont);
+// Create/find the Section 3 outer container as usual
+const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
+
+// If someone accidentally styled the outer wrapper as the CE container, neutralize it
+s3.classList.remove('pwr10-ce-cont');
+
+// If the anchor exists now, mount S3 inside it; otherwise, wait and move it when it appears
+(function ensureS3InAnchor() {
+  const anchor = document.querySelector(S3_ANCHOR_SEL);
+  if (anchor) {
+    if (s3.parentNode !== anchor) anchor.appendChild(s3);
+    return; // we're done
   }
+  // Anchor not in DOM yet — watch for it, then move S3 once and stop
+  const mo = new MutationObserver(() => {
+    const a = document.querySelector(S3_ANCHOR_SEL);
+    if (!a) return;
+    a.appendChild(s3);
+    mo.disconnect();
+  });
+  mo.observe(document.documentElement, { childList: true, subtree: true });
+})();
 
-  const sec3All = Array.from(document.querySelectorAll('#section-3'));
-  let sec3 = sec3All[0] || null;
-  if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
-  if (!sec3) { sec3 = document.createElement('section'); sec3.id = 'section-3'; }
-  sec3.classList.add('pwr10-ce');
-  if (sec3.parentNode !== ceCont) ceCont.appendChild(sec3);
+// Proceed to build the grid/CE inside S3 as you already do
+const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
+s3Grid.classList.add('scope-s3');
+
+// ----- CE container + single #section-3 (unchanged below this line)
+let ceCont = s3Grid.querySelector('.pwr10-ce-cont');
+if (!ceCont) {
+  ceCont = document.createElement('div');
+  ceCont.className = 'pwr10-ce-cont';
+  s3Grid.appendChild(ceCont);
+}
+
+const sec3All = Array.from(document.querySelectorAll('#section-3'));
+let sec3 = sec3All[0] || null;
+if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
+if (!sec3) { sec3 = document.createElement('section'); sec3.id = 'section-3'; }
+sec3.classList.add('pwr10-ce');
+if (sec3.parentNode !== ceCont) ceCont.appendChild(sec3);
+
+// titles as direct children (keep your existing ensureVarCompat calls, etc) …
+
 
   // ----- Titles as DIRECT CHILDREN of the grid (no wrapper dependency)
   const ensureVarCompat = (name) => {
