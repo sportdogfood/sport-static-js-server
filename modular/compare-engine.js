@@ -1529,7 +1529,7 @@ const ensureEmpty = (rootSel, cls, html) => {
   const toggle = (el, show) => {
     if (!el) return;
     el.hidden = !show;
-   el.style.display = show ? 'block' : 'none';
+   el.style.display = show ? '' : 'none';
   };
 
   // Hoisted declaration avoids init-order issues
