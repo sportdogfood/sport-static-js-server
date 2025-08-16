@@ -472,13 +472,13 @@ s3.classList.remove('pwr10-ce-cont');
 
 // Proceed to build the grid/CE inside S3 as you already do
 const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
-s3Grid.classList.add('scope-s3');
+s3Grid.classList.add('scope-s3x');
 
 // ----- CE container + single #section-3 (unchanged below this line)
-let ceCont = s3Grid.querySelector('.pwr10-ce-cont');
+let ceCont = s3Grid.querySelector('.pwr10-ce-contx');
 if (!ceCont) {
   ceCont = document.createElement('div');
-  ceCont.className = 'pwr10-ce-cont';
+  ceCont.className = 'pwr10-ce-contx';
   s3Grid.appendChild(ceCont);
 }
 
@@ -486,7 +486,7 @@ const sec3All = Array.from(document.querySelectorAll('#section-3'));
 let sec3 = sec3All[0] || null;
 if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
 if (!sec3) { sec3 = document.createElement('section'); sec3.id = 'section-3'; }
-sec3.classList.add('pwr10-ce');
+sec3.classList.add('pwr10-cex');
 if (sec3.parentNode !== ceCont) ceCont.appendChild(sec3);
 
 // titles as direct children (keep your existing ensureVarCompat calls, etc) …
