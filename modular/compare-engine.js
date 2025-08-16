@@ -425,89 +425,103 @@ export function initCompareScaffoldV2() {
   // NEW: titlebar classes on the grid wrapper
   s2Title.classList.add('pwr10-titlebar', 'pwr10-titlebar--s2', 'scope-s2');
 
-   // SECTION 3 — titles above #section-3 + single #section-3 + classed placeholders
-  const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
-  const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
+   // SECTION 3 — normalize DOM, titles above CE, single #section-3, migrate stray .cmp3
+const s3 = ensureContainer('pwr10-section3', '#pwr10-section2');
+const s3Grid = ensureGridIn(s3, 'section3', 'pwr10-section3-grid');
+s3Grid.classList.add('scope-s3');
 
-  // ---------- local helpers to guarantee classes on placeholders ----------
-  const _ensureVarFallback = (name, parent) => {
-    let el = document.querySelector(`[data-var="${name}"]`);
-    if (!el) {
-      el = document.createElement('div');
-      el.setAttribute('data-var', name);
-    }
-    if (parent && !parent.contains(el)) parent.appendChild(el);
-    return el;
-  };
-  const _ensureVarFn = (typeof ensureVar === 'function') ? ensureVar : _ensureVarFallback;
-
-  const _addVarClasses = (el, name) => {
-    if (!el) return;
-    // role classes
-    if (/-header$/.test(name))   el.classList.add('pwr-title','pwr10-title');
-    if (/-subtitle$/.test(name)) el.classList.add('pwr-subtitle','pwr10-subtitle');
-    if (/-madlib$/.test(name))   el.classList.add('pwr-madlib','pwr10-madlib');
-    // scope (section1/2/3/k)
-    const m = name.match(/^section(\d+|k)-/i);
-    if (m) el.classList.add(`scope-s${String(m[1]).toLowerCase()}`);
-    // handles
-    el.classList.add(`var-${name}`, name); // e.g. var-section3-header + section3-header
-  };
-  const ensureVarWithClasses = (name, parent) => {
-    const el = _ensureVarFn(name, parent);
-    _addVarClasses(el, name);
-    return el;
-  };
-
-  // ---------- ensure ONLY ONE #section-3; keep the first, move into our grid ----------
-  const sec3All = Array.from(document.querySelectorAll('#section-3'));
-  let sec3 = sec3All[0] || null;
-  if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
-  if (!sec3) {
-    sec3 = document.createElement('section');
-    sec3.id = 'section-3';
+// ---------- local helpers to guarantee classes on placeholders ----------
+const _ensureVarFallback = (name, parent) => {
+  let el = document.querySelector(`[data-var="${name}"]`);
+  if (!el) {
+    el = document.createElement('div');
+    el.setAttribute('data-var', name);
   }
-  sec3.classList.add('pwr10-ce');
+  if (parent && !parent.contains(el)) parent.appendChild(el);
+  return el;
+};
+const _ensureVarFn = (typeof ensureVar === 'function') ? ensureVar : _ensureVarFallback;
 
-  // ---------- varwrap ABOVE #section-3 ----------
-  let s3Varwrap = s3Grid.querySelector('.pwr10-varwrap');
-  if (!s3Varwrap) {
-    s3Varwrap = document.createElement('div');
-    s3Varwrap.className = 'pwr10-varwrap';
-  }
-  if (s3Varwrap.parentNode !== s3Grid) s3Grid.appendChild(s3Varwrap);
-  if (sec3.parentNode !== s3Grid) s3Grid.appendChild(sec3);
-  if (s3Varwrap.nextElementSibling !== sec3) s3Grid.insertBefore(s3Varwrap, sec3);
+const _addVarClasses = (el, name) => {
+  if (!el) return;
+  // role classes
+  if (/-header$/.test(name))   el.classList.add('pwr-title','pwr10-title');
+  if (/-subtitle$/.test(name)) el.classList.add('pwr-subtitle','pwr10-subtitle');
+  if (/-madlib$/.test(name))   el.classList.add('pwr-madlib','pwr10-madlib');
+  // scope (section1/2/3/k)
+  const m = name.match(/^section(\d+|k)-/i);
+  if (m) el.classList.add(`scope-s${String(m[1]).toLowerCase()}`);
+  // handles
+  el.classList.add(`var-${name}`, name); // e.g. var-section3-header + section3-header
+};
+const ensureVarWithClasses = (name, parent) => {
+  const el = _ensureVarFn(name, parent);
+  _addVarClasses(el, name);
+  return el;
+};
 
-  // ---------- data-var placeholders (ALL with classes) ----------
-  // S1/S2 title buckets
-  ensureVarWithClasses('section1-header',   s1Title);
-  ensureVarWithClasses('section1-subtitle', s1Title);
-  ensureVarWithClasses('section1-madlib',   s1Title);
-
-  ensureVarWithClasses('section2-header',   s2Title);
-  ensureVarWithClasses('section2-subtitle', s2Title);
-  ensureVarWithClasses('section2-madlib',   s2Title);
-
-  // S3 title/madlib placeholders ABOVE #section-3
-  ensureVarWithClasses('section3-header',   s3Varwrap);
-  ensureVarWithClasses('section3-subtitle', s3Varwrap);
-  ensureVarWithClasses('section3-madlib',   s3Varwrap);
-
-  // Optional Section K: after S3 container
-  let kWrap = s3.nextElementSibling;
-  if (!(kWrap && kWrap.classList.contains('pwr10-varwrap-k'))) {
-    kWrap = document.createElement('div');
-    kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
-    insertAfter(s3, kWrap);
-  }
-  ensureVarWithClasses('sectionk-header', kWrap);
-  ensureVarWithClasses('sectionk-madlib', kWrap);
-
-  return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid, s3, s3Grid, s3Varwrap, sec3 };
+// ---------- titles wrapper ABOVE CE ----------
+let s3Varwrap = s3Grid.querySelector('.pwr10-varwrap');
+if (!s3Varwrap) {
+  s3Varwrap = document.createElement('div');
+  s3Varwrap.className = 'pwr10-varwrap';
+  s3Grid.appendChild(s3Varwrap);
+}
+// ensure it is first child (above CE container)
+if (s3Grid.firstElementChild !== s3Varwrap) {
+  s3Grid.insertBefore(s3Varwrap, s3Grid.firstChild);
 }
 
+// ---------- CE container + single #section-3 ----------
+let ceCont = s3Grid.querySelector('.pwr10-ce-cont');
+if (!ceCont) {
+  ceCont = document.createElement('div');
+  ceCont.className = 'pwr10-ce-cont';
+  s3Grid.appendChild(ceCont);
+}
 
+// Keep only one #section-3 globally; keep first, remove extras
+const sec3All = Array.from(document.querySelectorAll('#section-3'));
+let sec3 = sec3All[0] || null;
+if (sec3All.length > 1) sec3All.slice(1).forEach(n => n.remove());
+if (!sec3) {
+  sec3 = document.createElement('section');
+  sec3.id = 'section-3';
+}
+sec3.classList.add('pwr10-ce');
+// mount inside the CE container
+if (sec3.parentNode !== ceCont) ceCont.appendChild(sec3);
+
+// ---------- migrate any stray .cmp3 into #section-3 ----------
+document.querySelectorAll('.cmp3').forEach(node => {
+  if (!sec3.contains(node)) sec3.appendChild(node);
+});
+
+// ---------- data-var placeholders (ALL with classes) ----------
+ensureVarWithClasses('section1-header',   s1Title);
+ensureVarWithClasses('section1-subtitle', s1Title);
+ensureVarWithClasses('section1-madlib',   s1Title);
+
+ensureVarWithClasses('section2-header',   s2Title);
+ensureVarWithClasses('section2-subtitle', s2Title);
+ensureVarWithClasses('section2-madlib',   s2Title);
+
+ensureVarWithClasses('section3-header',   s3Varwrap);
+ensureVarWithClasses('section3-subtitle', s3Varwrap);
+ensureVarWithClasses('section3-madlib',   s3Varwrap);
+
+// Optional Section K: after S3 container
+let kWrap = s3.nextElementSibling;
+if (!(kWrap && kWrap.classList.contains('pwr10-varwrap-k'))) {
+  kWrap = document.createElement('div');
+  kWrap.className = 'pwr10-varwrap pwr10-varwrap-k';
+  insertAfter(s3, kWrap);
+}
+ensureVarWithClasses('sectionk-header', kWrap);
+ensureVarWithClasses('sectionk-madlib', kWrap);
+
+return { stickyWrap, s1, s1Title, s1Grid, s2, s2Title, s2Grid, s3, s3Grid, s3Varwrap, sec3 };
+}
 
 // ===========================
 // Sticky header (PWR10 markup)
