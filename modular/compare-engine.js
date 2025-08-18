@@ -1499,13 +1499,10 @@ function setupIngredientSearch(sec3) {
   const renderSuggest = (lastTerm, existingTerms = []) => {
     const fuseReady = !!(window.Fuse && fuse);
     // Empty input: show defaults until Fuse is ready
-    if (!lastTerm && !fuseReady) {
-      renderSuggestPills({ box: suggestEl, items: DEFAULT_SUGGEST_PILLS, onPick: applySuggestion });
-      return;
-    }
+
     // Empty input and Fuse ready: hide
     if (!lastTerm) {
-      renderSuggestPills({ box: suggestEl, items: [], onPick: applySuggestion });
+      renderSuggestPills({ box: suggestEl, items: DEFAULT_SUGGEST_PILLS, onPick: applySuggestion });
       return;
     }
     // Typing: show dynamic suggestions (Fuse or fallback)
