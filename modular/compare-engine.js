@@ -1296,22 +1296,58 @@ function makeSuggestionIndex(sec3) {
 // ===========================
 function renderSuggestPills({ box, items, onPick }) {
   if (!box) return;
+
+  // keep latest picker so delegated handlers survive re-renders
+  box._onPick = onPick;
+
   if (!items || !items.length) {
     box.innerHTML = '';
     box.style.display = 'none';
     return;
   }
-  const html = items.slice(0, 8).map(s =>
-    `<button type="button" class="cmp3-suggest-pill" data-val="${s.replace(/"/g,'&quot;')}">${s}</button>`
-  ).join('');
+
+  const html = items
+    .slice(0, 8)
+    .map(s => `<button type="button" class="cmp3-suggest-pill" data-val="${String(s).replace(/"/g,'&quot;')}">${s}</button>`)
+    .join('');
+
   box.innerHTML = html;
   box.style.display = '';
 
-  // wire clicks
-  box.querySelectorAll('.cmp3-suggest-pill').forEach(btn => {
-    btn.onclick = (e) => onPick(String(btn.getAttribute('data-val') || '').trim());
-  });
+  // delegate once so we don't rebind on every render
+  if (!box._delegated) {
+    const handlePick = (target) => {
+      const val = (target.getAttribute('data-val') || target.textContent || '').trim();
+      if (val && typeof box._onPick === 'function') box._onPick(val);
+    };
+
+    // fire early so blur/re-render can't cancel the click
+    box.addEventListener('pointerdown', (e) => {
+      const btn = e.target.closest('.cmp3-suggest-pill');
+      if (!btn) return;
+      e.preventDefault();            // keep focus in input
+      handlePick(btn);
+    });
+
+    // fallback for keyboard/AT activation
+    box.addEventListener('click', (e) => {
+      const btn = e.target.closest('.cmp3-suggest-pill');
+      if (!btn) return;
+      handlePick(btn);
+    });
+
+    box.addEventListener('keydown', (e) => {
+      const btn = e.target.closest('.cmp3-suggest-pill');
+      if (!btn) return;
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      handlePick(btn);
+    });
+
+    box._delegated = true;
+  }
 }
+
 
 
 // ===========================
